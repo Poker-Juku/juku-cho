@@ -1,1 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#EEF0F4" id="metaTheme">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>為替コンバーター</title>
+<style>
+  :root, [data-theme="light"]{
+    --bg:#EEF0F4; --surface:#FFFFFF; --surface-2:#F1F4F8; --ink:#1B1F27;
+    --calm:#3A414F; --muted:#79818F; --line:#E4E7ED;
+    --accent:#3C6E63; --accent-ink:#2E5750; --accent-soft:#E7EFEC;
+    --hero-1:#191D26; --hero-2:#2A313E; --hero-fg:#FFFFFF; --hero-sub:#9BA5B5;
+    --tab-bg:#232A34; --tab-fg:#FFFFFF; --gold:#C9A85C;
+    --shadow:0 1px 2px rgba(20,22,28,.05), 0 12px 28px -16px rgba(20,22,28,.22);
+    --meta:#EEF0F4;
+  }
+  [data-theme="dark"]{
+    --bg:#0E1116; --surface:#191E27; --surface-2:#212734; --ink:#EEF1F6;
+    --calm:#C7CEDA; --muted:#8A93A2; --line:#2A313D;
+    --accent:#4F9184; --accent-ink:#8FD0C2; --accent-soft:#1E2A28;
+    --hero-1:#1D2430; --hero-2:#2A3341; --hero-fg:#F3F5F9; --hero-sub:#93A0B2;
+    --tab-bg:#3C6E63; --tab-fg:#FFFFFF; --gold:#D4B76A;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 30px -16px rgba(0,0,0,.6);
+    --meta:#0E1116;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden;overscroll-behavior:none;position:fixed;width:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",sans-serif;
+    background:var(--bg);color:var(--ink);transition:background .2s,color .2s;
+    display:flex;justify-content:center;-webkit-font-smoothing:antialiased;touch-action:manipulation}
+  .app{width:100%;max-width:440px;height:100dvh;display:flex;flex-direction:column;
+    padding:env(safe-area-inset-top) 14px calc(6px + env(safe-area-inset-bottom));overflow:hidden}
 
+  /* ---------- header ---------- */
+  .hdr{position:relative;overflow:hidden;border-radius:0 0 22px 22px;margin:0 -14px 12px;
+    background:linear-gradient(135deg,var(--hero-1),var(--hero-2));color:#fff;
+    padding:calc(14px + env(safe-area-inset-top)) 18px 15px;flex:0 0 auto;box-shadow:var(--shadow)}
+  .hdr::before{content:"";position:absolute;left:-40px;bottom:-70px;width:150px;height:150px;border-radius:50%;
+    background:radial-gradient(circle,rgba(79,145,132,.45),transparent 70%);pointer-events:none;z-index:0}
+  .hdr::after{content:"";position:absolute;right:-30px;top:-60px;width:150px;height:150px;border-radius:50%;
+    background:radial-gradient(circle,rgba(201,168,92,.22),transparent 70%);pointer-events:none;z-index:0}
+  .hdr-in{position:relative;z-index:2;display:flex;align-items:center;gap:12px}
+  .mark{width:38px;height:38px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+    background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);color:var(--gold);font-weight:800;font-size:15px;letter-spacing:-.03em}
+  .htxt{flex:1;min-width:0}
+  .htxt h1{font-size:19px;font-weight:800;letter-spacing:.04em;line-height:1.2}
+  .htxt .rule{display:flex;align-items:center;gap:7px;margin-top:4px}
+  .htxt .rule i{display:block;width:16px;height:2px;background:var(--gold);border-radius:1px}
+  .htxt .rule span{font-size:10px;letter-spacing:.22em;color:var(--hero-sub);font-weight:700;text-transform:uppercase}
+  .gear{width:38px;height:38px;flex:0 0 auto;border-radius:12px;background:rgba(255,255,255,.09);
+    border:1px solid rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;cursor:pointer}
+  .gear:active{transform:scale(.94)}.gear svg{width:19px;height:19px}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:5px;margin-bottom:10px;flex:0 0 auto}
+  .tab{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;padding:10px 4px;
+    border-radius:13px;background:transparent;border:none;cursor:pointer;font-size:12.5px;font-weight:700;
+    color:var(--calm);transition:.15s;white-space:nowrap;overflow:hidden}
+  .tab .fl{font-size:16px;line-height:1;flex:0 0 auto}.tab .nm{overflow:hidden;text-overflow:ellipsis}
+  .tab.on{background:var(--tab-bg);color:var(--tab-fg)}.tab:active{transform:scale(.97)}
+
+  /* ---------- rate strip ---------- */
+  .rate{background:linear-gradient(150deg,var(--hero-1),var(--hero-2));color:var(--hero-fg);border-radius:17px;
+    padding:13px 16px;box-shadow:var(--shadow);margin-bottom:10px;flex:0 0 auto;position:relative;overflow:hidden}
+  .rate::after{content:"";position:absolute;right:-40px;top:-50px;width:140px;height:140px;
+    background:radial-gradient(circle,rgba(79,145,132,.35),transparent 70%);pointer-events:none;z-index:0}
+  .r-top,.r-mid,.r-acts{position:relative;z-index:1}
+  .r-top{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--hero-sub);font-weight:600}
+  .dot{width:6px;height:6px;border-radius:50%;background:#56C9A6}
+  .dot.live{animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(86,201,166,.5)}70%{box-shadow:0 0 0 7px rgba(86,201,166,0)}100%{box-shadow:0 0 0 0 rgba(86,201,166,0)}}
+  .dot.warn{background:#E0894A}
+  .r-when{margin-left:auto;font-size:10.5px;color:var(--hero-sub)}
+  .r-mid{display:flex;align-items:flex-end;gap:8px;margin-top:6px}
+  .r-num{font-size:25px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em;line-height:1.1}
+  .r-unit{font-size:12px;color:var(--hero-sub);font-weight:600;padding-bottom:2px}
+  .r-inv{font-size:11px;color:var(--hero-sub);font-variant-numeric:tabular-nums;padding-bottom:3px;margin-left:auto;white-space:nowrap}
+  .r-acts{display:flex;gap:7px;margin-top:9px}
+  .hbtn{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);color:var(--hero-fg);font-size:11.5px;font-weight:600;
+    padding:6px 11px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:.15s}
+  .hbtn:active{transform:scale(.95)}.hbtn svg{width:12px;height:12px}
+  .hbtn.spin svg{animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ---------- converter ---------- */
+  .convert{background:var(--surface);border-radius:19px;box-shadow:var(--shadow);padding:5px;flex:0 0 auto}
+  .field{padding:13px 16px;border-radius:15px;transition:background .15s,box-shadow .15s;cursor:pointer}
+  .field.editing{background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--accent)}
+  .field-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+  .cur{display:flex;align-items:center;gap:11px;min-width:0}
+  .flagtile{width:40px;height:40px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;font-size:23px;line-height:1;flex:0 0 auto}
+  .field.editing .flagtile{background:var(--surface)}
+  .cur-name{font-size:19px;font-weight:800;color:var(--calm);line-height:1.1}
+  .cur-sub{font-size:10.5px;color:var(--muted);font-weight:600;letter-spacing:.04em;margin-top:2px}
+  .clr{border:none;background:var(--surface-2);color:var(--muted);width:26px;height:26px;border-radius:50%;font-size:13px;cursor:pointer;display:none;flex:0 0 auto}
+  .field.editing .clr,.field.has-val .clr{display:grid;place-items:center}
+  .input-row{display:flex;align-items:baseline;gap:9px}
+  .sym{font-size:22px;font-weight:800;color:var(--muted);min-width:14px}
+  .amt{flex:1;min-width:0;font-size:33px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;
+    letter-spacing:-.02em;line-height:1.15;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}
+  .amt.ph{color:var(--muted);opacity:.4}
+  .divider{position:relative;height:0;display:flex;justify-content:center}
+  .swap{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;border:4px solid var(--surface);
+    display:grid;place-items:center;cursor:pointer;z-index:2;transition:transform .25s}
+  .swap:active{transform:scale(.92)}.swap svg{width:17px;height:17px}
+  .dline{position:absolute;left:16px;right:16px;top:50%;height:1px;background:var(--line)}
+
+  /* ---------- bottom zone (fills remaining space) ---------- */
+  .bottom{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;margin-top:10px}
+  .pane{flex:1 1 auto;min-height:0;display:none}
+  .pane.on{display:flex;flex-direction:column}
+
+  /* quick (compact pills) */
+  .quick{display:flex;gap:8px;align-items:center;justify-content:center;flex:1 1 auto;min-height:0}
+  .qcol{background:var(--surface);border-radius:13px;box-shadow:var(--shadow);padding:7px 9px;flex:1 1 0;min-width:0}
+  .qh{font-size:9.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin:0 1px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .qbtns{display:flex;gap:5px}
+  .qbtn{flex:1 1 0;min-width:0;padding:7px 2px;border:1px solid var(--line);border-radius:8px;font-size:11.5px;font-weight:700;
+    color:var(--calm);background:var(--surface-2);cursor:pointer;font-variant-numeric:tabular-nums;transition:.12s;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .qbtn:active{transform:scale(.95);border-color:var(--accent);color:var(--accent-ink);background:var(--accent-soft)}
+
+  /* ad slot */
+  .adslot{flex:0 0 auto;height:58px;margin-top:9px;border-radius:12px;background:var(--surface-2);
+    border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .adslot span{font-size:10px;color:var(--muted);letter-spacing:.14em;font-weight:700}
+
+  /* keypad (inline, no overlay) */
+  .keypad{background:var(--surface);border-radius:17px;box-shadow:var(--shadow);padding:9px;flex:1 1 auto;min-height:0;
+    display:flex;flex-direction:column}
+  .kp-head{display:flex;align-items:center;justify-content:space-between;padding:1px 6px 7px;flex:0 0 auto}
+  .kp-head .lbl{font-size:12px;font-weight:700;color:var(--muted)}
+  .kp-head .done{border:none;border-radius:9px;padding:6px 16px;font-size:12.5px;font-weight:700;background:var(--accent);color:#fff;cursor:pointer}
+  .kp-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:6px;flex:1 1 auto;min-height:0}
+  .kp-grid button{border:none;border-radius:12px;background:var(--surface-2);color:var(--ink);
+    font-size:19px;font-weight:700;cursor:pointer;font-variant-numeric:tabular-nums;transition:.1s;min-height:0;padding:0}
+  .kp-grid button:active{transform:scale(.95);background:var(--accent-soft)}
+  .kp-grid button.util{color:var(--muted);font-size:17px}
+  .kp-grid button.ok{background:var(--accent);color:#fff;font-size:14px}
+  .kp-grid button.dis{opacity:.3;pointer-events:none}
+
+  .foot{text-align:center;font-size:10px;color:var(--muted);padding:7px 0 2px;flex:0 0 auto;letter-spacing:.08em;font-weight:600}
+  .foot b{color:var(--gold);font-weight:700}
+
+  /* ---------- settings sheet ---------- */
+  .scrim{position:fixed;inset:0;background:rgba(10,12,16,.5);opacity:0;visibility:hidden;transition:.2s;z-index:40}
+  .scrim.show{opacity:1;visibility:visible}
+  .sheet{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;background:var(--bg);
+    border-radius:24px 24px 0 0;z-index:41;transform:translateY(100%);transition:transform .26s cubic-bezier(.3,.8,.3,1);
+    height:88dvh;display:flex;flex-direction:column;box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+  .sheet.show{transform:translateY(0)}
+  .grip{width:38px;height:4px;border-radius:2px;background:var(--line);margin:10px auto 4px;flex:0 0 auto}
+  .shead{display:flex;align-items:center;justify-content:space-between;padding:6px 20px 12px;flex:0 0 auto}
+  .shead h2{font-size:18px;font-weight:800}
+  .shead .x{font-size:18px;color:var(--muted);background:var(--surface);border:1px solid var(--line);width:34px;height:34px;border-radius:50%;cursor:pointer}
+  .sbody{overflow-y:auto;padding:0 16px calc(24px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;overscroll-behavior:contain;flex:1 1 auto}
+  .sec{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.1em;margin:16px 6px 8px}
+  .sec .cnt{color:var(--accent-ink);margin-left:6px}
+  .seg{display:flex;background:var(--surface-2);border-radius:13px;padding:4px;gap:4px}
+  .seg button{flex:1;border:none;background:transparent;padding:11px;border-radius:10px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s}
+  .seg button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+  .egrid{display:block}
+  .rgh{font-size:11px;font-weight:700;color:var(--accent-ink);letter-spacing:.06em;margin:12px 6px 7px}
+  .rgh:first-child{margin-top:0}
+  .rgg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .ec{position:relative;display:flex;align-items:center;gap:8px;padding:11px 30px 11px 11px;border-radius:13px;border:1.5px solid var(--line);
+    background:var(--surface);cursor:pointer;font-size:12.5px;font-weight:700;color:var(--calm);transition:.12s;text-align:left}
+  .ec .fl{font-size:18px;flex:0 0 auto}
+  .ec .ecn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ec.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+  .ec .ord{position:absolute;right:9px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;display:none;place-items:center;font-weight:800}
+  .ec.on .ord{display:grid}
+  .ehint{font-size:11px;color:var(--muted);margin:8px 6px 0;line-height:1.5}
+  .qedit{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:8px 14px}
+  .qerow{display:flex;align-items:center;gap:10px;padding:9px 0}
+  .qerow+.qerow{border-top:1px solid var(--surface-2)}
+  .qerow>span{font-size:13px;font-weight:700;color:var(--calm);min-width:66px}
+  .qeb{display:flex;gap:7px;flex:1;flex-wrap:wrap}
+  .qeb button{border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:8px 11px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+  .qeb button:active{border-color:var(--accent);color:var(--accent-ink)}
+  .sparkbox{background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px;margin-bottom:10px}
+  .sparkbox b{font-size:12.5px;color:var(--calm)}
+  .spark{width:100%;height:44px;display:block;margin-top:6px}
+  .spark-empty{font-size:11.5px;color:var(--muted);margin-top:6px}
+  .ccard{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden}
+  .chead{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer}
+  .chead .fl{font-size:24px}.chead .info{flex:1;min-width:0}
+  .chead .info b{font-size:15px;color:var(--calm);font-weight:800}.chead .info small{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+  .chead .latest{font-size:13px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .chead .latest small{display:block;color:var(--muted);font-weight:600;font-size:11px}
+  .cbody{display:none;border-top:1px solid var(--line);padding:12px 16px}.ccard.open .cbody{display:block}
+  .hrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--surface-2)}.hrow:last-child{border-bottom:none}
+  .hrow .hd{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:74px}
+  .hrow .hr{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+  .hrow .hn{flex:1;font-size:12px;color:var(--accent-ink);background:var(--accent-soft);padding:2px 8px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hrow .hx{margin-left:auto;color:var(--muted);font-size:14px;cursor:pointer;background:none;border:none}
+  .hempty{font-size:12px;color:var(--muted);padding:6px 0}
+  .racts{display:flex;gap:8px;margin-top:10px}
+  .sbtn{flex:1;border:none;border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer}
+  .sbtn.rec{background:var(--accent-soft);color:var(--accent-ink)}.sbtn.clr2{background:var(--surface-2);color:var(--muted)}
+  .danger{width:100%;background:rgba(200,70,60,.12);color:#C0453C;border:none;border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px}
+  .note{font-size:11px;color:var(--muted);text-align:center;line-height:1.6;margin-top:16px}
+
+  /* drum */
+  .drum-scrim{position:fixed;inset:0;background:rgba(10,12,16,.5);opacity:0;visibility:hidden;transition:.2s;z-index:70}
+  .drum-scrim.show{opacity:1;visibility:visible}
+  .drum{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;background:var(--surface);border-radius:24px 24px 0 0;
+    z-index:71;transform:translateY(100%);transition:transform .26s cubic-bezier(.3,.8,.3,1);padding-bottom:env(safe-area-inset-bottom)}
+  .drum.show{transform:translateY(0)}
+  .drum-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .drum-head .dt{font-size:14px;font-weight:700}
+  .drum-head button{background:none;border:none;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;padding:4px 6px}
+  .drum-head button.ok{color:var(--accent-ink)}
+  .drum-wrap{position:relative;height:200px;overflow:hidden}
+  .drum-mask{position:absolute;left:16px;right:16px;top:80px;height:40px;border-radius:11px;background:var(--surface-2);pointer-events:none;z-index:1}
+  .drum-list{height:200px;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;position:relative;z-index:2;overscroll-behavior:contain}
+  .drum-list::-webkit-scrollbar{display:none}
+  .drum-item{height:40px;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;transition:color .1s,font-size .1s}
+  .drum-item.sel{color:var(--ink);font-size:21px}
+  .drum-pad{height:80px}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);
+    padding:11px 20px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;transition:.25s;z-index:80;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-height:680px){
+    .r-acts{margin-top:7px}
+    .amt{font-size:29px}
+    .cur-name{font-size:17px}
+    .flagtile{width:36px;height:36px;font-size:20px}
+    .field{padding:11px 14px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="hdr">
+    <div class="hdr-in">
+      <div class="mark">¥⇄</div>
+      <div class="htxt">
+        <h1>為替コンバーター</h1>
+        <div class="rule"><i></i><span>Travel Rate</span></div>
+      </div>
+      <button class="gear" id="myBtn" aria-label="設定">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="rate">
+    <div class="r-top"><span id="dot" class="dot live"></span><span id="statusText">レート取得中…</span><span class="r-when" id="rateWhen">—</span></div>
+    <div class="r-mid">
+      <span class="r-num">1 <span id="unitName">元</span> = <span id="rateBig">—</span></span>
+      <span class="r-unit">円</span>
+      <span class="r-inv" id="rateInv">—</span>
+    </div>
+    <div class="r-acts">
+      <button class="hbtn" id="recBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>記録</button>
+      <button class="hbtn" id="refBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>更新</button>
+    </div>
+  </div>
+
+  <div class="convert">
+    <div class="field" id="fJpy">
+      <div class="field-top"><div class="cur"><div class="flagtile">🇯🇵</div><div><div class="cur-name">日本円</div><div class="cur-sub">JPY · 日本</div></div></div><button class="clr" data-clear="jpy">✕</button></div>
+      <div class="input-row"><span class="sym">¥</span><div class="amt ph" id="jpy">0</div></div>
+    </div>
+    <div class="divider"><span class="dline"></span>
+      <button class="swap" id="swapBtn" aria-label="入れ替え"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg></button>
+    </div>
+    <div class="field" id="fFor">
+      <div class="field-top"><div class="cur"><div class="flagtile" id="forFlag">🇨🇳</div><div><div class="cur-name" id="forName">人民元</div><div class="cur-sub" id="forSub">CNY · 中国</div></div></div><button class="clr" data-clear="for">✕</button></div>
+      <div class="input-row"><span class="sym" id="forSym">元</span><div class="amt ph" id="for">0</div></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <!-- quick pane -->
+    <div class="pane on" id="paneQuick">
+      <div class="quick">
+        <div class="qcol"><div class="qh">日本円</div><div class="qbtns" id="qJpy"></div></div>
+        <div class="qcol"><div class="qh" id="qforH">現地通貨</div><div class="qbtns" id="qFor"></div></div>
+      </div>
+    </div>
+    <!-- keypad pane -->
+    <div class="pane" id="paneKp">
+      <div class="keypad">
+        <div class="kp-head"><span class="lbl" id="kpLabel">日本円 ¥</span><button class="done" id="kpDone">完了</button></div>
+        <div class="kp-grid" id="kpGrid">
+          <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="util" data-k="BS">⌫</button>
+          <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="util" data-k="C">C</button>
+          <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="util" id="dotBtn" data-k=".">.</button>
+          <button data-k="000">000</button><button data-k="0">0</button><button data-k="00">00</button><button class="ok" data-k="DONE">完了</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 広告枠(AdSense / AdMob のタグをここに貼る) -->
+  <div class="adslot" id="adSlot"><span>ADVERTISEMENT</span></div>
+
+  <div class="foot">Made in <b>Juku-Cho</b></div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet">
+  <div class="grip"></div>
+  <div class="shead"><h2>設定</h2><button class="x" id="closeBtn">✕</button></div>
+  <div class="sbody">
+    <div class="sec">表示する国(タブ)<span class="cnt" id="selCnt"></span></div>
+    <div class="egrid" id="egrid"></div>
+    <div class="ehint">最大4か国まで。選択した順にタブへ並びます。</div>
+
+    <div class="sec">簡単入力の金額</div>
+    <div class="qedit">
+      <div class="qerow"><span>日本円</span><div class="qeb" id="qeJpy"></div></div>
+      <div class="qerow"><span id="qeForLbl">現地通貨</span><div class="qeb" id="qeFor"></div></div>
+    </div>
+    <div class="ehint">ボタンをタップすると、ドラムを回して金額を選べます。</div>
+
+    <div class="sec">カラー設定</div>
+    <div class="seg" id="themeSeg"><button data-th="light">ライト</button><button data-th="dark">ダーク</button><button data-th="system">システム</button></div>
+
+    <div class="sec">国ごとの為替履歴</div>
+    <div class="sparkbox"><b id="sparkTitle">レート推移</b><svg class="spark" id="spark" viewBox="0 0 300 44" preserveAspectRatio="none"></svg><div class="spark-empty" id="sparkEmpty">まだ履歴がありません。「記録」で残せます。</div></div>
+    <div id="histList"></div>
+    <button class="danger" id="wipeBtn">すべての履歴を削除</button>
+    <div class="note">為替: open.er-api.com / frankfurter.app(無料・1日1回更新)<br>毎朝アプリを開くと最新レートを自動取得。表示は参考値です。</div>
+  </div>
+</div>
+
+<div class="drum-scrim" id="drumScrim"></div>
+<div class="drum" id="drum">
+  <div class="drum-head"><button id="drumCancel">キャンセル</button><span class="dt" id="drumTitle">金額を選択</span><button id="drumOk" class="ok">決定</button></div>
+  <div class="drum-wrap"><div class="drum-mask"></div><div class="drum-list" id="drumList"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var KEY_RATE='tj_fx_v5', KEY_HIST='tj_hist_v5', KEY_CFG='tj_cfg_v5';
+  var COUNTRIES=[
+    /* アジア */
+    {code:'KRW',flag:'🇰🇷',name:'ウォン',country:'韓国',sym:'₩',dec:0,fb:0.116,rg:'アジア'},
+    {code:'TWD',flag:'🇹🇼',name:'台湾ドル',country:'台湾',sym:'NT$',dec:2,fb:5.00,rg:'アジア'},
+    {code:'CNY',flag:'🇨🇳',name:'人民元',country:'中国',sym:'元',dec:2,fb:22.30,rg:'アジア'},
+    {code:'HKD',flag:'🇭🇰',name:'香港ドル',country:'香港',sym:'HK$',dec:2,fb:20.50,rg:'アジア'},
+    {code:'MOP',flag:'🇲🇴',name:'パタカ',country:'マカオ',sym:'MOP',dec:2,fb:19.90,rg:'アジア'},
+    {code:'THB',flag:'🇹🇭',name:'タイバーツ',country:'タイ',sym:'฿',dec:2,fb:4.44,rg:'アジア'},
+    {code:'VND',flag:'🇻🇳',name:'ドン',country:'ベトナム',sym:'₫',dec:0,fb:0.0063,rg:'アジア'},
+    {code:'SGD',flag:'🇸🇬',name:'Sドル',country:'シンガポール',sym:'S$',dec:2,fb:118.5,rg:'アジア'},
+    {code:'MYR',flag:'🇲🇾',name:'リンギット',country:'マレーシア',sym:'RM',dec:2,fb:34.8,rg:'アジア'},
+    {code:'PHP',flag:'🇵🇭',name:'ペソ',country:'フィリピン',sym:'₱',dec:2,fb:2.81,rg:'アジア'},
+    {code:'IDR',flag:'🇮🇩',name:'ルピア',country:'インドネシア',sym:'Rp',dec:0,fb:0.0098,rg:'アジア'},
+    {code:'KHR',flag:'🇰🇭',name:'リエル',country:'カンボジア',sym:'៛',dec:0,fb:0.039,rg:'アジア'},
+    {code:'INR',flag:'🇮🇳',name:'ルピー',country:'インド',sym:'₹',dec:2,fb:1.87,rg:'アジア'},
+    {code:'AED',flag:'🇦🇪',name:'ディルハム',country:'ドバイ/UAE',sym:'AED',dec:2,fb:43.6,rg:'アジア'},
+    /* 北米・欧州 */
+    {code:'USD',flag:'🇺🇸',name:'アメリカドル',country:'アメリカ',sym:'$',dec:2,fb:160.3,rg:'北米・欧州'},
+    {code:'EUR',flag:'🇪🇺',name:'ユーロ',country:'ユーロ圏',sym:'€',dec:2,fb:173.0,rg:'北米・欧州'},
+    {code:'GBP',flag:'🇬🇧',name:'ポンド',country:'イギリス',sym:'£',dec:2,fb:205.0,rg:'北米・欧州'},
+    {code:'CAD',flag:'🇨🇦',name:'カナダドル',country:'カナダ',sym:'C$',dec:2,fb:117.0,rg:'北米・欧州'},
+    {code:'CHF',flag:'🇨🇭',name:'スイスフラン',country:'スイス',sym:'CHF',dec:2,fb:180.0,rg:'北米・欧州'},
+    {code:'TRY',flag:'🇹🇷',name:'リラ',country:'トルコ',sym:'₺',dec:2,fb:4.50,rg:'北米・欧州'},
+    {code:'CZK',flag:'🇨🇿',name:'コルナ',country:'チェコ',sym:'Kč',dec:2,fb:7.00,rg:'北米・欧州'},
+    {code:'SEK',flag:'🇸🇪',name:'スウェーデンクローナ',country:'スウェーデン',sym:'kr',dec:2,fb:15.5,rg:'北米・欧州'},
+    {code:'NOK',flag:'🇳🇴',name:'ノルウェークローネ',country:'ノルウェー',sym:'kr',dec:2,fb:15.0,rg:'北米・欧州'},
+    {code:'DKK',flag:'🇩🇰',name:'デンマーククローネ',country:'デンマーク',sym:'kr',dec:2,fb:23.2,rg:'北米・欧州'},
+    {code:'PLN',flag:'🇵🇱',name:'ズウォティ',country:'ポーランド',sym:'zł',dec:2,fb:40.0,rg:'北米・欧州'},
+    {code:'HUF',flag:'🇭🇺',name:'フォリント',country:'ハンガリー',sym:'Ft',dec:0,fb:0.44,rg:'北米・欧州'},
+    /* オセアニア・その他 */
+    {code:'AUD',flag:'🇦🇺',name:'豪ドル',country:'オーストラリア',sym:'A$',dec:2,fb:105.0,rg:'オセアニア・その他'},
+    {code:'NZD',flag:'🇳🇿',name:'NZドル',country:'ニュージーランド',sym:'NZ$',dec:2,fb:96.0,rg:'オセアニア・その他'},
+    {code:'MXN',flag:'🇲🇽',name:'メキシコペソ',country:'メキシコ',sym:'Mex$',dec:2,fb:8.60,rg:'オセアニア・その他'},
+    {code:'BRL',flag:'🇧🇷',name:'レアル',country:'ブラジル',sym:'R$',dec:2,fb:29.0,rg:'オセアニア・その他'},
+    {code:'ZAR',flag:'🇿🇦',name:'ランド',country:'南アフリカ',sym:'R',dec:2,fb:8.80,rg:'オセアニア・その他'},
+    {code:'EGP',flag:'🇪🇬',name:'エジプトポンド',country:'エジプト',sym:'E£',dec:2,fb:3.30,rg:'オセアニア・その他'}
+  ];
+  var byCode={}; COUNTRIES.forEach(function(c){byCode[c.code]=c;});
+
+  var rates={}, dateStr=null, source='cache';
+  var displayed=['CNY','KRW','THB','VND'];
+  var active='CNY', theme='system';
+  var side='jpy', raw='', replaceNext=false, kpOpen=false;
+  var qJpy=[5000,10000,50000], qFor=[1000,5000,10000];
+  var LADDER=[100,300,500,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
+  var drumTarget=null;
+
+  var $=function(id){return document.getElementById(id);};
+  function todayKey(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function fmtDate(d){return d.getFullYear()+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+('0'+d.getDate()).slice(-2);}
+  function nf(n,dec){return new Intl.NumberFormat('ja-JP',{minimumFractionDigits:dec,maximumFractionDigits:dec}).format(n);}
+  function getRate(code){return rates[code]||byCode[code].fb;}
+  function invDec(x){return x>=1?2:x>=0.1?3:x>=0.01?4:x>=0.001?5:6;}
+  function groupInt(s){return s.replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+  function loadHist(){try{return JSON.parse(localStorage.getItem(KEY_HIST)||'{}');}catch(e){return {};}}
+  function saveHist(h){try{localStorage.setItem(KEY_HIST,JSON.stringify(h));}catch(e){}}
+  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,active:active,theme:theme,qJpy:qJpy,qFor:qFor}));}catch(e){}}
+  function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
+
+  var mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
+  function applyTheme(){
+    var real=theme; if(theme==='system') real=(mq&&mq.matches)?'dark':'light';
+    document.documentElement.setAttribute('data-theme',real);
+    var mc=getComputedStyle(document.documentElement).getPropertyValue('--meta').trim();
+    $('metaTheme').setAttribute('content',mc||'#EEF0F4');
+    document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-th')===theme);});
+  }
+  if(mq&&mq.addEventListener)mq.addEventListener('change',function(){if(theme==='system'){applyTheme();renderSpark();}});
+
+  /* calculator */
+  function decOf(){return side==='for'?byCode[active].dec:0;}
+  function curNums(){var r=getRate(active);
+    if(side==='for'){var f=raw===''?0:parseFloat(raw||'0');return {jpy:f*r,for:f};}
+    var j=raw===''?0:parseFloat(raw||'0');return {jpy:j,for:j/r};}
+  function seed(n,dec){if(!n||!isFinite(n))return '';return dec>0?String(n.toFixed(dec)).replace(/\.?0+$/,''):String(Math.round(n));}
+  function fmtRaw(s){if(s==='')return '0';var p=s.split('.');var ip=p[0].replace(/^0+(?=\d)/,'');if(ip==='')ip='0';ip=groupInt(ip);
+    if(p.length>1)return ip+'.'+p[1];if(s.charAt(s.length-1)==='.')return ip+'.';return ip;}
+  function renderConv(){
+    var c=byCode[active],r=getRate(active);var js,fs,jz,fz;
+    if(side==='for'){var fN=raw===''?0:parseFloat(raw||'0');fs=raw===''?'0':fmtRaw(raw);fz=(fN===0);var jN=fN*r;js=nf(jN,0);jz=(jN===0);}
+    else{var jN2=raw===''?0:parseFloat(raw||'0');js=raw===''?'0':fmtRaw(raw);jz=(jN2===0);var fN2=jN2/r;fs=nf(fN2,c.dec);fz=(fN2===0);}
+    var je=$('jpy');je.textContent=js;je.classList.toggle('ph',jz);
+    var fe=$('for');fe.textContent=fs;fe.classList.toggle('ph',fz);
+    $('fJpy').classList.toggle('editing',kpOpen&&side==='jpy');
+    $('fFor').classList.toggle('editing',kpOpen&&side==='for');
+    $('fJpy').classList.toggle('has-val',!jz);
+    $('fFor').classList.toggle('has-val',!fz);
+  }
+  function appendDigits(cur,d,dec){var next=cur+d;var p=next.split('.');
+    p[0]=p[0].replace(/^0+(?=\d)/,'');if(p[0]==='')p[0]='0';
+    if(p[1]!==undefined&&p[1].length>dec)return cur;
+    if(p[0].replace(/^0/,'').length>12)return cur;
+    return p.join('.');}
+  function press(k){var dec=decOf();
+    if(k==='C'){raw='';replaceNext=false;}
+    else if(k==='BS'){replaceNext=false;raw=raw.slice(0,-1);}
+    else if(k==='.'){if(dec>0&&raw.indexOf('.')<0){if(replaceNext){raw='';replaceNext=false;}if(raw==='')raw='0';raw+='.';}}
+    else if(k==='DONE'){closeKeypad();return;}
+    else{if(replaceNext){raw='';replaceNext=false;}raw=appendDigits(raw,k,dec);}
+    renderConv();}
+  function focusSide(which){var n=curNums();
+    if(which==='jpy'){side='jpy';raw=seed(n.jpy,0);}else{side='for';raw=seed(n.for,byCode[active].dec);}
+    replaceNext=true;openKeypad();renderConv();}
+  function openKeypad(){kpOpen=true;$('paneQuick').classList.remove('on');$('paneKp').classList.add('on');updateKp();}
+  function closeKeypad(){kpOpen=false;$('paneKp').classList.remove('on');$('paneQuick').classList.add('on');renderConv();}
+  function updateKp(){var c=byCode[active];
+    $('kpLabel').textContent=side==='for'?(c.name+' '+c.sym):'日本円 ¥';
+    $('dotBtn').classList.toggle('dis',decOf()===0);}
+
+  /* render */
+  function renderTabs(){var t=$('tabs');t.innerHTML='';
+    displayed.forEach(function(code){var c=byCode[code];var el=document.createElement('button');el.className='tab'+(code===active?' on':'');
+      el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+c.country+'</span>';
+      el.onclick=function(){active=code;saveCfg();renderAll();if(kpOpen)updateKp();};t.appendChild(el);});}
+  function renderRate(){var c=byCode[active],r=getRate(active);
+    $('unitName').textContent=c.sym;$('rateBig').textContent=nf(r,r>=1?2:4);
+    $('rateInv').textContent='1円 = '+nf(1/r,invDec(1/r))+c.sym;
+    var dot=$('dot'),st=$('statusText');dot.className='dot';
+    if(source==='auto'){dot.classList.add('live');st.textContent='自動更新';}
+    else if(source==='warn'){dot.classList.add('warn');st.textContent='保存済みレート';}
+    else{dot.classList.add('live');st.textContent='保存済みレート';}
+    $('rateWhen').textContent=dateStr?(dateStr+' 時点'):'—';}
+  function renderForeign(){var c=byCode[active];$('forFlag').textContent=c.flag;$('forName').textContent=c.name;$('forSub').textContent=c.code+' · '+c.country;$('forSym').textContent=c.sym;}
+  function renderSpark(){
+    var c=byCode[active];var h=(loadHist()[active]||[]);var svg=$('spark'),empty=$('sparkEmpty');
+    $('sparkTitle').textContent=c.country+' のレート推移';
+    if(h.length<2){svg.innerHTML='';empty.style.display='block';return;}
+    empty.style.display='none';
+    var vals=h.map(function(e){return e.r;});var min=Math.min.apply(null,vals),max=Math.max.apply(null,vals);var rng=(max-min)||1;
+    var W=300,H=44,pad=4,n=vals.length;var col=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    var pts=vals.map(function(v,i){var x=n===1?W/2:pad+i*(W-2*pad)/(n-1);var y=H-pad-((v-min)/rng)*(H-2*pad);return x.toFixed(1)+','+y.toFixed(1);});
+    var last=pts[pts.length-1].split(',');
+    svg.innerHTML='<polyline fill="none" stroke="'+col+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="'+pts.join(' ')+'"/><circle cx="'+last[0]+'" cy="'+last[1]+'" r="3" fill="'+col+'"/>';}
+  function renderQuick(){var c=byCode[active];$('qforH').textContent=c.name;
+    var jb=$('qJpy');jb.innerHTML='';qJpy.forEach(function(v){var b=document.createElement('button');b.className='qbtn';b.textContent='¥'+nf(v,0);b.onclick=function(){setQuick('jpy',v);};jb.appendChild(b);});
+    var fb=$('qFor');fb.innerHTML='';qFor.forEach(function(v){var b=document.createElement('button');b.className='qbtn';b.textContent=c.sym+nf(v,0);b.onclick=function(){setQuick('for',v);};fb.appendChild(b);});}
+  function setQuick(which,v){side=which;raw=String(v);replaceNext=false;renderConv();}
+  function renderAll(){renderTabs();renderRate();renderForeign();renderQuick();renderConv();if($('sheet').classList.contains('show'))renderSpark();}
+
+  /* history */
+  function logAuto(){var h=loadHist();var d=dateStr||fmtDate(new Date());
+    COUNTRIES.forEach(function(c){var arr=h[c.code]||[];var r=getRate(c.code);var last=arr[arr.length-1];
+      if(last&&last.d===d){last.r=r;}else{arr.push({d:d,r:r,n:''});}if(arr.length>90)arr=arr.slice(arr.length-90);h[c.code]=arr;});
+    saveHist(h);}
+  function recordNote(code){var c=byCode[code];var note=prompt('メモを入力(例: '+c.country+'旅行 / 空港レート)','');if(note===null)return;
+    var h=loadHist();var arr=h[code]||[];arr.push({d:fmtDate(new Date()),r:getRate(code),n:note});if(arr.length>90)arr=arr.slice(arr.length-90);h[code]=arr;saveHist(h);
+    if($('sheet').classList.contains('show')){renderHistList();renderSpark();}
+    toast('「'+c.country+'」のレートを記録しました');}
+
+  /* settings */
+  function renderEditGrid(){
+    var g=$('egrid');g.innerHTML='';$('selCnt').textContent=displayed.length+' / 4';
+    var regions=[];COUNTRIES.forEach(function(c){if(regions.indexOf(c.rg)<0)regions.push(c.rg);});
+    regions.forEach(function(rg){
+      var h=document.createElement('div');h.className='rgh';h.textContent=rg;g.appendChild(h);
+      var grid=document.createElement('div');grid.className='rgg';
+      COUNTRIES.filter(function(c){return c.rg===rg;}).forEach(function(c){
+        var ord=displayed.indexOf(c.code)+1;var on=ord>0;
+        var el=document.createElement('button');el.className='ec'+(on?' on':'');
+        el.innerHTML='<span class="fl">'+c.flag+'</span><span class="ecn">'+c.country+'</span><span class="ord">'+ord+'</span>';
+        el.onclick=function(){toggleCountry(c.code);};grid.appendChild(el);
+      });
+      g.appendChild(grid);
+    });
+  }
+  function toggleCountry(code){var i=displayed.indexOf(code);
+    if(i>=0){if(displayed.length<=1){toast('最低1か国は表示します');return;}displayed.splice(i,1);if(active===code){active=displayed[0];side='jpy';raw='';}}
+    else{if(displayed.length>=4){toast('タブは最大4か国までです');return;}displayed.push(code);}
+    saveCfg();renderEditGrid();renderQEdit();renderAll();renderSpark();}
+  function renderQEdit(){var c=byCode[active];$('qeForLbl').textContent=c.name;
+    var jb=$('qeJpy');jb.innerHTML='';qJpy.forEach(function(v,i){var b=document.createElement('button');b.textContent='¥'+nf(v,0);b.onclick=function(){openDrum('jpy',i,v);};jb.appendChild(b);});
+    var fb=$('qeFor');fb.innerHTML='';qFor.forEach(function(v,i){var b=document.createElement('button');b.textContent=c.sym+nf(v,0);b.onclick=function(){openDrum('for',i,v);};fb.appendChild(b);});}
+  function renderHistList(){var h=loadHist();var box=$('histList');box.innerHTML='';
+    COUNTRIES.forEach(function(c){var arr=(h[c.code]||[]).slice().reverse();var latest=arr[0];
+      var card=document.createElement('div');card.className='ccard'+(c.code===active?' open':'');
+      var head=document.createElement('div');head.className='chead';
+      head.innerHTML='<span class="fl">'+c.flag+'</span><div class="info"><b>'+c.country+'</b><small>'+c.name+' · '+c.code+'</small></div><div class="latest">'+(latest?('1'+c.sym+' = '+nf(latest.r,latest.r>=1?2:4)+'円'):'—')+'<small>'+(arr.length?arr.length+'件':'記録なし')+'</small></div>';
+      head.onclick=function(){card.classList.toggle('open');};
+      var body=document.createElement('div');body.className='cbody';var rows='';
+      if(arr.length===0){rows='<div class="hempty">まだ履歴がありません。</div>';}
+      else{arr.forEach(function(e,i){var ri=(h[c.code].length-1)-i;rows+='<div class="hrow"><span class="hd">'+e.d+'</span><span class="hr">'+nf(e.r,e.r>=1?2:4)+'円</span>'+(e.n?('<span class="hn">'+e.n.replace(/</g,'&lt;')+'</span>'):'<span style="flex:1"></span>')+'<button class="hx" data-c="'+c.code+'" data-i="'+ri+'">✕</button></div>';});}
+      body.innerHTML=rows+'<div class="racts"><button class="sbtn rec" data-rec="'+c.code+'">今のレートを記録</button><button class="sbtn clr2" data-clrh="'+c.code+'">履歴をクリア</button></div>';
+      card.appendChild(head);card.appendChild(body);box.appendChild(card);});
+    box.querySelectorAll('.hx').forEach(function(b){b.onclick=function(e){e.stopPropagation();var code=b.getAttribute('data-c'),idx=+b.getAttribute('data-i');var h2=loadHist();h2[code].splice(idx,1);saveHist(h2);renderHistList();renderSpark();};});
+    box.querySelectorAll('[data-rec]').forEach(function(b){b.onclick=function(){recordNote(b.getAttribute('data-rec'));};});
+    box.querySelectorAll('[data-clrh]').forEach(function(b){b.onclick=function(){var code=b.getAttribute('data-clrh');if(!confirm(byCode[code].country+'の履歴を削除しますか?'))return;var h2=loadHist();h2[code]=[];saveHist(h2);renderHistList();renderSpark();};});}
+  function openSheet(){closeKeypad();renderEditGrid();renderQEdit();renderHistList();renderSpark();applyTheme();$('scrim').classList.add('show');$('sheet').classList.add('show');}
+  function closeSheet(){$('scrim').classList.remove('show');$('sheet').classList.remove('show');}
+
+  /* drum */
+  function openDrum(group,index,current){drumTarget={group:group,index:index};var list=$('drumList');
+    list.innerHTML='<div class="drum-pad"></div>'+LADDER.map(function(v){return '<div class="drum-item">'+nf(v,0)+'</div>';}).join('')+'<div class="drum-pad"></div>';
+    $('drumTitle').textContent=(group==='jpy'?'日本円':byCode[active].name)+'の金額';
+    var ci=LADDER.indexOf(current);if(ci<0)ci=0;
+    $('drumScrim').classList.add('show');$('drum').classList.add('show');
+    setTimeout(function(){list.scrollTop=ci*40;highlightDrum();},40);}
+  function highlightDrum(){var list=$('drumList');var idx=Math.round(list.scrollTop/40);
+    list.querySelectorAll('.drum-item').forEach(function(it,i){it.classList.toggle('sel',i===idx);});}
+  function drumValue(){var list=$('drumList');var idx=Math.max(0,Math.min(LADDER.length-1,Math.round(list.scrollTop/40)));return LADDER[idx];}
+  function closeDrum(){$('drumScrim').classList.remove('show');$('drum').classList.remove('show');drumTarget=null;}
+  function drumConfirm(){if(!drumTarget)return;var v=drumValue();
+    if(drumTarget.group==='jpy')qJpy[drumTarget.index]=v;else qFor[drumTarget.index]=v;
+    saveCfg();renderQuick();renderQEdit();closeDrum();}
+
+  /* fetch */
+  function save(){try{localStorage.setItem(KEY_RATE,JSON.stringify({day:todayKey(),rates:rates,dateStr:dateStr,source:source}));}catch(e){}}
+  async function fetchRates(){var btn=$('refBtn');btn.classList.add('spin');$('statusText').textContent='更新中…';var ok=false;
+    try{var r=await fetch('https://open.er-api.com/v6/latest/JPY',{cache:'no-store'});var d=await r.json();
+      if(d&&d.rates){COUNTRIES.forEach(function(c){if(d.rates[c.code])rates[c.code]=1/d.rates[c.code];});
+        dateStr=d.time_last_update_utc?fmtDate(new Date(d.time_last_update_utc)):fmtDate(new Date());source='auto';ok=true;}}catch(e){}
+    if(!ok){try{var codes=COUNTRIES.map(function(c){return c.code;}).join(',');
+      var r2=await fetch('https://api.frankfurter.app/latest?from=JPY&to='+codes,{cache:'no-store'});var d2=await r2.json();
+      if(d2&&d2.rates){COUNTRIES.forEach(function(c){if(d2.rates[c.code])rates[c.code]=1/d2.rates[c.code];});
+        dateStr=d2.date?d2.date.replace(/-/g,'/'):fmtDate(new Date());source='auto';ok=true;}}catch(e){}}
+    if(ok){save();logAuto();}else{source='warn';}
+    btn.classList.remove('spin');renderRate();renderConv();return ok;}
+
+  /* init */
+  function init(){
+    var cfg=null;try{cfg=JSON.parse(localStorage.getItem(KEY_CFG)||'null');}catch(e){}
+    if(cfg){if(Array.isArray(cfg.displayed)&&cfg.displayed.length)displayed=cfg.displayed.filter(function(c){return byCode[c];}).slice(0,4);
+      if(cfg.active&&byCode[cfg.active])active=cfg.active;if(cfg.theme)theme=cfg.theme;
+      if(Array.isArray(cfg.qJpy)&&cfg.qJpy.length===3)qJpy=cfg.qJpy;
+      if(Array.isArray(cfg.qFor)&&cfg.qFor.length===3)qFor=cfg.qFor;}
+    if(displayed.indexOf(active)<0)active=displayed[0];
+    applyTheme();
+    var cached=null;try{cached=JSON.parse(localStorage.getItem(KEY_RATE)||'null');}catch(e){}
+    if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';}
+    renderAll();
+    if(!cached||cached.day!==todayKey())fetchRates();
+
+    $('fJpy').addEventListener('click',function(e){if(e.target.closest('[data-clear]'))return;focusSide('jpy');});
+    $('fFor').addEventListener('click',function(e){if(e.target.closest('[data-clear]'))return;focusSide('for');});
+    document.querySelectorAll('.clr').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();
+      side=b.getAttribute('data-clear');raw='';replaceNext=false;openKeypad();renderConv();});});
+    $('kpGrid').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;press(b.getAttribute('data-k'));});
+    $('kpDone').addEventListener('click',closeKeypad);
+    $('swapBtn').addEventListener('click',function(){var n=curNums();
+      if(side==='for'){side='jpy';raw=seed(n.for,0);}else{side='for';raw=seed(n.jpy,byCode[active].dec);}
+      replaceNext=true;renderConv();if(kpOpen)updateKp();
+      this.style.transform='rotate(180deg)';var s=this;setTimeout(function(){s.style.transform='';},260);});
+    $('refBtn').addEventListener('click',fetchRates);
+    $('recBtn').addEventListener('click',function(){recordNote(active);});
+    $('myBtn').addEventListener('click',openSheet);
+    $('closeBtn').addEventListener('click',closeSheet);
+    $('scrim').addEventListener('click',closeSheet);
+    document.querySelectorAll('#themeSeg button').forEach(function(b){b.addEventListener('click',function(){theme=b.getAttribute('data-th');saveCfg();applyTheme();renderSpark();});});
+    $('wipeBtn').addEventListener('click',function(){if(!confirm('すべての国の履歴を削除しますか?'))return;saveHist({});renderHistList();renderSpark();toast('履歴を削除しました');});
+    var dl=$('drumList');var raf;dl.addEventListener('scroll',function(){if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(highlightDrum);});
+    $('drumOk').addEventListener('click',drumConfirm);
+    $('drumCancel').addEventListener('click',closeDrum);
+    $('drumScrim').addEventListener('click',closeDrum);
+    document.addEventListener('touchmove',function(e){
+      if(e.target.closest('.sbody')||e.target.closest('.drum-list'))return;
+      e.preventDefault();
+    },{passive:false});
+  }
+  init();
+})();
+</script>
+</body>
+</html>
