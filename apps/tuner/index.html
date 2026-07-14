@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Guitar Tuner – Juku-Cho</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;600;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
@@ -28,30 +28,80 @@
 
 *{ margin:0; padding:0; box-sizing:border-box; }
 
+/* ── スマホ: 全画面固定 ── */
 html, body {
-  height:100%; width:100%;
-  overflow:hidden; touch-action:none;
-  overscroll-behavior:none; position:fixed;
-}
-
-body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: 'Exo 2', sans-serif;
+  color: var(--text);
   background: var(--bg);
   background-image:
     radial-gradient(ellipse at 20% 0%, rgba(0,80,140,0.25) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 100%, rgba(0,40,80,0.2) 0%, transparent 60%);
-  height:100%; width:100%;
-  display:flex; flex-direction:column;
-  align-items:stretch; justify-content:flex-start;
-  font-family:'Exo 2', sans-serif;
-  color:var(--text);
+}
+
+/* スマホ (768px未満): 全画面固定・スクロールなし */
+@media (max-width: 767px) {
+  html, body {
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+    position: fixed;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+}
+
+/* PC (768px以上): 2:3縦長カード表示 */
+@media (min-width: 768px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px 0;
+    background-attachment: fixed;
+  }
 }
 
 /* ═══════════════ APP WRAPPER ═══════════════ */
+/* スマホ: .appは全画面 */
 .app {
-  width:100%; flex:1;
-  display:flex; flex-direction:column;
-  overflow:hidden; touch-action:manipulation;
-  position:relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: manipulation;
+  position: relative;
+  background: linear-gradient(175deg, #0d1828 0%, #070d14 50%, #0a1220 100%);
+}
+
+@media (max-width: 767px) {
+  .app {
+    width: 100%;
+    flex: 1;
+    height: 100%;
+  }
+}
+
+/* PC: 2:3縦長カード（例: 420×630） */
+@media (min-width: 768px) {
+  .app {
+    width: 420px;
+    height: 630px;
+    border-radius: 12px;
+    border: 1px solid var(--border-lt);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.8),
+      0 20px 60px rgba(0,0,0,0.8),
+      0 0 40px rgba(0,150,200,0.08),
+      inset 0 1px 0 rgba(0,200,240,0.1);
+    flex-shrink: 0;
+  }
 }
 
 /* ═══════════════ HEADER ═══════════════ */
