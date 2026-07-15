@@ -1,0 +1,1030 @@
+import React, { useState, useEffect, useRef } from "react";
+
+// ============ トークン（深緑 × ゴールド） ============
+const C = {
+  bg: "#0B1F16",
+  surface: "#13291D",
+  surfaceHi: "#1B3728",
+  line: "#2A4A38",
+  gold: "#C9A24B",
+  goldDim: "#8A7439",
+  text: "#FFFFFF",
+  sub: "#9FB8A9",
+  plus: "#6FE3A1",
+  minus: "#F08A8A",
+};
+
+const todayStr = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+const fmtDateJP = (iso) => {
+  if (!iso) return "";
+  const [y, m, d] = iso.split("-");
+  return `${y}/${m}/${d}`;
+};
+const fmtNum = (n) => Number(n).toLocaleString("ja-JP");
+const fmtSigned = (n) => (n > 0 ? "+" : "") + Number(n).toLocaleString("ja-JP");
+
+const DEFAULT_MEMBERS = ["Player 01", "Player 02", "Player 03", "Player 04", "Player 05", "Player 06"];
+const MEMBERS_KEY = "poker-seiseki:members:v2";
+const SESSIONS_KEY = "poker-seiseki:sessions:v2";
+const OLD_SESSION_PREFIX = "poker-seiseki:session:";
+
+export default function PokerSeiseki() {
+  const [page, setPage] = useState("score"); // score | history | players
+  const [date, setDate] = useState(todayStr());
+  const [members, setMembers] = useState(DEFAULT_MEMBERS);
+  const [sessions, setSessions] = useState({}); // { "YYYY-MM-DD": { rows: [...] } }
+  const [rows, setRows] = useState([]);
+  const [padTarget, setPadTarget] = useState(null);
+  const [padValue, setPadValue] = useState("");
+  const [confirmRow, setConfirmRow] = useState(null); // ×確認対象の行id
+  const [loaded, setLoaded] = useState(false);
+  const [saveState, setSaveState] = useState("idle");
+  const [selectedPlayer, setSelectedPlayer] = useState("");
+  const sessionsRef = useRef({});
+  useEffect(() => { sessionsRef.current = sessions; }, [sessions]);
+
+  const newRow = () => ({ id: Math.random().toString(36).slice(2), name: "", amount: null });
+  const defaultRows = () => Array.from({ length: 6 }, newRow);
+
+  // ---- 初回ロード（旧形式からの移行含む） ----
+  useEffect(() => {
+    (async () => {
+      // メンバー
+      try {
+        const r = await window.storage.get(MEMBERS_KEY);
+        if (r && r.value) setMembers(JSON.parse(r.value));
+      } catch (e) {}
+      // セッション
+      let loadedSessions = null;
+      try {
+        const r = await window.storage.get(SESSIONS_KEY);
+        if (r && r.value) loadedSessions = JSON.parse(r.value);
+      } catch (e) {}
+      if (!loadedSessions) {
+        // 旧形式（日付ごとのキー）からの移行
+        loadedSessions = {};
+        try {
+          const l = await window.storage.list(OLD_SESSION_PREFIX);
+          for (const k of l?.keys || []) {
+            try {
+              const r = await window.storage.get(k);
+              if (r && r.value) loadedSessions[k.replace(OLD_SESSION_PREFIX, "")] = JSON.parse(r.value);
+            } catch (e) {}
+          }
+          if (Object.keys(loadedSessions).length) {
+            await window.storage.set(SESSIONS_KEY, JSON.stringify(loadedSessions));
+          }
+        } catch (e) {}
+      }
+      setSessions(loadedSessions || {});
+      sessionsRef.current = loadedSessions || {};
+      setLoaded(true);
+    })();
+  }, []);
+
+  // ---- 日付変更時：その日の行をロード ----
+  useEffect(() => {
+    if (!loaded) return;
+    const s = sessionsRef.current[date];
+    setRows(s?.rows?.length ? s.rows : defaultRows());
+  }, [date, loaded]);
+
+  // ---- 行の変更をセッションへ即時反映 ----
+  useEffect(() => {
+    if (!loaded || !rows.length) return;
+    const hasData = rows.some((r) => r.name || r.amount !== null);
+    if (!hasData) return;
+    setSessions((prev) => (prev[date]?.rows === rows ? prev : { ...prev, [date]: { rows } }));
+  }, [rows, date, loaded]);
+
+  // ---- セッション全体をデバウンス保存 ----
+  useEffect(() => {
+    if (!loaded || !Object.keys(sessions).length) return;
+    setSaveState("saving");
+    const t = setTimeout(async () => {
+      try {
+        await window.storage.set(SESSIONS_KEY, JSON.stringify(sessions));
+        setSaveState("saved");
+        setTimeout(() => setSaveState("idle"), 1500);
+      } catch (e) {
+        setSaveState("idle");
+      }
+    }, 600);
+    return () => clearTimeout(t);
+  }, [sessions, loaded]);
+
+  const saveMembers = async (list) => {
+    setMembers(list);
+    try { await window.storage.set(MEMBERS_KEY, JSON.stringify(list)); } catch (e) {}
+  };
+
+  // ---- メンバー編集 ----
+  const addMember = (name) => {
+    const nm = name.trim();
+    if (nm && !members.includes(nm)) saveMembers([...members, nm]);
+  };
+  const renameMember = (oldName, newNameRaw) => {
+    const newName = newNameRaw.trim();
+    if (!newName || newName === oldName) return;
+    if (members.includes(newName)) return;
+    saveMembers(members.map((m) => (m === oldName ? newName : m)));
+    // 過去の記録・現在の行にも反映
+    setSessions((prev) => {
+      const next = {};
+      for (const [d, s] of Object.entries(prev)) {
+        next[d] = { rows: s.rows.map((r) => (r.name === oldName ? { ...r, name: newName } : r)) };
+      }
+      return next;
+    });
+    setRows((rs) => rs.map((r) => (r.name === oldName ? { ...r, name: newName } : r)));
+    if (selectedPlayer === oldName) setSelectedPlayer(newName);
+  };
+  const deleteMember = (name) => {
+    saveMembers(members.filter((m) => m !== name));
+  };
+
+  // ---- 行操作 ----
+  const setRowName = (id, name) =>
+    setRows((rs) => rs.map((r) => (r.id === id ? { ...r, name } : r)));
+  const addRowFn = () => setRows((rs) => [...rs, newRow()]);
+  const clearRow = (id) => {
+    setRows((rs) => rs.map((r) => (r.id === id ? { ...r, name: "", amount: null } : r)));
+    setConfirmRow(null);
+  };
+  const deleteRow = (id) => {
+    setRows((rs) => (rs.length > 1 ? rs.filter((r) => r.id !== id) : rs.map((r) => (r.id === id ? { ...r, name: "", amount: null } : r))));
+    setConfirmRow(null);
+  };
+
+  // ---- 電卓 ----
+  const openPad = (row) => {
+    setPadTarget(row.id);
+    setPadValue(row.amount === null ? "" : String(row.amount));
+  };
+  const padPress = (k) => {
+    setPadValue((v) => {
+      if (k === "C") return "";
+      if (k === "⌫") return v.startsWith("-") && v.length === 2 ? "" : v.slice(0, -1);
+      if (k === "±") {
+        if (!v || v === "0") return v;
+        return v.startsWith("-") ? v.slice(1) : "-" + v;
+      }
+      const bare = v.replace("-", "");
+      if (bare.length >= 9) return v;
+      if ((k === "00" || k === "0") && (bare === "" || bare === "0")) return v === "" ? "0" : v;
+      if (bare === "0") return (v.startsWith("-") ? "-" : "") + k.replace(/^0+/, "") || v;
+      return v + k;
+    });
+  };
+  const confirmPad = () => {
+    const num = padValue === "" || padValue === "-" ? null : Number(padValue);
+    setRows((rs) => rs.map((r) => (r.id === padTarget ? { ...r, amount: num } : r)));
+    setPadTarget(null);
+  };
+
+  const total = rows.reduce((s, r) => s + (r.amount || 0), 0);
+  const balanced = total === 0 && rows.some((r) => r.amount !== null);
+  const targetRow = rows.find((r) => r.id === padTarget);
+  const confirmTarget = rows.find((r) => r.id === confirmRow);
+
+  const openSession = (d) => { setDate(d); setPage("score"); };
+
+  return (
+    <div style={{
+      height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden",
+      background: C.bg, color: C.text,
+      fontFamily: "'BIZ UDPGothic','Hiragino Kaku Gothic ProN',sans-serif",
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=BIZ+UDPGothic:wght@400;700&display=swap');
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        select, input { outline: none; }
+        select:focus, input:focus { border-color: ${C.gold} !important; }
+        button { cursor: pointer; border: none; font-family: inherit; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: ${C.line}; border-radius: 2px; }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+      `}</style>
+
+      {/* ============ コンテンツ ============ */}
+      <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", maxWidth: 480, width: "100%", margin: "0 auto" }}>
+        <AppHeader page={page} />
+        {page === "score" && (
+          <ScorePage
+            date={date} setDate={setDate} saveState={saveState}
+            total={total} balanced={balanced}
+            rows={rows} members={members}
+            setRowName={setRowName} openPad={openPad} setConfirmRow={setConfirmRow}
+            addRow={addRowFn} padTarget={padTarget}
+          />
+        )}
+        {page === "history" && (
+          <HistoryPage sessions={sessions} members={members}
+            selectedPlayer={selectedPlayer} setSelectedPlayer={setSelectedPlayer}
+            openSession={openSession} />
+        )}
+        {page === "players" && (
+          <PlayersPage members={members} addMember={addMember}
+            renameMember={renameMember} deleteMember={deleteMember}
+            reorderMembers={(list) => saveMembers(list)} />
+        )}
+      </div>
+
+      {/* ============ 広告枠 ============ */}
+      <AdSlot />
+
+      {/* ============ 下部タブメニュー（アイコンのみ） ============ */}
+      <div style={{
+        display: "flex", justifyContent: "center", alignItems: "center", gap: 10,
+        borderTop: `1px solid ${C.line}`,
+        background: "linear-gradient(180deg, #16301F 0%, #0E2418 100%)",
+        padding: "8px 0 6px",
+        paddingBottom: "calc(6px + env(safe-area-inset-bottom))",
+        flexShrink: 0,
+      }}>
+        {TABS.map((t) => {
+          const on = page === t.id;
+          return (
+            <button key={t.id} onClick={() => setPage(t.id)} aria-label={t.label} title={t.label}
+              style={{
+                width: 62, height: 46, borderRadius: 14, background: "transparent",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                position: "relative",
+              }}>
+              {/* アクティブ時の背景プレート */}
+              <span style={{
+                position: "absolute", inset: 0, borderRadius: 14,
+                background: on ? "rgba(201,162,75,0.13)" : "transparent",
+                border: `1px solid ${on ? "rgba(201,162,75,0.45)" : "transparent"}`,
+                boxShadow: on ? "inset 0 1px 0 rgba(239,215,154,0.18)" : "none",
+                transform: on ? "scale(1)" : "scale(0.85)",
+                opacity: on ? 1 : 0,
+                transition: "transform .25s cubic-bezier(.34,1.4,.64,1), opacity .25s ease",
+              }} />
+              <span style={{
+                position: "relative",
+                transform: on ? "translateY(-1px)" : "none",
+                transition: "transform .25s cubic-bezier(.34,1.4,.64,1)",
+                display: "flex",
+              }}>
+                <TabIcon id={t.id} active={on} />
+              </span>
+              {/* アクティブドット */}
+              <span style={{
+                position: "absolute", bottom: 3, left: "50%", transform: "translateX(-50%)",
+                width: on ? 4 : 0, height: 4, borderRadius: 2, background: C.gold,
+                boxShadow: on ? `0 0 8px ${C.gold}` : "none",
+                transition: "width .25s ease",
+              }} />
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ============ ×ボタン確認ダイアログ ============ */}
+      {confirmRow && (
+        <div onClick={() => setConfirmRow(null)}
+          style={{ position: "fixed", inset: 0, background: "rgba(3,10,7,0.65)", zIndex: 70, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div onClick={(e) => e.stopPropagation()}
+            style={{ width: "100%", maxWidth: 320, background: C.surfaceHi, border: `1px solid ${C.gold}`, borderRadius: 16, padding: 20 }}>
+            <div style={{ fontSize: 14, marginBottom: 4, fontWeight: 700 }}>
+              {confirmTarget?.name || "この行"} をどうしますか？
+            </div>
+            <div style={{ fontSize: 11, color: C.sub, marginBottom: 16 }}>内容のクリア、または行そのものの削除を選べます。</div>
+            <button onClick={() => clearRow(confirmRow)}
+              style={{ width: "100%", padding: "12px 0", borderRadius: 10, background: C.surface, border: `1px solid ${C.line}`, color: C.text, fontSize: 14, marginBottom: 8 }}>
+              内容をクリア（行は残す）
+            </button>
+            <button onClick={() => deleteRow(confirmRow)}
+              style={{ width: "100%", padding: "12px 0", borderRadius: 10, background: "rgba(240,138,138,0.12)", border: `1px solid ${C.minus}`, color: C.minus, fontSize: 14, marginBottom: 8 }}>
+              行を削除
+            </button>
+            <button onClick={() => setConfirmRow(null)}
+              style={{ width: "100%", padding: "12px 0", borderRadius: 10, background: "transparent", color: C.sub, fontSize: 13 }}>
+              キャンセル
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ============ 電卓パッド ============ */}
+      {padTarget && (
+        <div onClick={confirmPad}
+          style={{ position: "fixed", inset: 0, background: "rgba(3,10,7,0.6)", zIndex: 60, display: "flex", alignItems: "flex-end" }}>
+          <div onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "100%", maxWidth: 480, margin: "0 auto",
+              background: C.surfaceHi, borderTop: `2px solid ${C.gold}`,
+              borderRadius: "18px 18px 0 0", padding: "14px 14px calc(14px + env(safe-area-inset-bottom))",
+            }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10, padding: "0 4px" }}>
+              <span style={{ fontSize: 13, color: C.sub }}>{targetRow?.name || "数値入力"}</span>
+              <span style={{
+                fontSize: 28, fontWeight: 700, fontVariantNumeric: "tabular-nums",
+                color: padValue.startsWith("-") ? C.minus : padValue ? C.plus : C.sub,
+              }}>
+                {padValue === "" ? "0" : Number(padValue === "-" ? 0 : padValue).toLocaleString("ja-JP")}
+              </span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+              {[0, 1, 2].map((r) => (
+                <React.Fragment key={r}>
+                  {["7","8","9","4","5","6","1","2","3"].slice(r * 3, r * 3 + 3).map((k) => (
+                    <PadKey key={k} label={k} onPress={padPress} />
+                  ))}
+                  {r === 0 && <PadKey label="C" onPress={padPress} accent="dim" />}
+                  {r === 1 && <PadKey label="±" onPress={padPress} accent="dim" />}
+                  {r === 2 && (
+                    <button onClick={confirmPad}
+                      style={{ gridRow: "span 2", borderRadius: 12, background: C.gold, color: C.bg, fontSize: 17, fontWeight: 700, letterSpacing: "0.1em" }}>
+                      確定
+                    </button>
+                  )}
+                </React.Fragment>
+              ))}
+              {["00", "0", "⌫"].map((k) => <PadKey key={k} label={k} onPress={padPress} />)}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============ 記録ページ ============
+function ScorePage({ date, setDate, saveState, total, balanced, rows, members, setRowName, openPad, setConfirmRow, addRow, padTarget }) {
+  return (
+    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", padding: "4px 16px 0" }}>
+      {/* 日付 */}
+      <div style={{ textAlign: "center", flexShrink: 0 }}>
+        <label style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontFamily: "'Shippori Mincho',serif", fontSize: 13, fontWeight: 700, color: C.text }}>
+            {fmtDateJP(date)}
+          </span>
+          <input type="date" value={date} onChange={(e) => e.target.value && setDate(e.target.value)}
+            style={{ background: "transparent", border: `1px solid ${C.line}`, borderRadius: 6, color: C.sub, fontSize: 10, padding: "2px 5px", colorScheme: "dark" }} />
+        </label>
+        <div style={{ fontSize: 10, color: C.sub, height: 12, marginTop: 2 }}>
+          {saveState === "saving" ? "保存中…" : saveState === "saved" ? "✓ 保存しました" : ""}
+        </div>
+      </div>
+
+      {/* Result */}
+      <div style={{
+        margin: "8px 0 12px", padding: "12px 16px", borderRadius: 14, flexShrink: 0,
+        background: C.surface, border: `1px solid ${balanced ? C.gold : C.line}`,
+        display: "flex", alignItems: "center", justifyContent: "space-between", transition: "border-color .3s",
+      }}>
+        <div>
+          <div style={{ fontFamily: "'Shippori Mincho',serif", fontSize: 16, letterSpacing: "0.15em", color: C.gold }}>Result</div>
+          <div style={{ fontSize: 10, color: C.sub, marginTop: 2 }}>
+            {balanced ? "±0 ── 精算完了" : total !== 0 ? "0 になれば精算完了です" : "数値を入力してください"}
+          </div>
+        </div>
+        <div style={{
+          fontSize: 26, fontWeight: 700, fontVariantNumeric: "tabular-nums", fontFamily: "'Shippori Mincho',serif",
+          color: balanced ? C.gold : total === 0 ? C.sub : total > 0 ? C.plus : C.minus,
+        }}>
+          {fmtSigned(total)}
+        </div>
+      </div>
+
+      {/* 参加者リスト（ここだけスクロール） */}
+      <div style={{ flex: 1, minHeight: 0, overflowY: "auto", paddingBottom: 16 }}>
+        {rows.map((row) => (
+          <div key={row.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 4px", borderBottom: `1px solid ${C.line}` }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <select value={row.name} onChange={(e) => setRowName(row.id, e.target.value)}
+                style={{
+                  width: "100%", background: C.surface, border: `1px solid ${C.line}`,
+                  borderRadius: 8, color: row.name ? C.text : C.sub, fontSize: 15,
+                  padding: "9px 10px", appearance: "auto",
+                }}>
+                <option value="" disabled>参加者</option>
+                {members.map((m) => <option key={m} value={m}>{m}</option>)}
+                {row.name && !members.includes(row.name) && <option value={row.name}>{row.name}</option>}
+              </select>
+            </div>
+            <button onClick={() => openPad(row)}
+              style={{
+                width: 130, textAlign: "right", background: C.surface,
+                border: `1px solid ${padTarget === row.id ? C.gold : C.line}`, borderRadius: 8,
+                padding: "9px 12px",
+                fontSize: row.amount === null ? 13 : 17, fontVariantNumeric: "tabular-nums",
+                color: row.amount === null ? C.sub : row.amount < 0 ? C.minus : row.amount > 0 ? C.plus : C.text,
+                fontWeight: row.amount === null ? 400 : 700,
+              }}>
+              {row.amount === null ? "数値入力" : fmtNum(row.amount)}
+            </button>
+            <button onClick={() => setConfirmRow(row.id)} aria-label="クリアまたは削除"
+              style={{ width: 28, height: 28, borderRadius: 14, background: "transparent", color: C.sub, fontSize: 16, flexShrink: 0 }}>
+              ×
+            </button>
+          </div>
+        ))}
+        <button onClick={addRow}
+          style={{
+            width: "100%", marginTop: 12, padding: "12px 0", borderRadius: 10,
+            background: "transparent", border: `1px dashed ${C.goldDim}`, color: C.gold, fontSize: 14, letterSpacing: "0.1em",
+          }}>
+          ＋ 行を追加
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============ 履歴ページ（収支ダッシュボード） ============
+function HistoryPage({ sessions, members, selectedPlayer, setSelectedPlayer, openSession }) {
+  // 有効なセッション（日付昇順）
+  const entries = Object.entries(sessions)
+    .map(([d, s]) => [d, (s.rows || []).filter((r) => r.name && r.amount !== null)])
+    .filter(([, rs]) => rs.length > 0)
+    .sort((a, b) => (a[0] < b[0] ? -1 : 1));
+
+  // プレイヤー一覧（記録に登場した名前 + メンバー）
+  const playerSet = new Set(members);
+  entries.forEach(([, rs]) => rs.forEach((r) => playerSet.add(r.name)));
+
+  // 通算収支
+  const totals = {};
+  entries.forEach(([, rs]) => rs.forEach((r) => { totals[r.name] = (totals[r.name] || 0) + r.amount; }));
+  const leaderboard = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+
+  const activePlayer = selectedPlayer && playerSet.has(selectedPlayer)
+    ? selectedPlayer
+    : (leaderboard[0]?.[0] || members[0] || "");
+
+  // 選択プレイヤーの時系列
+  const series = [];
+  let cum = 0;
+  entries.forEach(([d, rs]) => {
+    const row = rs.find((r) => r.name === activePlayer);
+    if (row) {
+      cum += row.amount;
+      series.push({ date: d, amount: row.amount, cum });
+    }
+  });
+  const played = series.length;
+  const wins = series.filter((s) => s.amount > 0).length;
+  const best = played ? Math.max(...series.map((s) => s.amount)) : 0;
+  const worst = played ? Math.min(...series.map((s) => s.amount)) : 0;
+  const totalPL = played ? series[series.length - 1].cum : 0;
+  const maxAbs = Math.max(1, ...leaderboard.map(([, v]) => Math.abs(v)));
+
+  return (
+    <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "6px 16px 24px" }}>
+      {entries.length === 0 ? (
+        <div style={{ color: C.sub, fontSize: 13, textAlign: "center", padding: "48px 0" }}>
+          まだ記録がありません。<br />記録タブから成績を入力すると、ここに収支が表示されます。
+        </div>
+      ) : (
+        <>
+          {/* プレイヤー選択チップ */}
+          <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 10, marginBottom: 6 }}>
+            {[...playerSet].map((p) => (
+              <button key={p} onClick={() => setSelectedPlayer(p)}
+                style={{
+                  flexShrink: 0, padding: "7px 14px", borderRadius: 20, fontSize: 13,
+                  background: p === activePlayer ? C.gold : "transparent",
+                  color: p === activePlayer ? C.bg : C.sub,
+                  border: `1px solid ${p === activePlayer ? C.gold : C.line}`,
+                  fontWeight: p === activePlayer ? 700 : 400,
+                }}>
+                {p}
+              </button>
+            ))}
+          </div>
+
+          {/* 通算収支（大） */}
+          <div style={{ background: C.surface, border: `1px solid ${C.line}`, borderRadius: 16, padding: "16px 18px", marginBottom: 12 }}>
+            <div style={{ fontSize: 11, color: C.sub, letterSpacing: "0.15em" }}>通算収支 ── {activePlayer}</div>
+            <div style={{
+              fontFamily: "'Shippori Mincho',serif", fontSize: 36, fontWeight: 700, fontVariantNumeric: "tabular-nums",
+              color: totalPL > 0 ? C.plus : totalPL < 0 ? C.minus : C.sub, lineHeight: 1.2, margin: "4px 0 12px",
+            }}>
+              {fmtSigned(totalPL)}
+            </div>
+            <CumChart series={series} />
+          </div>
+
+          {/* 統計カード */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 16 }}>
+            {[
+              { label: "ゲーム数", value: played },
+              { label: "勝率", value: played ? Math.round((wins / played) * 100) + "%" : "—" },
+              { label: "最高", value: fmtSigned(best), color: best > 0 ? C.plus : C.sub },
+              { label: "最低", value: fmtSigned(worst), color: worst < 0 ? C.minus : C.sub },
+            ].map((c) => (
+              <div key={c.label} style={{ background: C.surface, border: `1px solid ${C.line}`, borderRadius: 12, padding: "10px 6px", textAlign: "center" }}>
+                <div style={{ fontSize: 9, color: C.sub, letterSpacing: "0.1em", marginBottom: 4 }}>{c.label}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, fontVariantNumeric: "tabular-nums", color: c.color || C.text }}>{c.value}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* リーダーボード */}
+          <div style={{ fontFamily: "'Shippori Mincho',serif", fontSize: 14, letterSpacing: "0.2em", color: C.gold, marginBottom: 8 }}>
+            通算ランキング
+          </div>
+          <div style={{ background: C.surface, border: `1px solid ${C.line}`, borderRadius: 16, padding: "12px 14px", marginBottom: 18 }}>
+            {leaderboard.map(([name, v], i) => (
+              <button key={name} onClick={() => setSelectedPlayer(name)}
+                style={{ display: "block", width: "100%", background: "transparent", padding: "7px 0", textAlign: "left" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 3 }}>
+                  <span style={{ color: name === activePlayer ? C.gold : C.text }}>
+                    <span style={{ color: C.sub, fontSize: 11, marginRight: 8, fontVariantNumeric: "tabular-nums" }}>{String(i + 1).padStart(2, "0")}</span>
+                    {name}
+                  </span>
+                  <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 700, color: v > 0 ? C.plus : v < 0 ? C.minus : C.sub }}>
+                    {fmtSigned(v)}
+                  </span>
+                </div>
+                <div style={{ height: 4, borderRadius: 2, background: C.bg, overflow: "hidden", display: "flex", justifyContent: v < 0 ? "flex-end" : "flex-start" }}>
+                  <div style={{
+                    width: `${(Math.abs(v) / maxAbs) * 100}%`, height: "100%",
+                    background: v > 0 ? C.plus : v < 0 ? C.minus : C.line, borderRadius: 2, transition: "width .4s",
+                  }} />
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* セッション一覧 */}
+          <div style={{ fontFamily: "'Shippori Mincho',serif", fontSize: 14, letterSpacing: "0.2em", color: C.gold, marginBottom: 8 }}>
+            記録一覧
+          </div>
+          {[...entries].reverse().map(([d, rs]) => {
+            const mine = rs.find((r) => r.name === activePlayer);
+            return (
+              <button key={d} onClick={() => openSession(d)}
+                style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  width: "100%", padding: "12px 14px", marginBottom: 6,
+                  background: C.surface, border: `1px solid ${C.line}`, borderRadius: 12, color: C.text, fontSize: 14,
+                }}>
+                <span>
+                  <span style={{ fontVariantNumeric: "tabular-nums" }}>{fmtDateJP(d)}</span>
+                  <span style={{ color: C.sub, fontSize: 11, marginLeft: 8 }}>{rs.length}名</span>
+                </span>
+                <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  {mine && (
+                    <span style={{ fontVariantNumeric: "tabular-nums", fontWeight: 700, fontSize: 13, color: mine.amount > 0 ? C.plus : mine.amount < 0 ? C.minus : C.sub }}>
+                      {fmtSigned(mine.amount)}
+                    </span>
+                  )}
+                  <span style={{ color: C.gold, fontSize: 12 }}>開く ›</span>
+                </span>
+              </button>
+            );
+          })}
+        </>
+      )}
+    </div>
+  );
+}
+
+// ---- 累積収支チャート（SVG） ----
+function CumChart({ series }) {
+  if (series.length === 0) {
+    return <div style={{ fontSize: 11, color: C.sub, textAlign: "center", padding: "20px 0" }}>このプレイヤーの記録はまだありません</div>;
+  }
+  const W = 320, H = 130, PX = 6, PY = 12;
+  const vals = [0, ...series.map((s) => s.cum)];
+  let min = Math.min(...vals), max = Math.max(...vals);
+  if (min === max) { min -= 1; max += 1; }
+  const range = max - min;
+  const n = series.length;
+  const x = (i) => PX + (n === 1 ? (W - 2 * PX) / 2 : (i / (n - 1)) * (W - 2 * PX));
+  const y = (v) => PY + (1 - (v - min) / range) * (H - 2 * PY);
+  const zeroY = y(0);
+  const pts = series.map((s, i) => `${x(i)},${y(s.cum)}`).join(" ");
+  const areaPts = `${x(0)},${zeroY} ${pts} ${x(n - 1)},${zeroY}`;
+  const last = series[n - 1];
+
+  return (
+    <div>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", display: "block" }}>
+        <defs>
+          <linearGradient id="goldFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={C.gold} stopOpacity="0.35" />
+            <stop offset="100%" stopColor={C.gold} stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        <line x1={PX} y1={zeroY} x2={W - PX} y2={zeroY} stroke={C.line} strokeDasharray="4 4" strokeWidth="1" />
+        <polygon points={areaPts} fill="url(#goldFill)" />
+        <polyline points={pts} fill="none" stroke={C.gold} strokeWidth="2.2" strokeLinejoin="round" strokeLinecap="round" />
+        {series.map((s, i) => (
+          <circle key={i} cx={x(i)} cy={y(s.cum)} r={i === n - 1 ? 4 : 2.5}
+            fill={i === n - 1 ? C.gold : C.bg} stroke={C.gold} strokeWidth="1.5" />
+        ))}
+      </svg>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 9, color: C.sub, fontVariantNumeric: "tabular-nums", marginTop: 4 }}>
+        <span>{fmtDateJP(series[0].date)}</span>
+        <span>{fmtDateJP(last.date)}</span>
+      </div>
+    </div>
+  );
+}
+
+// ============ 名前編集ページ ============
+function PlayersPage({ members, addMember, renameMember, deleteMember, reorderMembers }) {
+  const [newName, setNewName] = useState("");
+  const [menuFor, setMenuFor] = useState(null);
+  const [order, setOrder] = useState(members);
+  // drag: { name, startIndex, targetIndex, dy, slotH } | null
+  const [drag, setDrag] = useState(null);
+  const orderRef = useRef(members);
+  const dragCtx = useRef(null); // ドラッグ中の計測データ
+  const pressTimer = useRef(null);
+  const itemRefs = useRef({});
+  const rowApis = useRef({});
+  const listRef = useRef(null);
+  const scrollRaf = useRef(null);
+  const lastPointerY = useRef(0);
+
+  useEffect(() => { setOrder(members); orderRef.current = members; }, [members]);
+
+  const suggested = () => {
+    let i = members.length + 1;
+    let nm;
+    do { nm = `Player ${String(i).padStart(2, "0")}`; i++; } while (members.includes(nm));
+    return nm;
+  };
+
+  // ---- ドラッグ位置の再計算（指の移動・自動スクロールの両方から呼ぶ） ----
+  const updateDrag = () => {
+    const ctx = dragCtx.current;
+    if (!ctx) return;
+    const cont = listRef.current;
+    const scrollDelta = cont ? cont.scrollTop - ctx.startScrollTop : 0;
+    const dy = (lastPointerY.current - ctx.startPointerY) + scrollDelta;
+    const draggedCenter = ctx.centers[ctx.startIndex] + dy;
+    let target = ctx.startIndex;
+    ctx.centers.forEach((c, i) => {
+      if (i < ctx.startIndex && draggedCenter < c) target = Math.min(target, i);
+      if (i > ctx.startIndex && draggedCenter > c) target = Math.max(target, i);
+    });
+    ctx.targetIndex = target;
+    setDrag({ name: ctx.name, startIndex: ctx.startIndex, targetIndex: target, dy, slotH: ctx.slotH });
+  };
+
+  // ---- 画面端に近づいたら自動スクロール ----
+  const autoScrollLoop = () => {
+    const ctx = dragCtx.current;
+    const cont = listRef.current;
+    if (!ctx || !cont) return;
+    const rect = cont.getBoundingClientRect();
+    const y = lastPointerY.current;
+    const EDGE = 70, MAX_SPEED = 14;
+    let speed = 0;
+    if (y < rect.top + EDGE) speed = -Math.ceil(((rect.top + EDGE - y) / EDGE) * MAX_SPEED);
+    else if (y > rect.bottom - EDGE) speed = Math.ceil(((y - (rect.bottom - EDGE)) / EDGE) * MAX_SPEED);
+    if (speed !== 0) {
+      cont.scrollTop += speed;
+      updateDrag();
+    }
+    scrollRaf.current = requestAnimationFrame(autoScrollLoop);
+  };
+
+  // ---- ⋯ボタン：タップでメニュー / 長押しでドラッグ ----
+  const handleButtonDown = (e, name) => {
+    const el = e.currentTarget;
+    try { el.setPointerCapture(e.pointerId); } catch (err) {}
+    const startY = e.clientY;
+    lastPointerY.current = startY;
+    let cancelled = false;
+
+    const startDrag = () => {
+      const list = orderRef.current;
+      const startIndex = list.indexOf(name);
+      const rects = list.map((nm) => itemRefs.current[nm]?.getBoundingClientRect());
+      if (!rects[startIndex]) return;
+      const centers = rects.map((r) => (r ? r.top + r.height / 2 : 0));
+      const slotH = rects[startIndex].height + 8; // 行の高さ + 行間
+      dragCtx.current = {
+        name, startIndex, targetIndex: startIndex,
+        centers, slotH,
+        startPointerY: lastPointerY.current,
+        startScrollTop: listRef.current ? listRef.current.scrollTop : 0,
+      };
+      setDrag({ name, startIndex, targetIndex: startIndex, dy: 0, slotH });
+      if (navigator.vibrate) navigator.vibrate(15);
+      scrollRaf.current = requestAnimationFrame(autoScrollLoop);
+    };
+
+    const move = (ev) => {
+      lastPointerY.current = ev.clientY;
+      if (!dragCtx.current) {
+        if (Math.abs(ev.clientY - startY) > 10) { clearTimeout(pressTimer.current); cancelled = true; cleanup(); }
+        return;
+      }
+      ev.preventDefault();
+      updateDrag();
+    };
+
+    const up = () => {
+      clearTimeout(pressTimer.current);
+      if (scrollRaf.current) { cancelAnimationFrame(scrollRaf.current); scrollRaf.current = null; }
+      const ctx = dragCtx.current;
+      if (ctx) {
+        if (ctx.targetIndex !== ctx.startIndex) {
+          const next = [...orderRef.current];
+          next.splice(ctx.startIndex, 1);
+          next.splice(ctx.targetIndex, 0, ctx.name);
+          orderRef.current = next;
+          setOrder(next);
+          reorderMembers(next);
+        }
+        dragCtx.current = null;
+        setDrag(null);
+      } else if (!cancelled) {
+        setMenuFor(name);
+      }
+      cleanup();
+    };
+
+    const cleanup = () => {
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerup", up);
+      el.removeEventListener("pointercancel", up);
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
+
+    pressTimer.current = setTimeout(startDrag, 300);
+  };
+
+  // ---- 各行の transform を計算 ----
+  const rowStyle = (name, i) => {
+    if (!drag) return { transform: "none", transition: "transform .18s ease", zIndex: 1 };
+    if (name === drag.name) {
+      return { transform: `translateY(${drag.dy}px) scale(1.02)`, transition: "none", zIndex: 10, position: "relative" };
+    }
+    let offset = 0;
+    if (drag.startIndex < drag.targetIndex && i > drag.startIndex && i <= drag.targetIndex) offset = -drag.slotH;
+    if (drag.startIndex > drag.targetIndex && i >= drag.targetIndex && i < drag.startIndex) offset = drag.slotH;
+    return { transform: `translateY(${offset}px)`, transition: "transform .18s ease", zIndex: 1, position: "relative" };
+  };
+
+  const registerApi = (name, api) => { rowApis.current[name] = api; };
+
+  return (
+    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", padding: "4px 16px 0" }}>
+      <div style={{ fontSize: 11, color: C.sub, textAlign: "center", marginBottom: 14, flexShrink: 0, lineHeight: 1.6 }}>
+        名前の変更は過去の記録にも反映されます<br />
+        <span style={{ color: C.gold }}>⋯ タップでメニュー ・ 長押しで移動</span>
+      </div>
+
+      <div ref={listRef} style={{ flex: 1, minHeight: 0, overflowY: "auto", paddingBottom: 16, overscrollBehavior: "contain" }}>
+        {order.map((m, i) => (
+          <MemberRow key={m} name={m} index={i}
+            innerRef={(el) => { itemRefs.current[m] = el; }}
+            dragging={drag?.name === m}
+            dragStyle={rowStyle(m, i)}
+            onRename={(nn) => renameMember(m, nn)}
+            onButtonDown={(e) => handleButtonDown(e, m)}
+            register={registerApi} />
+        ))}
+
+        {/* 追加 */}
+        <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
+          <input value={newName} onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") { addMember(newName || suggested()); setNewName(""); } }}
+            placeholder={`追加する名前（例: ${suggested()}）`}
+            style={{
+              flex: 1, minWidth: 0, background: C.surface, border: `1px solid ${C.line}`,
+              borderRadius: 10, color: C.text, fontSize: 14, padding: "11px 12px",
+            }} />
+          <button onClick={() => { addMember(newName || suggested()); setNewName(""); }}
+            style={{ background: C.gold, color: C.bg, borderRadius: 10, fontSize: 14, fontWeight: 700, padding: "0 18px" }}>
+            追加
+          </button>
+        </div>
+      </div>
+
+      {/* ⋯メニュー（クリア / 削除 の確認） */}
+      {menuFor && (
+        <div onClick={() => setMenuFor(null)}
+          style={{ position: "fixed", inset: 0, background: "rgba(3,10,7,0.65)", zIndex: 70, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+          <div onClick={(e) => e.stopPropagation()}
+            style={{ width: "100%", maxWidth: 320, background: C.surfaceHi, border: `1px solid ${C.gold}`, borderRadius: 16, padding: 20 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{menuFor} をどうしますか？</div>
+            <div style={{ fontSize: 11, color: C.sub, marginBottom: 16 }}>クリアは名前を空にして書き直せます。削除は選択リストから外れます（過去の記録は残ります）。</div>
+            <button onClick={() => { rowApis.current[menuFor]?.clear(); setMenuFor(null); }}
+              style={{ width: "100%", padding: "12px 0", borderRadius: 10, background: C.surface, border: `1px solid ${C.line}`, color: C.text, fontSize: 14, marginBottom: 8 }}>
+              名前をクリアして書き直す
+            </button>
+            <button onClick={() => { deleteMember(menuFor); setMenuFor(null); }}
+              style={{ width: "100%", padding: "12px 0", borderRadius: 10, background: "rgba(240,138,138,0.12)", border: `1px solid ${C.minus}`, color: C.minus, fontSize: 14, marginBottom: 8 }}>
+              削除する
+            </button>
+            <button onClick={() => setMenuFor(null)}
+              style={{ width: "100%", padding: "12px 0", borderRadius: 10, background: "transparent", color: C.sub, fontSize: 13 }}>
+              キャンセル
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MemberRow({ name, index, onRename, onButtonDown, dragging, dragStyle, innerRef, register }) {
+  const [val, setVal] = useState(name);
+  const inputRef = useRef(null);
+  useEffect(() => setVal(name), [name]);
+  useEffect(() => {
+    register(name, { clear: () => { setVal(""); setTimeout(() => inputRef.current?.focus(), 50); } });
+  }, [name, register]);
+  const commit = () => { if (val.trim() && val !== name) onRename(val); };
+  return (
+    <div ref={innerRef}
+      style={{
+        display: "flex", alignItems: "center", gap: 8, marginBottom: 8,
+        borderRadius: 12, padding: "3px 4px",
+        background: dragging ? C.surfaceHi : "transparent",
+        border: `1px solid ${dragging ? C.gold : "transparent"}`,
+        boxShadow: dragging ? "0 8px 24px rgba(0,0,0,0.5)" : "none",
+        willChange: "transform",
+        ...dragStyle,
+      }}>
+      <span style={{ width: 24, fontSize: 11, color: C.sub, fontVariantNumeric: "tabular-nums", textAlign: "right", flexShrink: 0 }}>
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <input ref={inputRef} value={val} onChange={(e) => setVal(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => e.key === "Enter" && e.target.blur()}
+        placeholder="名前を入力"
+        style={{
+          flex: 1, minWidth: 0, background: C.surface, border: `1px solid ${C.line}`,
+          borderRadius: 10, color: C.text, fontSize: 15, padding: "11px 12px",
+          pointerEvents: dragging ? "none" : "auto",
+        }} />
+      <button onPointerDown={onButtonDown} aria-label="メニュー（長押しで移動）"
+        style={{
+          width: 38, height: 38, borderRadius: 19, background: dragging ? C.gold : "transparent",
+          border: `1px solid ${dragging ? C.gold : C.line}`, color: dragging ? C.bg : C.sub,
+          fontSize: 17, flexShrink: 0, lineHeight: 1,
+          touchAction: "none", userSelect: "none", cursor: dragging ? "grabbing" : "pointer",
+        }}>
+        ⋯
+      </button>
+    </div>
+  );
+}
+
+// ============ グローバルヘッダー ============
+const PAGE_SUB = {
+  score: "SESSION RECORD",
+  history: "PROFIT HISTORY",
+  players: "PLAYER ROSTER",
+};
+
+function AppHeader({ page }) {
+  return (
+    <div style={{
+      flexShrink: 0, position: "relative", overflow: "hidden",
+      padding: "18px 16px 14px",
+      background: "linear-gradient(180deg, #143726 0%, #0B1F16 100%)",
+      borderBottom: `1px solid ${C.line}`,
+    }}>
+      {/* 背景の淡いゴールドグロー */}
+      <div style={{
+        position: "absolute", top: -70, left: "50%", transform: "translateX(-50%)",
+        width: 240, height: 140, borderRadius: "50%",
+        background: "radial-gradient(closest-side, rgba(201,162,75,0.22), transparent)",
+        pointerEvents: "none",
+      }} />
+
+      <div style={{ position: "relative", textAlign: "center" }}>
+        {/* タイトル */}
+        <div style={{
+          fontFamily: "'Shippori Mincho',serif",
+          fontSize: 36, fontWeight: 700, letterSpacing: "0.14em", lineHeight: 1.1,
+          background: "linear-gradient(180deg, #F3E0AE 0%, #C9A24B 55%, #8A7439 100%)",
+          WebkitBackgroundClip: "text", backgroundClip: "text",
+          WebkitTextFillColor: "transparent", color: C.gold,
+          textShadow: "0 2px 14px rgba(201,162,75,0.18)",
+          paddingRight: "0.14em",
+        }}>
+          Gradebook
+        </div>
+
+        {/* 装飾ルール（スペード入り） */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 8 }}>
+          <span style={{ height: 1, width: 54, background: `linear-gradient(90deg, transparent, ${C.goldDim})` }} />
+          <svg width="11" height="11" viewBox="0 0 24 24" fill={C.gold} style={{ opacity: 0.9 }}>
+            <path d="M12 3.2c0 0-6.4 5.6-6.4 9.5 0 2.4 1.8 3.9 3.7 3.9 1 0 1.8-.4 2.3-1-.2 2.4-.9 4.3-1.9 5.2h4.6c-1-.9-1.7-2.8-1.9-5.2.5.6 1.3 1 2.3 1 1.9 0 3.7-1.5 3.7-3.9C18.4 8.8 12 3.2 12 3.2z" />
+          </svg>
+          <span style={{ height: 1, width: 54, background: `linear-gradient(90deg, ${C.goldDim}, transparent)` }} />
+        </div>
+
+        {/* ページ名 */}
+        <div style={{
+          fontSize: 8.5, letterSpacing: "0.36em", color: C.sub,
+          marginTop: 7, paddingLeft: "0.36em", opacity: 0.85,
+        }}>
+          {PAGE_SUB[page]}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============ 下部タブ：アイコン ============
+const TABS = [
+  { id: "score", label: "記録" },
+  { id: "history", label: "履歴" },
+  { id: "players", label: "名前編集" },
+];
+
+function TabIcon({ id, active }) {
+  const col = active ? C.gold : C.sub;
+  const sw = active ? 1.9 : 1.6;
+  const common = {
+    width: 24, height: 24, viewBox: "0 0 24 24", fill: "none",
+    stroke: col, strokeWidth: sw, strokeLinecap: "round", strokeLinejoin: "round",
+    style: { transition: "stroke .25s ease" },
+  };
+
+  if (id === "score") {
+    // スペード（記録）
+    return (
+      <svg {...common}>
+        <path d="M12 3.2c0 0-6.4 5.6-6.4 9.5 0 2.4 1.8 3.9 3.7 3.9 1 0 1.8-.4 2.3-1-.2 2.4-.9 4.3-1.9 5.2h4.6c-1-.9-1.7-2.8-1.9-5.2.5.6 1.3 1 2.3 1 1.9 0 3.7-1.5 3.7-3.9C18.4 8.8 12 3.2 12 3.2z"
+          fill={active ? C.gold : "none"} fillOpacity={active ? 0.18 : 0} />
+      </svg>
+    );
+  }
+  if (id === "history") {
+    // 収支カーブ（履歴）
+    return (
+      <svg {...common}>
+        <path d="M3 20V4" />
+        <path d="M3 20h18" />
+        <path d="M6.5 15.5l3.5-3 3 2 5-6.5" />
+        <circle cx="18" cy="8" r="1.7" fill={active ? C.gold : C.bg} />
+      </svg>
+    );
+  }
+  // 人物＋鉛筆（名前編集）
+  return (
+    <svg {...common}>
+      <circle cx="9.5" cy="7.8" r="3.3" fill={active ? C.gold : "none"} fillOpacity={active ? 0.18 : 0} />
+      <path d="M3.6 19.5c0-3 2.6-5.2 5.9-5.2 1 0 1.9.2 2.7.6" />
+      <path d="M20.4 12.4l1.2 1.2-5.4 5.4-1.9.7.7-1.9 5.4-5.4z" fill={active ? C.gold : "none"} fillOpacity={active ? 0.18 : 0} />
+    </svg>
+  );
+}
+
+// ============ 広告枠 ============
+function AdSlot() {
+  return (
+    <div style={{
+      flexShrink: 0, width: "100%", maxWidth: 480, margin: "0 auto",
+      padding: "0 12px 8px",
+    }}>
+      <div
+        id="ad-slot"
+        style={{
+          height: 56, borderRadius: 10,
+          background: "linear-gradient(180deg, rgba(27,55,40,0.9) 0%, rgba(19,41,29,0.9) 100%)",
+          border: `1px solid ${C.line}`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          position: "relative", overflow: "hidden",
+        }}
+      >
+        {/* ▼ 本番ではここを AdSense / AdMob のタグに差し替え ▼ */}
+        <span style={{
+          position: "absolute", top: 4, left: 8, fontSize: 7,
+          letterSpacing: "0.18em", color: C.sub, opacity: 0.6,
+        }}>
+          SPONSORED
+        </span>
+        <span style={{ fontSize: 11, color: C.sub, letterSpacing: "0.1em", opacity: 0.75 }}>
+          広告スペース（320 × 50）
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function PadKey({ label, onPress, accent }) {
+  return (
+    <button onClick={() => onPress(label)}
+      style={{
+        padding: "16px 0", borderRadius: 12,
+        background: accent === "dim" ? "#183527" : "#204534",
+        color: accent === "dim" ? C.gold : C.text,
+        fontSize: 20, fontWeight: 700, fontVariantNumeric: "tabular-nums",
+        border: `1px solid ${C.line}`,
+      }}>
+      {label}
+    </button>
+  );
+}
