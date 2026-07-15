@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0B1F16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Gradebook</title>
+<style>
+  :root{
+    --bg:#0B1F16; --surface:#13291D; --surfaceHi:#1B3728; --line:#2A4A38;
+    --gold:#C9A24B; --goldDim:#8A7439; --goldLt:#EFD79A;
+    --text:#FFFFFF; --sub:#9FB8A9; --plus:#6FE3A1; --minus:#F08A8A;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',system-ui,sans-serif;
+    overflow:hidden;
+  }
+  #app{ height:100dvh; display:flex; flex-direction:column; max-width:480px; margin:0 auto; }
+  .serif{ font-family:'Hiragino Mincho ProN','Yu Mincho',serif; }
+  button{ cursor:pointer; border:none; font-family:inherit; color:inherit; }
+  select,input{ outline:none; font-family:inherit; }
+  select:focus,input:focus{ border-color:var(--gold)!important; }
+  input[type=date]{ color-scheme:dark; }
+  ::-webkit-scrollbar{ width:4px; } ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:2px; }
+  .tnum{ font-variant-numeric:tabular-nums; }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none!important; animation:none!important; } }
+
+  .header{ position:relative; overflow:hidden; padding:18px 16px 14px;
+    background:linear-gradient(180deg,#143726 0%,#0B1F16 100%); border-bottom:1px solid var(--line); flex-shrink:0; }
+  .header .glow{ position:absolute; top:-70px; left:50%; transform:translateX(-50%);
+    width:240px; height:140px; border-radius:50%;
+    background:radial-gradient(closest-side,rgba(201,162,75,.22),transparent); pointer-events:none; }
+  .header .title{ position:relative; text-align:center; font-size:36px; font-weight:700; letter-spacing:.14em; line-height:1.1;
+    background:linear-gradient(180deg,#F3E0AE 0%,#C9A24B 55%,#8A7439 100%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:var(--gold);
+    text-shadow:0 2px 14px rgba(201,162,75,.18); padding-right:.14em; }
+  .header .rule{ position:relative; display:flex; align-items:center; justify-content:center; gap:10px; margin-top:8px; }
+  .header .rule .l{ height:1px; width:54px; }
+  .header .sub{ position:relative; text-align:center; font-size:8.5px; letter-spacing:.36em; color:var(--sub);
+    margin-top:7px; padding-left:.36em; opacity:.85; }
+
+  .content{ flex:1; min-height:0; display:flex; flex-direction:column; overflow:hidden; }
+
+  .ad{ flex-shrink:0; padding:0 12px 8px; }
+  .ad .box{ height:56px; border-radius:10px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg,rgba(27,55,40,.9),rgba(19,41,29,.9)); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; }
+  .ad .tag{ position:absolute; top:4px; left:8px; font-size:7px; letter-spacing:.18em; color:var(--sub); opacity:.6; }
+  .ad .ph{ font-size:11px; color:var(--sub); letter-spacing:.1em; opacity:.75; }
+
+  .tabs{ display:flex; justify-content:center; align-items:center; gap:10px; border-top:1px solid var(--line);
+    background:linear-gradient(180deg,#16301F,#0E2418); padding:8px 0 calc(6px + env(safe-area-inset-bottom)); flex-shrink:0; }
+  .tab{ width:62px; height:46px; border-radius:14px; background:transparent; position:relative;
+    display:flex; align-items:center; justify-content:center; }
+  .tab .plate{ position:absolute; inset:0; border-radius:14px; border:1px solid transparent;
+    transform:scale(.85); opacity:0; transition:transform .25s cubic-bezier(.34,1.4,.64,1),opacity .25s ease; }
+  .tab.on .plate{ background:rgba(201,162,75,.13); border-color:rgba(201,162,75,.45);
+    box-shadow:inset 0 1px 0 rgba(239,215,154,.18); transform:scale(1); opacity:1; }
+  .tab .ico{ position:relative; display:flex; transition:transform .25s cubic-bezier(.34,1.4,.64,1); }
+  .tab.on .ico{ transform:translateY(-1px); }
+  .tab .dot{ position:absolute; bottom:3px; left:50%; transform:translateX(-50%);
+    width:0; height:4px; border-radius:2px; background:var(--gold); transition:width .25s ease; }
+  .tab.on .dot{ width:4px; box-shadow:0 0 8px var(--gold); }
+
+  .rowline{ display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--line); }
+  .sel{ width:100%; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    font-size:15px; padding:9px 10px; }
+  .amtbtn{ width:130px; text-align:right; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding:9px 12px; font-weight:700; }
+  .xbtn{ width:28px; height:28px; border-radius:14px; background:transparent; color:var(--sub); font-size:16px; flex-shrink:0; }
+  .addbtn{ width:100%; margin-top:12px; padding:12px 0; border-radius:10px; background:transparent;
+    border:1px dashed var(--goldDim); color:var(--gold); font-size:14px; letter-spacing:.1em; }
+
+  .overlay{ position:fixed; inset:0; z-index:60; display:flex; }
+  .ovbg{ position:absolute; inset:0; background:rgba(3,10,7,.65); }
+  .dialog{ position:relative; margin:auto; width:100%; max-width:320px; background:var(--surfaceHi);
+    border-radius:16px; padding:20px; }
+  .dbtn{ width:100%; padding:12px 0; border-radius:10px; font-size:14px; margin-bottom:8px; }
+
+  .pad{ position:relative; margin-top:auto; width:100%; max-width:480px; margin-left:auto; margin-right:auto;
+    background:var(--surfaceHi); border-top:2px solid var(--gold); border-radius:18px 18px 0 0;
+    padding:14px 14px calc(14px + env(safe-area-inset-bottom)); }
+  .padgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .padkey{ padding:16px 0; border-radius:12px; background:#204534; color:var(--text); font-size:20px; font-weight:700;
+    border:1px solid var(--line); }
+  .padkey.dim{ background:#183527; color:var(--gold); }
+  .padok{ grid-row:span 2; border-radius:12px; background:var(--gold); color:var(--bg); font-size:17px; font-weight:700; letter-spacing:.1em; }
+
+  #boot{ position:fixed; inset:0; z-index:9999; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(180deg,#143726,#0B1F16); }
+  #boot .t{ font-size:34px; font-weight:700; letter-spacing:.14em;
+    background:linear-gradient(180deg,#F3E0AE,#C9A24B 55%,#8A7439); -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:var(--gold); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="boot"><div class="t serif">Gradebook</div></div>
+
+<script>
+(function(){
+"use strict";
+
+var C = { gold:"#C9A24B", sub:"#9FB8A9", plus:"#6FE3A1", minus:"#F08A8A", text:"#FFFFFF", bg:"#0B1F16",
+  surface:"#13291D", line:"#2A4A38", goldLt:"#EFD79A", goldDim:"#8A7439" };
+
+function todayStr(){ var d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function fmtDateJP(iso){ if(!iso) return ""; var p=iso.split("-"); return p[0]+"/"+p[1]+"/"+p[2]; }
+function fmtNum(n){ return Number(n).toLocaleString("ja-JP"); }
+function fmtSigned(n){ return (n>0?"+":"")+Number(n).toLocaleString("ja-JP"); }
+function amtColor(v){ return v===null?C.sub : v<0?C.minus : v>0?C.plus : C.text; }
+function el(tag, attrs, kids){
+  var e=document.createElement(tag);
+  if(attrs) for(var k in attrs){
+    if(k==="style") e.style.cssText=attrs[k];
+    else if(k==="class") e.className=attrs[k];
+    else if(k==="html") e.innerHTML=attrs[k];
+    else if(k==="text") e.textContent=attrs[k];
+    else if(k.slice(0,2)==="on") e.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  if(kids) kids.forEach(function(c){ if(c!=null) e.appendChild(typeof c==="string"?document.createTextNode(c):c); });
+  return e;
+}
+function svgEl(str){ var d=document.createElement("div"); d.innerHTML=str; return d.firstElementChild; }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+var MEMBERS_KEY="poker-seiseki:members:v2";
+var SESSIONS_KEY="poker-seiseki:sessions:v2";
+var OLD_PREFIX="poker-seiseki:session:";
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+var DEFAULT_MEMBERS=["Player 01","Player 02","Player 03","Player 04","Player 05","Player 06"];
+var S = { page:"score", date:todayStr(), members:DEFAULT_MEMBERS.slice(),
+  sessions:{}, rows:[], selectedPlayer:"" };
+
+function newRow(){ return { id:Math.random().toString(36).slice(2), name:"", amount:null }; }
+function defaultRows(){ return [newRow(),newRow(),newRow(),newRow(),newRow(),newRow()]; }
+
+function load(){
+  var m=lsGet(MEMBERS_KEY); if(m){ try{ S.members=JSON.parse(m); }catch(e){} }
+  var ss=lsGet(SESSIONS_KEY);
+  if(ss){ try{ S.sessions=JSON.parse(ss)||{}; }catch(e){ S.sessions={}; } }
+  else {
+    var migrated={};
+    try{
+      for(var i=0;i<localStorage.length;i++){
+        var key=localStorage.key(i);
+        if(key && key.indexOf(OLD_PREFIX)===0){
+          try{ migrated[key.replace(OLD_PREFIX,"")]=JSON.parse(localStorage.getItem(key)); }catch(e){}
+        }
+      }
+    }catch(e){}
+    S.sessions=migrated;
+    if(Object.keys(migrated).length) lsSet(SESSIONS_KEY, JSON.stringify(migrated));
+  }
+  loadDate();
+}
+function loadDate(){
+  var s=S.sessions[S.date];
+  S.rows = (s && s.rows && s.rows.length)
+    ? s.rows.map(function(r){ return {id:r.id||Math.random().toString(36).slice(2), name:r.name||"", amount:(r.amount==null?null:r.amount)}; })
+    : defaultRows();
+}
+function saveSessions(){ lsSet(SESSIONS_KEY, JSON.stringify(S.sessions)); }
+function saveMembers(){ lsSet(MEMBERS_KEY, JSON.stringify(S.members)); }
+function commitRows(){
+  var hasData=S.rows.some(function(r){ return r.name || r.amount!==null; });
+  if(hasData){ S.sessions[S.date]={ rows:S.rows }; saveSessions(); }
+}
+
+function tabIconSVG(id, on){
+  var col=on?C.gold:C.sub, sw=on?1.9:1.6, fo=on?0.18:0;
+  var head='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="'+col+'" stroke-width="'+sw+'" stroke-linecap="round" stroke-linejoin="round">';
+  if(id==="score") return head+'<path d="M12 3.2c0 0-6.4 5.6-6.4 9.5 0 2.4 1.8 3.9 3.7 3.9 1 0 1.8-.4 2.3-1-.2 2.4-.9 4.3-1.9 5.2h4.6c-1-.9-1.7-2.8-1.9-5.2.5.6 1.3 1 2.3 1 1.9 0 3.7-1.5 3.7-3.9C18.4 8.8 12 3.2 12 3.2z" fill="'+C.gold+'" fill-opacity="'+fo+'"/></svg>';
+  if(id==="history") return head+'<path d="M3 20V4"/><path d="M3 20h18"/><path d="M6.5 15.5l3.5-3 3 2 5-6.5"/><circle cx="18" cy="8" r="1.7" fill="'+(on?C.gold:C.bg)+'"/></svg>';
+  return head+'<circle cx="9.5" cy="7.8" r="3.3" fill="'+C.gold+'" fill-opacity="'+fo+'"/><path d="M3.6 19.5c0-3 2.6-5.2 5.9-5.2 1 0 1.9.2 2.7.6"/><path d="M20.4 12.4l1.2 1.2-5.4 5.4-1.9.7.7-1.9 5.4-5.4z" fill="'+C.gold+'" fill-opacity="'+fo+'"/></svg>';
+}
+
+var app=document.getElementById("app");
+var elHeaderSub, elContent, elTabs;
+
+function buildShell(){
+  app.innerHTML="";
+  var rule=el("div",{class:"rule"});
+  rule.appendChild(el("span",{class:"l",style:"background:linear-gradient(90deg,transparent,"+C.goldDim+")"}));
+  rule.appendChild(svgEl('<svg width="11" height="11" viewBox="0 0 24 24" fill="'+C.gold+'" style="opacity:.9"><path d="M12 3.2c0 0-6.4 5.6-6.4 9.5 0 2.4 1.8 3.9 3.7 3.9 1 0 1.8-.4 2.3-1-.2 2.4-.9 4.3-1.9 5.2h4.6c-1-.9-1.7-2.8-1.9-5.2.5.6 1.3 1 2.3 1 1.9 0 3.7-1.5 3.7-3.9C18.4 8.8 12 3.2 12 3.2z"/></svg>'));
+  rule.appendChild(el("span",{class:"l",style:"background:linear-gradient(90deg,"+C.goldDim+",transparent)"}));
+
+  elHeaderSub=el("div",{class:"sub",text:"SESSION RECORD"});
+  var header=el("div",{class:"header"},[
+    el("div",{class:"glow"}),
+    el("div",{class:"title serif",text:"Gradebook"}),
+    rule,
+    elHeaderSub
+  ]);
+  app.appendChild(header);
+
+  elContent=el("div",{class:"content",id:"content"});
+  app.appendChild(elContent);
+
+  app.appendChild(el("div",{class:"ad"},[
+    el("div",{class:"box",id:"ad-slot"},[
+      el("span",{class:"tag",text:"SPONSORED"}),
+      el("span",{class:"ph",text:"広告スペース（320 × 50）"})
+    ])
+  ]));
+
+  elTabs=el("div",{class:"tabs"});
+  [["score","記録"],["history","履歴"],["players","名前編集"]].forEach(function(t){
+    var ico=el("span",{class:"ico"}); ico.dataset.id=t[0]; ico.appendChild(svgEl(tabIconSVG(t[0],false)));
+    var b=el("button",{class:"tab",title:t[1],"aria-label":t[1],onclick:function(){ go(t[0]); }},[
+      el("span",{class:"plate"}), ico, el("span",{class:"dot"})
+    ]);
+    b.dataset.id=t[0];
+    b._ico=ico;
+    elTabs.appendChild(b);
+  });
+  app.appendChild(elTabs);
+}
+
+function updateTabs(){
+  var subs={score:"SESSION RECORD",history:"PROFIT HISTORY",players:"PLAYER ROSTER"};
+  elHeaderSub.textContent=subs[S.page];
+  Array.prototype.forEach.call(elTabs.children, function(b){
+    var on=b.dataset.id===S.page;
+    b.classList.toggle("on",on);
+    b._ico.innerHTML=""; b._ico.appendChild(svgEl(tabIconSVG(b.dataset.id,on)));
+  });
+}
+
+function go(page){ S.page=page; updateTabs(); renderPage(); }
+
+function renderPage(){
+  elContent.innerHTML="";
+  if(S.page==="score") renderScore();
+  else if(S.page==="history") renderHistory();
+  else renderPlayers();
+}
+
+var rowsWrap;
+function renderScore(){
+  var wrap=el("div",{style:"flex:1;min-height:0;display:flex;flex-direction:column;padding:4px 16px 0"});
+
+  var dateInput=el("input",{type:"date",value:S.date,
+    style:"background:transparent;border:1px solid "+C.line+";border-radius:6px;color:"+C.sub+";font-size:10px;padding:2px 5px",
+    onchange:function(e){ if(e.target.value){ commitRows(); S.date=e.target.value; loadDate(); renderScore(); } }});
+  var dateLabel=el("span",{class:"serif",style:"font-size:13px;font-weight:700;color:"+C.text,text:fmtDateJP(S.date)});
+  wrap.appendChild(el("div",{style:"text-align:center;flex-shrink:0"},[
+    el("label",{style:"display:inline-flex;align-items:center;gap:6px"},[dateLabel,dateInput])
+  ]));
+
+  wrap.appendChild(el("div",{id:"resultCard"}));
+
+  rowsWrap=el("div",{style:"flex:1;min-height:0;overflow-y:auto;padding-bottom:16px"});
+  wrap.appendChild(rowsWrap);
+
+  elContent.appendChild(wrap);
+  renderRows();
+  renderResult();
+}
+
+function renderResult(){
+  var card=document.getElementById("resultCard"); if(!card) return;
+  var total=S.rows.reduce(function(s,r){ return s+(r.amount||0); },0);
+  var balanced=(total===0 && S.rows.some(function(r){ return r.amount!==null; }));
+  var msg=balanced?"±0 ── 精算完了":(total!==0?"0 になれば精算完了です":"数値を入力してください");
+  var col=balanced?C.gold:(total===0?C.sub:total>0?C.plus:C.minus);
+  card.style.cssText="margin:8px 0 12px;padding:12px 16px;border-radius:14px;background:"+C.surface+
+    ";border:1px solid "+(balanced?C.gold:C.line)+";display:flex;align-items:center;justify-content:space-between;transition:border-color .3s";
+  card.innerHTML="";
+  card.appendChild(el("div",{},[
+    el("div",{class:"serif",style:"font-size:16px;letter-spacing:.15em;color:"+C.gold,text:"Result"}),
+    el("div",{style:"font-size:10px;color:"+C.sub+";margin-top:2px",text:msg})
+  ]));
+  card.appendChild(el("div",{class:"serif tnum",style:"font-size:26px;font-weight:700;color:"+col,text:fmtSigned(total)}));
+}
+
+function renderRows(){
+  rowsWrap.innerHTML="";
+  S.rows.forEach(function(row){
+    var line=el("div",{class:"rowline",style:"padding:9px 4px"});
+
+    var sel=el("select",{class:"sel",style:"color:"+(row.name?C.text:C.sub),
+      onchange:function(e){ row.name=e.target.value; commitRows(); }});
+    sel.appendChild(el("option",{value:"",disabled:"disabled",text:"参加者"}));
+    S.members.forEach(function(m){ sel.appendChild(el("option",{value:m,text:m})); });
+    if(row.name && S.members.indexOf(row.name)<0) sel.appendChild(el("option",{value:row.name,text:row.name}));
+    sel.value=row.name;
+    line.appendChild(el("div",{style:"flex:1;min-width:0"},[sel]));
+
+    var amt=el("button",{class:"amtbtn tnum",
+      style:"font-size:"+(row.amount===null?"13px":"17px")+";font-weight:"+(row.amount===null?"400":"700")+";color:"+amtColor(row.amount),
+      onclick:function(){ openPad(row); }},
+      [row.amount===null?"数値入力":fmtNum(row.amount)]);
+    line.appendChild(amt);
+
+    line.appendChild(el("button",{class:"xbtn","aria-label":"クリアまたは削除",text:"×",
+      onclick:function(){ confirmRowDialog(row); }}));
+
+    rowsWrap.appendChild(line);
+  });
+  rowsWrap.appendChild(el("button",{class:"addbtn",text:"＋ 行を追加",
+    onclick:function(){ S.rows.push(newRow()); renderRows(); }}));
+}
+
+function confirmRowDialog(row){
+  openDialog(function(close){
+    return [
+      el("div",{style:"font-size:14px;margin-bottom:4px;font-weight:700",text:(row.name||"この行")+" をどうしますか？"}),
+      el("div",{style:"font-size:11px;color:"+C.sub+";margin-bottom:16px",text:"内容のクリア、または行そのものの削除を選べます。"}),
+      el("button",{class:"dbtn",style:"background:"+C.surface+";border:1px solid "+C.line+";color:"+C.text,text:"内容をクリア（行は残す）",
+        onclick:function(){ row.name=""; row.amount=null; commitRows(); renderRows(); renderResult(); close(); }}),
+      el("button",{class:"dbtn",style:"background:rgba(240,138,138,.12);border:1px solid "+C.minus+";color:"+C.minus,text:"行を削除",
+        onclick:function(){
+          if(S.rows.length>1) S.rows=S.rows.filter(function(r){ return r.id!==row.id; });
+          else { row.name=""; row.amount=null; }
+          commitRows(); renderRows(); renderResult(); close();
+        }}),
+      el("button",{class:"dbtn",style:"background:transparent;color:"+C.sub+";margin-bottom:0",text:"キャンセル",onclick:close})
+    ];
+  }, C.gold);
+}
+
+function openPad(row){
+  var val = row.amount===null ? "" : String(row.amount);
+  var overlay=el("div",{class:"overlay",style:"align-items:flex-end"});
+  var bg=el("div",{class:"ovbg"});
+  overlay.appendChild(bg);
+
+  var disp=el("span",{class:"tnum",style:"font-size:28px;font-weight:700"});
+  function refresh(){
+    disp.textContent = val===""?"0":Number(val==="-"?0:val).toLocaleString("ja-JP");
+    disp.style.color = val.charAt(0)==="-"?C.minus:(val?C.plus:C.sub);
+  }
+  function press(k){
+    if(k==="C") val="";
+    else if(k==="⌫") val=(val.charAt(0)==="-"&&val.length===2)?"":val.slice(0,-1);
+    else if(k==="±"){ if(val&&val!=="0") val=val.charAt(0)==="-"?val.slice(1):"-"+val; }
+    else {
+      var bare=val.replace("-","");
+      if(bare.length>=9){}
+      else if((k==="00"||k==="0")&&(bare===""||bare==="0")){ if(val==="") val="0"; }
+      else if(bare==="0"){ val=(val.charAt(0)==="-"?"-":"")+(k.replace(/^0+/,"")||val); }
+      else val=val+k;
+    }
+    refresh();
+  }
+  function confirm(){
+    row.amount = (val===""||val==="-") ? null : Number(val);
+    commitRows(); renderRows(); renderResult(); closeOv();
+  }
+  function closeOv(){ if(overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+  bg.addEventListener("click", confirm);
+
+  var pad=el("div",{class:"pad"});
+  pad.appendChild(el("div",{style:"display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;padding:0 4px"},[
+    el("span",{style:"font-size:13px;color:"+C.sub,text:row.name||"数値入力"}), disp
+  ]));
+  var grid=el("div",{class:"padgrid"});
+  var layout=[["7","8","9","C"],["4","5","6","±"],["1","2","3","OK"],["00","0","⌫"]];
+  layout.forEach(function(rowKeys){
+    rowKeys.forEach(function(k){
+      if(k==="OK"){
+        grid.appendChild(el("button",{class:"padok",text:"確定",onclick:confirm}));
+      } else {
+        var dim=(k==="C"||k==="±");
+        grid.appendChild(el("button",{class:"padkey"+(dim?" dim":""),text:k,onclick:function(){ press(k); }}));
+      }
+    });
+  });
+  pad.appendChild(grid);
+  overlay.appendChild(pad);
+  document.body.appendChild(overlay);
+  refresh();
+}
+
+function renderHistory(){
+  var root=el("div",{style:"flex:1;min-height:0;overflow-y:auto;padding:6px 16px 24px"});
+
+  var entries=Object.keys(S.sessions).map(function(d){
+    var rs=(S.sessions[d].rows||[]).filter(function(r){ return r.name && r.amount!==null; });
+    return [d,rs];
+  }).filter(function(e){ return e[1].length>0; }).sort(function(a,b){ return a[0]<b[0]?-1:1; });
+
+  if(entries.length===0){
+    root.appendChild(el("div",{style:"color:"+C.sub+";font-size:13px;text-align:center;padding:48px 0;line-height:1.9",
+      html:"まだ記録がありません。<br>記録タブから成績を入力すると、ここに収支が表示されます。"}));
+    elContent.appendChild(root); return;
+  }
+
+  var playerSet={}; S.members.forEach(function(m){ playerSet[m]=1; });
+  entries.forEach(function(e){ e[1].forEach(function(r){ playerSet[r.name]=1; }); });
+  var players=Object.keys(playerSet);
+
+  var totals={};
+  entries.forEach(function(e){ e[1].forEach(function(r){ totals[r.name]=(totals[r.name]||0)+r.amount; }); });
+  var leaderboard=Object.keys(totals).map(function(n){ return [n,totals[n]]; }).sort(function(a,b){ return b[1]-a[1]; });
+
+  var active = (S.selectedPlayer && playerSet[S.selectedPlayer]) ? S.selectedPlayer : (leaderboard[0]?leaderboard[0][0]:players[0]);
+
+  var series=[]; var cum=0;
+  entries.forEach(function(e){
+    var row=e[1].find(function(r){ return r.name===active; });
+    if(row){ cum+=row.amount; series.push({date:e[0],amount:row.amount,cum:cum}); }
+  });
+  var played=series.length;
+  var wins=series.filter(function(s){ return s.amount>0; }).length;
+  var best=played?Math.max.apply(null,series.map(function(s){return s.amount;})):0;
+  var worst=played?Math.min.apply(null,series.map(function(s){return s.amount;})):0;
+  var totalPL=played?series[series.length-1].cum:0;
+  var maxAbs=Math.max.apply(null,[1].concat(leaderboard.map(function(l){return Math.abs(l[1]);})));
+
+  var chips=el("div",{style:"display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:6px"});
+  players.forEach(function(p){
+    var on=p===active;
+    chips.appendChild(el("button",{style:"flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:13px;"+
+      "background:"+(on?C.gold:"transparent")+";color:"+(on?C.bg:C.sub)+";border:1px solid "+(on?C.gold:C.line)+";font-weight:"+(on?"700":"400"),
+      text:p, onclick:function(){ S.selectedPlayer=p; renderPage(); }}));
+  });
+  root.appendChild(chips);
+
+  var plCard=el("div",{style:"background:"+C.surface+";border:1px solid "+C.line+";border-radius:16px;padding:16px 18px;margin-bottom:12px"});
+  plCard.appendChild(el("div",{style:"font-size:11px;color:"+C.sub+";letter-spacing:.15em",text:"通算収支 ── "+active}));
+  plCard.appendChild(el("div",{class:"serif tnum",style:"font-size:36px;font-weight:700;line-height:1.2;margin:4px 0 12px;color:"+
+    (totalPL>0?C.plus:totalPL<0?C.minus:C.sub),text:fmtSigned(totalPL)}));
+  plCard.appendChild(cumChart(series));
+  root.appendChild(plCard);
+
+  var stats=[["ゲーム数",String(played),C.text],["勝率",played?Math.round(wins/played*100)+"%":"—",C.text],
+    ["最高",fmtSigned(best),best>0?C.plus:C.sub],["最低",fmtSigned(worst),worst<0?C.minus:C.sub]];
+  var grid=el("div",{style:"display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px"});
+  stats.forEach(function(s){
+    grid.appendChild(el("div",{style:"background:"+C.surface+";border:1px solid "+C.line+";border-radius:12px;padding:10px 6px;text-align:center"},[
+      el("div",{style:"font-size:9px;color:"+C.sub+";letter-spacing:.1em;margin-bottom:4px",text:s[0]}),
+      el("div",{class:"tnum",style:"font-size:14px;font-weight:700;color:"+s[2],text:s[1]})
+    ]));
+  });
+  root.appendChild(grid);
+
+  root.appendChild(el("div",{class:"serif",style:"font-size:14px;letter-spacing:.2em;color:"+C.gold+";margin-bottom:8px",text:"通算ランキング"}));
+  var lb=el("div",{style:"background:"+C.surface+";border:1px solid "+C.line+";border-radius:16px;padding:12px 14px;margin-bottom:18px"});
+  leaderboard.forEach(function(item,i){
+    var name=item[0], v=item[1];
+    var btn=el("button",{style:"display:block;width:100%;background:transparent;padding:7px 0;text-align:left",
+      onclick:function(){ S.selectedPlayer=name; renderPage(); }});
+    btn.appendChild(el("div",{style:"display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px"},[
+      el("span",{style:"color:"+(name===active?C.gold:C.text),html:'<span style="color:'+C.sub+';font-size:11px;margin-right:8px" class="tnum">'+String(i+1).padStart(2,"0")+'</span>'+escapeHtml(name)}),
+      el("span",{class:"tnum",style:"font-weight:700;color:"+(v>0?C.plus:v<0?C.minus:C.sub),text:fmtSigned(v)})
+    ]));
+    var track=el("div",{style:"height:4px;border-radius:2px;background:"+C.bg+";overflow:hidden;display:flex;justify-content:"+(v<0?"flex-end":"flex-start")});
+    track.appendChild(el("div",{style:"width:"+(Math.abs(v)/maxAbs*100)+"%;height:100%;border-radius:2px;background:"+(v>0?C.plus:v<0?C.minus:C.line)}));
+    btn.appendChild(track);
+    lb.appendChild(btn);
+  });
+  root.appendChild(lb);
+
+  root.appendChild(el("div",{class:"serif",style:"font-size:14px;letter-spacing:.2em;color:"+C.gold+";margin-bottom:8px",text:"記録一覧"}));
+  entries.slice().reverse().forEach(function(e){
+    var d=e[0], rs=e[1];
+    var mine=rs.find(function(r){ return r.name===active; });
+    var btn=el("button",{style:"display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 14px;margin-bottom:6px;"+
+      "background:"+C.surface+";border:1px solid "+C.line+";border-radius:12px;color:"+C.text+";font-size:14px",
+      onclick:function(){ commitRows(); S.date=d; loadDate(); go("score"); }});
+    btn.appendChild(el("span",{html:'<span class="tnum">'+fmtDateJP(d)+'</span><span style="color:'+C.sub+';font-size:11px;margin-left:8px">'+rs.length+'名</span>'}));
+    var right=el("span",{style:"display:flex;align-items:center;gap:10px"});
+    if(mine) right.appendChild(el("span",{class:"tnum",style:"font-weight:700;font-size:13px;color:"+(mine.amount>0?C.plus:mine.amount<0?C.minus:C.sub),text:fmtSigned(mine.amount)}));
+    right.appendChild(el("span",{style:"color:"+C.gold+";font-size:12px",text:"開く ›"}));
+    btn.appendChild(right);
+    root.appendChild(btn);
+  });
+
+  elContent.appendChild(root);
+}
+
+function cumChart(series){
+  if(series.length===0) return el("div",{style:"font-size:11px;color:"+C.sub+";text-align:center;padding:20px 0",text:"このプレイヤーの記録はまだありません"});
+  var W=320,H=130,PX=6,PY=12;
+  var vals=[0].concat(series.map(function(s){return s.cum;}));
+  var min=Math.min.apply(null,vals),max=Math.max.apply(null,vals);
+  if(min===max){ min-=1; max+=1; }
+  var range=max-min, n=series.length;
+  function x(i){ return PX+(n===1?(W-2*PX)/2:(i/(n-1))*(W-2*PX)); }
+  function y(v){ return PY+(1-(v-min)/range)*(H-2*PY); }
+  var zeroY=y(0);
+  var pts=series.map(function(s,i){ return x(i)+","+y(s.cum); }).join(" ");
+  var area=x(0)+","+zeroY+" "+pts+" "+x(n-1)+","+zeroY;
+  var circles=series.map(function(s,i){
+    var r=(i===n-1)?4:2.5, fill=(i===n-1)?C.gold:C.bg;
+    return '<circle cx="'+x(i)+'" cy="'+y(s.cum)+'" r="'+r+'" fill="'+fill+'" stroke="'+C.gold+'" stroke-width="1.5"/>';
+  }).join("");
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;display:block">'+
+    '<defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="'+C.gold+'" stop-opacity=".35"/><stop offset="100%" stop-color="'+C.gold+'" stop-opacity=".02"/></linearGradient></defs>'+
+    '<line x1="'+PX+'" y1="'+zeroY+'" x2="'+(W-PX)+'" y2="'+zeroY+'" stroke="'+C.line+'" stroke-dasharray="4 4" stroke-width="1"/>'+
+    '<polygon points="'+area+'" fill="url(#gf)"/>'+
+    '<polyline points="'+pts+'" fill="none" stroke="'+C.gold+'" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>'+
+    circles+'</svg>';
+  var wrap=el("div",{});
+  wrap.appendChild(svgEl(svg));
+  wrap.appendChild(el("div",{class:"tnum",style:"display:flex;justify-content:space-between;font-size:9px;color:"+C.sub+";margin-top:4px"},[
+    el("span",{text:fmtDateJP(series[0].date)}), el("span",{text:fmtDateJP(series[series.length-1].date)})
+  ]));
+  return wrap;
+}
+
+var playersListWrap;
+function renderPlayers(){
+  var wrap=el("div",{style:"flex:1;min-height:0;display:flex;flex-direction:column;padding:4px 16px 0"});
+  wrap.appendChild(el("div",{style:"font-size:11px;color:"+C.sub+";text-align:center;margin-bottom:14px;flex-shrink:0;line-height:1.6",
+    html:'名前の変更は過去の記録にも反映されます<br><span style="color:'+C.gold+'">⋯ タップでメニュー ・ 長押しで移動</span>'}));
+
+  playersListWrap=el("div",{style:"flex:1;min-height:0;overflow-y:auto;padding-bottom:16px;overscroll-behavior:contain"});
+  wrap.appendChild(playersListWrap);
+  elContent.appendChild(wrap);
+  renderPlayerRows();
+
+  var input=el("input",{placeholder:"追加する名前（例: "+suggestName()+"）",
+    style:"flex:1;min-width:0;background:"+C.surface+";border:1px solid "+C.line+";border-radius:10px;color:"+C.text+";font-size:14px;padding:11px 12px"});
+  input.addEventListener("keydown",function(e){ if(e.key==="Enter"){ addMember(input.value||suggestName()); input.value=""; } });
+  var addWrap=el("div",{"data-add":"1",style:"display:flex;gap:8px;padding:0 0 12px"},[
+    input,
+    el("button",{style:"background:"+C.gold+";color:"+C.bg+";border-radius:10px;font-size:14px;font-weight:700;padding:0 18px",text:"追加",
+      onclick:function(){ addMember(input.value||suggestName()); input.value=""; }})
+  ]);
+  playersListWrap.appendChild(addWrap);
+}
+
+function suggestName(){
+  var i=S.members.length+1, nm;
+  do{ nm="Player "+String(i).padStart(2,"0"); i++; }while(S.members.indexOf(nm)>=0);
+  return nm;
+}
+function addMember(name){
+  var nm=(name||"").trim();
+  if(nm && S.members.indexOf(nm)<0){ S.members.push(nm); saveMembers(); renderPlayers(); }
+}
+function renameMember(oldName,newRaw){
+  var nn=(newRaw||"").trim();
+  if(!nn || nn===oldName || S.members.indexOf(nn)>=0) return;
+  S.members=S.members.map(function(m){ return m===oldName?nn:m; }); saveMembers();
+  Object.keys(S.sessions).forEach(function(d){
+    S.sessions[d].rows=S.sessions[d].rows.map(function(r){ return r.name===oldName?Object.assign({},r,{name:nn}):r; });
+  });
+  saveSessions();
+  S.rows=S.rows.map(function(r){ return r.name===oldName?Object.assign({},r,{name:nn}):r; });
+  if(S.selectedPlayer===oldName) S.selectedPlayer=nn;
+  renderPlayers();
+}
+function deleteMember(name){
+  S.members=S.members.filter(function(m){ return m!==name; }); saveMembers(); renderPlayers();
+}
+
+function renderPlayerRows(){
+  playersListWrap.innerHTML="";
+  S.members.forEach(function(m,i){ playersListWrap.appendChild(memberRow(m,i)); });
+}
+
+function memberRow(name, index){
+  var row=el("div",{style:"display:flex;align-items:center;gap:8px;margin-bottom:8px;border-radius:12px;padding:3px 4px;"+
+    "border:1px solid transparent;will-change:transform"});
+  row.dataset.name=name;
+
+  row.appendChild(el("span",{class:"tnum",style:"width:24px;font-size:11px;color:"+C.sub+";text-align:right;flex-shrink:0",
+    text:String(index+1).padStart(2,"0")}));
+
+  var input=el("input",{value:name,placeholder:"名前を入力",
+    style:"flex:1;min-width:0;background:"+C.surface+";border:1px solid "+C.line+";border-radius:10px;color:"+C.text+";font-size:15px;padding:11px 12px"});
+  input.addEventListener("blur",function(){ if(input.value.trim() && input.value!==name) renameMember(name,input.value); });
+  input.addEventListener("keydown",function(e){ if(e.key==="Enter") input.blur(); });
+  row._input=input;
+  row.appendChild(input);
+
+  var menuBtn=el("button",{"aria-label":"メニュー（長押しで移動）",text:"⋯",
+    style:"width:38px;height:38px;border-radius:19px;background:transparent;border:1px solid "+C.line+";color:"+C.sub+
+    ";font-size:17px;flex-shrink:0;line-height:1;touch-action:none;user-select:none"});
+  row._menuBtn=menuBtn;
+  attachDrag(menuBtn, row, name);
+  row.appendChild(menuBtn);
+
+  return row;
+}
+
+function attachDrag(btn, row, name){
+  var pressTimer=null, dragging=false, ctx=null, scrollRaf=null, lastY=0, startY=0, cancelled=false;
+
+  function pointerDown(e){
+    e.preventDefault();
+    try{ btn.setPointerCapture(e.pointerId); }catch(err){}
+    startY=e.clientY; lastY=e.clientY; cancelled=false; dragging=false;
+    btn.addEventListener("pointermove",move);
+    btn.addEventListener("pointerup",up);
+    btn.addEventListener("pointercancel",up);
+    pressTimer=setTimeout(startDrag,300);
+  }
+  function startDrag(){
+    dragging=true;
+    var rowsEls=Array.prototype.slice.call(playersListWrap.children).filter(function(c){ return c.dataset && c.dataset.name; });
+    var order=rowsEls.map(function(c){ return c.dataset.name; });
+    var rects=rowsEls.map(function(c){ return c.getBoundingClientRect(); });
+    var startIndex=order.indexOf(name);
+    var centers=rects.map(function(r){ return r.top+r.height/2; });
+    var slotH=rects[startIndex].height+8;
+    ctx={ order:order, rowsEls:rowsEls, startIndex:startIndex, targetIndex:startIndex, centers:centers, slotH:slotH,
+      startPointerY:lastY, startScroll:playersListWrap.scrollTop };
+    row.style.background=C.surface; row.style.borderColor=C.gold; row.style.boxShadow="0 8px 24px rgba(0,0,0,.5)";
+    row.style.zIndex="10"; row.style.position="relative";
+    btn.style.background=C.gold; btn.style.color=C.bg; btn.style.borderColor=C.gold; btn.style.cursor="grabbing";
+    row._input.style.pointerEvents="none";
+    if(navigator.vibrate) navigator.vibrate(15);
+    scrollRaf=requestAnimationFrame(autoScroll);
+    update();
+  }
+  function update(){
+    if(!ctx) return;
+    var scrollDelta=playersListWrap.scrollTop-ctx.startScroll;
+    var dy=(lastY-ctx.startPointerY)+scrollDelta;
+    var draggedCenter=ctx.centers[ctx.startIndex]+dy;
+    var target=ctx.startIndex;
+    ctx.centers.forEach(function(c,i){
+      if(i<ctx.startIndex && draggedCenter<c) target=Math.min(target,i);
+      if(i>ctx.startIndex && draggedCenter>c) target=Math.max(target,i);
+    });
+    ctx.targetIndex=target;
+    ctx.rowsEls.forEach(function(elm,i){
+      if(i===ctx.startIndex){
+        elm.style.transition="none";
+        elm.style.transform="translateY("+dy+"px) scale(1.02)";
+      } else {
+        var offset=0;
+        if(ctx.startIndex<target && i>ctx.startIndex && i<=target) offset=-ctx.slotH;
+        if(ctx.startIndex>target && i>=target && i<ctx.startIndex) offset=ctx.slotH;
+        elm.style.transition="transform .18s ease";
+        elm.style.transform="translateY("+offset+"px)";
+      }
+    });
+  }
+  function autoScroll(){
+    if(!ctx) return;
+    var rect=playersListWrap.getBoundingClientRect();
+    var y=lastY, EDGE=70, MAX=14, speed=0;
+    if(y<rect.top+EDGE) speed=-Math.ceil((rect.top+EDGE-y)/EDGE*MAX);
+    else if(y>rect.bottom-EDGE) speed=Math.ceil((y-(rect.bottom-EDGE))/EDGE*MAX);
+    if(speed!==0){ playersListWrap.scrollTop+=speed; update(); }
+    scrollRaf=requestAnimationFrame(autoScroll);
+  }
+  function move(e){
+    lastY=e.clientY;
+    if(!dragging){
+      if(Math.abs(e.clientY-startY)>10){ clearTimeout(pressTimer); cancelled=true; cleanup(); }
+      return;
+    }
+    e.preventDefault(); update();
+  }
+  function up(){
+    clearTimeout(pressTimer);
+    if(scrollRaf){ cancelAnimationFrame(scrollRaf); scrollRaf=null; }
+    if(ctx){
+      if(ctx.targetIndex!==ctx.startIndex){
+        var next=S.members.slice();
+        next.splice(ctx.startIndex,1);
+        next.splice(ctx.targetIndex,0,name);
+        S.members=next; saveMembers();
+      }
+      ctx=null;
+      renderPlayerRows();
+    } else if(!cancelled){
+      menuDialog(name);
+    }
+    cleanup();
+  }
+  function cleanup(){
+    btn.removeEventListener("pointermove",move);
+    btn.removeEventListener("pointerup",up);
+    btn.removeEventListener("pointercancel",up);
+  }
+  btn.addEventListener("pointerdown",pointerDown);
+}
+
+function menuDialog(name){
+  openDialog(function(close){
+    return [
+      el("div",{style:"font-size:14px;font-weight:700;margin-bottom:4px",text:name+" をどうしますか？"}),
+      el("div",{style:"font-size:11px;color:"+C.sub+";margin-bottom:16px",text:"クリアは名前を空にして書き直せます。削除は選択リストから外れます（過去の記録は残ります）。"}),
+      el("button",{class:"dbtn",style:"background:"+C.surface+";border:1px solid "+C.line+";color:"+C.text,text:"名前をクリアして書き直す",
+        onclick:function(){
+          close();
+          var rows=Array.prototype.slice.call(playersListWrap.children);
+          var target=rows.find(function(r){ return r.dataset && r.dataset.name===name; });
+          if(target && target._input){ target._input.value=""; target._input.focus(); }
+        }}),
+      el("button",{class:"dbtn",style:"background:rgba(240,138,138,.12);border:1px solid "+C.minus+";color:"+C.minus,text:"削除する",
+        onclick:function(){ deleteMember(name); close(); }}),
+      el("button",{class:"dbtn",style:"background:transparent;color:"+C.sub+";margin-bottom:0",text:"キャンセル",onclick:close})
+    ];
+  }, C.gold);
+}
+
+function openDialog(builder, borderColor){
+  var overlay=el("div",{class:"overlay",style:"z-index:70"});
+  var bg=el("div",{class:"ovbg"});
+  function close(){ if(overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+  bg.addEventListener("click",close);
+  overlay.appendChild(bg);
+  var dialog=el("div",{class:"dialog",style:"border:1px solid "+(borderColor||C.gold)});
+  builder(close).forEach(function(node){ dialog.appendChild(node); });
+  overlay.appendChild(dialog);
+  document.body.appendChild(overlay);
+}
+
+try{
+  load();
+  buildShell();
+  updateTabs();
+  renderPage();
+  var boot=document.getElementById("boot"); if(boot) boot.remove();
+}catch(e){
+  document.getElementById("app").innerHTML=
+    '<div style="padding:40px 24px;color:'+C.minus+';font-size:13px;line-height:1.8">起動エラー: '+(e&&e.message?e.message:e)+'</div>';
+  var b=document.getElementById("boot"); if(b) b.remove();
+}
+
+})();
+</script>
+</body>
+</html>
