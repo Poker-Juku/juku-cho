@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c0a09">
+<title>シャッター狙い判別 | 塾長</title>
+<meta name="description" content="北斗の拳 転生の章2 シャッター狙いのあべしカウント＆前兆判別ツール">
+<style>
+  :root{
+    --bg:#0c0a09; --panel:#000; --line:#292524; --line2:#44403c;
+    --ink:#e7e5e4; --sub:#78716c;
+    --gold:#fcd34d; --blood:#991b1b; --blood-l:#dc2626;
+    --go:#34d399; --warn:#fbbf24; --stop:#f87171;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--ink); min-height:100vh;
+    font-family:"BIZ UDPGothic","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+    padding:16px 14px 40px;
+  }
+  .wrap{max-width:480px;margin:0 auto}
+  .num{font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;font-variant-numeric:tabular-nums}
+  .eyebrow{font-size:10px;letter-spacing:.35em;color:var(--sub)}
+
+  /* header */
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+  h1{font-size:22px;letter-spacing:-.01em;line-height:1.2;margin-top:2px}
+  .head-sub{font-size:10px;letter-spacing:.4em;color:var(--blood-l)}
+  .head-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .icon-btn{
+    width:38px;height:38px;display:grid;place-items:center;
+    background:#1c1917;border:1px solid var(--line);color:var(--sub);
+    font-size:15px;cursor:pointer;border-radius:2px;text-decoration:none;
+  }
+  .icon-btn:hover{border-color:var(--line2);color:var(--ink)}
+  .icon-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .logo{border-color:#57534e}
+  .logo svg{display:block}
+
+  /* cards */
+  .card{background:var(--panel);border:1px solid var(--line);padding:14px;margin-bottom:12px;border-radius:2px}
+  .counter-top{display:flex;align-items:flex-end;justify-content:space-between}
+  .tenha-tag{font-size:10px;color:var(--warn);border:1px solid #a16207;padding:2px 7px}
+  .abeshi{font-size:60px;font-weight:800;color:var(--gold);line-height:1;margin-top:4px}
+  .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:12px}
+  button{font-family:inherit}
+  .btn{
+    background:#1c1917;border:1px solid var(--line);color:var(--ink);
+    padding:11px 0;font-size:14px;cursor:pointer;border-radius:2px;
+  }
+  .btn:active{background:var(--blood)}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+  .row{display:flex;gap:4px;margin-top:4px}
+  .row .btn{flex:1}
+  .row input{
+    flex:1;min-width:0;background:#000;border:1px solid var(--line);
+    color:var(--gold);text-align:center;font-size:14px;padding:9px 4px;border-radius:2px;
+    font-family:inherit;
+  }
+  .row input:focus{outline:2px solid var(--gold);outline-offset:-1px}
+
+  /* verdict */
+  .verdict{border:1px solid;padding:16px;margin-bottom:12px;border-radius:2px}
+  .verdict .call{font-size:30px;font-weight:800;line-height:1.1}
+  .verdict p{font-size:12px;margin-top:7px;line-height:1.7;opacity:.9}
+  .v-go{background:#022c22;border-color:#059669;color:var(--go)}
+  .v-wait{background:#1c1917;border-color:var(--line2);color:#d6d3d1}
+  .v-warn{background:#271905;border-color:#b45309;color:var(--warn)}
+  .v-stop{background:#280d0d;border-color:#b91c1c;color:var(--stop)}
+
+  /* zones */
+  .zones{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:12px}
+  .zone{border:1px solid;padding:8px 2px;text-align:center;border-radius:2px}
+  .zone .z-num{font-size:17px;font-weight:800;line-height:1}
+  .zone .z-range{font-size:9px;opacity:.7;margin-top:3px}
+  .zone .z-state{font-size:10px;font-weight:700;margin-top:4px}
+  .z-valid{background:rgba(6,78,59,.5);border-color:#10b981;color:var(--go)}
+  .z-hold{background:rgba(69,26,3,.6);border-color:#b45309;color:var(--warn)}
+  .z-cleared{background:#1c1917;border-color:var(--line);color:#57534e}
+  .z-active{background:rgba(69,10,10,.6);border-color:var(--blood-l);color:#fca5a5}
+  .z-pending{background:#000;border-color:var(--line);color:#57534e}
+
+  /* drums */
+  .drums{display:flex;gap:12px}
+  .drum{flex:1;min-width:0}
+  .reel{position:relative;background:#000;border:1px solid var(--line);overflow:hidden;border-radius:2px;margin-top:6px}
+  .reel::after{
+    content:"";position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+    height:44px;border-top:1px solid rgba(153,27,27,.8);border-bottom:1px solid rgba(153,27,27,.8);
+    background:rgba(69,10,10,.25);pointer-events:none;
+  }
+  .reel .cell{height:44px;display:flex;align-items:center;justify-content:center;padding:0 4px;
+    font-size:12px;color:#57534e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .reel .cell.mid{font-size:15px;font-weight:700;color:var(--gold)}
+  .record{
+    width:100%;margin-top:12px;padding:15px 0;background:#7f1d1d;border:1px solid var(--blood-l);
+    color:#fff;font-size:15px;font-weight:800;letter-spacing:.15em;cursor:pointer;border-radius:2px;
+  }
+  .record:active{background:var(--blood-l)}
+  .record:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* log */
+  .log-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .mini{font-size:10px;color:var(--sub);border:1px solid var(--line);background:transparent;
+    padding:5px 9px;cursor:pointer;border-radius:2px}
+  .mini:hover{color:var(--ink);border-color:var(--line2)}
+  .empty{font-size:12px;color:#57534e;border:1px dashed var(--line);padding:18px;text-align:center;line-height:1.7}
+  .log li{display:flex;align-items:center;gap:8px;font-size:12px;background:#000;
+    border:1px solid var(--line);padding:8px;margin-bottom:4px;list-style:none}
+  .log .g{color:var(--gold);width:42px;text-align:right;flex-shrink:0}
+  .log .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .log .tag{font-size:11px;flex-shrink:0}
+  .log .why{font-size:9px;color:#57534e;max-width:38%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .t-valid{color:var(--go)} .t-off{color:#57534e}
+
+  footer{font-size:10px;color:#57534e;line-height:1.8;border-top:1px solid var(--line);padding-top:12px;margin-top:16px}
+
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;
+    align-items:flex-start;justify-content:center;padding:20px 14px;overflow-y:auto;z-index:50}
+  .overlay.open{display:flex}
+  .sheet{background:#1c1917;border:1px solid var(--line2);max-width:480px;width:100%;
+    padding:20px;border-radius:2px;margin:auto 0}
+  .sheet h2{font-size:18px;margin-bottom:14px}
+  .sheet h3{font-size:13px;color:var(--gold);margin:18px 0 6px;letter-spacing:.05em}
+  .sheet p,.sheet li{font-size:12px;line-height:1.9;color:#d6d3d1}
+  .sheet ul{padding-left:18px;margin-top:4px}
+  .sheet table{width:100%;border-collapse:collapse;margin-top:6px;font-size:12px}
+  .sheet td{border:1px solid var(--line);padding:6px 8px}
+  .sheet td:first-child{color:var(--gold);width:34%}
+  .close{width:100%;margin-top:20px;padding:12px;background:#292524;border:1px solid var(--line2);
+    color:var(--ink);font-size:14px;cursor:pointer;border-radius:2px}
+  @media (prefers-reduced-motion:no-preference){
+    .abeshi{transition:color .15s}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="head-sub">転生の章2</div>
+      <h1>シャッター狙い判別</h1>
+    </div>
+    <div class="head-actions">
+      <button class="icon-btn" id="helpBtn" aria-label="使い方を開く">?</button>
+      <a class="icon-btn logo" href="https://juku-cho.com/" aria-label="塾長ホームへ戻る" title="塾長ホーム">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="21" height="21" rx="1.5" stroke="#fcd34d" stroke-width="1.2"/>
+          <text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700"
+                fill="#fcd34d" font-family="serif">塾</text>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- counter -->
+  <div class="card">
+    <div class="counter-top">
+      <span class="eyebrow">ABESHI</span>
+      <span class="tenha-tag" id="tenhaTag" hidden></span>
+    </div>
+    <div class="abeshi num" id="abeshi">0</div>
+    <div class="grid5">
+      <button class="btn" data-add="1">+1</button>
+      <button class="btn" data-add="5">+5</button>
+      <button class="btn" data-add="10">+10</button>
+      <button class="btn" data-add="50">+50</button>
+      <button class="btn" data-add="100">+100</button>
+    </div>
+    <div class="row">
+      <button class="btn" data-add="-1">−1</button>
+      <input id="manual" inputmode="numeric" placeholder="直接入力" aria-label="あべし数を直接入力">
+      <button class="btn" id="setBtn" style="flex:0 0 66px">設定</button>
+    </div>
+  </div>
+
+  <!-- verdict -->
+  <div class="verdict v-wait" id="verdict">
+    <div class="call" id="call">様子見</div>
+    <p id="detail"></p>
+  </div>
+
+  <!-- zones -->
+  <div class="eyebrow" style="margin-bottom:6px">判別ゾーン</div>
+  <div class="zones" id="zones"></div>
+
+  <!-- drums -->
+  <div class="card">
+    <div class="drums">
+      <div class="drum">
+        <div class="eyebrow">種別</div>
+        <div class="reel" id="reelA"></div>
+        <div class="row">
+          <button class="btn" data-reel="A" data-dir="-1" aria-label="種別を前へ">▲</button>
+          <button class="btn" data-reel="A" data-dir="1" aria-label="種別を次へ">▼</button>
+        </div>
+      </div>
+      <div class="drum">
+        <div class="eyebrow">内容</div>
+        <div class="reel" id="reelB"></div>
+        <div class="row">
+          <button class="btn" data-reel="B" data-dir="-1" aria-label="内容を前へ">▲</button>
+          <button class="btn" data-reel="B" data-dir="1" aria-label="内容を次へ">▼</button>
+        </div>
+      </div>
+    </div>
+    <button class="record" id="recordBtn">0 あべしで記録</button>
+  </div>
+
+  <!-- log -->
+  <div class="log-head">
+    <span class="eyebrow">履歴</span>
+    <button class="mini" id="resetBtn">新しい台にリセット</button>
+  </div>
+  <div id="logArea"></div>
+
+  <footer>
+    実戦検証にもとづく立ち回り補助であり、当選を保証するものではありません。メーカー公表の攻略法でもありません。<br>
+    © 塾長 / Juku-Cho
+  </footer>
+</div>
+
+<!-- help modal -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+  <div class="sheet">
+    <h2 id="helpTitle">使い方</h2>
+    <p>AT終了から打ち始め、レア役・前兆・天破をそのつど記録すると、続行かヤメかを自動で判定します。</p>
+
+    <h3>1. あべしを数える</h3>
+    <p>+1〜+100ボタンで加算、ズレたら「直接入力→設定」で合わせます。</p>
+
+    <h3>2. 起きたことを記録する</h3>
+    <p>左のドラムで種別、右のドラムで内容を選び、赤いボタンで現在のあべし数と一緒に記録します。</p>
+    <ul>
+      <li><b>前兆演出</b> … シャッター・天命の刻・雑魚・ウイグルなど</li>
+      <li><b>レア役</b> … 引いた時点で必ず記録（判別の除外に使います）</li>
+      <li><b>天破</b> … スタートと終了の両方を記録</li>
+      <li><b>AT</b> … AT終了を記録するとカウンターと履歴がリセットされます</li>
+    </ul>
+
+    <h3>3. ゾーンの見方</h3>
+    <table>
+      <tr><td>未到達</td><td>まだそのあべしに届いていない</td></tr>
+      <tr><td>判別中</td><td>いまゾーン内。前兆に注目</td></tr>
+      <tr><td>有効</td><td>レア役なしの前兆を確認。高モード期待</td></tr>
+      <tr><td>保留</td><td>天破で飛ばしたため判定できない</td></tr>
+      <tr><td>通過</td><td>前兆なしで抜けた</td></tr>
+    </table>
+
+    <h3>4. 判定の意味</h3>
+    <ul>
+      <li><b>続行</b> … 有効前兆あり。896あべしまで打ち切る</li>
+      <li><b>様子見</b> … まだ判断材料が足りない。次のゾーンまで</li>
+      <li><b>判別保留</b> … 天破で飛ばした区間がある。続行はリスク承知で</li>
+      <li><b>ヤメ検討</b> … 5ゾーンすべて空振り。通常A・深いゲーム数選択の可能性</li>
+    </ul>
+
+    <h3>自動で無効になるもの</h3>
+    <ul>
+      <li>レア役から32あべし以内の前兆（レア役契機のため）</li>
+      <li>AT終了から15あべし以内の前兆（終了直後のざわつき）</li>
+      <li>判別ゾーン外で始まった前兆</li>
+    </ul>
+
+    <button class="close" id="closeBtn">閉じる</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var ZONES = [
+    {id:1,center:40,start:1,end:64,range:"1〜64"},
+    {id:2,center:170,start:129,end:192,range:"129〜192"},
+    {id:3,center:290,start:257,end:320,range:"257〜320"},
+    {id:4,center:425,start:385,end:448,range:"385〜448"},
+    {id:5,center:490,start:449,end:512,range:"449〜512"}
+  ];
+  var CATS = [
+    {id:"zencho",name:"前兆演出",items:["シャッター","天命の刻","雑魚","ウイグル","牙親父","リン・バット","水浴び","チョコ","ステージチェンジ連続"]},
+    {id:"rare",name:"レア役",items:["弱チェリー","強チェリー","スイカ","チャンス目"]},
+    {id:"tenha",name:"天破",items:["天破スタート","天破終了"]},
+    {id:"at",name:"AT",items:["AT当選","AT終了"]}
+  ];
+  var RARE_BLOCK = 32, ZAWA_BLOCK = 15, LIMIT = 896;
+
+  var S = {abeshi:0, events:[], spans:[], tenhaStart:null, a:0, b:0, seq:0};
+
+  var $ = function(id){return document.getElementById(id);};
+  var mod = function(n,m){return ((n%m)+m)%m;};
+
+  function analyze(){
+    var rares = S.events.filter(function(e){return e.cat==="rare";}).map(function(e){return e.abeshi;});
+    var judged = S.events.map(function(e){
+      if(e.cat!=="zencho") return Object.assign({},e,{verdict:null});
+      if(e.abeshi < ZAWA_BLOCK) return Object.assign({},e,{verdict:"invalid",why:"AT終了直後のざわつき"});
+      var byRare = rares.some(function(r){return r<=e.abeshi && e.abeshi-r<=RARE_BLOCK;});
+      if(byRare) return Object.assign({},e,{verdict:"invalid",why:"レア役契機"});
+      var z = ZONES.filter(function(z){return e.abeshi>=z.start && e.abeshi<=z.end;})[0];
+      if(!z) return Object.assign({},e,{verdict:"outside",why:"判別ゾーン外"});
+      return Object.assign({},e,{verdict:"valid",why:z.center+"あべしゾーン",zone:z.id});
+    });
+
+    var zones = ZONES.map(function(z){
+      var valid = judged.some(function(e){return e.verdict==="valid" && e.zone===z.id;});
+      var hold = S.spans.some(function(s){return s.start<=z.end && s.end>=z.start;}) ||
+                 (S.tenhaStart!==null && S.tenhaStart<=z.end && S.abeshi>=z.start);
+      var state = "pending";
+      if(valid) state="valid";
+      else if(hold) state="hold";
+      else if(S.abeshi>z.end) state="cleared";
+      else if(S.abeshi>=z.start) state="active";
+      return Object.assign({},z,{state:state});
+    });
+
+    var anyValid = zones.some(function(z){return z.state==="valid";});
+    var anyHold = zones.some(function(z){return z.state==="hold";});
+    var pending = zones.filter(function(z){return z.state==="pending"||z.state==="active";});
+
+    var call, tone, detail;
+    if(anyValid && S.abeshi>=LIMIT){
+      call="896到達"; tone="warn";
+      detail="有効前兆分は打ち切り済み。ここから先は通常のヤメ時判断へ。";
+    } else if(anyValid){
+      call="続行"; tone="go";
+      detail="有効前兆あり。896あべしまで打ち切り（残り "+Math.max(0,LIMIT-S.abeshi)+" あべし）。";
+    } else if(pending.length){
+      call="様子見"; tone="wait";
+      detail="次のチェックポイントは "+pending[0].center+" あべし付近（"+pending[0].range+"）。まだ判断材料が足りない。";
+    } else if(anyHold){
+      call="判別保留"; tone="warn";
+      detail="天破でゾーンを飛ばしている。飛ばした区間は判定できないため、続行はリスクを承知の上で。";
+    } else {
+      call="ヤメ検討"; tone="stop";
+      detail="5つのゾーンすべてでレア役なし前兆を確認できず。通常A・深いゲーム数選択の可能性。";
+    }
+    return {judged:judged, zones:zones, call:call, tone:tone, detail:detail};
+  }
+
+  var STATE_LABEL = {valid:"有効",hold:"保留",cleared:"通過",active:"判別中",pending:"未到達"};
+
+  function drawReel(el, items, idx){
+    var cells = [-1,0,1].map(function(o){
+      var t = items[mod(idx+o, items.length)];
+      return '<div class="cell'+(o===0?' mid':'')+'">'+t+'</div>';
+    }).join("");
+    el.innerHTML = '<div style="padding:6px 0">'+cells+'</div>';
+  }
+
+  function render(){
+    var A = analyze();
+    var cat = CATS[mod(S.a, CATS.length)];
+    var itemIdx = mod(S.b, cat.items.length);
+
+    $("abeshi").textContent = S.abeshi;
+    var tag = $("tenhaTag");
+    if(S.tenhaStart!==null){ tag.hidden=false; tag.textContent="天破中 "+S.tenhaStart+"〜"; }
+    else tag.hidden = true;
+
+    $("verdict").className = "verdict v-"+A.tone;
+    $("call").textContent = A.call;
+    $("detail").textContent = A.detail;
+
+    $("zones").innerHTML = A.zones.map(function(z){
+      return '<div class="zone z-'+z.state+'">'
+        +'<div class="z-num num">'+z.center+'</div>'
+        +'<div class="z-range num">'+z.range+'</div>'
+        +'<div class="z-state">'+STATE_LABEL[z.state]+'</div></div>';
+    }).join("");
+
+    drawReel($("reelA"), CATS.map(function(c){return c.name;}), S.a);
+    drawReel($("reelB"), cat.items, itemIdx);
+    $("recordBtn").textContent = S.abeshi+" あべしで記録";
+
+    var log = $("logArea");
+    if(!A.judged.length){
+      log.innerHTML = '<p class="empty">AT終了から打ち始め、レア役・前兆・天破を記録していく。</p>';
+    } else {
+      log.innerHTML = '<ul class="log">'+A.judged.slice().reverse().map(function(e){
+        var tag = "";
+        if(e.verdict==="valid") tag = '<span class="tag t-valid">有効</span>';
+        else if(e.verdict==="invalid") tag = '<span class="tag t-off">無効</span>';
+        else if(e.verdict==="outside") tag = '<span class="tag t-off">ゾーン外</span>';
+        return '<li><span class="g num">'+e.abeshi+'</span><span class="nm">'+e.name+'</span>'
+          +tag+(e.why?'<span class="why">'+e.why+'</span>':'')+'</li>';
+      }).join("")+'</ul>';
+    }
+  }
+
+  function fullReset(){
+    S.abeshi=0; S.events=[]; S.spans=[]; S.tenhaStart=null; render();
+  }
+
+  function record(){
+    var cat = CATS[mod(S.a, CATS.length)];
+    var name = cat.items[mod(S.b, cat.items.length)];
+    if(cat.id==="tenha"){
+      if(name==="天破スタート") S.tenhaStart = S.abeshi;
+      else if(S.tenhaStart!==null){ S.spans.push({start:S.tenhaStart,end:S.abeshi}); S.tenhaStart=null; }
+    }
+    if(cat.id==="at" && name==="AT終了"){ fullReset(); return; }
+    S.events.push({id:++S.seq, cat:cat.id, name:name, abeshi:S.abeshi});
+    render();
+  }
+
+  document.addEventListener("click", function(ev){
+    var t = ev.target.closest("button");
+    if(!t) return;
+    if(t.dataset.add){ S.abeshi = Math.max(0, S.abeshi + parseInt(t.dataset.add,10)); render(); }
+    else if(t.dataset.reel){
+      var d = parseInt(t.dataset.dir,10);
+      if(t.dataset.reel==="A"){ S.a = mod(S.a+d, CATS.length); S.b = 0; }
+      else { S.b = S.b + d; }
+      render();
+    }
+    else if(t.id==="setBtn"){
+      var v = $("manual").value.replace(/[^0-9]/g,"");
+      if(v!==""){ S.abeshi = parseInt(v,10); }
+      $("manual").value=""; render();
+    }
+    else if(t.id==="recordBtn") record();
+    else if(t.id==="resetBtn") fullReset();
+    else if(t.id==="helpBtn"){ $("overlay").classList.add("open"); $("closeBtn").focus(); }
+    else if(t.id==="closeBtn"){ $("overlay").classList.remove("open"); $("helpBtn").focus(); }
+  });
+
+  $("overlay").addEventListener("click", function(e){
+    if(e.target===this) this.classList.remove("open");
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key==="Escape") $("overlay").classList.remove("open");
+  });
+  $("manual").addEventListener("keydown", function(e){
+    if(e.key==="Enter") $("setBtn").click();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
