@@ -3,66 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#14161c">
 <title>プライバシーポリシー | Juku-Cho</title>
-<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:400;font-display:swap;src:url('assets/BIZUDPGothic-Regular.woff2') format('woff2');}
-  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:700;font-display:swap;src:url('assets/BIZUDPGothic-Bold.woff2') format('woff2');}
-  :root{--ink:#0d1322;--panel:#18223a;--line:rgba(232,184,75,.14);--accent:#e8b84b;--text:#f0f3f9;--muted:#8c96a6}
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'BIZ UDPGothic',system-ui,sans-serif;background:var(--ink);color:var(--text);
-    display:flex;justify-content:center;min-height:100dvh;padding:24px 16px 60px;line-height:1.9}
-  .wrap{width:100%;max-width:640px}
-  h1{font-size:22px;font-weight:700;margin-bottom:6px}
-  .updated{font-size:12px;color:var(--muted);margin-bottom:26px}
-  h2{font-size:15px;font-weight:700;color:var(--accent);margin:26px 0 8px}
-  p,li{font-size:14px;color:#d3d8e2}
-  ul{padding-left:20px;margin-top:6px}
-  li{margin-bottom:5px}
-  a{color:var(--accent)}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:10px}
-  .back{display:inline-block;margin-top:34px;background:var(--panel);border:1px solid var(--line);
-    color:var(--text);text-decoration:none;padding:11px 18px;border-radius:12px;font-size:13px;font-weight:700}
+:root {
+  --bg:      #070d14;
+  --card:    #0d1828;
+  --border:  #1a3050;
+  --cyan:    #00c8f0;
+  --cyan-dk: #0080a8;
+  --text:    #c8dff0;
+  --text-dim:#4a6888;
+  --gold:    #c8922a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg);
+  background-image:radial-gradient(ellipse at 20% 0%, rgba(0,80,140,0.2) 0%, transparent 60%);
+  font-family:'Noto Sans JP', sans-serif;
+  color:var(--text);
+  line-height:1.8;
+  min-height:100vh;
+}
+
+/* HEADER */
+.site-header {
+  background:linear-gradient(180deg,#0d1828,#070d14);
+  border-bottom:1px solid var(--border);
+  padding:16px 24px;
+  position:relative;
+}
+.site-header::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan-dk) 30%,var(--cyan) 50%,var(--cyan-dk) 70%,transparent);
+}
+.header-inner {
+  max-width:800px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.site-logo {
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:20px; font-weight:700;
+  color:var(--cyan);
+  text-decoration:none;
+  letter-spacing:2px;
+  text-shadow:0 0 12px rgba(0,200,240,0.4);
+}
+.nav-links { display:flex; gap:20px; }
+.nav-links a {
+  color:var(--text-dim); text-decoration:none;
+  font-size:13px; letter-spacing:1px;
+  transition:color 0.2s;
+}
+.nav-links a:hover { color:var(--cyan); }
+
+/* MAIN */
+.container {
+  max-width:800px; margin:0 auto;
+  padding:48px 24px 80px;
+}
+.page-title {
+  font-size:28px; font-weight:700;
+  color:#ffffff; margin-bottom:8px;
+  letter-spacing:1px;
+}
+.page-title span {
+  color:var(--cyan);
+  text-shadow:0 0 12px rgba(0,200,240,0.5);
+}
+.update-date {
+  font-size:12px; color:var(--text-dim);
+  margin-bottom:40px; letter-spacing:1px;
+}
+.divider {
+  height:1px; margin-bottom:40px;
+  background:linear-gradient(90deg,var(--cyan-dk),transparent);
+}
+
+.section { margin-bottom:40px; }
+.section h2 {
+  font-size:16px; font-weight:700;
+  color:var(--cyan); margin-bottom:12px;
+  padding-left:12px;
+  border-left:3px solid var(--cyan);
+  letter-spacing:1px;
+}
+.section p {
+  font-size:14px; color:var(--text);
+  margin-bottom:12px; padding-left:12px;
+}
+.section ul {
+  padding-left:24px; margin-bottom:12px;
+}
+.section ul li {
+  font-size:14px; color:var(--text);
+  margin-bottom:6px;
+}
+
+.card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:8px; padding:20px 24px;
+  margin-top:12px;
+}
+.card p { font-size:14px; color:var(--text); }
+
+/* FOOTER */
+.site-footer {
+  background:#050a10;
+  border-top:1px solid var(--border);
+  padding:20px 24px; text-align:center;
+}
+.site-footer p {
+  font-size:12px; color:var(--text-dim); letter-spacing:2px;
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>プライバシーポリシー</h1>
-  <div class="updated">最終更新日：2026年7月13日</div>
 
-  <p>「塾 / Juku-Cho」（以下「当サイト」）における、利用者の情報の取り扱いについて説明します。</p>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="site-logo">JUKU-CHO</a>
+    <nav class="nav-links">
+      <a href="/">ホーム</a>
+      <a href="/contact.html">お問い合わせ</a>
+    </nav>
+  </div>
+</header>
 
-  <h2>1. 入力したデータの取り扱い</h2>
-  <div class="card">
-    <p>当サイトに入力された価格・割引率、および保存された計算履歴は、<strong>お使いの端末内（ブラウザのlocalStorage）にのみ保存</strong>されます。運営者を含む第三者のサーバーに送信されることはありません。</p>
-    <p style="margin-top:8px">履歴はアプリ内の「すべて削除」から、またはブラウザのデータ消去からいつでも削除できます。</p>
+<main class="container">
+  <h1 class="page-title">プライバシー<span>ポリシー</span></h1>
+  <p class="update-date">最終更新日：2025年1月1日</p>
+  <div class="divider"></div>
+
+  <div class="section">
+    <h2>1. はじめに</h2>
+    <p>Juku-Cho（以下「当サイト」）は、ユーザーのプライバシーを尊重し、個人情報の保護に努めます。本プライバシーポリシーは、当サイトが提供するサービス（アプリ塾、ポーカー塾、アニメ塾など）における個人情報の取り扱いについて説明します。</p>
   </div>
 
-  <h2>2. 個人情報の収集について</h2>
-  <p>当サイトは、氏名・メールアドレス・電話番号などの個人情報を収集しません。会員登録も不要です。</p>
+  <div class="section">
+    <h2>2. 収集する情報</h2>
+    <p>当サイトでは、以下の情報を収集する場合があります。</p>
+    <ul>
+      <li>お問い合わせフォームにご入力いただいたお名前・メールアドレス・メッセージ</li>
+      <li>アクセスログ（IPアドレス、ブラウザの種類、アクセス日時など）</li>
+      <li>Cookieによる閲覧情報（広告配信・アクセス解析目的）</li>
+    </ul>
+  </div>
 
-  <h2>3. 広告配信について</h2>
-  <p>当サイトでは、第三者配信の広告サービス「Google AdSense」を利用する場合があります。</p>
-  <ul>
-    <li>Googleなどの第三者配信事業者は、Cookieを使用して、利用者の過去のアクセス情報に基づいた広告を配信することがあります。</li>
-    <li>利用者は <a href="https://adssettings.google.com/" target="_blank" rel="noopener">広告設定</a> にて、パーソナライズ広告を無効にできます。</li>
-    <li>Cookieを無効にする方法や、Googleの広告における取り扱いについては、<a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Googleのポリシーと規約</a> をご確認ください。</li>
-  </ul>
+  <div class="section">
+    <h2>3. 情報の利用目的</h2>
+    <p>収集した情報は以下の目的で利用します。</p>
+    <ul>
+      <li>お問い合わせへの回答・対応</li>
+      <li>サービスの改善・品質向上</li>
+      <li>アクセス状況の分析</li>
+      <li>広告の配信（Google AdSenseを利用）</li>
+    </ul>
+  </div>
 
-  <h2>4. アクセス解析について</h2>
-  <p>当サイトは現在、アクセス解析ツールを使用していません。将来的に導入する場合は、本ポリシーを更新してお知らせします。</p>
+  <div class="section">
+    <h2>4. Google AdSense（広告）について</h2>
+    <p>当サイトでは、Google LLC が提供する広告配信サービス「Google AdSense」を使用しています。</p>
+    <ul>
+      <li>Google AdSenseは、ユーザーの興味に基づいた広告を表示するためにCookieを使用します。</li>
+      <li>Cookieの使用により、ユーザーの当サイトや他サイトへのアクセス情報が収集される場合があります。</li>
+      <li>収集される情報は、ユーザーを個人的に特定するものではありません。</li>
+    </ul>
+    <div class="card">
+      <p>Cookieを無効にする場合は、<a href="https://www.google.com/settings/ads" target="_blank" style="color:var(--cyan);">Googleの広告設定ページ</a>からオプトアウトできます。また、<a href="https://www.aboutads.info/choices/" target="_blank" style="color:var(--cyan);">aboutads.info</a> からも設定可能です。</p>
+    </div>
+  </div>
 
-  <h2>5. 免責事項</h2>
-  <p>当サイトの計算結果は参考値です。実際の販売価格・税額・端数処理は店舗の運用により異なる場合があります。当サイトの利用によって生じた損害について、運営者は責任を負いかねます。</p>
+  <div class="section">
+    <h2>5. Google Analytics について</h2>
+    <p>当サイトでは、Googleが提供するアクセス解析ツール「Google Analytics」を使用する場合があります。Google Analyticsはトラフィックデータの収集のためにCookieを使用します。このデータは匿名で収集されており、個人を特定するものではありません。</p>
+  </div>
 
-  <h2>6. ポリシーの変更</h2>
-  <p>本ポリシーの内容は、必要に応じて予告なく変更される場合があります。変更後の内容は、本ページに掲載した時点から効力を生じます。</p>
+  <div class="section">
+    <h2>6. 第三者への情報提供</h2>
+    <p>当サイトは、以下の場合を除き、収集した個人情報を第三者に提供しません。</p>
+    <ul>
+      <li>ユーザーの同意がある場合</li>
+      <li>法令に基づく開示要請があった場合</li>
+      <li>人の生命・身体・財産の保護のために必要な場合</li>
+    </ul>
+  </div>
 
-  <h2>7. お問い合わせ</h2>
-  <p>当サイトに関するお問い合わせは、運営者までご連絡ください。</p>
+  <div class="section">
+    <h2>7. 外部リンクについて</h2>
+    <p>当サイトには外部サイトへのリンクが含まれる場合があります。リンク先のプライバシーポリシーについては、各サイトのポリシーをご確認ください。当サイトは外部サイトの内容について責任を負いません。</p>
+  </div>
 
-  <a class="back" href="index.html">← トップに戻る</a>
-</div>
+  <div class="section">
+    <h2>8. プライバシーポリシーの変更</h2>
+    <p>当サイトは、必要に応じて本プライバシーポリシーを変更することがあります。変更後のポリシーは本ページに掲載した時点で効力を生じます。重要な変更がある場合は、サイト上でお知らせします。</p>
+  </div>
+
+  <div class="section">
+    <h2>9. お問い合わせ</h2>
+    <p>本プライバシーポリシーに関するご質問・ご意見は、以下のお問い合わせページよりご連絡ください。</p>
+    <div class="card">
+      <p>📧 <a href="/contact.html" style="color:var(--cyan);">お問い合わせフォームはこちら</a></p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>© 2025 JUKU-CHO &nbsp;·&nbsp; Made In Japan</p>
+</footer>
+
 </body>
 </html>
