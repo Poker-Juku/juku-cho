@@ -2,15 +2,18 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#14161c">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="割引電卓">
 <title>割引電卓 | Juku-Cho</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
 <style>
   @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:400;font-display:swap;src:url('assets/BIZUDPGothic-Regular.woff2') format('woff2');}
   @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:700;font-display:swap;src:url('assets/BIZUDPGothic-Bold.woff2') format('woff2');}
@@ -22,8 +25,16 @@
     --accent:#ff6d5c;--accent-soft:#ff8776;--on-ink:#2a0c08;
     --text:#f0f3f9;--muted:#8c96a6;--save:#ffb85c;
     --key:#272b36;--key-press:#323849;--danger:#f08a8a;
+
+    /* responsive scale tokens */
+    --pad-y:16px;      /* keypad button height */
+    --key-fs:22px;     /* keypad font size */
+    --final-fs:34px;   /* 割引後の価格 */
+    --price-fs:30px;   /* 元の価格 */
+    --gap:12px;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
   html,body{height:100%}
   body{
     font-family:"BIZ UDPGothic",system-ui,sans-serif;
@@ -31,15 +42,17 @@
     color:var(--text);display:flex;justify-content:center;min-height:100dvh;overflow-x:hidden;
   }
   .app{width:100%;max-width:430px;display:flex;flex-direction:column;
-    padding:14px 16px calc(14px + env(safe-area-inset-bottom));gap:12px;position:relative}
+    padding:14px 16px calc(14px + env(safe-area-inset-bottom));gap:var(--gap);position:relative}
 
-  header{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 0}
-  .brand{display:flex;align-items:baseline;gap:9px}
-  .brand h1{font-size:21px;font-weight:700;letter-spacing:.02em}
+  /* ===== header ===== */
+  header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 0}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0}
+  .brand-icon{width:34px;height:34px;flex:0 0 auto;border-radius:9px;display:block;
+    box-shadow:0 5px 14px -6px rgba(255,109,92,.7)}
+  .brand h1{font-size:21px;font-weight:700;letter-spacing:.02em;line-height:1.1;white-space:nowrap}
   .brand .dot{color:var(--accent)}
-  .brand small{font-size:10px;color:var(--muted);letter-spacing:.18em;font-weight:400}
-  .tax{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;font-size:11px;font-weight:700}
-  .tax button{border:0;background:transparent;color:var(--muted);padding:6px 10px;border-radius:999px;cursor:pointer;font-family:inherit;font-weight:700}
+  .tax{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;font-size:11px;font-weight:700;flex:0 0 auto}
+  .tax button{border:0;background:transparent;color:var(--muted);padding:6px 10px;border-radius:999px;cursor:pointer;font-family:inherit;font-weight:700;white-space:nowrap}
   .tax button.on{background:var(--accent);color:var(--on-ink)}
 
   .tabs{display:flex;gap:6px}
@@ -48,9 +61,9 @@
   .tabs button.on{background:var(--panel-2);color:var(--accent-soft);border-color:rgba(255,109,92,.4)}
 
   .display{background:linear-gradient(180deg,var(--panel),var(--ink-2));border:1px solid var(--line);border-radius:20px;padding:16px 18px;position:relative;overflow:hidden}
-  .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px}
   .label{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.04em}
-  .price-in{font-size:30px;font-weight:700;letter-spacing:.01em;font-variant-numeric:tabular-nums}
+  .price-in{font-size:var(--price-fs);font-weight:700;letter-spacing:.01em;font-variant-numeric:tabular-nums}
   .price-in.empty{color:var(--muted)}
   .yen{color:var(--accent);font-weight:700;margin-right:2px}
   .divider{height:1px;background:var(--line);margin:13px 0}
@@ -60,7 +73,7 @@
   .tag::before{content:"";position:absolute;left:7px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--ink-2)}
   .tag small{display:block;font-size:9px;font-weight:700;letter-spacing:.1em;opacity:.7;margin-bottom:2px}
   .result .out{flex:1;min-width:0}
-  .final{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:.005em}
+  .final{font-size:var(--final-fs);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.05;letter-spacing:.005em}
   .save{font-size:13px;color:var(--save);font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px}
   .save .pct{color:var(--muted);font-weight:400}
 
@@ -82,16 +95,16 @@
   .chips button.custom.on{color:var(--on-ink)}
 
   .pad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-  .pad button{background:var(--key);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:22px;font-weight:700;
-    padding:16px 0;border-radius:15px;cursor:pointer;transition:.08s;font-variant-numeric:tabular-nums}
+  .pad button{background:var(--key);border:1px solid var(--line);color:var(--text);font-family:inherit;font-size:var(--key-fs);font-weight:700;
+    padding:var(--pad-y) 0;border-radius:15px;cursor:pointer;transition:.08s;font-variant-numeric:tabular-nums}
   .pad button:active{background:var(--key-press);transform:translateY(1px)}
-  .pad .fn{color:var(--accent-soft);font-size:18px}
+  .pad .fn{color:var(--accent-soft);font-size:calc(var(--key-fs) - 4px)}
   .pad .clr{color:var(--muted);font-weight:700}
   .hint{text-align:center;font-size:11px;color:var(--muted);padding:2px 0 4px}
 
   .rev{display:none;flex-direction:column;gap:10px}
   .rev.on{display:flex}
-  .field{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  .field{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px}
   .field.active{border-color:rgba(255,109,92,.5)}
   .field .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
   .field .v.empty{color:var(--muted)}
@@ -149,13 +162,81 @@
     text-align:center;color:var(--muted);font-size:11px;line-height:1.6;padding:12px;
   }
   .ad-ph b{display:block;color:#6d7686;font-size:10px;letter-spacing:.14em;margin-bottom:3px}
-  .ad-note{text-align:center;font-size:10px;color:#5c6472;margin-top:5px}
+
+  /* ===== footer ===== */
+  .footer{margin-top:10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+  .made-in{
+    font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--muted);
+    text-align:center;display:inline-flex;align-items:center;gap:9px;
+  }
+  .made-in::before,.made-in::after{content:"";width:22px;height:1px;background:var(--line)}
+  .made-in b{color:var(--accent-soft);font-weight:700;letter-spacing:.22em}
+  .footer a{font-size:10px;color:#5c6472;text-decoration:none}
+  .footer a:hover{color:var(--muted)}
+
+  /* =========================================================
+     RESPONSIVE
+     ========================================================= */
+
+  /* 小さいスマホ（iPhone SE 等 / 幅360px以下） */
+  @media (max-width:360px){
+    :root{--pad-y:13px;--key-fs:20px;--final-fs:29px;--price-fs:26px;--gap:10px}
+    .app{padding-left:12px;padding-right:12px}
+    .brand h1{font-size:19px}
+    .brand-icon{width:30px;height:30px}
+    .tax button{padding:6px 8px;font-size:10px}
+    .chips button{font-size:13px;padding:10px 0}
+    .chips button.custom{font-size:10px}
+    .result{gap:10px}
+  }
+
+  /* 画面の縦が短い端末 */
+  @media (max-height:700px) and (max-width:520px){
+    :root{--pad-y:12px;--gap:9px}
+    .display{padding:13px 15px}
+    .divider{margin:10px 0}
+    .hint{display:none}
+  }
+
+  /* タブレット・PC：カード状に浮かせて中央表示 */
+  @media (min-width:520px){
+    body{align-items:center;padding:28px 16px}
+    .app{
+      max-width:460px;
+      background:linear-gradient(180deg,rgba(42,46,58,.55),rgba(30,28,34,.85));
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:20px 22px 22px;
+      box-shadow:0 40px 90px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.02);
+    }
+    .pad button,.chips button,.actions button,.tabs button{cursor:pointer}
+    .pad button:hover{background:var(--key-press)}
+    .chips button:not(.on):hover,.actions button:not(.primary):hover,.tabs button:not(.on):hover{border-color:rgba(255,109,92,.38)}
+    .actions .primary:hover{filter:brightness(1.06)}
+    .hist-item:hover{background:var(--panel-2)}
+    .sheet{border-radius:24px;margin-bottom:24px;max-width:460px}
+    .overlay{align-items:center}
+  }
+
+  /* 大画面：少しだけゆとりを持たせる */
+  @media (min-width:900px){
+    :root{--pad-y:17px;--key-fs:23px}
+    .app{max-width:480px}
+  }
+
+  /* マウス環境ではタップ縮小アニメを控えめに */
+  @media (hover:hover) and (pointer:fine){
+    .pad button:active{transform:none}
+  }
 </style>
 </head>
 <body>
 <div class="app">
   <header>
-    <div class="brand"><h1>割引電卓<span class="dot">.</span></h1><small>JUKU-CHO</small></div>
+    <div class="brand">
+      <img class="brand-icon" src="assets/icon-192.png" width="34" height="34" alt="割引電卓アイコン">
+      <h1>割引電卓<span class="dot">.</span></h1>
+    </div>
     <div class="tax" id="tax">
       <button data-tax="0" class="on">税抜</button>
       <button data-tax="10">+10%</button>
@@ -237,7 +318,12 @@
       広告枠（審査通過後にここへ表示されます）
     </div>
   </div>
-  <div class="ad-note"><a href="../../privacy.html" style="color:#5c6472">プライバシーポリシー</a></div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer">
+    <div class="made-in">MADE IN <b>JUKU-CHO</b></div>
+    <a href="privacy.html">プライバシーポリシー</a>
+  </div>
 </div>
 
 <!-- ===== CUSTOM % MODAL ===== -->
@@ -399,6 +485,23 @@ histBtn.addEventListener("click",openHist);
 document.getElementById("histClose").addEventListener("click",closeHist);
 histOverlay.addEventListener("click",e=>{ if(e.target===histOverlay) closeHist(); });
 histClear.addEventListener("click",()=>{ history=[]; persist(); updateBadge(); renderHistory(); });
+
+/* PCのキーボード入力にも対応（Web表示時の使い勝手向上） */
+document.addEventListener("keydown",e=>{
+  if(custOverlay.classList.contains("on")||histOverlay.classList.contains("on")){
+    if(e.key==="Escape"){ closeCustom(); closeHist(); }
+    return;
+  }
+  const isRev=document.getElementById("revMode").classList.contains("on");
+  let k=null;
+  if(/^[0-9]$/.test(e.key)) k=e.key;
+  else if(e.key==="Backspace") k="back";
+  else if(e.key==="Escape"||e.key.toLowerCase()==="c") k="clear";
+  if(!k) return;
+  e.preventDefault();
+  if(isRev){ if(activeF==="orig") orig=press(orig,k); else sale=press(sale,k); revRender(); }
+  else { price=press(price,k); render(); }
+});
 
 updateBadge(); render(); revRender();
 </script>
