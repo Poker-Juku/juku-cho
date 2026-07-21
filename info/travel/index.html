@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d1322">
+<title>海外旅行の為替の基礎知識 | 情報塾 | Juku-Cho</title>
+<meta name="description" content="両替・クレジットカード決済・為替のしくみを、これから学ぶ人にもわかるように解説。知っているだけで同じ旅行が数千円安くなる実践知識をまとめています。">
+<link rel="canonical" href="https://juku-cho.com/info/travel/">
+
+<!-- OGP -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://juku-cho.com/info/travel/">
+<meta property="og:title" content="海外旅行の基礎知識 | 情報塾 | Juku-Cho">
+<meta property="og:description" content="両替・カード決済・為替のしくみ。知っているだけで、同じ旅行が数千円安くなります。">
+<meta property="og:image" content="https://juku-cho.com/assets/ogp.png">
+<meta property="og:site_name" content="Juku-Cho">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+
+<!-- ▼ AdSense申請時、所有権確認タグをここに貼ります -->
+<!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX"> -->
+
+<style>
+  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/BIZUDPGothic-Regular.woff2') format('woff2');}
+  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/BIZUDPGothic-Bold.woff2') format('woff2');}
+  :root{
+    --ink:#0d1322;--ink-2:#131b2e;--panel:#18223a;--panel-2:#1f2c49;
+    --line:rgba(232,184,75,.14);--gold:#e8b84b;--gold-soft:#f0c969;
+    --teal:#4ec9a8;--coral:#ff6d5c;
+    --text:#eef2fb;--muted:#8a96b4;
+    --c:var(--teal);            /* このカテゴリのテーマカラー */
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'BIZ UDPGothic',system-ui,sans-serif;
+    background:radial-gradient(130% 55% at 50% -8%, #1c2745 0%, var(--ink) 58%) fixed;
+    color:var(--text);line-height:1.85;
+    display:flex;justify-content:center;padding:0 18px 70px;
+  }
+  .wrap{width:100%;max-width:760px}
+  a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+  /* ---- 上部バー（サイト共通ナビ） ---- */
+  .topbar{display:flex;align-items:center;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
+  .topbar .mark{
+    font-size:19px;font-weight:700;color:var(--gold);
+    border:1.5px solid var(--gold);border-radius:8px;padding:0 9px;line-height:1.6;text-decoration:none;
+  }
+  .topbar .name{font-size:11px;color:var(--muted);letter-spacing:.22em;text-decoration:none}
+
+  /* ---- パンくず ---- */
+  .crumb{font-size:12px;color:var(--muted);margin:18px 0 0}
+  .crumb a{color:var(--muted);text-decoration:none}
+  .crumb a:hover{color:var(--gold-soft)}
+  .crumb span{margin:0 7px;opacity:.5}
+
+  /* ---- カテゴリ見出し ---- */
+  .cat-head{padding:14px 0 30px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.2em;color:var(--c);font-weight:700;margin-bottom:8px}
+  h1{font-size:27px;font-weight:700;line-height:1.45;margin-bottom:16px}
+  .cat-intro{font-size:14px;color:#c3cbdb}
+  .cat-intro p{margin-bottom:14px}
+  .cat-intro p:last-child{margin-bottom:0}
+  .cat-intro b{color:var(--gold-soft);font-weight:700}
+  .cat-meta{margin-top:18px;font-size:12px;color:var(--muted)}
+
+  /* ---- 記事リスト ---- */
+  section{margin-top:44px}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .sec-head h2{font-size:17px;font-weight:700;line-height:1.4;white-space:nowrap}
+  .sec-head .bar{flex:1;height:1px;background:var(--line)}
+
+  .posts{display:flex;flex-direction:column;gap:10px}
+  .post{
+    display:flex;gap:16px;align-items:flex-start;
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:20px 22px;text-decoration:none;color:inherit;
+    position:relative;overflow:hidden;transition:.16s;
+  }
+  .post:hover{background:var(--panel-2);border-color:rgba(232,184,75,.3);transform:translateY(-2px)}
+  .post .accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  .post .no{font-size:12px;color:var(--c);font-weight:700;letter-spacing:.1em;padding-top:4px;flex-shrink:0}
+  .post .body h3{font-size:16px;font-weight:700;line-height:1.55;margin-bottom:5px}
+  .post .body p{font-size:13px;color:var(--muted);line-height:1.75}
+  .post .body .date{display:block;font-size:11px;color:#5d6780;margin-top:9px;letter-spacing:.04em}
+
+  /* ---- 関連アプリ ---- */
+  .promo{
+    display:flex;gap:16px;align-items:center;
+    background:linear-gradient(135deg, rgba(78,201,168,.08), rgba(255,255,255,.02));
+    border:1px solid rgba(78,201,168,.22);border-radius:16px;padding:20px 22px;
+    text-decoration:none;color:inherit;transition:.16s;
+  }
+  .promo:hover{border-color:rgba(78,201,168,.45);transform:translateY(-2px)}
+  .promo .ico{
+    width:44px;height:44px;border-radius:12px;background:var(--teal);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#14161c;
+  }
+  .promo h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:3px}
+  .promo p{font-size:12px;color:var(--muted);line-height:1.7}
+
+  /* ---- 広告枠 ---- */
+  .ad-unit{margin:48px 0;text-align:center}
+  .ad-label{display:block;font-size:10px;letter-spacing:.14em;color:#5d6780;margin-bottom:8px;text-transform:uppercase}
+  .ad-unit[data-ad="display"]{min-height:100px}
+  .ad-unit[data-ad="inarticle"]{min-height:250px}
+  .ad-ph{border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.02);color:var(--muted);font-size:11px;padding:34px 16px}
+
+  footer{margin-top:56px;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted)}
+  footer a{color:var(--muted);text-decoration:none;margin-left:16px}
+  footer a:hover{color:var(--gold-soft)}
+
+  @media (max-width:600px){
+    h1{font-size:22px}
+    section{margin-top:36px}
+    .post{padding:18px}
+    .ad-unit{margin:38px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .post,.promo{transition:none}
+    .post:hover,.promo:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== 上部バー ===== -->
+  <div class="topbar">
+    <a class="mark" href="/">塾</a>
+    <a class="name" href="/">JUKU-CHO</a>
+  </div>
+
+  <!-- ===== パンくず ===== -->
+  <nav class="crumb" aria-label="パンくずリスト">
+    <a href="/">ホーム</a><span>›</span><a href="/#joho">情報塾</a><span>›</span>海外旅行の基礎知識
+  </nav>
+
+  <!-- ===== カテゴリ見出し ===== -->
+  <div class="cat-head">
+    <p class="eyebrow">情報塾 / 02</p>
+    <h1>海外旅行の基礎知識</h1>
+    <div class="cat-intro">
+      <p>
+        海外旅行の出費は、行き先や日数だけで決まるわけではありません。
+        <b>どこで両替するか、どう支払うか</b>——この2つを変えるだけで、
+        同じ旅程でも数千円単位で差が出ます。
+      </p>
+      <p>
+        ところが両替所の「手数料無料」表示や、カード決済で聞かれる
+        「日本円で払いますか？」といった場面には、
+        知らないと損をする仕組みが隠れています。
+        このカテゴリでは、そうした為替と決済のしくみを、
+        これから学ぶ人にもわかるように順を追って解説していきます。
+      </p>
+    </div>
+    <p class="cat-meta">全1記事　最終更新：2026年7月</p>
+  </div>
+
+  <!-- ===== 記事一覧 ===== -->
+  <section>
+    <div class="sec-head"><h2>記事一覧</h2><span class="bar"></span></div>
+
+    <div class="posts">
+
+      <a class="post" href="/info/travel/ryogae-guide/">
+        <span class="accent"></span>
+        <span class="no">01</span>
+        <div class="body">
+          <h3>海外旅行の両替完全ガイド｜どこで・いつ替えるのが一番お得か</h3>
+          <p>両替場所によって数千円の差が出るしくみと、タイミングを狙うべきでない理由。空港・銀行・現地両替所・ATMを比較し、最終的な行動プランまで示します。</p>
+          <span class="date">2026.07.21</span>
+        </div>
+      </a>
+
+      <!-- ▼ 記事を公開したら、下のブロックのコメントを外してください。
+             番号（no）と日付は公開順に振り直します。
+
+      <a class="post" href="/info/travel/creditcard-rate/">
+        <span class="accent"></span>
+        <span class="no">02</span>
+        <div class="body">
+          <h3>クレジットカードの海外決済、実際いくらの為替レートが使われているのか</h3>
+          <p>請求額が決まる3つのステップと、必ず断るべき「DCC」の正体。</p>
+          <span class="date">2026.07.24</span>
+        </div>
+      </a>
+
+      <a class="post" href="/info/travel/kaigai-atm/">
+        <span class="accent"></span>
+        <span class="no">03</span>
+        <div class="body">
+          <h3>海外ATMでのキャッシングが最安な理由と、正しい使い方</h3>
+          <p>両替所の半分以下で済む計算根拠と、出発前に確認すべき3つの設定。</p>
+          <span class="date">2026.07.27</span>
+        </div>
+      </a>
+
+      <a class="post" href="/info/travel/tts-ttm-ttb/">
+        <span class="accent"></span>
+        <span class="no">04</span>
+        <div class="body">
+          <h3>TTS・TTM・TTBとは？ 為替レートが2種類ある理由</h3>
+          <p>「手数料無料」の正体はスプレッド。実質手数料率の計算方法まで。</p>
+          <span class="date">2026.07.30</span>
+        </div>
+      </a>
+
+      <a class="post" href="/info/travel/naze-ugoku/">
+        <span class="accent"></span>
+        <span class="no">05</span>
+        <div class="body">
+          <h3>為替レートはなぜ動くのか。初心者のための5つの要因</h3>
+          <p>金利差・貿易・物価・リスク心理・投機。専門用語を使わず解説します。</p>
+          <span class="date">2026.08.02</span>
+        </div>
+      </a>
+
+      <a class="post" href="/info/travel/endaka-enyasu/">
+        <span class="accent"></span>
+        <span class="no">06</span>
+        <div class="body">
+          <h3>円安・円高とは何か。数字が「上がる」と円は安くなる理由</h3>
+          <p>直感に反する仕組みを根本から整理し、生活への影響まで踏み込みます。</p>
+          <span class="date">2026.08.05</span>
+        </div>
+      </a>
+
+      <a class="post" href="/info/travel/kaigai-tsuhan/">
+        <span class="accent"></span>
+        <span class="no">07</span>
+        <div class="body">
+          <h3>海外通販の「思ったより高かった」を防ぐ。為替と手数料の全内訳</h3>
+          <p>商品代金の1.3〜1.5倍になる理由を、送料・関税・消費税まで分解。</p>
+          <span class="date">2026.08.08</span>
+        </div>
+      </a>
+
+      <a class="post" href="/info/travel/tsuka-ichiran/">
+        <span class="accent"></span>
+        <span class="no">08</span>
+        <div class="body">
+          <h3>旅行者が知っておくべき主要通貨9種の特徴と、暗算のコツ</h3>
+          <p>ウォン・バーツ・ドンなど、桁で混乱しやすい通貨の換算法をまとめました。</p>
+          <span class="date">2026.08.11</span>
+        </div>
+      </a>
+
+      <a class="post" href="/info/travel/keisan-houhou/">
+        <span class="accent"></span>
+        <span class="no">09</span>
+        <div class="body">
+          <h3>為替の計算方法。掛けるのか割るのかで迷わなくなる考え方</h3>
+          <p>「外貨×レート＝円」の一本で覚える。現地で使える概算テクニックつき。</p>
+          <span class="date">2026.08.14</span>
+        </div>
+      </a>
+      -->
+
+    </div>
+  </section>
+
+  <!-- ===== 広告：記事一覧の下 ===== -->
+  <div class="ad-unit" data-ad="display">
+    <span class="ad-label">スポンサーリンク</span>
+    <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+  </div>
+
+  <!-- ===== 関連アプリ ===== -->
+  <section>
+    <div class="sec-head"><h2>あわせて使う</h2><span class="bar"></span></div>
+    <a class="promo" href="/apps/tabirate/">
+      <div class="ico">¥</div>
+      <div>
+        <h3>TABIRATE — 旅先のための通貨換算</h3>
+        <p>32通貨・6言語対応。オフラインでも動くので、現地で電波がなくても使えます。記事で覚えた計算を、その場で確かめられます。</p>
+      </div>
+    </a>
+  </section>
+
+  <footer>
+    <span>© 2026 Juku-Cho</span>
+    <span>
+      <a href="/privacy.html">プライバシーポリシー</a>
+      <a href="/contact.html">お問い合わせ</a>
+    </span>
+  </footer>
+
+</div>
+
+<!-- パンくずの構造化データ（検索結果に階層が表示されやすくなります） -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://juku-cho.com/" },
+    { "@type": "ListItem", "position": 2, "name": "情報塾", "item": "https://juku-cho.com/#joho" },
+    { "@type": "ListItem", "position": 3, "name": "海外旅行の基礎知識", "item": "https://juku-cho.com/info/travel/" }
+  ]
+}
+</script>
+
+<script src="/assets/ads.js"></script>
+</body>
+</html>
