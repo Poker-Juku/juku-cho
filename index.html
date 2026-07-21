@@ -5,14 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d1322">
 <title>塾 | Juku-Cho — 学べる・使える、実用ツール</title>
-<meta name="description" content="日常で使える実用アプリを爆発無料公開！もちろん塾長のハンドメイド。">
+<meta name="description" content="日常で使える実用アプリと、ポーカー・海外旅行の実践知識を無料公開。インストール不要、ブラウザですぐ使えます。">
+<link rel="canonical" href="https://juku-cho.com/">
+
+<!-- OGP -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://juku-cho.com/">
+<meta property="og:title" content="塾 | Juku-Cho — 学べる・使える、実用ツール">
+<meta property="og:description" content="日常で使える実用アプリと、ポーカー・海外旅行の実践知識を無料公開。">
+<meta property="og:image" content="https://juku-cho.com/assets/ogp.png">
+<meta property="og:site_name" content="Juku-Cho">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
+
+<!-- ▼ AdSense申請時、所有権確認タグをここに貼ります -->
+<!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX"> -->
+
 <style>
   @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:400;font-display:swap;src:url('assets/BIZUDPGothic-Regular.woff2') format('woff2');}
   @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:700;font-display:swap;src:url('assets/BIZUDPGothic-Bold.woff2') format('woff2');}
   :root{
     --ink:#0d1322;--ink-2:#131b2e;--panel:#18223a;--panel-2:#1f2c49;
     --line:rgba(232,184,75,.14);--gold:#e8b84b;--gold-soft:#f0c969;
+    --teal:#4ec9a8;--coral:#ff6d5c;
     --text:#eef2fb;--muted:#8a96b4;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -23,69 +39,84 @@
     display:flex;justify-content:center;padding:0 18px 70px;
   }
   .wrap{width:100%;max-width:760px}
+  a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
 
   /* hero */
-  header{padding:52px 0 40px;text-align:center}
-  .logo{display:inline-flex;align-items:baseline;gap:10px;margin-bottom:16px}
-  .logo .mark{
-    font-size:40px;font-weight:700;color:var(--gold);
-    border:2px solid var(--gold);border-radius:12px;padding:2px 14px;line-height:1.3;
-  }
+  header{padding:64px 0 48px;text-align:center}
+  .logo{display:inline-flex;align-items:baseline;gap:10px;margin-bottom:18px}
+  .logo .mark{font-size:40px;font-weight:700;color:var(--gold);border:2px solid var(--gold);border-radius:12px;padding:2px 14px;line-height:1.3}
   .logo .name{font-size:13px;color:var(--muted);letter-spacing:.24em}
-  h1{font-size:26px;font-weight:700;margin-bottom:12px;letter-spacing:.01em}
+  h1{font-size:26px;font-weight:700;line-height:1.45;margin-bottom:14px;letter-spacing:.01em}
   .lead{font-size:15px;color:#c3cbdb;max-width:520px;margin:0 auto}
   .lead b{color:var(--gold-soft);font-weight:700}
 
   /* section */
-  section{margin-top:52px}
+  section{margin-top:72px}
   .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-  .sec-head h2{font-size:19px;font-weight:700;white-space:nowrap}
+  .sec-head h2{font-size:19px;font-weight:700;line-height:1.4;white-space:nowrap}
   .sec-head .bar{flex:1;height:1px;background:var(--line)}
-  .sec-desc{font-size:13px;color:var(--muted);margin-bottom:20px}
+  .sec-desc{font-size:13px;color:var(--muted);margin-bottom:24px}
 
   /* app grid */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
-  .card{
-    display:flex;flex-direction:column;
-    background:var(--panel);border:1px solid var(--line);border-radius:16px;
-    padding:18px;text-decoration:none;color:inherit;transition:.16s;position:relative;overflow:hidden;
-  }
+  .card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;transition:.16s;position:relative;overflow:hidden}
   .card:hover{background:var(--panel-2);transform:translateY(-2px);border-color:rgba(232,184,75,.3)}
   .card .accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,var(--gold))}
-  .card .ico{
-    width:40px;height:40px;border-radius:11px;background:var(--c,var(--gold));
-    display:flex;align-items:center;justify-content:center;margin-bottom:12px;
-    font-size:19px;font-weight:700;color:#14161c;
-  }
-  .card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+  .card .ico{width:40px;height:40px;border-radius:11px;background:var(--c,var(--gold));display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:19px;font-weight:700;color:#14161c}
+  .card h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:6px}
   .card p{font-size:12px;color:var(--muted);line-height:1.7;flex:1}
-  .card .go{font-size:11px;color:var(--c,var(--gold));font-weight:700;margin-top:12px}
-  .card.soon{opacity:.5;pointer-events:none}
-  .card.soon .go{color:var(--muted)}
+  .card .go{font-size:11px;color:var(--c,var(--gold));font-weight:700;margin-top:14px}
 
-  /* pillar list */
-  .pillars{display:flex;flex-direction:column;gap:10px}
-  .pillar{
-    display:flex;gap:16px;align-items:flex-start;
-    background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;
-    text-decoration:none;color:inherit;transition:.16s;
+  /* =========================================================
+     情報塾（トピックカード）
+     カード全体をリンクにすると、中の子リンクが入れ子になり
+     HTMLとして不正になるため、見出しと子リンクを分けています
+     ========================================================= */
+  .topics{display:flex;flex-direction:column;gap:12px}
+  .topic{
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:20px 22px;position:relative;overflow:hidden;transition:.16s;
   }
-  .pillar:hover{background:var(--panel-2);border-color:rgba(232,184,75,.3)}
-  .pillar .num{font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.1em;padding-top:3px}
-  .pillar .body h3{font-size:16px;font-weight:700;margin-bottom:3px}
-  .pillar .body p{font-size:13px;color:var(--muted)}
+  .topic:hover{border-color:rgba(232,184,75,.28)}
+  .topic .accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,var(--gold))}
+  .topic-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .topic-head .num{font-size:12px;color:var(--c,var(--gold));font-weight:700;letter-spacing:.1em}
+  .topic-head h3{font-size:16px;font-weight:700;line-height:1.5}
+  .topic-head h3 a{color:inherit;text-decoration:none}
+  .topic-head h3 a:hover{color:var(--gold-soft)}
+  .topic > p{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    display:inline-block;font-size:12px;line-height:1.6;
+    padding:5px 13px;border-radius:999px;text-decoration:none;
+    background:rgba(255,255,255,.04);border:1px solid var(--line);
+    color:var(--text);transition:.14s;
+  }
+  .chip:hover{background:var(--panel-2);border-color:var(--c,var(--gold));color:var(--gold-soft)}
+  .chip.soon{opacity:.45;pointer-events:none;color:var(--muted)}
 
-  /* ad slot */
-  .ad-slot{margin-top:48px;min-height:90px;display:flex;align-items:center;justify-content:center;
-    border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.02);overflow:hidden}
-  .ad-slot ins{display:block;width:100%}
-  .ad-ph{text-align:center;color:var(--muted);font-size:11px;padding:16px}
-  .ad-ph b{display:block;color:#5d6780;font-size:10px;letter-spacing:.14em;margin-bottom:3px}
+  /* 広告枠 */
+  .ad-unit{margin:56px 0;text-align:center}
+  .ad-label{display:block;font-size:10px;letter-spacing:.14em;color:#5d6780;margin-bottom:8px;text-transform:uppercase}
+  .ad-unit[data-ad="display"]{min-height:100px}
+  .ad-unit[data-ad="inarticle"]{min-height:250px}
+  .ad-ph{border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.02);color:var(--muted);font-size:11px;padding:34px 16px}
 
-  footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted)}
+  footer{margin-top:64px;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted)}
   footer a{color:var(--muted);text-decoration:none;margin-left:16px}
   footer a:hover{color:var(--gold-soft)}
+
+  @media (max-width:600px){
+    header{padding:44px 0 36px}
+    h1{font-size:22px}
+    section{margin-top:52px}
+    .grid{grid-template-columns:1fr}
+    .ad-unit{margin:44px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .card,.topic,.chip{transition:none}
+    .card:hover{transform:none}
+  }
 </style>
 </head>
 <body>
@@ -98,8 +129,7 @@
     </div>
     <h1>学べる、そして使える。</h1>
     <p class="lead">
-     日常で使える実用アプリを爆笑無料公開！もちろん塾長のハンド❤️メイド<b>
-   
+      日常で使える実用アプリを<b>すべて無料</b>で公開しています。もちろん塾長のハンドメイド。
     </p>
   </header>
 
@@ -109,7 +139,7 @@
     <p class="sec-desc">「こんなアプリあったらいいな」を形に。インストール不要、すべてブラウザで動きます。</p>
 
     <div class="grid">
-      <a class="card" href="apps/discount/" style="--c:#ff6d5c">
+      <a class="card" href="apps/discount/" style="--c:var(--coral)">
         <span class="accent"></span>
         <div class="ico">%</div>
         <h3>割引電卓</h3>
@@ -117,32 +147,23 @@
         <div class="go">使ってみる →</div>
       </a>
 
-      <a class="card" href="apps/tabirate/" style="--c:#4ec9a8">
+      <a class="card" href="apps/tabirate/" style="--c:var(--teal)">
         <span class="accent"></span>
         <div class="ico">¥</div>
-       <h3>TABIRATE</h3>
-        <p>言語は6カ国に対応。通貨は32カ国に対応。アジア14カ国、北米・欧州12カ国、オセアニア・その他6カ国。オフラインでも使える、旅先のための換算アプリ。</p>
+        <h3>TABIRATE</h3>
+        <p>32通貨・6言語に対応した、旅先のための換算アプリ。オフラインでも使えます。</p>
         <div class="go">使ってみる →</div>
       </a>
 
-       <a class="card" href="apps/grandbook/" style="--c:#4ec9a8">
+      <a class="card" href="apps/grandbook/" style="--c:var(--teal)">
         <span class="accent"></span>
-        <div class="ico">📚</div>
-       <h3>Grand Book</h3>
-        <p>ポーカーの収支を管理するアプリ。</p>
+        <div class="ico">帳</div>
+        <h3>Grand Book</h3>
+        <p>ポーカーの収支を記録・管理。勝ち負けの推移をグラフで振り返れます。</p>
         <div class="go">使ってみる →</div>
       </a>
 
-
-            <a class="card" href="apps/shutter/" style="--c:#c9a227">
-        <span class="accent"></span>
-        <div class="ico">♪</div>
-        <h3>shutter</h3>
-        <p>シャッターで判別するツール。</p>
-        <div class="go">使ってみる →</div>
-      </a>
-
-      <a class="card" href="apps/guitar_tuner/" style="--c:#c9a227">
+      <a class="card" href="apps/guitar_tuner/" style="--c:var(--gold)">
         <span class="accent"></span>
         <div class="ico">♪</div>
         <h3>ギターチューナー</h3>
@@ -150,110 +171,91 @@
         <div class="go">使ってみる →</div>
       </a>
 
-      <a class="card" href="" style="--c:#5b8dd9">
+      <a class="card" href="apps/shutter/" style="--c:var(--gold)">
         <span class="accent"></span>
-        <div class="ico">♠</div>
-        <h3>制作中</h3>
-        <p>ポーカーの勝率を計算。複数人数に対応したオッズ計算ツール。</p>
+        <div class="ico">♪</div>
+        <h3>shutter</h3>
+        <p>シャッター音から判別するツール。</p>
         <div class="go">使ってみる →</div>
       </a>
+    </div>
+  </section>
 
-            
-      <a class="card" href="" style="--c:#9d7ad9">
-        <span class="accent"></span>
-        <div class="ico">◎</div>
-        <h3>制作中</h3>
-        <p>ライブポーカー用。ポットサイズとベット額を素早く計算。</p>
-        <div class="go">使ってみる →</div>
-      </a>
+  <!-- ===== 情報塾 ===== -->
+  <section>
+    <div class="sec-head"><h2>情報塾</h2><span class="bar"></span></div>
+    <p class="sec-desc">知っておくと得をする知識を、これから学ぶ人にもわかるように解説します。</p>
 
-      <div class="card soon" style="--c:#6b7690">
+    <div class="topics">
+
+      <!-- ポーカー用語 -->
+      <div class="topic" style="--c:var(--coral)">
         <span class="accent"></span>
-        <div class="ico">＋</div>
-        <h3>次のアプリを準備中</h3>
-        <p>「あったら便利」を随時追加していきます。リクエストもお待ちしています。</p>
-        <div class="go">Coming soon</div>
+        <div class="topic-head">
+          <span class="num">01</span>
+          <h3><a href="info/poker/">ポーカー用語</a></h3>
+        </div>
+        <p>知らない言葉のままテーブルに座らないために。用語と確率を、レベル別にまとめました。</p>
+        <div class="chips">
+          <a class="chip" href="info/poker/beginner/">初級</a>
+          <a class="chip" href="info/poker/intermediate/">中級</a>
+          <a class="chip" href="info/poker/advanced/">上級</a>
+        </div>
+      </div>
+
+      <!-- 海外旅行の基礎知識 -->
+      <div class="topic" style="--c:var(--teal)">
+        <span class="accent"></span>
+        <div class="topic-head">
+          <span class="num">02</span>
+          <h3><a href="info/travel/">海外旅行の基礎知識</a></h3>
+        </div>
+        <p>両替・カード決済・為替のしくみ。知っているだけで、同じ旅行が数千円安くなります。</p>
+        <div class="chips">
+          <a class="chip" href="info/travel/ryogae-guide/">両替完全ガイド</a>
+          <!-- ▼ AdSense申請前には、この「作成中」を削除してください
+                 未完成の表示は審査でマイナスになります -->
+          <span class="chip soon">作成中</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 広告：情報塾の下（このページで唯一の広告枠） ===== -->
+  <div class="ad-unit" data-ad="display">
+    <span class="ad-label">スポンサーリンク</span>
+    <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+  </div>
+
+  <!-- ===== その他の塾 =====
+       poker/ と anime/ のページを作ったらコメントを外してください
+  <section>
+    <div class="sec-head"><h2>その他の塾</h2><span class="bar"></span></div>
+    <p class="sec-desc">アプリ以外にも、現場のリアルを発信しています。</p>
+    <div class="topics">
+      <div class="topic" style="--c:var(--gold)">
+        <span class="accent"></span>
+        <div class="topic-head">
+          <span class="num">03</span>
+          <h3><a href="anime/">アニメ塾</a></h3>
+        </div>
+        <p>現役プロデューサーが語る、アニメ制作の現場のリアル。</p>
       </div>
     </div>
   </section>
-
-  <!-- ===== OTHER PILLARS ===== -->
-  <section>
-    <div class="sec-head"><h2>その他の塾</h2><span class="bar"></span></div>
-    <p class="sec-desc">アプリ以外にも、知識と現場のリアルを発信しています。</p>
-
-    <div class="pillars">
-      <a class="pillar" href="poker/">
-        <span class="num">01</span>
-        <div class="body">
-          <h3>ポーカー塾</h3>
-          <p>用語・確率・戦略を、これから始める人にもわかるように。基礎から丁寧に解説します。</p>
-        </div>
-      </a>
-      <a class="pillar" href="anime/">
-        <span class="num">02</span>
-        <div class="body">
-
-          <p></p>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <!-- ===== AD SLOT ===== -->
-  <div class="ad-slot" id="adSlot">
-    <div class="ad-ph" id="adPlaceholder">
-      <b>SPONSORED</b>
-      広告枠（審査通過後にここへ表示されます）
-    </div>
-  </div>
+  ====================== -->
 
   <footer>
     <span>© 2026 Juku-Cho</span>
     <span>
       <a href="privacy.html">プライバシーポリシー</a>
-      <a href="https://x.com/" target="_blank" rel="noopener">X</a>
-      <a href="https://note.com/" target="_blank" rel="noopener">note</a>
+      <a href="contact.html">お問い合わせ</a>
     </span>
   </footer>
 
 </div>
 
-<script>
-/* =========================================================
-   AD CONFIG — AdSense承認後、ここだけ書き換えてください
-   ========================================================= */
-const AD_CONFIG = {
-  ENABLED: false,
-  CLIENT : "ca-pub-XXXXXXXXXXXXXXXX",
-  SLOT   : "XXXXXXXXXX"
-};
-
-(function initAds(){
-  if(!AD_CONFIG.ENABLED) return;
-  const slot = document.getElementById("adSlot");
-  const ph   = document.getElementById("adPlaceholder");
-
-  const s = document.createElement("script");
-  s.async = true;
-  s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + AD_CONFIG.CLIENT;
-  s.crossOrigin = "anonymous";
-  s.onerror = () => { slot.style.display = "none"; };
-  document.head.appendChild(s);
-
-  const ins = document.createElement("ins");
-  ins.className = "adsbygoogle";
-  ins.style.display = "block";
-  ins.setAttribute("data-ad-client", AD_CONFIG.CLIENT);
-  ins.setAttribute("data-ad-slot",   AD_CONFIG.SLOT);
-  ins.setAttribute("data-ad-format", "auto");
-  ins.setAttribute("data-full-width-responsive", "true");
-  ph.remove();
-  slot.appendChild(ins);
-
-  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); }
-  catch(e){ slot.style.display = "none"; }
-})();
-</script>
+<script src="assets/ads.js"></script>
 </body>
 </html>
