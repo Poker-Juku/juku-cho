@@ -271,6 +271,68 @@
     .row{padding:12px 8px}
     .hdr{height:48px}
   }
+
+  /* ============ desktop: fill window, scale up ============ */
+  @media (min-width:760px){
+    html,body{position:static;overflow:auto}
+    body{align-items:center;padding:40px 24px;min-height:100vh}
+    body::before{width:640px;height:520px;top:-220px}
+    .app{max-width:640px;height:min(880px,92vh);border-radius:28px;overflow:hidden;
+      border:1px solid var(--hair);box-shadow:0 30px 80px -30px rgba(0,0,0,.55);
+      padding:20px 26px 14px}
+    [data-theme="light"] .app{box-shadow:0 30px 80px -30px rgba(20,22,28,.22)}
+
+    .hdr{height:76px}
+    .glyph{width:46px;height:46px;border-radius:14px}
+    .wm .t{font-size:22px}
+    .wm .s{font-size:11px}
+    .gear{width:46px;height:46px}
+    .gear svg{width:21px;height:21px}
+
+    .tabs{padding:6px;border-radius:16px;margin-bottom:20px}
+    .tab{height:44px;font-size:14px;border-radius:11px}
+    .tab .fl{font-size:18px}
+
+    .rate{padding:4px 6px 18px;margin-bottom:14px}
+    .rate .val{font-size:28px}
+    .rate .pair{font-size:13px}
+    .rate .when{font-size:12px}
+    .rate .act{width:32px;height:32px}
+    .rate .act svg{width:17px;height:17px}
+
+    .row{padding:20px 10px}
+    .fl-big{font-size:24px}
+    .iso{font-size:15px}
+    .cname{font-size:13px}
+    .sym{font-size:24px}
+    .amt{font-size:48px}
+    .swap{width:46px;height:46px}
+    .swap svg{width:18px;height:18px}
+
+    .qg-h{font-size:11px}
+    .qb{height:38px;font-size:13px;border-radius:11px}
+    .quick{gap:10px}
+
+    .kp-g{gap:10px}
+    .kp-g button{border-radius:16px;font-size:23px}
+    .kp-top .l{font-size:12px}
+    .kp-top .done{font-size:15px}
+
+    .ad{height:64px;border-radius:14px}
+    .foot{font-size:10px;padding-top:10px}
+
+    .sheet{max-width:520px;height:80vh;border-radius:24px;bottom:auto;top:50%;
+      transform:translate(-50%,-46%) scale(.97);left:50%;right:auto;opacity:0;
+      transition:transform .22s cubic-bezier(.32,.72,0,1),opacity .22s}
+    .sheet.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+    .scrim{cursor:pointer}
+
+    .drum{max-width:420px;left:50%;right:auto;bottom:auto;top:50%;border-radius:20px;
+      transform:translate(-50%,-46%) scale(.97);opacity:0;
+      transition:transform .22s cubic-bezier(.32,.72,0,1),opacity .22s}
+    .drum.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+    .dscrim{cursor:pointer}
+  }
 </style>
 </head>
 <body>
@@ -741,6 +803,16 @@
   }
   init();
 })();
+</script>
+<script>
+  // オフライン対応: Service Worker を登録
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function (err) {
+        console.warn('[sw] registration failed:', err);
+      });
+    });
+  }
 </script>
 </body>
 </html>
