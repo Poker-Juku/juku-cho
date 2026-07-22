@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d1322">
+<title>通貨別ガイドと為替計算のコツ｜主要通貨の暗算法と「掛ける・割る」の判断 | Juku-Cho</title>
+<meta name="description" content="米ドル・ユーロ・ウォン・バーツなど主要通貨9種の暗算のコツと、円⇄外貨で「掛けるのか割るのか」で迷わなくなる考え方。旅行中に桁を間違えないための、為替計算の実践ガイドです。">
+<link rel="canonical" href="https://juku-cho.com/info/travel/tsuka-keisan/">
+
+<!-- OGP -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juku-cho.com/info/travel/tsuka-keisan/">
+<meta property="og:title" content="通貨別ガイドと為替計算のコツ｜主要通貨の暗算法と「掛ける・割る」の判断">
+<meta property="og:description" content="主要通貨9種の暗算のコツと、円⇄外貨で迷わなくなる計算の考え方。旅行中に桁を間違えないための実践ガイド。">
+<meta property="og:image" content="https://juku-cho.com/assets/ogp.png">
+<meta property="og:site_name" content="Juku-Cho">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+
+<!-- ▼ AdSense申請時、所有権確認タグをここに貼ります -->
+<!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX"> -->
+
+<style>
+  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/BIZUDPGothic-Regular.woff2') format('woff2');}
+  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/BIZUDPGothic-Bold.woff2') format('woff2');}
+  :root{
+    --ink:#0d1322;--ink-2:#131b2e;--panel:#18223a;--panel-2:#1f2c49;
+    --line:rgba(232,184,75,.14);--gold:#e8b84b;--gold-soft:#f0c969;
+    --teal:#4ec9a8;--coral:#ff6d5c;
+    --text:#eef2fb;--muted:#8a96b4;
+    --c:var(--teal);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'BIZ UDPGothic',system-ui,sans-serif;
+    background:radial-gradient(130% 55% at 50% -8%, #1c2745 0%, var(--ink) 58%) fixed;
+    color:var(--text);line-height:1.85;
+    display:flex;justify-content:center;padding:0 18px 70px;
+  }
+  .wrap{width:100%;max-width:720px}
+  a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+  .topbar{display:flex;align-items:center;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
+  .topbar .mark{font-size:19px;font-weight:700;color:var(--gold);border:1.5px solid var(--gold);border-radius:8px;padding:0 9px;line-height:1.6;text-decoration:none}
+  .topbar .name{font-size:11px;color:var(--muted);letter-spacing:.22em;text-decoration:none}
+
+  .crumb{font-size:12px;color:var(--muted);margin:18px 0 0;line-height:1.9}
+  .crumb a{color:var(--muted);text-decoration:none}
+  .crumb a:hover{color:var(--gold-soft)}
+  .crumb span{margin:0 7px;opacity:.5}
+
+  .art-head{padding:12px 0 28px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.2em;color:var(--c);font-weight:700;margin-bottom:10px}
+  h1{font-size:28px;font-weight:700;line-height:1.5;margin-bottom:16px;letter-spacing:.005em}
+  .art-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:#5d6780;letter-spacing:.04em}
+
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:32px 0}
+  .toc h2{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--c);margin-bottom:14px}
+  .toc ol{list-style:none;counter-reset:toc;font-size:14px}
+  .toc li{counter-increment:toc;margin-bottom:9px;padding-left:30px;position:relative;line-height:1.7}
+  .toc li:last-child{margin-bottom:0}
+  .toc li::before{content:counter(toc,decimal-leading-zero);position:absolute;left:0;top:0;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.06em}
+  .toc a{color:var(--text);text-decoration:none}
+  .toc a:hover{color:var(--gold-soft)}
+
+  .art-body{font-size:16px;line-height:1.95}
+  .art-body > p{margin:0 0 22px}
+  .art-body .intro{font-size:17px;color:#c9d1e2}
+  .art-body h2{font-size:21px;font-weight:700;line-height:1.5;margin:56px 0 20px;padding-left:15px;border-left:4px solid var(--c);scroll-margin-top:20px}
+  .art-body h3{font-size:17px;font-weight:700;line-height:1.6;margin:36px 0 14px;color:var(--gold-soft)}
+  .art-body h4{font-size:15px;font-weight:700;line-height:1.6;margin:26px 0 10px}
+  .art-body strong{color:var(--gold-soft);font-weight:700}
+  .art-body a{color:var(--c);text-decoration:underline;text-underline-offset:3px}
+  .art-body ul,.art-body ol{margin:0 0 22px;padding-left:1.4em}
+  .art-body li{margin-bottom:9px;line-height:1.9}
+
+  .calc{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:0 0 22px;font-size:15px;line-height:1.9;color:#c9d1e2}
+
+  .keypoint{background:linear-gradient(135deg, rgba(232,184,75,.07), rgba(255,255,255,.02));border:1px solid rgba(232,184,75,.24);border-radius:16px;padding:22px 24px;margin:0 0 28px}
+  .keypoint h3{margin:0 0 12px;font-size:13px;letter-spacing:.14em;color:var(--gold)}
+  .keypoint ul{margin:0;padding-left:1.3em}
+  .keypoint li{font-size:15px;margin-bottom:8px}
+  .keypoint li:last-child{margin-bottom:0}
+
+  .note{border-left:3px solid var(--coral);background:rgba(255,109,92,.06);border-radius:0 12px 12px 0;padding:16px 20px;margin:0 0 22px;font-size:15px}
+  .note b{color:#ff9a8d}
+
+  .table-scroll{overflow-x:auto;margin:0 0 24px;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:380px}
+  th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);line-height:1.7}
+  th{color:var(--c);font-weight:700;font-size:13px;letter-spacing:.04em;white-space:nowrap}
+  td strong{color:var(--gold-soft)}
+  td.c{text-align:center;white-space:nowrap}
+
+  .ad-unit{margin:48px 0;text-align:center}
+  .ad-label{display:block;font-size:10px;letter-spacing:.14em;color:#5d6780;margin-bottom:8px;text-transform:uppercase}
+  .ad-unit[data-ad="display"]{min-height:100px}
+  .ad-unit[data-ad="inarticle"]{min-height:250px}
+  .ad-ph{border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.02);color:var(--muted);font-size:11px;padding:34px 16px}
+
+  .promo{display:flex;gap:16px;align-items:center;background:linear-gradient(135deg, rgba(78,201,168,.08), rgba(255,255,255,.02));border:1px solid rgba(78,201,168,.22);border-radius:16px;padding:20px 22px;text-decoration:none;color:inherit;transition:.16s;margin:40px 0}
+  .promo:hover{border-color:rgba(78,201,168,.45);transform:translateY(-2px)}
+  .promo .ico{width:44px;height:44px;border-radius:12px;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#14161c}
+  .promo h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:3px}
+  .promo p{font-size:12px;color:var(--muted);line-height:1.7}
+
+  .next{margin-top:48px}
+  .next-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .next-head h2{font-size:16px;font-weight:700;white-space:nowrap}
+  .next-head .bar{flex:1;height:1px;background:var(--line)}
+  .next-list{display:flex;flex-direction:column;gap:10px}
+  .next-item{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px;text-decoration:none;color:inherit;transition:.16s}
+  .next-item:hover{background:var(--panel-2);border-color:rgba(232,184,75,.3)}
+  .next-item h3{font-size:14px;font-weight:700;line-height:1.6;margin-bottom:3px}
+  .next-item p{font-size:12px;color:var(--muted);line-height:1.7}
+
+  .back{display:inline-block;margin-top:36px;font-size:13px;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--gold-soft)}
+
+  footer{margin-top:56px;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted)}
+  footer a{color:var(--muted);text-decoration:none;margin-left:16px}
+  footer a:hover{color:var(--gold-soft)}
+
+  @media (max-width:600px){
+    h1{font-size:23px}
+    .art-body{font-size:15.5px}
+    .art-body h2{font-size:19px;margin:44px 0 16px}
+    .art-body h3{font-size:16px}
+    .toc{padding:18px 20px}
+    .ad-unit{margin:38px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .promo,.next-item{transition:none}
+    .promo:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="mark" href="/">塾</a>
+    <a class="name" href="/">JUKU-CHO</a>
+  </div>
+
+  <nav class="crumb" aria-label="パンくずリスト">
+    <a href="/">ホーム</a><span>›</span><a href="/#joho">情報塾</a><span>›</span><a href="/info/travel/">海外旅行の基礎知識</a><span>›</span>通貨別ガイドと為替計算のコツ
+  </nav>
+
+  <article>
+
+    <div class="art-head">
+      <p class="eyebrow">海外旅行の基礎知識 / 05</p>
+      <h1>通貨別ガイドと為替計算のコツ｜主要通貨の暗算法と「掛ける・割る」の判断</h1>
+      <div class="art-meta">
+        <time datetime="2026-08-02">公開：2026.08.02</time>
+        <span>約11分で読めます</span>
+      </div>
+    </div>
+
+    <div class="art-body">
+
+      <p class="intro">
+        旅先のレストランで、メニューに並ぶ「38,000」の文字。これって日本円でいくら——？ 桁の感覚がつかめないまま注文すると、あとで会計を見て青ざめることになります。
+      </p>
+
+      <p>
+        海外での買い物は、<strong>金額をパッと円に直せるかどうか</strong>で快適さが大きく変わります。この記事では、主要通貨ごとの暗算のコツと、円と外貨のあいだで「掛けるのか割るのか」で迷わなくなる考え方を、まとめて身につけていきます。
+      </p>
+
+      <div class="keypoint">
+        <h3>この記事で身につくこと</h3>
+        <ul>
+          <li>主要通貨9種の<strong>暗算のコツ</strong>（倍率を1つ覚えるだけ）</li>
+          <li>桁の大きい通貨で<strong>ゼロを数え間違えない</strong>方法</li>
+          <li>円⇄外貨で<strong>「掛ける・割る」を迷わない</strong>考え方</li>
+          <li>旅先で使える<strong>ざっくり概算のテクニック</strong></li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="目次">
+        <h2>目次</h2>
+        <ol>
+          <li><a href="#currencies">主要通貨9種、それぞれの暗算法</a></li>
+          <li><a href="#digits">桁の大きい通貨で失敗しない3原則</a></li>
+          <li><a href="#formula">「掛ける・割る」で迷わない考え方</a></li>
+          <li><a href="#tech">旅先で使う、ざっくり概算のコツ</a></li>
+          <li><a href="#tool">暗算とツールの使い分け</a></li>
+          <li><a href="#summary">まとめ</a></li>
+        </ol>
+      </nav>
+
+      <!-- ===== 広告① ===== -->
+      <div class="ad-unit" data-ad="inarticle">
+        <span class="ad-label">スポンサーリンク</span>
+        <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+      </div>
+
+      <h2 id="currencies">主要通貨9種、それぞれの暗算法</h2>
+
+      <p>
+        まずは通貨ごとの「倍率」を押さえましょう。各通貨につき<strong>ひとつの掛け算</strong>を覚えるだけで、旅行中の判断が一気に速くなります。
+      </p>
+
+      <div class="note">
+        <b>前置き：</b>以下のレートは感覚をつかむための概算です。為替は日々動くので、正確な金額は換算ツールで確認してください。ここでの目的は「だいたいの桁」を瞬時に出せるようになることです。
+      </div>
+
+      <h3>米ドル（USD / $）</h3>
+      <p>
+        世界の基軸通貨。<strong>ドル額 × 1.5</strong> が円のめやすです（1ドル150円前後）。20ドルなら30を頭に置いて3,000円。
+      </p>
+      <p>
+        注意点として、アメリカは表示価格に税が含まれず、レストランではチップ（15〜20%）も必要です。実際の支払いは表示の1.3倍くらいを見込んでおくと安心です。
+      </p>
+
+      <h3>ユーロ（EUR / €）</h3>
+      <p>
+        ドイツ・フランス・イタリア・スペインなどで使う共通通貨。<strong>ユーロ額 × 1.6</strong> が円のめやす。ただし同じEUでもチェコやハンガリー、ポーランドは非ユーロなので、周遊時は要確認です。
+      </p>
+
+      <h3>英ポンド（GBP / £）</h3>
+      <p>
+        主要通貨のなかで円に対する価値が高い部類。<strong>ポンド額 × 2 から少し引く</strong>くらい。スプレッドが広めなので、両替場所の選択がとくに効きます。
+      </p>
+
+      <h3>韓国ウォン（KRW / ₩）</h3>
+      <p>
+        桁が大きく、旅行者が最も混乱する通貨です。<strong>ゼロを1つ取って、1割ほど引く</strong>。10,000ウォンなら1,000を出して約1,050円。「ゼロを1つ取ればほぼ円」と覚えておけば大きくは外しません。カード社会なので、現金は少額で十分です。
+      </p>
+
+      <h3>台湾ドル（TWD / NT$）</h3>
+      <p>
+        <strong>5倍</strong>。100台湾ドルで約500円。夜市など現金主体の場面が多いので、小額紙幣を持っておくと便利です。
+      </p>
+
+      <h3>タイバーツ（THB / ฿）</h3>
+      <p>
+        <strong>4.5倍</strong>、ざっくり4〜5倍。100バーツで約450円。日本での両替レートは不利なので、現地の街中両替所を使うのがおすすめです。
+      </p>
+
+      <h3>中国人民元（CNY / ¥）</h3>
+      <p>
+        <strong>20倍</strong>。100元で約2,000円。モバイル決済が極端に普及していて、現金が使えない店舗もあります。事前に決済手段を確認しておきましょう。
+      </p>
+
+      <h3>ベトナムドン（VND / ₫）</h3>
+      <p>
+        桁が世界最大級。<strong>ゼロを4つ取って6倍</strong>。100,000ドンなら10を出して約600円。「100万ドン＝約6,000円」を基準に覚えると楽です。
+      </p>
+
+      <h3>豪ドル（AUD / A$）</h3>
+      <p>
+        <strong>100倍</strong>（1豪ドル100円前後）で、計算が最も楽な通貨。ただしオーストラリアは物価が高く、感覚的には「日本の1.5倍」を見込んでおくとよいです。
+      </p>
+
+      <h3>一覧で確認</h3>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>通貨</th><th class="c">暗算のかけ算</th><th class="c">例</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>米ドル USD</td><td class="c">× 1.5</td><td class="c">20ドル→3,000円</td></tr>
+            <tr><td>ユーロ EUR</td><td class="c">× 1.6</td><td class="c">20ユーロ→3,200円</td></tr>
+            <tr><td>英ポンド GBP</td><td class="c">× 約1.9</td><td class="c">20ポンド→3,800円</td></tr>
+            <tr><td>韓国ウォン KRW</td><td class="c">÷ 10 − 1割</td><td class="c">1万ウォン→1,050円</td></tr>
+            <tr><td>台湾ドル TWD</td><td class="c">× 5</td><td class="c">100元→500円</td></tr>
+            <tr><td>タイバーツ THB</td><td class="c">× 4.5</td><td class="c">100バーツ→450円</td></tr>
+            <tr><td>人民元 CNY</td><td class="c">× 20</td><td class="c">100元→2,000円</td></tr>
+            <tr><td>ベトナムドン VND</td><td class="c">× 0.006</td><td class="c">10万ドン→600円</td></tr>
+            <tr><td>豪ドル AUD</td><td class="c">× 100</td><td class="c">20ドル→2,000円</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="digits">桁の大きい通貨で失敗しない3原則</h2>
+
+      <p>
+        ウォン、ドン、インドネシアルピアなど、二桁も三桁もゼロが並ぶ通貨は、慣れないうちが危険です。次の3つを守ってください。
+      </p>
+
+      <h3>1. 「基準になる1つ」を覚える</h3>
+      <p>
+        全部を暗記する必要はありません。<strong>「1,000単位でいくらか」を1つだけ</strong>頭に入れておけば応用できます。例：1万ウォン＝約1,050円、100バーツ＝約450円。
+      </p>
+
+      <h3>2. 支払い前に必ず桁を数える</h3>
+      <p>
+        桁の大きい通貨で最も怖いのは、ゼロを1つ見誤ること。それだけで10倍の買い物になってしまいます。会計のたびに、<strong>指でゼロを数える</strong>くらいの慎重さがちょうどいいです。
+      </p>
+
+      <h3>3. 高額なときはツールで確認する</h3>
+      <p>
+        暗算はあくまで概算です。値の張る買い物や値段交渉の場面では、スマホの換算ツールで正確な数字を出してください。数秒の手間で、数千円の失敗が防げます。
+      </p>
+
+      <!-- ===== 広告② ===== -->
+      <div class="ad-unit" data-ad="inarticle">
+        <span class="ad-label">スポンサーリンク</span>
+        <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+      </div>
+
+      <h2 id="formula">「掛ける・割る」で迷わない考え方</h2>
+
+      <p>
+        ここまでは「外貨→円」の暗算でした。ところが旅行では逆方向、「円→外貨」の計算も必要になります。予算を立てるとき、ATMでいくら下ろすか決めるとき——。
+      </p>
+
+      <p>
+        そして多くの人が、この段階で「掛けるんだっけ、割るんだっけ」と固まります。仕組みから理解すれば、二度と迷いません。
+      </p>
+
+      <h3>覚える型は2つだけ</h3>
+
+      <div class="calc">
+        外貨 → 円　：　外貨の金額 × レート ＝ 円<br>
+        円 → 外貨　：　円の金額 ÷ レート ＝ 外貨
+      </div>
+
+      <p>例で確かめます（1ドル150円）。</p>
+
+      <div class="calc">
+        50ドルは何円？　→　50 × 150 ＝ <strong>7,500円</strong><br>
+        30,000円は何ドル？　→　30,000 ÷ 150 ＝ <strong>200ドル</strong>
+      </div>
+
+      <h3>なぜこうなるのか</h3>
+
+      <p>
+        「1ドル＝150円」の<strong>150円は"ドルの単価"</strong>だと考えてください。りんご1個150円と同じです。
+      </p>
+
+      <ul>
+        <li>りんごが50個あって総額を知りたい → 50 × 150（掛ける）</li>
+        <li>30,000円で何個買えるか知りたい → 30,000 ÷ 150（割る）</li>
+      </ul>
+
+      <p>
+        個数から総額なら掛け算、総額から個数なら割り算。それだけの話です。
+      </p>
+
+      <h3>迷ったら「答えが大きくなるか」で判断</h3>
+
+      <p>
+        円は他通貨より単位が小さい通貨です（1ドル＝150円のように、円のほうが数字が大きい）。だから米ドルやユーロが相手なら——
+      </p>
+
+      <ul>
+        <li>外貨を<strong>円に直す</strong> → 数字は大きくなる → <strong>掛ける</strong></li>
+        <li>円を<strong>外貨に直す</strong> → 数字は小さくなる → <strong>割る</strong></li>
+      </ul>
+
+      <p>
+        ウォンやドンのように円より単位が小さい通貨では、この大小が逆になります。ただし<strong>型そのものは常に「外貨 × レート ＝ 円」</strong>で変わりません。この一本さえ握っておけば大丈夫です。
+      </p>
+
+      <h2 id="tech">旅先で使う、ざっくり概算のコツ</h2>
+
+      <h3>コツ1：10倍してから調整する</h3>
+      <p>
+        1ドル150円なら、まず10倍して、半分を足す（＝1.5倍）。80ドルなら 800 ＋ 400 ＝ <strong>1,200円</strong>。
+      </p>
+
+      <h3>コツ2：切りのいい数字で上から挟む</h3>
+      <p>
+        1バーツ4.5円で380バーツなら、400バーツ × 4.5 ＝ 1,800円。実際は380なので少し下、<strong>約1,700円</strong>。「上限を先に知る」だけでも予算オーバーを防げます。
+      </p>
+
+      <h3>コツ3：手数料込みの「実質レート」で計算する</h3>
+      <p>
+        カード決済では実際に2%ほど上乗せされます。厳密に足すより、<strong>レートを少し高めに丸めて</strong>おくのが実用的。1ドル150円なら<strong>155円で計算</strong>しておけば、請求額とのズレがほぼなくなります。
+      </p>
+
+      <h2 id="tool">暗算とツールの使い分け</h2>
+
+      <p>
+        暗算は「だいたいの感覚をつかむ」ために有効です。ただし、次の場面では正確な計算に切り替えてください。
+      </p>
+
+      <ul>
+        <li>高額な買い物（10万円以上）</li>
+        <li>値段交渉をしているとき</li>
+        <li>桁の大きい通貨（ウォン・ドン・ルピア）</li>
+        <li>複数の通貨を使う周遊旅行</li>
+      </ul>
+
+      <p>
+        とくに桁の大きい通貨は、ゼロを1つ数え間違えるだけで致命傷になります。暗算に頼りきらず、その場で確認する習慣が身を守ります。
+      </p>
+
+      <a class="promo" href="/apps/tabirate/">
+        <div class="ico">¥</div>
+        <div>
+          <h3>TABIRATE — 32通貨を、その場で正確に</h3>
+          <p>通貨と金額を入れるだけで、円⇄外貨を両方向に一瞬で計算。オフラインでも動くので、電波のない市場や機内でも使えます。暗算の答え合わせにもどうぞ。</p>
+        </div>
+      </a>
+
+      <h2 id="summary">まとめ</h2>
+
+      <div class="keypoint">
+        <h3>この記事の要点</h3>
+        <ul>
+          <li>通貨ごとの<strong>倍率を1つ覚える</strong>だけで判断が速くなる</li>
+          <li>桁の大きい通貨は<strong>ゼロの数を必ず確認</strong>する</li>
+          <li>計算の型は常に<strong>「外貨 × レート ＝ 円」</strong>の一本</li>
+          <li>カード決済は<strong>レートを高めに丸めて</strong>概算する</li>
+          <li>高額・桁の大きい通貨は<strong>ツールで正確に</strong></li>
+        </ul>
+      </div>
+
+      <p>
+        出発前に、行き先の通貨の倍率だけでも頭に入れておく。それだけで、旅先での買い物が驚くほどスムーズになります。メニューの数字を見て、すっと円に直せる——その小さな余裕が、旅全体を快適にしてくれます。
+      </p>
+
+    </div><!-- /.art-body -->
+
+    <!-- ===== 広告③ ===== -->
+    <div class="ad-unit" data-ad="display">
+      <span class="ad-label">スポンサーリンク</span>
+      <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+    </div>
+
+    <div class="next">
+      <div class="next-head"><h2>次に読む</h2><span class="bar"></span></div>
+      <div class="next-list">
+        <a class="next-item" href="/info/travel/ryogae-guide/">
+          <h3>海外旅行の両替完全ガイド｜どこで・いつ替えるのが一番お得か</h3>
+          <p>計算した予算を、どこで両替するのが一番お得か。場所別に比較しています。</p>
+        </a>
+        <a class="next-item" href="/info/travel/kawase-nyumon/">
+          <h3>為替のしくみ入門｜レートの読み方と、動く理由がわかる</h3>
+          <p>そもそもレートがなぜ動くのか。計算の前提になる為替の基礎を解説します。</p>
+        </a>
+        <a class="next-item" href="/info/travel/">
+          <h3>海外旅行の基礎知識 — 記事一覧</h3>
+          <p>両替・カード決済・為替のしくみをまとめています。</p>
+        </a>
+      </div>
+      <a class="back" href="/info/travel/">← 海外旅行の基礎知識にもどる</a>
+    </div>
+
+  </article>
+
+  <footer>
+    <span>© 2026 Juku-Cho</span>
+    <span>
+      <a href="/privacy.html">プライバシーポリシー</a>
+      <a href="/contact.html">お問い合わせ</a>
+    </span>
+  </footer>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://juku-cho.com/" },
+    { "@type": "ListItem", "position": 2, "name": "情報塾", "item": "https://juku-cho.com/#joho" },
+    { "@type": "ListItem", "position": 3, "name": "海外旅行の基礎知識", "item": "https://juku-cho.com/info/travel/" },
+    { "@type": "ListItem", "position": 4, "name": "通貨別ガイドと為替計算のコツ", "item": "https://juku-cho.com/info/travel/tsuka-keisan/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "通貨別ガイドと為替計算のコツ｜主要通貨の暗算法と「掛ける・割る」の判断",
+  "description": "主要通貨9種の暗算のコツと、円⇄外貨で掛けるのか割るのかで迷わなくなる考え方。旅行中に桁を間違えないための為替計算の実践ガイドです。",
+  "image": "https://juku-cho.com/assets/ogp.png",
+  "datePublished": "2026-08-02",
+  "dateModified": "2026-08-02",
+  "author": { "@type": "Person", "name": "塾長" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Juku-Cho",
+    "url": "https://juku-cho.com/"
+  },
+  "mainEntityOfPage": "https://juku-cho.com/info/travel/tsuka-keisan/"
+}
+</script>
+
+<script src="/assets/ads.js"></script>
+</body>
+</html>
