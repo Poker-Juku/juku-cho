@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d1322">
+<title>海外でのカード決済・ATM完全ガイド｜請求額のしくみと現金の下ろし方 | Juku-Cho</title>
+<meta name="description" content="海外でカードを使うと請求額はどう決まるのか。国際ブランドの基準レート、海外事務手数料、絶対に断るべきDCC、そして現地ATMでの現金調達まで、支払いと引き出しの両方を解説します。">
+<link rel="canonical" href="https://juku-cho.com/info/travel/card-atm-guide/">
+
+<!-- OGP -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://juku-cho.com/info/travel/card-atm-guide/">
+<meta property="og:title" content="海外でのカード決済・ATM完全ガイド｜請求額のしくみと現金の下ろし方">
+<meta property="og:description" content="請求額はどう決まるのか。DCCの断り方から、ATMでの現金調達まで。支払いと引き出しの両方を解説します。">
+<meta property="og:image" content="https://juku-cho.com/assets/ogp.png">
+<meta property="og:site_name" content="Juku-Cho">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+
+<!-- ▼ AdSense申請時、所有権確認タグをここに貼ります -->
+<!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX"> -->
+
+<style>
+  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/BIZUDPGothic-Regular.woff2') format('woff2');}
+  @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:700;font-display:swap;src:url('/assets/BIZUDPGothic-Bold.woff2') format('woff2');}
+  :root{
+    --ink:#0d1322;--ink-2:#131b2e;--panel:#18223a;--panel-2:#1f2c49;
+    --line:rgba(232,184,75,.14);--gold:#e8b84b;--gold-soft:#f0c969;
+    --teal:#4ec9a8;--coral:#ff6d5c;
+    --text:#eef2fb;--muted:#8a96b4;
+    --c:var(--teal);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'BIZ UDPGothic',system-ui,sans-serif;
+    background:radial-gradient(130% 55% at 50% -8%, #1c2745 0%, var(--ink) 58%) fixed;
+    color:var(--text);line-height:1.85;
+    display:flex;justify-content:center;padding:0 18px 70px;
+  }
+  .wrap{width:100%;max-width:720px}
+  a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+  .topbar{display:flex;align-items:center;gap:10px;padding:22px 0;border-bottom:1px solid var(--line)}
+  .topbar .mark{font-size:19px;font-weight:700;color:var(--gold);border:1.5px solid var(--gold);border-radius:8px;padding:0 9px;line-height:1.6;text-decoration:none}
+  .topbar .name{font-size:11px;color:var(--muted);letter-spacing:.22em;text-decoration:none}
+
+  .crumb{font-size:12px;color:var(--muted);margin:18px 0 0;line-height:1.9}
+  .crumb a{color:var(--muted);text-decoration:none}
+  .crumb a:hover{color:var(--gold-soft)}
+  .crumb span{margin:0 7px;opacity:.5}
+
+  .art-head{padding:12px 0 28px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-size:11px;letter-spacing:.2em;color:var(--c);font-weight:700;margin-bottom:10px}
+  h1{font-size:28px;font-weight:700;line-height:1.5;margin-bottom:16px;letter-spacing:.005em}
+  .art-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:#5d6780;letter-spacing:.04em}
+
+  .toc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:32px 0}
+  .toc h2{font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--c);margin-bottom:14px}
+  .toc ol{list-style:none;counter-reset:toc;font-size:14px}
+  .toc li{counter-increment:toc;margin-bottom:9px;padding-left:30px;position:relative;line-height:1.7}
+  .toc li:last-child{margin-bottom:0}
+  .toc li::before{content:counter(toc,decimal-leading-zero);position:absolute;left:0;top:0;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.06em}
+  .toc a{color:var(--text);text-decoration:none}
+  .toc a:hover{color:var(--gold-soft)}
+
+  .art-body{font-size:16px;line-height:1.95}
+  .art-body > p{margin:0 0 22px}
+  .art-body .intro{font-size:17px;color:#c9d1e2}
+  .art-body h2{font-size:21px;font-weight:700;line-height:1.5;margin:56px 0 20px;padding-left:15px;border-left:4px solid var(--c);scroll-margin-top:20px}
+  .art-body h3{font-size:17px;font-weight:700;line-height:1.6;margin:36px 0 14px;color:var(--gold-soft)}
+  .art-body h4{font-size:15px;font-weight:700;line-height:1.6;margin:26px 0 10px}
+  .art-body strong{color:var(--gold-soft);font-weight:700}
+  .art-body a{color:var(--c);text-decoration:underline;text-underline-offset:3px}
+  .art-body ul,.art-body ol{margin:0 0 22px;padding-left:1.4em}
+  .art-body li{margin-bottom:9px;line-height:1.9}
+
+  .calc{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:0 0 22px;font-size:15px;line-height:1.9;color:#c9d1e2}
+
+  .keypoint{background:linear-gradient(135deg, rgba(232,184,75,.07), rgba(255,255,255,.02));border:1px solid rgba(232,184,75,.24);border-radius:16px;padding:22px 24px;margin:0 0 28px}
+  .keypoint h3{margin:0 0 12px;font-size:13px;letter-spacing:.14em;color:var(--gold)}
+  .keypoint ul{margin:0;padding-left:1.3em}
+  .keypoint li{font-size:15px;margin-bottom:8px}
+  .keypoint li:last-child{margin-bottom:0}
+
+  .note{border-left:3px solid var(--coral);background:rgba(255,109,92,.06);border-radius:0 12px 12px 0;padding:16px 20px;margin:0 0 22px;font-size:15px}
+  .note b{color:#ff9a8d}
+
+  .table-scroll{overflow-x:auto;margin:0 0 24px;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:380px}
+  th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);line-height:1.7}
+  th{color:var(--c);font-weight:700;font-size:13px;letter-spacing:.04em;white-space:nowrap}
+  td strong{color:var(--gold-soft)}
+
+  .ad-unit{margin:48px 0;text-align:center}
+  .ad-label{display:block;font-size:10px;letter-spacing:.14em;color:#5d6780;margin-bottom:8px;text-transform:uppercase}
+  .ad-unit[data-ad="display"]{min-height:100px}
+  .ad-unit[data-ad="inarticle"]{min-height:250px}
+  .ad-ph{border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.02);color:var(--muted);font-size:11px;padding:34px 16px}
+
+  .promo{display:flex;gap:16px;align-items:center;background:linear-gradient(135deg, rgba(78,201,168,.08), rgba(255,255,255,.02));border:1px solid rgba(78,201,168,.22);border-radius:16px;padding:20px 22px;text-decoration:none;color:inherit;transition:.16s;margin:40px 0}
+  .promo:hover{border-color:rgba(78,201,168,.45);transform:translateY(-2px)}
+  .promo .ico{width:44px;height:44px;border-radius:12px;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#14161c}
+  .promo h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:3px}
+  .promo p{font-size:12px;color:var(--muted);line-height:1.7}
+
+  .next{margin-top:48px}
+  .next-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .next-head h2{font-size:16px;font-weight:700;white-space:nowrap}
+  .next-head .bar{flex:1;height:1px;background:var(--line)}
+  .next-list{display:flex;flex-direction:column;gap:10px}
+  .next-item{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px;text-decoration:none;color:inherit;transition:.16s}
+  .next-item:hover{background:var(--panel-2);border-color:rgba(232,184,75,.3)}
+  .next-item h3{font-size:14px;font-weight:700;line-height:1.6;margin-bottom:3px}
+  .next-item p{font-size:12px;color:var(--muted);line-height:1.7}
+
+  .back{display:inline-block;margin-top:36px;font-size:13px;color:var(--muted);text-decoration:none}
+  .back:hover{color:var(--gold-soft)}
+
+  footer{margin-top:56px;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted)}
+  footer a{color:var(--muted);text-decoration:none;margin-left:16px}
+  footer a:hover{color:var(--gold-soft)}
+
+  @media (max-width:600px){
+    h1{font-size:23px}
+    .art-body{font-size:15.5px}
+    .art-body h2{font-size:19px;margin:44px 0 16px}
+    .art-body h3{font-size:16px}
+    .toc{padding:18px 20px}
+    .ad-unit{margin:38px 0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .promo,.next-item{transition:none}
+    .promo:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="mark" href="/">塾</a>
+    <a class="name" href="/">JUKU-CHO</a>
+  </div>
+
+  <nav class="crumb" aria-label="パンくずリスト">
+    <a href="/">ホーム</a><span>›</span><a href="/#joho">情報塾</a><span>›</span><a href="/info/travel/">海外旅行の基礎知識</a><span>›</span>カード決済・ATM完全ガイド
+  </nav>
+
+  <article>
+
+    <div class="art-head">
+      <p class="eyebrow">海外旅行の基礎知識 / 02</p>
+      <h1>海外でのカード決済・ATM完全ガイド｜請求額のしくみと現金の下ろし方</h1>
+      <div class="art-meta">
+        <time datetime="2026-07-24">公開：2026.07.24</time>
+        <span>約10分で読めます</span>
+      </div>
+    </div>
+
+    <div class="art-body">
+
+      <p class="intro">
+        帰国して数週間後、カードの明細を開いて「あれ、こんなに使ったっけ」と首をかしげる。海外旅行のあとによくある光景です。
+      </p>
+
+      <p>
+        原因の多くは使いすぎではなく、<strong>請求額の決まり方を知らないこと</strong>にあります。海外決済には、店頭では見えないレートと手数料が働いています。
+      </p>
+
+      <p>
+        この記事では、カードを「使う」場面と「現金を下ろす」場面の両方を扱います。前半が支払い、後半がATM。どちらも押さえておけば、旅先でお金に関して迷う場面はほぼなくなります。
+      </p>
+
+      <div class="keypoint">
+        <h3>先に結論</h3>
+        <ul>
+          <li>請求レートは<strong>国際ブランドの基準レート＋事務手数料1.6〜2.2%</strong>で決まる</li>
+          <li>店やATMで<strong>「日本円で払いますか」と聞かれたら必ず断る</strong></li>
+          <li>現金が要るなら、両替所よりATMキャッシングのほうが安い</li>
+          <li>キャッシングは<strong>帰国後すぐ繰上返済</strong>すれば利息は数百円</li>
+        </ul>
+      </div>
+
+      <nav class="toc" aria-label="目次">
+        <h2>目次</h2>
+        <ol>
+          <li><a href="#part1">カードで払うとき、請求額はこう決まる</a></li>
+          <li><a href="#dcc">「日本円で払いますか」は罠です</a></li>
+          <li><a href="#part2">現金が必要なとき、ATMという選択肢</a></li>
+          <li><a href="#prepare">出発前に確認すべき3つの設定</a></li>
+          <li><a href="#operation">現地ATMでの操作手順</a></li>
+          <li><a href="#summary">使い分けのまとめ</a></li>
+        </ol>
+      </nav>
+
+      <!-- ===== 広告① ===== -->
+      <div class="ad-unit" data-ad="inarticle">
+        <span class="ad-label">スポンサーリンク</span>
+        <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+      </div>
+
+      <h2 id="part1">カードで払うとき、請求額はこう決まる</h2>
+
+      <p>
+        海外の店でカードを通してから、日本円の請求額が確定するまでには、実は3人の登場人物がいます。<strong>店舗、国際ブランド、カード発行会社</strong>です。それぞれの役割を追っていきましょう。
+      </p>
+
+      <h3>登場人物1：店舗 — ここでは円になりません</h3>
+
+      <p>
+        現地の店で100ドルの支払いをすると、その売上情報が決済ネットワークに流れます。この段階では、金額はあくまで現地通貨のままです。日本円という概念はまだ登場しません。
+      </p>
+
+      <h3>登場人物2：国際ブランド — ここで円に変わります</h3>
+
+      <p>
+        VisaやMastercardといった国際ブランドが、自社の基準レートを使って現地通貨を日本円に換算します。この基準レートは市場の実勢レートに極めて近く、両替所のような大きな上乗せは含まれていません。
+      </p>
+
+      <p>
+        ここで見落としがちなのが<strong>「いつのレートが使われるか」</strong>です。適用されるのは買い物をした瞬間ではなく、<strong>売上データがブランド側で処理された日</strong>のレートになります。
+      </p>
+
+      <p>
+        店舗が売上をまとめて送るタイミング次第で、この処理日は1〜3日、場合によっては1週間ほど後ろにずれます。そのため、旅行中にメモした金額と実際の請求額が一致しないのは、むしろ普通のことです。
+      </p>
+
+      <h3>登場人物3：カード発行会社 — 最後に手数料が乗ります</h3>
+
+      <p>
+        円に換算された金額に対して、カードを発行した会社が<strong>海外事務手数料</strong>を加算します。おおむね<strong>1.6%から2.2%</strong>の範囲で、カードによって差があります。
+      </p>
+
+      <p>整理すると、最終的な請求レートはこうなります。</p>
+
+      <div class="calc">
+        請求レート ＝ 国際ブランドの基準レート ×（1 ＋ 海外事務手数料率）
+      </div>
+
+      <h3>数字で確かめてみる</h3>
+
+      <p>
+        1ドル150円、海外事務手数料1.6%のカードで、240ドルのディナーを支払ったとします。
+      </p>
+
+      <div class="calc">
+        240ドル × 150円 ＝ 36,000円<br>
+        36,000円 × 1.016 ＝ <strong>36,576円</strong>
+      </div>
+
+      <p>
+        実質レートは1ドルあたり約152.4円。同じ240ドルを空港両替の現金（仮に1ドル158円）で払っていたら37,920円ですから、<strong>1,300円以上の差</strong>がつきます。
+      </p>
+
+      <p>
+        なお、手数料率が2.2%のカードだと請求は36,792円。カード1枚の違いで200円強変わる計算です。1回の食事なら誤差ですが、旅行全体で30万円使うなら1,800円の差になります。年に一度でも海外へ行くなら、<strong>手数料率の低いカードを1枚用意しておく価値はあります</strong>。
+      </p>
+
+      <div class="note">
+        <b>豆知識：</b>海外事務手数料はカード会社の公式サイトに必ず記載されています。「海外利用」「事務処理手数料」といった項目を探してみてください。同じ会社でもカードのランクによって率が違うことがあります。
+      </div>
+
+      <h2 id="dcc">「日本円で払いますか」は罠です</h2>
+
+      <p>
+        ここからが、この記事で最もお金に直結する話です。
+      </p>
+
+      <p>
+        海外の店舗やATMで、端末にこんな選択肢が出ることがあります。
+      </p>
+
+      <div class="calc">
+        JPY 36,900　／　USD 240.00<br>
+        &nbsp;<br>
+        どちらの通貨で決済しますか？
+      </div>
+
+      <p>
+        日本語や日本円が出てくると安心してしまいますが、これは<strong>DCC（自国通貨建て決済）</strong>という仕組みです。店舗側が独自に決めたレートで、その場で円に換算してしまうものです。
+      </p>
+
+      <p>
+        そのレートには、国際ブランドの基準レートに対して<strong>3%から8%程度の上乗せ</strong>が含まれていることが珍しくありません。しかも画面には「手数料なし」「為替手数料は不要です」といった表示が添えられることが多く、親切な提案に見えてしまいます。
+      </p>
+
+      <p>先ほどの240ドルの例で比べると、こうなります。</p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>選んだ通貨</th><th>請求額</th><th>差額</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>USD（現地通貨）</td><td><strong>36,576円</strong></td><td>—</td></tr>
+            <tr><td>JPY（DCC・上乗せ5%想定）</td><td>37,800円</td><td>＋1,224円</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>断り方</h3>
+
+      <p>
+        難しいことはありません。<strong>必ず現地通貨のほうを選ぶ</strong>。それだけです。
+      </p>
+
+      <ul>
+        <li>アメリカなら USD</li>
+        <li>タイなら THB</li>
+        <li>韓国なら KRW</li>
+        <li>ヨーロッパの多くの国なら EUR</li>
+      </ul>
+
+      <p>
+        伝票が出てきてから円建てだと気づいた場合も、そのまま受け取る必要はありません。スタッフに <strong>"Please charge in local currency."</strong>（現地通貨でお願いします）と伝えれば、切り直してもらえます。DCCは店舗側にマージンが入る仕組みなので勧めてくること自体は自然ですが、断るのは客の当然の権利です。
+      </p>
+
+      <div class="note">
+        <b>注意：</b>ATMでも同じ選択肢が出ます。「With Conversion」「レート保証」といった表現の場合は、<b>Without Conversion</b> や <b>Continue without conversion</b> のほうを選んでください。
+      </div>
+
+      <!-- ===== 広告② ===== -->
+      <div class="ad-unit" data-ad="inarticle">
+        <span class="ad-label">スポンサーリンク</span>
+        <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+      </div>
+
+      <h2 id="part2">現金が必要なとき、ATMという選択肢</h2>
+
+      <p>
+        カード払いが有利なのは分かった。とはいえ、屋台や個人商店、チップなど、現金でなければどうにもならない場面は必ず残ります。
+      </p>
+
+      <p>
+        その現金をどう調達するか。ここで選択肢に入れてほしいのが、<strong>現地ATMからのキャッシング</strong>です。
+      </p>
+
+      <h3>なぜ両替所より安いのか</h3>
+
+      <p>
+        キャッシングで適用されるのは、カード払いと同じ<strong>国際ブランドの基準レート</strong>です。つまり、両替所が上乗せしているスプレッドを丸ごと回避できます。
+      </p>
+
+      <p>代わりにかかるコストは2つだけです。</p>
+
+      <ul>
+        <li><strong>利息</strong>（年率15〜18%程度を日割り計算）</li>
+        <li><strong>ATM利用料</strong>（1回あたり110〜220円程度。無料のカードもあります）</li>
+      </ul>
+
+      <h3>10万円分を用意する場合の比較</h3>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>調達方法</th><th>実質コスト</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>日本の空港で両替</td><td>約3,300円</td></tr>
+            <tr><td>現地の街中両替所</td><td>約1,300円</td></tr>
+            <tr><td>ATMキャッシング（7日で返済）</td><td><strong>約570円</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        キャッシングの内訳は、利息が「10万円 × 年18% × 7日 ÷ 365日 ≒ 345円」、これにATM利用料220円を加えたものです。<strong>空港両替のおよそ6分の1</strong>に収まります。
+      </p>
+
+      <h3>利息を最小にする鍵は「繰上返済」</h3>
+
+      <p>
+        利息は日割りです。裏を返せば、<strong>返すのが早いほど安くなる</strong>ということ。
+      </p>
+
+      <p>
+        通常、キャッシングの返済は翌月以降の口座引き落としですが、多くのカード会社は<strong>繰上返済</strong>（臨時返済、随時返済などと呼ばれます）を受け付けています。
+      </p>
+
+      <p>手順はおおむね次の通りです。</p>
+
+      <ol>
+        <li>帰国したら、カード会社のアプリか会員ページにログイン</li>
+        <li>「キャッシング繰上返済」「臨時のご返済」といった項目を開く</li>
+        <li>指定口座への振込、またはネット返済で入金する</li>
+      </ol>
+
+      <p>
+        帰国の翌日に返済すれば、利息は旅行日数分だけ。1週間の旅行なら300円台で済みます。
+      </p>
+
+      <div class="note">
+        <b>出発前に確認を：</b>繰上返済に対応しているか、その方法は何か。これはカード会社によって違います。知らずに引き落としまで放置しても、両替所より安く済むことが多いのですが、確認しておくに越したことはありません。
+      </div>
+
+      <h2 id="prepare">出発前に確認すべき3つの設定</h2>
+
+      <p>
+        キャッシングは、現地に着いてから「使えなかった」と気づいても手遅れです。次の3点は<strong>遅くとも出発2週間前まで</strong>に確認してください。
+      </p>
+
+      <h3>1. キャッシング枠があるか</h3>
+
+      <p>
+        ショッピング枠とは別に設定される枠です。カードを作るときに「キャッシングは不要」として申し込んでいると、枠がゼロのまま発行されています。
+      </p>
+
+      <p>
+        会員ページで確認し、必要なら増枠を申請します。<strong>審査に数日から2週間ほどかかる</strong>ため、直前では間に合いません。
+      </p>
+
+      <h3>2. 暗証番号を覚えているか</h3>
+
+      <p>
+        ATM操作には4桁のPINが必須です。カード作成時に設定したきり一度も使っていない、という人がかなり多い項目です。
+      </p>
+
+      <p>
+        思い出せない場合、再設定は書面のやりとりになることが多く、<strong>1〜2週間かかります</strong>。心当たりがあるなら今すぐ確認してください。
+      </p>
+
+      <h3>3. 海外利用が有効になっているか</h3>
+
+      <p>
+        不正利用対策として、海外での利用を初期状態で制限しているカードがあります。会員ページや電話で、渡航前に解除しておきましょう。渡航先と期間を事前に登録できるカードもあります。
+      </p>
+
+      <h2 id="operation">現地ATMでの操作手順</h2>
+
+      <p>初めてだと戸惑うので、要点だけ押さえておきます。</p>
+
+      <h3>ATMの選び方</h3>
+
+      <ul>
+        <li><strong>銀行の建物に併設されたATMを使う。</strong>路上や小さな売店に置かれた独立型のATMは、利用料が高いうえにスキミング被害のリスクもあります</li>
+        <li>できれば日中、人通りのある場所で</li>
+        <li>カード挿入口に不自然な突起や緩みがないか、一瞬でも確認する</li>
+      </ul>
+
+      <h3>操作の要点</h3>
+
+      <ul>
+        <li>口座種別を聞かれたら <strong>Credit</strong>（またはCredit Card）を選ぶ。Savings や Checking ではありません</li>
+        <li>金額は<strong>現地通貨で</strong>入力します。日本円ではありません</li>
+        <li>DCCを勧められたら断る（<strong>Without Conversion</strong>）</li>
+        <li><strong>1回でまとめて引き出す。</strong>ATM利用料は回数ごとにかかります</li>
+      </ul>
+
+      <h3>いくら引き出すか、先に決めておく</h3>
+
+      <p>
+        金額入力は現地通貨です。ATMの前で「3万円って何バーツだっけ」と計算し始めると、後ろに列ができて焦ります。
+      </p>
+
+      <p>
+        出発前に「3万円 ＝ 約◯◯バーツ」といった目安を調べ、スマホのメモに残しておいてください。桁の大きい通貨ほど、この準備が効きます。
+      </p>
+
+      <a class="promo" href="/apps/tabirate/">
+        <div class="ico">¥</div>
+        <div>
+          <h3>TABIRATE — 旅先のための通貨換算</h3>
+          <p>32通貨・6言語対応。オフラインでも動くので、ATMの前で電波がなくても換算できます。インストール不要、ブラウザですぐ開けます。</p>
+        </div>
+      </a>
+
+      <h2 id="summary">使い分けのまとめ</h2>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>場面</th><th>選ぶべき手段</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>レストラン・ホテル・買い物</td><td><strong>カード払い（現地通貨建て）</strong></td></tr>
+            <tr><td>屋台・個人商店・チップ</td><td>現金（ATMで調達）</td></tr>
+            <tr><td>到着直後の交通費</td><td>日本で用意した少額の現金</td></tr>
+            <tr><td>避けるべきもの</td><td>DCC、空港での高額両替</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>覚えておくことは、突き詰めると2つだけです。</p>
+
+      <div class="keypoint">
+        <h3>この記事の要点</h3>
+        <ul>
+          <li><strong>支払いは必ず現地通貨建てで。</strong>円建ての提案は断る</li>
+          <li><strong>現金はATMで。</strong>帰国後すぐ繰上返済すれば利息はわずか</li>
+        </ul>
+      </div>
+
+      <p>
+        この2つを守るだけで、両替所に払っていたはずの数千円が手元に残ります。旅先での食事1回分か、それ以上の差です。
+      </p>
+
+    </div><!-- /.art-body -->
+
+    <!-- ===== 広告③ ===== -->
+    <div class="ad-unit" data-ad="display">
+      <span class="ad-label">スポンサーリンク</span>
+      <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+    </div>
+
+    <div class="next">
+      <div class="next-head"><h2>次に読む</h2><span class="bar"></span></div>
+      <div class="next-list">
+        <a class="next-item" href="/info/travel/ryogae-guide/">
+          <h3>海外旅行の両替完全ガイド｜どこで・いつ替えるのが一番お得か</h3>
+          <p>この記事で触れた「両替所のスプレッド」を、場所別に比較しています。</p>
+        </a>
+        <!-- 公開したらコメントを外してください
+        <a class="next-item" href="/info/travel/kawase-nyumon/">
+          <h3>為替のしくみ入門｜レートの読み方と動く理由</h3>
+          <p>仲値・TTS・TTBの意味から、円安・円高が生活に与える影響まで。</p>
+        </a>
+        -->
+        <a class="next-item" href="/info/travel/">
+          <h3>海外旅行の基礎知識 — 記事一覧</h3>
+          <p>両替・カード決済・為替のしくみをまとめています。</p>
+        </a>
+      </div>
+      <a class="back" href="/info/travel/">← 海外旅行の基礎知識にもどる</a>
+    </div>
+
+  </article>
+
+  <footer>
+    <span>© 2026 Juku-Cho</span>
+    <span>
+      <a href="/privacy.html">プライバシーポリシー</a>
+      <a href="/contact.html">お問い合わせ</a>
+    </span>
+  </footer>
+
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://juku-cho.com/" },
+    { "@type": "ListItem", "position": 2, "name": "情報塾", "item": "https://juku-cho.com/#joho" },
+    { "@type": "ListItem", "position": 3, "name": "海外旅行の基礎知識", "item": "https://juku-cho.com/info/travel/" },
+    { "@type": "ListItem", "position": 4, "name": "海外でのカード決済・ATM完全ガイド", "item": "https://juku-cho.com/info/travel/card-atm-guide/" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "海外でのカード決済・ATM完全ガイド｜請求額のしくみと現金の下ろし方",
+  "description": "海外でカードを使うと請求額はどう決まるのか。国際ブランドの基準レート、海外事務手数料、絶対に断るべきDCC、そして現地ATMでの現金調達まで解説します。",
+  "image": "https://juku-cho.com/assets/ogp.png",
+  "datePublished": "2026-07-24",
+  "dateModified": "2026-07-24",
+  "author": { "@type": "Person", "name": "塾長" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Juku-Cho",
+    "url": "https://juku-cho.com/"
+  },
+  "mainEntityOfPage": "https://juku-cho.com/info/travel/card-atm-guide/"
+}
+</script>
+
+<script src="/assets/ads.js"></script>
+</body>
+</html>
