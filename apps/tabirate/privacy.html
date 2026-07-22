@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B0D10">
+<title>プライバシーポリシー — TABI-RATE</title>
+<link rel="icon" type="image/png" href="Fabicon.png">
+<style>
+  :root{
+    --bg:#0B0D10; --raise:#14171C; --raise-2:#1B1F26; --ink:#F2F4F7;
+    --ink-2:#9AA3AF; --ink-3:#5C6572; --hair:rgba(255,255,255,.08);
+    --accent:#34D399; --accent-dim:rgba(52,211,153,.12);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#F7F8FA; --raise:#FFFFFF; --raise-2:#F0F2F5; --ink:#0E1116;
+      --ink-2:#5F6875; --ink-3:#98A0AC; --hair:rgba(14,17,22,.08);
+      --accent:#0E9F6E; --accent-dim:rgba(14,159,110,.10);
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.8;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;
+    font-size:13px;font-weight:600;margin-bottom:28px}
+  .back:hover{color:var(--accent)}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .glyph{width:32px;height:32px;border-radius:9px;background:var(--raise-2);border:1px solid var(--hair);
+    display:grid;place-items:center;overflow:hidden;flex:0 0 auto}
+  .glyph img{width:100%;height:100%;object-fit:cover}
+  .brand b{font-size:15px;font-weight:800;letter-spacing:.08em}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.01em;margin:20px 0 6px}
+  .updated{font-size:12px;color:var(--ink-3);margin-bottom:36px}
+  h2{font-size:16px;font-weight:700;margin:36px 0 12px;padding-top:20px;border-top:1px solid var(--hair)}
+  h2:first-of-type{border-top:none;padding-top:0;margin-top:8px}
+  p,li{font-size:14.5px;color:var(--ink-2)}
+  ul{padding-left:20px;margin:10px 0}
+  li{margin-bottom:6px}
+  strong{color:var(--ink);font-weight:700}
+  a{color:var(--accent)}
+  .box{background:var(--raise);border:1px solid var(--hair);border-radius:14px;padding:16px 18px;margin:14px 0}
+  .box p{margin:0;font-size:13.5px}
+  .foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--hair);font-size:11px;
+    color:var(--ink-3);letter-spacing:.08em;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="./index.html">← TABI-RATEに戻る</a>
+
+  <div class="brand">
+    <div class="glyph"><img src="Icon%20512.png" alt=""></div>
+    <b>TABI-RATE</b>
+  </div>
+  <h1>プライバシーポリシー</h1>
+  <div class="updated">最終更新日: 2026年7月22日</div>
+
+  <p>本ポリシーは、Juku-Cho(以下「当方」)が提供するアプリ「TABI-RATE」(以下「本アプリ」)における、利用者情報の取り扱いについて定めるものです。</p>
+
+  <h2>1. 収集する情報について</h2>
+  <p>本アプリは、<strong>氏名・メールアドレス・電話番号などの個人を特定できる情報を一切収集しません。</strong>会員登録やログインの機能もありません。</p>
+  <div class="box">
+    <p>本アプリが端末に保存する情報は、以下の<strong>設定・利用データのみ</strong>で、すべてお使いの端末内(ブラウザのlocalStorage)に留まり、当方のサーバーに送信されることはありません。</p>
+  </div>
+  <ul>
+    <li>表示する国・タブの並び順などの設定</li>
+    <li>簡単入力ボタンに設定した金額</li>
+    <li>ライト/ダーク/システムのテーマ設定</li>
+    <li>選択中の言語</li>
+    <li>直近取得した為替レートのキャッシュ(オフライン利用のため)</li>
+    <li>利用者が「記録」機能で任意に保存した為替レートの履歴・メモ</li>
+  </ul>
+  <p>これらのデータはアプリ内の「設定 → すべての履歴を削除」、またはブラウザの設定からサイトデータを削除することで、いつでも消去できます。</p>
+
+  <h2>2. 外部サービス(為替レートの取得)</h2>
+  <p>本アプリは、最新の為替レートを取得するために以下の外部APIを利用しています。取得時に送信される情報は通信元のIPアドレス程度で、個人を特定する情報は送信されません。</p>
+  <ul>
+    <li><a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a>(open.er-api.com)</li>
+    <li><a href="https://www.frankfurter.app" target="_blank" rel="noopener">Frankfurter</a>(frankfurter.app / 欧州中央銀行のデータを提供)</li>
+  </ul>
+  <p>各サービスのデータの取り扱いについては、それぞれのプライバシーポリシーをご参照ください。</p>
+
+  <h2>3. 広告について</h2>
+  <p><strong>現在、本アプリは広告を配信していません。</strong>将来的に広告(Google AdSense等)を導入する場合は、本ポリシーを事前に更新し、Cookieや広告IDを用いた情報の取り扱いについて明記いたします。導入後は、Googleの広告に関する設定ページから、パーソナライズ広告の無効化が可能になる予定です。</p>
+
+  <h2>4. アクセス解析について</h2>
+  <p>現在、本アプリはアクセス解析ツールを導入していません。導入する場合も、個人を特定する情報は取得しない範囲で運用し、本ポリシーに明記します。</p>
+
+  <h2>5. 未成年の利用について</h2>
+  <p>本アプリは特定の年齢層を対象としたものではなく、年齢確認は行っていません。本アプリは個人情報を収集しないため、未成年の方も安心してご利用いただけます。</p>
+
+  <h2>6. 本ポリシーの変更</h2>
+  <p>本ポリシーの内容は、法令の変更や本アプリの機能追加(広告導入等)に応じて、予告なく変更されることがあります。重要な変更がある場合は、本ページの「最終更新日」を更新してお知らせします。</p>
+
+  <h2>7. お問い合わせ</h2>
+  <p>本ポリシーに関するお問い合わせは、Juku-Cho の note またはXアカウントまでご連絡ください。</p>
+
+  <div class="foot">JUKU-CHO — TABI-RATE PRIVACY POLICY</div>
+</div>
+</body>
+</html>
