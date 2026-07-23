@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#0c0a09">
-<title>シャッター狙い判別 | 塾長</title>
-<meta name="description" content="北斗の拳 転生の章2 シャッター狙いのあべしカウント＆前兆判別ツール">
+<title>あべしゾーン判別 | 塾長</title>
+<meta name="description" content="北斗の拳 転生の章2 規定あべし・モード推測ツール">
 <style>
   :root{
     --bg:#0c0a09; --line:#292524; --line2:#44403c;
@@ -16,127 +16,127 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;overflow:hidden}
-  body{
-    background:var(--bg); color:var(--ink);
-    font-family:"BIZ UDPGothic","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
-    display:flex; justify-content:center;
-  }
-  .app{
-    width:100%; max-width:460px; height:100dvh;
-    display:flex; flex-direction:column; gap:6px;
-    padding:6px 10px calc(6px + var(--safe-b));
-  }
+  body{background:var(--bg);color:var(--ink);display:flex;justify-content:center;
+    font-family:"BIZ UDPGothic","Hiragino Sans","Noto Sans JP",system-ui,sans-serif}
+  .app{width:100%;max-width:470px;height:100dvh;display:flex;flex-direction:column;gap:5px;
+    padding:5px 8px calc(5px + var(--safe-b))}
   .num{font-family:ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
-  button{font-family:inherit;cursor:pointer;border-radius:2px}
+  button{font-family:inherit;cursor:pointer;border-radius:2px;border:1px solid var(--line);
+    background:#151312;color:var(--ink)}
   button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
 
-  .bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto}
-  .brand{font-size:11px;letter-spacing:.28em;color:var(--blood-l)}
-  .acts{display:flex;gap:6px}
-  .icon{width:32px;height:32px;display:grid;place-items:center;background:#1c1917;
-    border:1px solid var(--line);color:var(--sub);font-size:14px;text-decoration:none;border-radius:2px}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:6px;flex:0 0 auto}
+  .brand{font-size:10.5px;letter-spacing:.24em;color:var(--blood-l)}
+  .acts{display:flex;gap:5px}
+  .icon{width:30px;height:30px;display:grid;place-items:center;background:#1c1917;
+    border:1px solid var(--line);color:var(--sub);font-size:13px;text-decoration:none;border-radius:2px}
   .icon.logo{border-color:#57534e}
 
-  .main{border:1px solid;padding:10px 12px;display:flex;align-items:center;gap:12px;flex:0 0 auto;border-radius:2px}
+  .main{border:1px solid;padding:8px 10px;display:flex;align-items:center;gap:10px;flex:0 0 auto;border-radius:2px}
   .main .left{flex:1;min-width:0}
-  .main .call{font-size:22px;font-weight:800;line-height:1.1}
-  .main .detail{font-size:10.5px;line-height:1.5;opacity:.85;margin-top:3px}
-  .main .abeshi{font-size:46px;font-weight:800;color:var(--gold);line-height:.95;text-align:right}
-  .main .albl{font-size:9px;letter-spacing:.3em;color:var(--sub);text-align:right}
+  .main .call{font-size:20px;font-weight:800;line-height:1.1}
+  .main .detail{font-size:10px;line-height:1.5;opacity:.85;margin-top:2px}
+  .main .abeshi{font-size:42px;font-weight:800;color:var(--gold);line-height:.95;text-align:right}
+  .main .albl{font-size:8.5px;letter-spacing:.28em;color:var(--sub);text-align:right}
   .v-go{background:#022c22;border-color:#059669;color:var(--go)}
   .v-wait{background:#151312;border-color:var(--line2);color:#d6d3d1}
   .v-warn{background:#271905;border-color:#b45309;color:var(--warn)}
   .v-stop{background:#280d0d;border-color:#b91c1c;color:var(--stop)}
 
-  .zones{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;flex:0 0 auto}
-  .zone{border:1px solid;padding:5px 1px;text-align:center;border-radius:2px}
-  .zone b{font-size:15px;display:block;line-height:1}
-  .zone i{font-size:9px;font-style:normal;display:block;margin-top:3px;font-weight:700}
-  .z-valid{background:rgba(6,78,59,.5);border-color:#10b981;color:var(--go)}
-  .z-hold{background:rgba(69,26,3,.6);border-color:#b45309;color:var(--warn)}
-  .z-cleared{background:#1c1917;border-color:var(--line);color:#57534e}
-  .z-active{background:rgba(69,10,10,.6);border-color:var(--blood-l);color:#fca5a5}
-  .z-pending{background:#000;border-color:var(--line);color:#57534e}
+  .modes{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;flex:0 0 auto}
+  .m{border:1px solid var(--line);background:#000;padding:5px 3px;text-align:center;border-radius:2px}
+  .m .mn{font-size:10px;color:var(--sub)}
+  .m .mp{font-size:16px;font-weight:800;line-height:1.1;color:var(--ink)}
+  .m .mc{font-size:8.5px;color:#57534e}
+  .m .mbar{height:3px;background:#292524;margin-top:3px;overflow:hidden}
+  .m .mbar i{display:block;height:100%;background:var(--gold)}
+  .m.dead{opacity:.28}
+  .m.dead .mp{color:#57534e}
+  .m.lead{border-color:var(--gold)}
 
-  .count{display:flex;gap:6px;flex:0 0 auto}
-  .spin{flex:1;background:#1c1917;border:1px solid var(--line2);color:var(--ink);
-    font-size:17px;font-weight:800;letter-spacing:.1em;padding:14px 0}
+  .strip{display:flex;gap:3px;overflow-x:auto;flex:0 0 auto;scrollbar-width:none;padding-bottom:2px}
+  .strip::-webkit-scrollbar{display:none}
+  .zc{flex:0 0 46px;border:1px solid var(--line);background:#000;padding:4px 1px;text-align:center;border-radius:2px}
+  .zc .zs{font-size:12px;font-weight:800;line-height:1;color:var(--sub)}
+  .zc .zm{font-size:10px;line-height:1.2;margin-top:2px;color:#57534e}
+  .zc .zp{font-size:9px;margin-top:2px;color:#57534e}
+  .zc.hot{border-color:var(--gold)}
+  .zc.hot .zs,.zc.hot .zm{color:var(--gold)}
+  .zc.now{background:rgba(69,10,10,.65);border-color:var(--blood-l)}
+  .zc.now .zs{color:#fca5a5}
+  .zc.done{opacity:.3}
+  .zc.zen{border-color:var(--go)}
+  .zc.zen .zp{color:var(--go)}
+  .zc.hold{border-color:#b45309}
+  .zc.hold .zp{color:var(--warn)}
+
+  .zoneinfo{display:flex;gap:6px;align-items:center;font-size:10.5px;color:var(--sub);flex:0 0 auto}
+  .zoneinfo b{color:var(--gold);font-size:12px}
+  .zoneinfo .sp{margin-left:auto}
+
+  .count{display:flex;gap:5px;flex:0 0 auto}
+  .spin{flex:1;border-color:var(--line2);font-size:16px;font-weight:800;letter-spacing:.08em;padding:12px 0}
   .spin:active{background:var(--blood)}
-  .auto{flex:0 0 108px;border:1px solid var(--line2);background:#1c1917;color:var(--sub);
-    font-size:11px;line-height:1.4;padding:6px}
+  .auto{flex:0 0 98px;border-color:var(--line2);color:var(--sub);font-size:10px;line-height:1.35;padding:5px}
   .auto.on{background:#022c22;border-color:#059669;color:var(--go)}
-  .auto b{display:block;font-size:13px}
-  .adj{display:flex;gap:4px;flex:0 0 auto}
+  .auto b{display:block;font-size:12px}
+  .adj{display:flex;gap:3px;flex:0 0 auto}
   .adj button,.adj input{flex:1;min-width:0;background:#100f0e;border:1px solid var(--line);
-    color:var(--sub);font-size:12px;padding:8px 0;text-align:center;border-radius:2px}
+    color:var(--sub);font-size:11px;padding:7px 0;text-align:center;border-radius:2px}
   .adj input{color:var(--gold);font-family:inherit}
 
-  .chips{display:flex;gap:4px;flex:0 0 auto;overflow-x:auto;scrollbar-width:none}
-  .chips::-webkit-scrollbar{display:none}
-  .chip{white-space:nowrap;background:#100f0e;border:1px solid var(--line);color:var(--sub);
-    font-size:11px;padding:6px 10px}
-  .chip.on{background:var(--blood);border-color:var(--blood-l);color:#fff}
-  .pick{display:flex;gap:6px;align-items:stretch;flex:0 0 auto}
-  .reel{position:relative;flex:1;min-width:0;background:#000;border:1px solid var(--line);
-    overflow:hidden;border-radius:2px}
-  .reel::after{content:"";position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-    height:34px;border-top:1px solid rgba(220,38,38,.7);border-bottom:1px solid rgba(220,38,38,.7);
-    background:rgba(69,10,10,.25);pointer-events:none}
-  .cell{height:34px;display:flex;align-items:center;justify-content:center;font-size:12px;
-    color:#57534e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 6px}
-  .cell.mid{font-size:15px;font-weight:700;color:var(--gold)}
-  .arrows{display:flex;flex-direction:column;gap:4px;flex:0 0 42px}
-  .arrows button{flex:1;background:#1c1917;border:1px solid var(--line);color:var(--sub);font-size:12px}
-  .rec{width:100%;background:var(--blood);border:1px solid var(--blood-l);color:#fff;
-    font-size:14px;font-weight:800;letter-spacing:.12em;padding:12px 0;flex:0 0 auto}
-  .rec:active{background:var(--blood-l)}
+  .recs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;flex:0 0 auto}
+  .recs button{font-size:11px;padding:9px 0;line-height:1.3}
+  .r-main{grid-column:span 2;background:var(--blood);border-color:var(--blood-l);color:#fff;font-weight:800}
+  .r-main:active{background:var(--blood-l)}
+  .r-sub{grid-column:span 2;color:var(--sub)}
+  .r-gold{border-color:#a16207;color:var(--gold)}
+  .r-gold.on{background:#422006;color:var(--gold)}
 
   .loghead{display:flex;align-items:center;justify-content:space-between;flex:0 0 auto}
-  .eyebrow{font-size:9px;letter-spacing:.3em;color:var(--sub)}
-  .mini{font-size:10px;color:var(--sub);border:1px solid var(--line);background:transparent;padding:4px 8px}
-  .logbox{flex:1 1 auto;min-height:44px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .eyebrow{font-size:9px;letter-spacing:.26em;color:var(--sub)}
+  .mini{font-size:10px;color:var(--sub);background:transparent;padding:4px 8px}
+  .logbox{flex:1 1 auto;min-height:40px;overflow-y:auto;-webkit-overflow-scrolling:touch}
   .logbox ul{list-style:none}
-  .logbox li{display:flex;align-items:center;gap:6px;font-size:11.5px;background:#000;
-    border:1px solid var(--line);padding:5px 6px;margin-bottom:3px;border-radius:2px}
-  li.past{opacity:.35}
-  li.div{justify-content:center;color:var(--sub);font-size:10px;letter-spacing:.2em;background:#151312}
-  .g{color:var(--gold);width:38px;text-align:right;flex-shrink:0;background:transparent;
+  .logbox li{display:flex;align-items:center;gap:6px;font-size:11px;background:#000;
+    border:1px solid var(--line);padding:4px 5px;margin-bottom:3px;border-radius:2px}
+  li.past{opacity:.32}
+  li.div{justify-content:center;color:var(--sub);font-size:9.5px;letter-spacing:.18em;background:#151312}
+  .g{color:var(--gold);width:36px;text-align:right;flex-shrink:0;background:transparent;
     border:none;font-size:12px;padding:2px 0}
   .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .tag{font-size:10px;flex-shrink:0}
-  .t-valid{color:var(--go)} .t-off{color:#57534e}
-  .why{font-size:9px;color:#57534e;flex-shrink:0;max-width:34%;overflow:hidden;
-    text-overflow:ellipsis;white-space:nowrap}
+  .tag{font-size:9.5px;flex-shrink:0}
+  .t-valid{color:var(--go)} .t-off{color:#57534e} .t-hold{color:var(--warn)}
   .del{background:transparent;border:1px solid var(--line);color:#78716c;font-size:11px;
-    width:24px;height:24px;flex-shrink:0}
-  .edit{width:52px;background:#1c1917;border:1px solid var(--line2);color:var(--gold);
-    text-align:center;font-size:12px;padding:3px 0;font-family:ui-monospace,monospace;border-radius:2px}
-  .empty{font-size:11px;color:#57534e;border:1px dashed var(--line);padding:12px;text-align:center;line-height:1.7}
+    width:22px;height:22px;flex-shrink:0;padding:0}
+  .edit{width:50px;background:#1c1917;border:1px solid var(--line2);color:var(--gold);
+    text-align:center;font-size:12px;padding:2px 0;font-family:ui-monospace,monospace;border-radius:2px}
+  .empty{font-size:10.5px;color:#57534e;border:1px dashed var(--line);padding:10px;text-align:center;line-height:1.7}
 
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;
-    justify-content:center;padding:16px;overflow-y:auto;z-index:50}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;justify-content:center;
+    padding:14px;overflow-y:auto;z-index:50}
   .overlay.open{display:flex}
-  .sheet{background:#1c1917;border:1px solid var(--line2);max-width:460px;width:100%;padding:18px;margin:auto 0}
-  .sheet h2{font-size:17px;margin-bottom:12px}
-  .sheet h3{font-size:12.5px;color:var(--gold);margin:16px 0 5px}
-  .sheet p,.sheet li{font-size:11.5px;line-height:1.85;color:#d6d3d1}
-  .sheet ul{padding-left:17px;margin-top:3px}
-  .sheet table{width:100%;border-collapse:collapse;margin-top:5px;font-size:11.5px}
-  .sheet td{border:1px solid var(--line);padding:5px 7px}
-  .sheet td:first-child{color:var(--gold);width:32%}
-  .close{width:100%;margin-top:18px;padding:11px;background:#292524;border:1px solid var(--line2);
-    color:var(--ink);font-size:14px}
+  .sheet{background:#1c1917;border:1px solid var(--line2);max-width:470px;width:100%;padding:16px;margin:auto 0}
+  .sheet h2{font-size:16px;margin-bottom:10px}
+  .sheet h3{font-size:12px;color:var(--gold);margin:15px 0 4px}
+  .sheet p,.sheet li{font-size:11px;line-height:1.85;color:#d6d3d1}
+  .sheet ul{padding-left:16px;margin-top:3px}
+  .sheet table{width:100%;border-collapse:collapse;margin-top:4px;font-size:10.5px}
+  .sheet td,.sheet th{border:1px solid var(--line);padding:4px 5px;text-align:center}
+  .sheet th{color:var(--gold);font-weight:400}
+  .sheet td:first-child{color:var(--gold)}
+  .close{width:100%;margin-top:16px;padding:11px;background:#292524;border-color:var(--line2);font-size:14px}
 </style>
 </head>
 <body>
 <div class="app">
 
   <div class="bar">
-    <div class="brand">転生の章2 / シャッター狙い</div>
+    <div class="brand">転生の章2 / あべしゾーン判別</div>
     <div class="acts">
       <button class="icon" id="helpBtn" aria-label="使い方">?</button>
       <a class="icon logo" href="https://juku-cho.com/" aria-label="塾長ホームへ">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
           <rect x="1.5" y="1.5" width="21" height="21" rx="1.5" fill="none" stroke="#fcd34d" stroke-width="1.2"/>
           <text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#fcd34d" font-family="serif">塾</text>
         </svg>
@@ -155,14 +155,17 @@
     </div>
   </div>
 
-  <div class="zones" id="zones"></div>
+  <div class="modes" id="modes"></div>
+
+  <div class="zoneinfo">
+    <span id="zoneNow"></span>
+    <span class="sp" id="zoneNext"></span>
+  </div>
+  <div class="strip" id="strip"></div>
 
   <div class="count">
     <button class="spin" id="spinBtn">＋1 回転</button>
-    <button class="auto" id="autoBtn">
-      <b id="autoState">自動 OFF</b>
-      <span id="autoRate">4.5秒/回転</span>
-    </button>
+    <button class="auto" id="autoBtn"><b id="autoState">自動 OFF</b><span id="autoRate">4.5秒/回転</span></button>
   </div>
   <div class="adj">
     <button data-add="-10">−10</button>
@@ -174,19 +177,20 @@
     <button id="rateBtn">秒数</button>
   </div>
 
-  <div class="chips" id="chips"></div>
-  <div class="pick">
-    <div class="reel" id="reel"></div>
-    <div class="arrows">
-      <button data-dir="-1" aria-label="前へ">▲</button>
-      <button data-dir="1" aria-label="次へ">▼</button>
-    </div>
+  <div class="recs">
+    <button class="r-main" data-rec="zen">前兆（レア役なし）</button>
+    <button class="r-sub" data-rec="rare">前兆（レア役後・無効）</button>
+    <button data-rec="tenhaIn">天破 IN</button>
+    <button data-rec="tenhaOut">天破 OUT</button>
+    <button data-rec="atHit">AT当選</button>
+    <button data-rec="atEnd">AT終了</button>
+    <button class="r-gold" id="goldBtn" data-rec="gold">台座 金</button>
+    <button data-rec="chg" id="chgBtn">設定変更</button>
+    <button class="r-sub" style="grid-column:span 2" id="clearBtn">全リセット</button>
   </div>
-  <button class="rec" id="recBtn">0 あべしで記録</button>
 
   <div class="loghead">
-    <span class="eyebrow">履歴（数字をタップで編集）</span>
-    <button class="mini" id="clearBtn">全消去</button>
+    <span class="eyebrow">履歴（数字タップで修正）</span>
   </div>
   <div class="logbox" id="logbox"></div>
 </div>
@@ -194,51 +198,53 @@
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
   <div class="sheet">
     <h2 id="helpTitle">使い方</h2>
-    <p>AT終了から打ち始め、レア役・前兆・天破を記録すると、続行かヤメかを自動で判定します。入力内容は端末に保存され、ページを移動しても残ります。</p>
+    <p>あべし数を数えながら「レア役なしの前兆があったか」を記録していくと、滞在モードの確率を計算し、続行かヤメかを判定します。入力は端末に保存され、ページを離れても残ります。</p>
+
+    <h3>何を見ているのか</h3>
+    <p>本機はモードごとにフェイク前兆の発生率が決まっています。とくにモードAは以下のゾーンで<b>フェイク前兆が発生しません</b>。</p>
+    <p style="color:var(--gold)">1〜64 ／ 129〜192 ／ 257〜320 ／ 385〜448 ／ 449〜512</p>
+    <p>つまりこの区間でレア役を引いていないのに前兆が出れば、モードAが否定され、規定あべしの浅いモードB・C・天国の期待が跳ね上がります。これが「シャッター狙い」の中身です。逆に193〜256や513〜576のように全モードで前兆が出やすいゾーンは、前兆が出ても判別材料になりません。</p>
+
+    <h3>モード別の最大あべし</h3>
+    <table>
+      <tr><th>モード</th><th>最大あべし</th><th>主なゾーン</th></tr>
+      <tr><td>A</td><td>1536（変更時1280）</td><td>193〜256／1409〜1536</td></tr>
+      <tr><td>B</td><td>896</td><td>193〜256／705〜768／833〜896</td></tr>
+      <tr><td>C</td><td>576</td><td>193〜256／513〜576</td></tr>
+      <tr><td>天国</td><td>128</td><td>65〜128</td></tr>
+    </table>
 
     <h3>あべしの数え方</h3>
     <ul>
-      <li><b>＋1 回転</b> … 1回転ごとに親指でタップ</li>
-      <li><b>自動</b> … タップでON。設定秒数ごとに自動加算（「秒数」ボタンで4.0〜6.0秒に変更）。画面を離れていた分もあとから反映されます</li>
-      <li>ズレたら −10／−1／+10／+50、または値を入れて「設定」で合わせる</li>
+      <li><b>＋1 回転</b> … 1回転ごとにタップ</li>
+      <li><b>自動</b> … ONで設定秒数ごとに自動加算。「秒数」で4.0〜6.0秒に変更。画面を離れていた分も復帰時に反映</li>
+      <li>ズレたら −10／−1／+10／+50、または値を入れて「設定」</li>
     </ul>
 
-    <h3>記録のしかた</h3>
-    <p>上のタブで種別を選び、ドラムで内容を合わせて赤いボタンで記録します。一覧にない演出は各タブ末尾の「＋ 演出を追加」から登録でき、次回以降も残ります。</p>
+    <h3>記録ボタン</h3>
     <ul>
-      <li><b>レア役</b>は引くたびに必ず記録（判別の除外に使います）</li>
-      <li><b>天破</b>はスタートと終了の両方を記録</li>
-      <li><b>AT終了</b>を記録すると新周回として仕切り直します（履歴は残ります）</li>
+      <li><b>前兆（レア役なし）</b> … これが本命。シャッター・天命の刻・雑魚・ウイグル・牙親父・リン・バット・水浴び・チョコ・ステージチェンジ連続など、種類は問いません</li>
+      <li><b>前兆（レア役後）</b> … レア役契機なので判別には使いませんが、記録だけ残ります</li>
+      <li><b>天破 IN / OUT</b> … 飛ばした区間は判別できないため、そのゾーンは「保留」になります</li>
+      <li><b>AT当選 / AT終了</b> … AT終了であべしを0に戻し、新しい周回として仕切り直します</li>
+      <li><b>台座 金</b> … 数字が赤い金台座は天国濃厚。ONにすると天国の確率を強く見ます。128あべし＋前兆までは即ヤメ厳禁</li>
+      <li><b>設定変更</b> … 朝一など設定変更が疑われる場合にON。深いゾーンの期待度が変わります</li>
     </ul>
+
+    <h3>ゾーン帯の色</h3>
+    <ul>
+      <li><b>金枠</b> … 当選期待度の高いゾーン</li>
+      <li><b>赤背景</b> … 現在地</li>
+      <li><b>緑枠</b> … レア役なし前兆を確認した（モードA否定ゾーンなら大きな武器）</li>
+      <li><b>橙枠</b> … 天破で飛ばして判別できない</li>
+      <li><b>薄い</b> … 前兆なしで通過済み</li>
+    </ul>
+    <p>各ゾーンの下の数字は、いまの推測モード構成での当選期待度です。</p>
 
     <h3>間違えたとき</h3>
-    <p>履歴のあべし数字をタップすると書き換えられ、右の ✕ でその1件だけ削除できます。判定はすぐ計算し直されます。</p>
+    <p>履歴のあべし数字をタップすれば書き換えでき、✕ で1件削除。確率はすぐ計算し直されます。</p>
 
-    <h3>ゾーンの色</h3>
-    <table>
-      <tr><td>未到達</td><td>まだそのあべしに届いていない</td></tr>
-      <tr><td>判別中</td><td>いまゾーン内。前兆に注目</td></tr>
-      <tr><td>有効</td><td>レア役なしの前兆を確認。高モード期待</td></tr>
-      <tr><td>保留</td><td>天破で飛ばしたため判定できない</td></tr>
-      <tr><td>通過</td><td>前兆なしで抜けた</td></tr>
-    </table>
-
-    <h3>判定</h3>
-    <ul>
-      <li><b>続行</b> … 有効前兆あり。896あべしまで打ち切る</li>
-      <li><b>様子見</b> … まだ判断材料が足りない</li>
-      <li><b>判別保留</b> … 天破で飛ばした区間がある</li>
-      <li><b>ヤメ検討</b> … 5ゾーンすべて空振り</li>
-    </ul>
-
-    <h3>自動で無効になる前兆</h3>
-    <ul>
-      <li>レア役から32あべし以内（レア役契機）</li>
-      <li>AT終了から15あべし以内（終了直後のざわつき）</li>
-      <li>判別ゾーン外で始まったもの</li>
-    </ul>
-
-    <p style="margin-top:16px;color:#78716c">実戦検証にもとづく立ち回り補助であり、当選を保証するものではありません。</p>
+    <p style="margin-top:14px;color:#78716c">数値は設定1のデータをもとにした推測であり、当選を保証するものではありません。メーカー公表の攻略法でもありません。</p>
     <button class="close" id="closeBtn">閉じる</button>
   </div>
 </div>
@@ -247,30 +253,45 @@
 (function(){
   "use strict";
 
-  var ZONES=[
-    {id:1,center:40,start:1,end:64,range:"1〜64"},
-    {id:2,center:170,start:129,end:192,range:"129〜192"},
-    {id:3,center:290,start:257,end:320,range:"257〜320"},
-    {id:4,center:425,start:385,end:448,range:"385〜448"},
-    {id:5,center:490,start:449,end:512,range:"449〜512"}
+  /* ---------- ゾーンデータ ---------- */
+  // mk: ゾーン期待度 [A,B,C,天国]  fk: フェイク前兆発生度  d/dc: 規定あべし振り分け(%)  r/rc: 信頼度(%)
+  var Z=[
+    {s:1,   e:64,  mk:["△","△","△","〇"], fk:["✕","△","△","△"],  d:[0.20,0.21,0.03,12.50], dc:[0.26,0.29,0.03,12.50], r:[0.20,0.21,0.03,12.50], rc:[0.26,0.29,0.03,12.50]},
+    {s:65,  e:128, mk:["△","△","△","★"], fk:["〇","〇","〇","天"],  d:[1.37,1.49,0.20,87.50], dc:[1.80,2.02,0.22,87.50], r:[1.37,1.50,0.20,100],   rc:[1.80,2.03,0.22,100]},
+    {s:129, e:192, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.31,0.37,0.40,0],     dc:[0.36,0.45,0.40,0],     r:[0.31,0.38,0.40,0],     rc:[0.37,0.47,0.40,0]},
+    {s:193, e:256, mk:["◎","◎","◎","–"], fk:["◎","◎","◎","–"],  d:[21.94,26.59,28.81,0],  dc:[26.26,32.72,28.77,0],  r:[22.36,27.16,28.99,0],  rc:[26.91,33.65,28.96,0]},
+    {s:257, e:320, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.73,0.45,0],     dc:[0.15,0.90,0.45,0],     r:[0.16,1.02,0.63,0],     rc:[0.20,1.40,0.63,0]},
+    {s:321, e:384, mk:["△","〇","△","–"], fk:["△","〇","〇","–"],  d:[0.73,4.41,2.70,0],     dc:[0.88,5.41,2.69,0],     r:[0.96,6.24,3.85,0],     rc:[1.23,8.51,3.83,0]},
+    {s:385, e:448, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.02,1.41,0],     dc:[0.15,0.03,1.40,0],     r:[0.16,0.03,2.08,0],     rc:[0.21,0.05,2.08,0]},
+    {s:449, e:512, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.02,1.38,0],     dc:[0.15,0.03,1.40,0],     r:[0.16,0.03,2.08,0],     rc:[0.21,0.05,2.13,0]},
+    {s:513, e:576, mk:["〇","△","★","–"], fk:["◎","◎","天","–"],  d:[5.60,0.98,64.64,0],    dc:[6.71,1.21,64.63,0],    r:[7.46,1.48,100,0],      rc:[9.59,2.08,100,0]},
+    {s:577, e:640, mk:["△","△","–","–"], fk:["△","△","–","–"],  d:[0.11,0.99,0,0],        dc:[0.10,0.89,0,0],        r:[0.16,1.52,0,0],        rc:[0.16,1.56,0,0]},
+    {s:641, e:704, mk:["△","△","–","–"], fk:["△","△","–","–"],  d:[0.12,1.01,0,0],        dc:[0.10,0.89,0,0],        r:[0.17,1.58,0,0],        rc:[0.16,1.59,0,0]},
+    {s:705, e:768, mk:["△","〇","–","–"], fk:["△","〇","–","–"],  d:[1.40,12.23,0,0],       dc:[1.19,10.68,0,0],       r:[2.02,19.36,0,0],       rc:[1.88,19.35,0,0]},
+    {s:769, e:832, mk:["△","△","–","–"], fk:["△","△","–","–"],  d:[0.11,1.00,0,0],        dc:[0.10,0.89,0,0],        r:[0.17,1.97,0,0],        rc:[0.16,2.00,0,0]},
+    {s:833, e:896, mk:["〇","★","–","–"], fk:["◎","天","–","–"],  d:[5.71,49.93,0,0],       dc:[4.85,43.60,0,0],       r:[8.42,100,0,0],         rc:[7.84,100,0,0]},
+    {s:897, e:960, mk:["△","–","–","–"], fk:["△","–","–","–"],  d:[0.11,0,0,0],           dc:[0.89,0,0,0],           r:[0.18,0,0,0],           rc:[1.56,0,0,0]},
+    {s:961, e:1024,mk:["△","–","–","–"], fk:["△","–","–","–"],  d:[0.71,0,0,0],           dc:[5.34,0,0,0],           r:[1.15,0,0,0],           rc:[9.52,0,0,0]},
+    {s:1025,e:1088,mk:["△","–","–","–"], fk:["△","–","–","–"],  d:[0.12,0,0,0],           dc:[0.89,0,0,0],           r:[0.20,0,0,0],           rc:[1.75,0,0,0]},
+    {s:1089,e:1152,mk:["△","–","–","–"], fk:["△","–","–","–"],  d:[0.73,0,0,0],           dc:[5.34,0,0,0],           r:[1.20,0,0,0],           rc:[10.71,0,0,0]},
+    {s:1153,e:1216,mk:["△","–","–","–"], fk:["△","–","–","–"],  d:[0.12,0,0,0],           dc:[0.89,0,0,0],           r:[0.20,0,0,0],           rc:[2.00,0,0,0]},
+    {s:1217,e:1280,mk:["◎","–","–","–"], fk:["◎","–","–","–"],  d:[10.99,0,0,0],          dc:[43.62,0,0,0],          r:[18.24,0,0,0],          rc:[100,0,0,0]},
+    {s:1281,e:1344,mk:["〇","–","–","–"], fk:["〇","–","–","–"],  d:[3.40,0,0,0],           dc:[0,0,0,0],              r:[6.90,0,0,0],           rc:[0,0,0,0]},
+    {s:1345,e:1408,mk:["◎","–","–","–"], fk:["◎","–","–","–"],  d:[15.11,0,0,0],          dc:[0,0,0,0],              r:[32.95,0,0,0],          rc:[0,0,0,0]},
+    {s:1409,e:1472,mk:["◎","–","–","–"], fk:["◎","–","–","–"],  d:[29.30,0,0,0],          dc:[0,0,0,0],              r:[95.28,0,0,0],          rc:[0,0,0,0]},
+    {s:1473,e:1536,mk:["★","–","–","–"], fk:["天","–","–","–"],  d:[1.45,0,0,0],           dc:[0,0,0,0],              r:[100,0,0,0],            rc:[0,0,0,0]}
   ];
-  var CATS=[
-    {id:"zencho",name:"前兆",base:["シャッター","天命の刻","雑魚","ウイグル","牙親父","リン・バット","水浴び","チョコ","ステージチェンジ連続","会話演出","カットイン","キャラ紹介","昇格演出","その他前兆"]},
-    {id:"rare",name:"レア役",base:["弱チェリー","強チェリー","中段チェリー","スイカ","弱チャンス目","強チャンス目","特殊リプレイ"]},
-    {id:"tenha",name:"天破",base:["天破スタート","天破終了"]},
-    {id:"battle",name:"バトル",base:["バトル発展","バトル勝利","バトル敗北","継続バトル"]},
-    {id:"at",name:"AT",base:["AT当選","AT終了"]}
-  ];
-  var ADD="＋ 演出を追加";
-  var RARE_BLOCK=32, ZAWA_BLOCK=15, LIMIT=896;
-  var KEY="jukucho.shutter.v1";
+  var MODES=["A","B","C","天国"];
+  var CEIL=[1536,896,576,128], CEIL_C=[1280,896,576,128];
+  var PRIOR=[51.9,23.7,17.6,6.8], PRIOR_C=[49.3,22.0,20.1,8.6];
+  var FAKE={"◎":0.85,"〇":0.5,"△":0.08,"✕":0.0};
+  var KEY="jukucho.abeshi.v2";
 
-  var S={abeshi:0,events:[],seq:0,cat:0,idx:0,custom:{},auto:false,rate:4.5,lastTick:0,edit:null};
+  var S={abeshi:0,events:[],seq:0,gold:false,chg:false,auto:false,rate:4.5,lastTick:0,edit:null};
 
   var mem=null;
   function save(){
-    var d=JSON.stringify({abeshi:S.abeshi,events:S.events,seq:S.seq,cat:S.cat,idx:S.idx,
-      custom:S.custom,auto:S.auto,rate:S.rate,lastTick:S.lastTick});
+    var d=JSON.stringify(S);
     try{localStorage.setItem(KEY,d);}catch(e){mem=d;}
   }
   function load(){
@@ -280,6 +301,7 @@
     try{
       var o=JSON.parse(d);
       Object.keys(o).forEach(function(k){if(o[k]!==undefined)S[k]=o[k];});
+      S.edit=null;
       if(S.auto&&S.lastTick){
         var p=Math.floor((Date.now()-S.lastTick)/(S.rate*1000));
         if(p>0){S.abeshi+=p;S.lastTick+=p*S.rate*1000;}
@@ -288,151 +310,226 @@
   }
 
   var $=function(id){return document.getElementById(id);};
-  var mod=function(n,m){return ((n%m)+m)%m;};
-  function items(c){var cat=CATS[c];return cat.base.concat(S.custom[cat.id]||[]).concat([ADD]);}
-  function esc(s){return String(s).replace(/[&<>"]/g,function(m){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m];});}
+  function zoneOf(g){for(var i=0;i<Z.length;i++)if(g>=Z[i].s&&g<=Z[i].e)return i;return -1;}
 
+  /* ---------- 推測エンジン ---------- */
   function analyze(){
     var divIdx=-1;
-    S.events.forEach(function(e,i){if(e.cat==="at"&&e.name==="AT終了")divIdx=i;});
-    var live=S.events.slice(divIdx+1);
-    var sorted=live.slice().sort(function(a,b){return a.abeshi-b.abeshi||a.id-b.id;});
+    S.events.forEach(function(e,i){if(e.t==="atEnd")divIdx=i;});
+    var live=S.events.slice(divIdx+1).slice().sort(function(a,b){return a.g-b.g||a.id-b.id;});
+    var G=S.abeshi;
+    var dist=S.chg?"dc":"d", rel=S.chg?"rc":"r", ceil=S.chg?CEIL_C:CEIL;
 
+    // 天破で飛ばした区間
     var spans=[],open=null;
-    sorted.forEach(function(e){
-      if(e.cat!=="tenha")return;
-      if(e.name==="天破スタート")open=e.abeshi;
-      else if(open!==null){spans.push({start:open,end:e.abeshi});open=null;}
+    live.forEach(function(e){
+      if(e.t==="tenhaIn")open=e.g;
+      else if(e.t==="tenhaOut"&&open!==null){spans.push({s:open,e:e.g});open=null;}
+    });
+    if(open!==null)spans.push({s:open,e:G});
+    function skipped(z){return spans.some(function(sp){return sp.s<=z.e&&sp.e>=z.s;});}
+
+    // ゾーンごとの観測
+    var obs=Z.map(function(){return null;});
+    live.forEach(function(e){
+      if(e.t!=="zen")return;
+      var i=zoneOf(e.g);
+      if(i>=0)obs[i]="zen";
     });
 
-    var rares=sorted.filter(function(e){return e.cat==="rare";}).map(function(e){return e.abeshi;});
-    var verdicts={};
-    sorted.forEach(function(e){
-      if(e.cat!=="zencho")return;
-      if(e.abeshi<ZAWA_BLOCK){verdicts[e.id]={v:"invalid",w:"終了直後"};return;}
-      if(rares.some(function(r){return r<=e.abeshi&&e.abeshi-r<=RARE_BLOCK;})){
-        verdicts[e.id]={v:"invalid",w:"レア役契機"};return;}
-      var z=ZONES.filter(function(z){return e.abeshi>=z.start&&e.abeshi<=z.end;})[0];
-      if(!z){verdicts[e.id]={v:"outside",w:"ゾーン外"};return;}
-      verdicts[e.id]={v:"valid",w:z.center+"ゾーン",zone:z.id};
+    // 事後確率
+    var prior=(S.chg?PRIOR_C:PRIOR).slice();
+    if(S.gold)prior=[3,3,3,91];
+    var post=prior.map(function(p,m){
+      var w=p;
+      // 生存: 規定あべし > G
+      var surv=0;
+      for(var i=0;i<Z.length;i++){
+        var z=Z[i], v=z[dist][m];
+        if(!v)continue;
+        if(z.e<=G)continue;
+        if(z.s>G)surv+=v;
+        else surv+=v*(z.e-G)/(z.e-z.s+1);
+      }
+      w*=surv/100;
+      // 前兆の有無による尤度
+      for(var j=0;j<Z.length;j++){
+        var zz=Z[j];
+        if(zz.e>G)break;
+        if(skipped(zz))continue;
+        var mark=zz.fk[m];
+        if(mark==="–"||mark==="天")continue;
+        var f=FAKE[mark];
+        if(f===undefined)continue;
+        w*= (obs[j]==="zen") ? f : (1-f);
+      }
+      return Math.max(w,0);
+    });
+    var sum=post.reduce(function(a,b){return a+b;},0);
+    post=sum>0?post.map(function(v){return v/sum*100;}):[100,0,0,0];
+
+    // ゾーン別の当選期待度（残存条件付き・モード加重）
+    var zoneP=Z.map(function(z,i){
+      var p=0;
+      for(var m=0;m<4;m++){
+        if(post[m]<=0)continue;
+        var remain=0;
+        for(var k=0;k<Z.length;k++){
+          var v=Z[k][dist][m];
+          if(!v)continue;
+          if(Z[k].e<=G)continue;
+          if(Z[k].s>G)remain+=v;
+          else remain+=v*(Z[k].e-G)/(Z[k].e-Z[k].s+1);
+        }
+        if(remain<=0)continue;
+        var here=z[dist][m];
+        if(z.e<=G)here=0;
+        else if(z.s<=G)here=here*(z.e-G)/(z.e-z.s+1);
+        p+=post[m]/100*(here/remain)*100;
+      }
+      return p;
     });
 
-    var zones=ZONES.map(function(z){
-      var valid=sorted.some(function(e){var r=verdicts[e.id];return r&&r.v==="valid"&&r.zone===z.id;});
-      var hold=spans.some(function(s){return s.start<=z.end&&s.end>=z.start;})||
-               (open!==null&&open<=z.end&&S.abeshi>=z.start);
-      var st="pending";
-      if(valid)st="valid"; else if(hold)st="hold";
-      else if(S.abeshi>z.end)st="cleared"; else if(S.abeshi>=z.start)st="active";
-      return {z:z,state:st};
-    });
+    // 判定
+    var ci=zoneOf(G), cz=ci>=0?Z[ci]:null;
+    var aliveShallow=post[1]+post[2]+post[3];
+    var anyEvidence=obs.some(function(o,i){return o==="zen"&&Z[i].fk[0]==="✕"&&Z[i].e<=G&&!skipped(Z[i]);});
+    var pendingEvid=obs.some(function(o,i){return o==="zen"&&Z[i].fk[0]==="✕"&&Z[i].e>G;});
+    var holdZone=Z.some(function(z,i){return z.fk[0]==="✕"&&z.e<=G&&skipped(z);});
+    var nextHot=-1;
+    for(var i=0;i<Z.length;i++){if(Z[i].s>G&&zoneP[i]>=8){nextHot=i;break;}}
 
-    var anyValid=zones.some(function(o){return o.state==="valid";});
-    var anyHold=zones.some(function(o){return o.state==="hold";});
-    var pend=zones.filter(function(o){return o.state==="pending"||o.state==="active";});
     var call,tone,detail;
-    if(anyValid&&S.abeshi>=LIMIT){
-      call="896到達";tone="warn";detail="有効前兆分は打ち切り済み。ここからは通常のヤメ時判断へ。";
-    }else if(anyValid){
-      call="続行";tone="go";detail="有効前兆あり。896あべしまで／残り "+Math.max(0,LIMIT-S.abeshi)+" 回転。";
-    }else if(pend.length){
-      call="様子見";tone="wait";detail="次は "+pend[0].z.center+" あべし付近（"+pend[0].z.range+"）。";
-    }else if(anyHold){
-      call="判別保留";tone="warn";detail="天破で飛ばした区間あり。続行はリスク承知で。";
+    if(S.gold&&G<=128){
+      call="続行";tone="go";detail="金台座＝天国濃厚。128あべし＋前兆までは即ヤメ厳禁。";
+    }else if(G<=128&&post[3]>=10){
+      call="続行";tone="go";detail="天国の可能性が残る。128あべし＋前兆まで（残り "+(128-G)+" 回転）。";
+    }else if(anyEvidence||pendingEvid){
+      var lim=post[1]>=post[2]?896:576;
+      call="続行";tone="go";
+      detail="レア役なし前兆でモードA否定。浅い規定あべしが濃厚（B+C+天国 "+aliveShallow.toFixed(0)+"%）。"
+        +(G<lim?"最低でも "+lim+" あべしまで（残り "+(lim-G)+" 回転）。":"");
+    }else if(nextHot>=0){
+      call="様子見";tone="wait";
+      detail="次の勝負どころは "+Z[nextHot].s+"〜"+Z[nextHot].e+"（期待度 "+zoneP[nextHot].toFixed(0)+"%）。あと "+(Z[nextHot].s-G)+" 回転。";
+    }else if(holdZone){
+      call="判別保留";tone="warn";detail="天破で判別ゾーンを飛ばしている。続行はリスク承知で。";
+    }else if(post[0]>=80){
+      call="ヤメ検討";tone="stop";
+      detail="モードA濃厚（"+post[0].toFixed(0)+"%）。規定あべしが深く、期待できるゾーンは当分先。";
     }else{
-      call="ヤメ検討";tone="stop";detail="5ゾーンすべて空振り。通常A・深いゲーム数選択の可能性。";
+      call="様子見";tone="wait";detail="判断材料がまだ足りない。次のゾーンまで様子を見る。";
     }
-    return {call:call,tone:tone,detail:detail,zones:zones,verdicts:verdicts,divIdx:divIdx};
+    if(cz&&zoneP[ci]>=15&&call!=="ヤメ検討"){
+      call="ゾーン中";tone="go";
+      detail="現在 "+cz.s+"〜"+cz.e+" の当選ゾーン内（期待度 "+zoneP[ci].toFixed(0)+"%）。抜けるまでは続行。";
+    }
+
+    return {post:post,zoneP:zoneP,obs:obs,divIdx:divIdx,ci:ci,call:call,tone:tone,detail:detail,
+            ceil:ceil,skipped:skipped,rel:rel};
   }
 
-  var LBL={valid:"有効",hold:"保留",cleared:"通過",active:"判別中",pending:"未到達"};
+  /* ---------- 描画 ---------- */
+  var LABEL={zen:"前兆（レア役なし）",rare:"前兆（レア役後）",tenhaIn:"天破 IN",tenhaOut:"天破 OUT",
+             atHit:"AT当選",atEnd:"AT終了"};
 
   function render(){
-    var A=analyze();
-    var list=items(S.cat), idx=mod(S.idx,list.length);
-
-    $("abeshi").textContent=S.abeshi;
+    var A=analyze(), G=S.abeshi;
+    $("abeshi").textContent=G;
     $("main").className="main v-"+A.tone;
     $("call").textContent=A.call;
     $("detail").textContent=A.detail;
 
-    $("zones").innerHTML=A.zones.map(function(o){
-      return '<div class="zone z-'+o.state+'"><b class="num">'+o.z.center+'</b><i>'+LBL[o.state]+'</i></div>';
+    var lead=A.post.indexOf(Math.max.apply(null,A.post));
+    $("modes").innerHTML=MODES.map(function(n,m){
+      var p=A.post[m], dead=p<1;
+      return '<div class="m'+(dead?" dead":"")+(m===lead&&!dead?" lead":"")+'">'
+        +'<div class="mn">モード'+n+'</div>'
+        +'<div class="mp num">'+(p<0.5?"–":p.toFixed(0)+"%")+'</div>'
+        +'<div class="mc num">最大'+A.ceil[m]+'</div>'
+        +'<div class="mbar"><i style="width:'+Math.min(100,p)+'%"></i></div></div>';
     }).join("");
 
-    $("chips").innerHTML=CATS.map(function(c,i){
-      return '<button class="chip'+(i===S.cat?" on":"")+'" data-cat="'+i+'">'+c.name+'</button>';
+    var ci=A.ci;
+    $("zoneNow").innerHTML = ci>=0
+      ? '現在 <b class="num">'+Z[ci].s+'〜'+Z[ci].e+'</b> ／ 期待度 <b class="num">'+A.zoneP[ci].toFixed(0)+'%</b>'
+      : '現在ゾーン外';
+    var nx=-1;
+    for(var i=0;i<Z.length;i++){if(Z[i].s>G&&A.zoneP[i]>=5){nx=i;break;}}
+    $("zoneNext").innerHTML = nx>=0
+      ? '次 <b class="num">'+Z[nx].s+'</b> まであと <b class="num">'+(Z[nx].s-G)+'</b>'
+      : '';
+
+    $("strip").innerHTML=Z.map(function(z,i){
+      var cls="zc";
+      if(z.e<G&&A.obs[i]!=="zen")cls+=" done";
+      if(A.zoneP[i]>=12)cls+=" hot";
+      if(A.obs[i]==="zen")cls+=" zen";
+      else if(z.e<=G&&A.skipped(z))cls+=" hold";
+      if(i===ci)cls+=" now";
+      var marks=z.mk.filter(function(x){return x==="★"||x==="◎"||x==="〇";});
+      return '<div class="zc '+cls.slice(3)+'" data-z="'+i+'">'
+        +'<div class="zs num">'+z.s+'</div>'
+        +'<div class="zm">'+(marks.length?marks.join(""):"·")+'</div>'
+        +'<div class="zp num">'+(A.zoneP[i]>=1?A.zoneP[i].toFixed(0)+"%":"")+'</div></div>';
     }).join("");
+    var cur=$("strip").querySelector('[data-z="'+(ci<0?0:ci)+'"]');
+    if(cur)$("strip").scrollLeft=Math.max(0,cur.offsetLeft-70);
 
-    $("reel").innerHTML='<div style="padding:5px 0">'+[-1,0,1].map(function(o){
-      return '<div class="cell'+(o===0?" mid":"")+'">'+esc(list[mod(idx+o,list.length)])+'</div>';
-    }).join("")+'</div>';
-
-    $("recBtn").textContent=S.abeshi+" あべしで記録";
+    $("goldBtn").className="r-gold"+(S.gold?" on":"");
+    $("chgBtn").style.color=S.chg?"var(--gold)":"";
+    $("chgBtn").textContent=S.chg?"設定変更 ON":"設定変更";
     $("autoState").textContent=S.auto?"自動 ON":"自動 OFF";
     $("autoRate").textContent=S.rate.toFixed(1)+"秒/回転";
     $("autoBtn").className="auto"+(S.auto?" on":"");
 
     var box=$("logbox");
     if(!S.events.length){
-      box.innerHTML='<p class="empty">AT終了から打ち始め、レア役・前兆・天破を記録していく。</p>';
+      box.innerHTML='<p class="empty">AT終了から打ち始め、レア役なしの前兆を記録していく。</p>';
       return;
     }
-    var rows=S.events.map(function(e,i){
-      var past=i<=A.divIdx;
-      if(e.cat==="at"&&e.name==="AT終了")
-        return '<li class="div">— AT終了 / 新周回 —<button class="del" data-del="'+e.id+'" aria-label="削除">✕</button></li>';
-      var r=A.verdicts[e.id], tag="";
-      if(r&&r.v==="valid")tag='<span class="tag t-valid">有効</span>';
-      else if(r&&r.v==="invalid")tag='<span class="tag t-off">無効</span>';
-      else if(r&&r.v==="outside")tag='<span class="tag t-off">圏外</span>';
+    box.innerHTML='<ul>'+S.events.map(function(e,i){
+      if(e.t==="atEnd")
+        return '<li class="div">— AT終了 / 新周回 —<button class="del" data-del="'+e.id+'">✕</button></li>';
+      var past=i<=A.divIdx, tag="", zi=zoneOf(e.g);
+      if(e.t==="zen"){
+        if(zi>=0&&Z[zi].fk[0]==="✕")tag='<span class="tag t-valid">A否定</span>';
+        else if(zi>=0&&A.skipped(Z[zi]))tag='<span class="tag t-hold">保留</span>';
+        else tag='<span class="tag t-off">判別不可</span>';
+      }else if(e.t==="rare")tag='<span class="tag t-off">無効</span>';
       var left=(S.edit===e.id)
-        ? '<input class="edit num" id="editInput" inputmode="numeric" value="'+e.abeshi+'">'
-        : '<button class="g num" data-edit="'+e.id+'">'+e.abeshi+'</button>';
-      return '<li class="'+(past?"past":"")+'">'+left+'<span class="nm">'+esc(e.name)+'</span>'
-        +tag+(r?'<span class="why">'+r.w+'</span>':'')
-        +'<button class="del" data-del="'+e.id+'" aria-label="削除">✕</button></li>';
-    }).reverse().join("");
-    box.innerHTML='<ul>'+rows+'</ul>';
+        ? '<input class="edit num" id="editInput" inputmode="numeric" value="'+e.g+'">'
+        : '<button class="g num" data-edit="'+e.id+'">'+e.g+'</button>';
+      return '<li class="'+(past?"past":"")+'">'+left
+        +'<span class="nm">'+LABEL[e.t]+'</span>'+tag
+        +'<button class="del" data-del="'+e.id+'">✕</button></li>';
+    }).reverse().join("")+'</ul>';
     var ei=$("editInput");
     if(ei){ei.focus();ei.select();}
   }
 
   function commit(){save();render();}
 
-  function record(){
-    var cat=CATS[S.cat], list=items(S.cat), name=list[mod(S.idx,list.length)];
-    if(name===ADD){
-      var v=window.prompt("追加する演出名");
-      if(v&&v.trim()){
-        if(!S.custom[cat.id])S.custom[cat.id]=[];
-        S.custom[cat.id].push(v.trim());
-        S.idx=items(S.cat).length-2;
-      }
-      commit();return;
-    }
-    S.events.push({id:++S.seq,cat:cat.id,name:name,abeshi:S.abeshi});
-    if(cat.id==="at"&&name==="AT終了")S.abeshi=0;
+  function rec(t){
+    if(t==="gold"){S.gold=!S.gold;commit();return;}
+    if(t==="chg"){S.chg=!S.chg;commit();return;}
+    S.events.push({id:++S.seq,t:t,g:S.abeshi});
+    if(t==="atEnd"){S.abeshi=0;S.gold=false;}
     commit();
   }
 
   var timer=null;
   function syncTimer(){
     if(timer){clearInterval(timer);timer=null;}
-    if(S.auto){
-      S.lastTick=Date.now();
-      timer=setInterval(function(){S.abeshi+=1;S.lastTick=Date.now();commit();},S.rate*1000);
-    }
+    if(S.auto){S.lastTick=Date.now();
+      timer=setInterval(function(){S.abeshi+=1;S.lastTick=Date.now();commit();},S.rate*1000);}
   }
 
   document.addEventListener("click",function(ev){
     var t=ev.target.closest("button, a");
     if(!t||t.tagName==="A")return;
-
-    if(t.dataset.add!==undefined){S.abeshi=Math.max(0,S.abeshi+parseInt(t.dataset.add,10));commit();}
-    else if(t.dataset.dir!==undefined){S.idx=mod(S.idx+parseInt(t.dataset.dir,10),items(S.cat).length);commit();}
-    else if(t.dataset.cat!==undefined){S.cat=parseInt(t.dataset.cat,10);S.idx=0;commit();}
+    if(t.dataset.rec)rec(t.dataset.rec);
+    else if(t.dataset.add!==undefined){S.abeshi=Math.max(0,S.abeshi+parseInt(t.dataset.add,10));commit();}
     else if(t.dataset.del!==undefined){
       var id=parseInt(t.dataset.del,10);
       S.events=S.events.filter(function(e){return e.id!==id;});
@@ -445,29 +542,20 @@
     }
     else if(t.id==="spinBtn"){S.abeshi+=1;commit();}
     else if(t.id==="autoBtn"){S.auto=!S.auto;syncTimer();commit();}
-    else if(t.id==="rateBtn"){
-      var r=[4.0,4.5,5.0,5.5,6.0],i=r.indexOf(S.rate);
-      S.rate=r[(i+1)%r.length];syncTimer();commit();
-    }
-    else if(t.id==="setBtn"){
-      var v=$("manual").value.replace(/[^0-9]/g,"");
-      if(v!=="")S.abeshi=parseInt(v,10);
-      $("manual").value="";commit();
-    }
-    else if(t.id==="recBtn")record();
+    else if(t.id==="rateBtn"){var r=[4.0,4.5,5.0,5.5,6.0],i=r.indexOf(S.rate);S.rate=r[(i+1)%r.length];syncTimer();commit();}
+    else if(t.id==="setBtn"){var v=$("manual").value.replace(/[^0-9]/g,"");if(v!=="")S.abeshi=parseInt(v,10);$("manual").value="";commit();}
     else if(t.id==="clearBtn"){
       if(window.confirm("履歴とあべし数をすべて消去します。よろしいですか？")){
-        S.abeshi=0;S.events=[];S.edit=null;commit();
-      }
+        S.abeshi=0;S.events=[];S.gold=false;S.edit=null;commit();}
     }
-    else if(t.id==="helpBtn"){$("overlay").classList.add("open");}
+    else if(t.id==="helpBtn")$("overlay").classList.add("open");
     else if(t.id==="closeBtn"){$("overlay").classList.remove("open");$("helpBtn").focus();}
   });
 
   document.addEventListener("change",function(e){
     if(e.target.id!=="editInput")return;
     var v=e.target.value.replace(/[^0-9]/g,"");
-    S.events.forEach(function(x){if(x.id===S.edit&&v!=="")x.abeshi=parseInt(v,10);});
+    S.events.forEach(function(x){if(x.id===S.edit&&v!=="")x.g=parseInt(v,10);});
     S.edit=null;commit();
   });
   document.addEventListener("keydown",function(e){
