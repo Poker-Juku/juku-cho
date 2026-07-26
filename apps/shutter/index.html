@@ -69,6 +69,8 @@
   .zc.zen .zp{color:var(--go)}
   .zc.hold{border-color:#b45309}
   .zc.hold .zp{color:var(--warn)}
+  .zc.hz{border-color:var(--blood-l);border-width:1.5px}
+  .zc.hz .zm{color:#fca5a5;font-size:8.5px}
 
   .zoneinfo{display:flex;gap:6px;align-items:center;font-size:10.5px;color:var(--sub);flex:0 0 auto}
   .zoneinfo b{color:var(--gold);font-size:12px}
@@ -205,6 +207,10 @@
     <p style="color:var(--gold)">1〜64 ／ 129〜192 ／ 257〜320 ／ 385〜448 ／ 449〜512</p>
     <p>つまりこの区間でレア役を引いていないのに前兆が出れば、モードAが否定され、規定あべしの浅いモードB・C・天国の期待が跳ね上がります。これが「シャッター狙い」の中身です。逆に193〜256や513〜576のように全モードで前兆が出やすいゾーンは、前兆が出ても判別材料になりません。</p>
 
+    <h3>◆ 特にアツい区間（B以上確定）</h3>
+    <p>上の5ゾーンの中でも、下の狭い区間で<b>レア役なしの前兆（シャッター等）が閉じたら「モードB以上確定」</b>です。ここに来たら赤く光るので、前兆を見逃さないでください。</p>
+    <p style="color:var(--stop)">37〜45 ／ 166〜173 ／ 288〜300 ／ 421〜429 ／ 489〜495</p>
+
     <h3>モード別の最大あべし</h3>
     <table>
       <tr><th>モード</th><th>最大あべし</th><th>主なゾーン</th></tr>
@@ -256,14 +262,14 @@
   /* ---------- ゾーンデータ ---------- */
   // mk: ゾーン期待度 [A,B,C,天国]  fk: フェイク前兆発生度  d/dc: 規定あべし振り分け(%)  r/rc: 信頼度(%)
   var Z=[
-    {s:1,   e:64,  mk:["△","△","△","〇"], fk:["✕","△","△","△"],  d:[0.20,0.21,0.03,12.50], dc:[0.26,0.29,0.03,12.50], r:[0.20,0.21,0.03,12.50], rc:[0.26,0.29,0.03,12.50]},
+    {s:1,   e:64,  hot:[37,45],   mk:["△","△","△","〇"], fk:["✕","△","△","△"],  d:[0.20,0.21,0.03,12.50], dc:[0.26,0.29,0.03,12.50], r:[0.20,0.21,0.03,12.50], rc:[0.26,0.29,0.03,12.50]},
     {s:65,  e:128, mk:["△","△","△","★"], fk:["〇","〇","〇","天"],  d:[1.37,1.49,0.20,87.50], dc:[1.80,2.02,0.22,87.50], r:[1.37,1.50,0.20,100],   rc:[1.80,2.03,0.22,100]},
-    {s:129, e:192, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.31,0.37,0.40,0],     dc:[0.36,0.45,0.40,0],     r:[0.31,0.38,0.40,0],     rc:[0.37,0.47,0.40,0]},
+    {s:129, e:192, hot:[166,173], mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.31,0.37,0.40,0],     dc:[0.36,0.45,0.40,0],     r:[0.31,0.38,0.40,0],     rc:[0.37,0.47,0.40,0]},
     {s:193, e:256, mk:["◎","◎","◎","–"], fk:["◎","◎","◎","–"],  d:[21.94,26.59,28.81,0],  dc:[26.26,32.72,28.77,0],  r:[22.36,27.16,28.99,0],  rc:[26.91,33.65,28.96,0]},
-    {s:257, e:320, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.73,0.45,0],     dc:[0.15,0.90,0.45,0],     r:[0.16,1.02,0.63,0],     rc:[0.20,1.40,0.63,0]},
+    {s:257, e:320, hot:[288,300], mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.73,0.45,0],     dc:[0.15,0.90,0.45,0],     r:[0.16,1.02,0.63,0],     rc:[0.20,1.40,0.63,0]},
     {s:321, e:384, mk:["△","〇","△","–"], fk:["△","〇","〇","–"],  d:[0.73,4.41,2.70,0],     dc:[0.88,5.41,2.69,0],     r:[0.96,6.24,3.85,0],     rc:[1.23,8.51,3.83,0]},
-    {s:385, e:448, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.02,1.41,0],     dc:[0.15,0.03,1.40,0],     r:[0.16,0.03,2.08,0],     rc:[0.21,0.05,2.08,0]},
-    {s:449, e:512, mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.02,1.38,0],     dc:[0.15,0.03,1.40,0],     r:[0.16,0.03,2.08,0],     rc:[0.21,0.05,2.13,0]},
+    {s:385, e:448, hot:[421,429], mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.02,1.41,0],     dc:[0.15,0.03,1.40,0],     r:[0.16,0.03,2.08,0],     rc:[0.21,0.05,2.08,0]},
+    {s:449, e:512, hot:[489,495], mk:["△","△","△","–"], fk:["✕","△","△","–"],  d:[0.12,0.02,1.38,0],     dc:[0.15,0.03,1.40,0],     r:[0.16,0.03,2.08,0],     rc:[0.21,0.05,2.13,0]},
     {s:513, e:576, mk:["〇","△","★","–"], fk:["◎","◎","天","–"],  d:[5.60,0.98,64.64,0],    dc:[6.71,1.21,64.63,0],    r:[7.46,1.48,100,0],      rc:[9.59,2.08,100,0]},
     {s:577, e:640, mk:["△","△","–","–"], fk:["△","△","–","–"],  d:[0.11,0.99,0,0],        dc:[0.10,0.89,0,0],        r:[0.16,1.52,0,0],        rc:[0.16,1.56,0,0]},
     {s:641, e:704, mk:["△","△","–","–"], fk:["△","△","–","–"],  d:[0.12,1.01,0,0],        dc:[0.10,0.89,0,0],        r:[0.17,1.58,0,0],        rc:[0.16,1.59,0,0]},
@@ -311,6 +317,7 @@
 
   var $=function(id){return document.getElementById(id);};
   function zoneOf(g){for(var i=0;i<Z.length;i++)if(g>=Z[i].s&&g<=Z[i].e)return i;return -1;}
+  function inHot(g){return Z.some(function(z){return z.hot&&g>=z.hot[0]&&g<=z.hot[1];});}
 
   /* ---------- 推測エンジン ---------- */
   function analyze(){
@@ -390,6 +397,9 @@
       return p;
     });
 
+    // ホット区間でレア役なし前兆＝モードB以上確定
+    var confirmed=live.some(function(e){return e.t==="zen"&&inHot(e.g)&&!spans.some(function(sp){return sp.s<=e.g&&sp.e>=e.g;});});
+
     // 判定
     var ci=zoneOf(G), cz=ci>=0?Z[ci]:null;
     var aliveShallow=post[1]+post[2]+post[3];
@@ -400,7 +410,10 @@
     for(var i=0;i<Z.length;i++){if(Z[i].s>G&&zoneP[i]>=8){nextHot=i;break;}}
 
     var call,tone,detail;
-    if(S.gold&&G<=128){
+    if(confirmed){
+      call="B以上確定";tone="go";
+      detail="特にアツい区間でレア役なし前兆を確認。モードB以上濃厚（規定896あべし以内）。当選まで続行。";
+    }else if(S.gold&&G<=128){
       call="続行";tone="go";detail="金台座＝天国濃厚。128あべし＋前兆までは即ヤメ厳禁。";
     }else if(G<=128&&post[3]>=10){
       call="続行";tone="go";detail="天国の可能性が残る。128あべし＋前兆まで（残り "+(128-G)+" 回転）。";
@@ -420,13 +433,13 @@
     }else{
       call="様子見";tone="wait";detail="判断材料がまだ足りない。次のゾーンまで様子を見る。";
     }
-    if(cz&&zoneP[ci]>=15&&call!=="ヤメ検討"){
+    if(cz&&zoneP[ci]>=15&&call!=="ヤメ検討"&&!confirmed){
       call="ゾーン中";tone="go";
       detail="現在 "+cz.s+"〜"+cz.e+" の当選ゾーン内（期待度 "+zoneP[ci].toFixed(0)+"%）。抜けるまでは続行。";
     }
 
     return {post:post,zoneP:zoneP,obs:obs,divIdx:divIdx,ci:ci,call:call,tone:tone,detail:detail,
-            ceil:ceil,skipped:skipped,rel:rel};
+            ceil:ceil,skipped:skipped,rel:rel,confirmed:confirmed};
   }
 
   /* ---------- 描画 ---------- */
@@ -450,10 +463,12 @@
         +'<div class="mbar"><i style="width:'+Math.min(100,p)+'%"></i></div></div>';
     }).join("");
 
-    var ci=A.ci;
-    $("zoneNow").innerHTML = ci>=0
-      ? '現在 <b class="num">'+Z[ci].s+'〜'+Z[ci].e+'</b> ／ 期待度 <b class="num">'+A.zoneP[ci].toFixed(0)+'%</b>'
-      : '現在ゾーン外';
+    var ci=A.ci, hotNow=inHot(G);
+    $("zoneNow").innerHTML = hotNow
+      ? '<b style="color:var(--stop)">◆ 特にアツい区間 ('+Z[ci].hot[0]+'〜'+Z[ci].hot[1]+') ／ 前兆でB以上確定</b>'
+      : (ci>=0
+        ? '現在 <b class="num">'+Z[ci].s+'〜'+Z[ci].e+'</b> ／ 期待度 <b class="num">'+A.zoneP[ci].toFixed(0)+'%</b>'
+        : '現在ゾーン外');
     var nx=-1;
     for(var i=0;i<Z.length;i++){if(Z[i].s>G&&A.zoneP[i]>=5){nx=i;break;}}
     $("zoneNext").innerHTML = nx>=0
@@ -467,10 +482,12 @@
       if(A.obs[i]==="zen")cls+=" zen";
       else if(z.e<=G&&A.skipped(z))cls+=" hold";
       if(i===ci)cls+=" now";
-      var marks=z.mk.filter(function(x){return x==="★"||x==="◎"||x==="〇";});
+      if(z.hot)cls+=" hz";
+      var label=z.hot?('<span style="color:#fca5a5">'+z.hot[0]+'</span>'):z.s;
+      var mid=z.hot?"◆アツ":(z.mk.filter(function(x){return x==="★"||x==="◎"||x==="〇";}).join("")||"·");
       return '<div class="zc '+cls.slice(3)+'" data-z="'+i+'">'
-        +'<div class="zs num">'+z.s+'</div>'
-        +'<div class="zm">'+(marks.length?marks.join(""):"·")+'</div>'
+        +'<div class="zs num">'+label+'</div>'
+        +'<div class="zm">'+mid+'</div>'
         +'<div class="zp num">'+(A.zoneP[i]>=1?A.zoneP[i].toFixed(0)+"%":"")+'</div></div>';
     }).join("");
     var cur=$("strip").querySelector('[data-z="'+(ci<0?0:ci)+'"]');
@@ -493,7 +510,8 @@
         return '<li class="div">— AT終了 / 新周回 —<button class="del" data-del="'+e.id+'">✕</button></li>';
       var past=i<=A.divIdx, tag="", zi=zoneOf(e.g);
       if(e.t==="zen"){
-        if(zi>=0&&Z[zi].fk[0]==="✕")tag='<span class="tag t-valid">A否定</span>';
+        if(inHot(e.g)&&!A.skipped(Z[zi]))tag='<span class="tag t-valid" style="font-weight:800">B以上確定</span>';
+        else if(zi>=0&&Z[zi].fk[0]==="✕"&&!A.skipped(Z[zi]))tag='<span class="tag t-valid">A否定</span>';
         else if(zi>=0&&A.skipped(Z[zi]))tag='<span class="tag t-hold">保留</span>';
         else tag='<span class="tag t-off">判別不可</span>';
       }else if(e.t==="rare")tag='<span class="tag t-off">無効</span>';
