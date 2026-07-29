@@ -76,19 +76,22 @@
 
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html{-webkit-text-size-adjust:100%}
-  html,body{height:100%}
+  html,body{height:100%;overflow:hidden;overscroll-behavior:none;position:fixed;width:100%}
   body{
     font-family:"BIZ UDPGothic",system-ui,sans-serif;
     background:radial-gradient(120% 60% at 50% -10%, var(--bg-top) 0%, var(--ink) 55%) fixed;
     color:var(--text);
-    display:flex;flex-direction:column;align-items:center;   /* 横中央 */
-    min-height:100dvh;overflow-x:hidden;
+    display:flex;justify-content:center;align-items:stretch;
+    touch-action:manipulation;
     transition:background .2s,color .2s;
   }
-  .app{width:100%;max-width:430px;display:flex;flex-direction:column;
-    margin:auto 0;                                            /* 縦中央・上が隠れない */
-    padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+  .app{width:100%;max-width:430px;height:100dvh;display:flex;flex-direction:column;
+    overflow:hidden;                                          /* スクロールさせない＝動かない */
+    padding:calc(10px + env(safe-area-inset-top)) 16px calc(10px + env(safe-area-inset-bottom));
     gap:var(--gap);position:relative}
+
+  /* アクティブなモード（計算/逆算）が残り高さを埋める → キーパッドが伸縮して常に画面内に収まる */
+  #calcMode{flex:1;min-height:0;display:flex;flex-direction:column;gap:var(--gap)}
 
   /* ===== header ===== */
   header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:2px 2px 2px}
@@ -129,7 +132,7 @@
   .save{font-size:13px;color:var(--save);font-weight:700;font-variant-numeric:tabular-nums;margin-top:3px}
   .save .pct{color:var(--muted);font-weight:400}
 
-  .actions{display:flex;gap:7px;margin-top:11px}
+  .actions{display:flex;gap:7px;margin-top:0}
   .actions button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
     border:1px solid var(--line);background:var(--panel);color:var(--text);
     padding:11px;border-radius:13px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:.12s}
@@ -138,7 +141,7 @@
   .actions svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .badge{display:inline-flex;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:var(--on-ink);font-size:11px;font-weight:700;align-items:center;justify-content:center}
 
-  .chips{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:12px}
+  .chips{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:0}
   .chips button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:11px 0;border-radius:12px;
     font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:.12s;font-variant-numeric:tabular-nums}
   .chips button:active{transform:scale(.94)}
@@ -152,10 +155,13 @@
   .pad button:active{background:var(--key-press);transform:translateY(1px)}
   .pad .fn{color:var(--accent-soft);font-size:calc(var(--key-fs) - 4px)}
   .pad .clr{color:var(--muted);font-weight:700}
-  .hint{text-align:center;font-size:11px;color:var(--muted);padding:2px 0 4px}
+  /* 画面内メインのキーパッドだけ、残り高さに合わせて伸縮（モーダルの電卓は固定のまま） */
+  #pad,#revpad{flex:1;min-height:0;grid-auto-rows:1fr;margin-top:0}
+  #pad button,#revpad button{padding:0;height:100%;min-height:42px;display:flex;align-items:center;justify-content:center}
+  .hint{text-align:center;font-size:11px;color:var(--muted);padding:2px 0 0;flex:0 0 auto}
 
   .rev{display:none;flex-direction:column;gap:10px}
-  .rev.on{display:flex}
+  .rev.on{display:flex;flex:1;min-height:0}
   .field{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px}
   .field.active{border-color:rgba(255,109,92,.5)}
   .field .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -259,20 +265,10 @@
      RESPONSIVE
      ========================================================= */
 
-  /* =========================================================
-     スマホ：画面にぴったり固定（バウンド／アドレスバーのズレ防止）
-     ========================================================= */
+  /* スマホ：画面内に収める微調整（固定は全体で既に有効） */
   @media (max-width:519px){
-    :root{--pad-y:13px;--gap:10px}
-    html,body{height:100dvh;overflow:hidden;overscroll-behavior:none}
-    body{position:fixed;inset:0;width:100%}
-    .app{
-      height:100dvh;margin:0;
-      padding-top:calc(10px + env(safe-area-inset-top));
-      padding-bottom:calc(8px + env(safe-area-inset-bottom));
-      overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
-    }
-    .ad-slot{min-height:56px}
+    :root{--gap:10px}
+    .ad-slot{min-height:52px}
     .hint{display:none}
   }
 
@@ -295,20 +291,18 @@
     .divider{margin:11px 0}
   }
   @media (max-height:720px){
-    :root{--pad-y:11px;--gap:8px;--final-fs:30px;--price-fs:40px}
+    :root{--gap:8px;--final-fs:30px;--price-fs:40px}
     .display{padding:12px 15px}
     .divider{margin:9px 0}
     .hint{display:none}
-    .actions{margin-top:9px}
-    .chips{margin-top:9px}
-    .pad{margin-top:9px}
   }
 
-  /* タブレット・PC：カード状に浮かせて中央表示 */
+  /* タブレット・PC：カード状に浮かせて中央表示（ウィンドウ内に収める） */
   @media (min-width:520px){
-    body{padding:24px 16px}
+    body{align-items:center;padding:20px 16px}
     .app{
       max-width:460px;
+      height:min(760px, calc(100dvh - 40px));
       background:var(--card-bg);
       border:1px solid var(--line);
       border-radius:28px;
@@ -614,7 +608,7 @@ document.getElementById("tax").addEventListener("click",e=>{
 document.getElementById("tabs").addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b)return; const mode=b.dataset.mode;
   document.querySelectorAll("#tabs button").forEach(x=>x.classList.remove("on")); b.classList.add("on");
-  document.getElementById("calcMode").style.display=mode==="calc"?"block":"none";
+  document.getElementById("calcMode").style.display=mode==="calc"?"flex":"none";
   document.getElementById("revMode").classList.toggle("on",mode==="rev");
 });
 
