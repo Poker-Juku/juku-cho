@@ -16,14 +16,11 @@
 <meta property="og:image" content="https://juku-cho.com/assets/ogp.png">
 <meta property="og:site_name" content="Juku-Cho">
 <meta name="twitter:card" content="summary_large_image">
-
 <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
-
 <!-- ▼ AdSense申請時、所有権確認タグをここに貼ります -->
 <!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX"> -->
-
 <style>
-  
+
   :root{
     --ink:#0d1322;--ink-2:#131b2e;--panel:#18223a;--panel-2:#1f2c49;
     --line:rgba(232,184,75,.14);--gold:#e8b84b;--gold-soft:#f0c969;
@@ -39,7 +36,6 @@
   }
   .wrap{width:100%;max-width:760px}
   a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
-
   /* hero */
   header{padding:64px 0 48px;text-align:center}
   .logo{display:inline-flex;align-items:baseline;gap:10px;margin-bottom:18px}
@@ -48,14 +44,12 @@
   h1{font-size:26px;font-weight:700;line-height:1.45;margin-bottom:14px;letter-spacing:.01em}
   .lead{font-size:15px;color:#c3cbdb;max-width:520px;margin:0 auto}
   .lead b{color:var(--gold-soft);font-weight:700}
-
   /* section */
   section{margin-top:72px}
   .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
   .sec-head h2{font-size:19px;font-weight:700;line-height:1.4;white-space:nowrap}
   .sec-head .bar{flex:1;height:1px;background:var(--line)}
   .sec-desc{font-size:13px;color:var(--muted);margin-bottom:24px}
-
   /* app grid */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
   .card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;transition:.16s;position:relative;overflow:hidden}
@@ -65,7 +59,6 @@
   .card h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:6px}
   .card p{font-size:12px;color:var(--muted);line-height:1.7;flex:1}
   .card .go{font-size:11px;color:var(--c,var(--gold));font-weight:700;margin-top:14px}
-
   /* =========================================================
      情報塾（トピックカード）
      カード全体をリンクにすると、中の子リンクが入れ子になり
@@ -93,18 +86,15 @@
   }
   .chip:hover{background:var(--panel-2);border-color:var(--c,var(--gold));color:var(--gold-soft)}
   .chip.soon{opacity:.45;pointer-events:none;color:var(--muted)}
-
   /* 広告枠 */
   .ad-unit{margin:56px 0;text-align:center}
   .ad-label{display:block;font-size:10px;letter-spacing:.14em;color:#5d6780;margin-bottom:8px;text-transform:uppercase}
   .ad-unit[data-ad="display"]{min-height:100px}
   .ad-unit[data-ad="inarticle"]{min-height:250px}
   .ad-ph{border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.02);color:var(--muted);font-size:11px;padding:34px 16px}
-
   footer{margin-top:64px;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted)}
   footer a{color:var(--muted);text-decoration:none;margin-left:16px}
   footer a:hover{color:var(--gold-soft)}
-
   @media (max-width:600px){
     header{padding:44px 0 36px}
     h1{font-size:22px}
@@ -120,7 +110,6 @@
 </head>
 <body>
 <div class="wrap">
-
   <header>
     <div class="logo">
       <span class="mark">塾</span>
@@ -131,26 +120,23 @@
       日常で使える実用アプリを<b>すべて無料</b>で公開しています。もちろん塾長のハンドメイド。
     </p>
   </header>
-
   <!-- ===== APPS ===== -->
   <section>
     <div class="sec-head"><h2>アプリ塾</h2><span class="bar"></span></div>
     <p class="sec-desc">「こんなアプリあったらいいな」を形に。インストール不要、すべてブラウザで動きます。</p>
-
     <div class="grid">
       <a class="card" href="apps/discount/" style="--c:var(--coral)">
         <span class="accent"></span>
         <div class="ico" style="background:none;padding:0">
-  <img src="assets/discount-icon.png" 
-       width="40" height="40" 
-       style="border-radius:11px;display:block" 
+  <img src="assets/discount-icon.png"
+       width="40" height="40"
+       style="border-radius:11px;display:block"
        alt="割引電卓">
 </div>
         <h3>割引電卓</h3>
         <p>お店の「30%オフ」がいくらになるか一瞬で。割引率の逆算・計算履歴つき。</p>
         <div class="go">使ってみる →</div>
       </a>
-
     <a class="card" href="apps/tabirate/" style="--c:var(--teal)">
   <span class="accent"></span>
   <div class="ico" style="background:none;padding:0">
@@ -163,7 +149,6 @@
         <p>32通貨・6言語に対応した、旅先のための換算アプリ。オフラインでも使えます。</p>
         <div class="go">使ってみる →</div>
       </a>
-
       <a class="card" href="apps/grandbook/" style="--c:var(--teal)">
   <span class="accent"></span>
   <div class="ico" style="background:none;padding:0">
@@ -172,24 +157,22 @@
          style="border-radius:11px;display:block"
          alt="Grand Book">
   </div>
-        <h3>Odds Sniper</h3>
-        <p>ポーカーの確率を瞬時に計算します。</p>
-        <div class="go">使ってみる →</div>
-      </a>
-
-    <a class="card" href="apps/guitar_tuner/" style="--c:var(--gold)">
-  <span class="accent"></span>
-  <div class="ico" style="background:none;padding:0">
-    <img src="assets/guitar-tuner-icon.png"
-         width="40" height="40"
-         style="border-radius:11px;display:block"
-         alt="ギターチューナー">
-  </div>
         <h3>Grand Book</h3>
         <p>ポーカーの収支を記録・管理。勝ち負けの推移をグラフで振り返れます。</p>
         <div class="go">使ってみる →</div>
       </a>
-
+      <a class="card" href="apps/odds_sniper/" style="--c:var(--coral)">
+  <span class="accent"></span>
+  <div class="ico" style="background:none;padding:0">
+    <img src="assets/odds-sniper-icon.png"
+         width="40" height="40"
+         style="border-radius:11px;display:block"
+         alt="Odds Sniper">
+  </div>
+        <h3>Odds Sniper</h3>
+        <p>ポーカーの勝率・オッズを瞬時に計算。アウツやポットオッズから最適な判断をサポート。</p>
+        <div class="go">使ってみる →</div>
+      </a>
     <a class="card" href="apps/guitar_tuner/" style="--c:var(--gold)">
   <span class="accent"></span>
   <div class="ico" style="background:none;padding:0">
@@ -197,14 +180,11 @@
          width="40" height="40"
          style="border-radius:11px;display:block"
          alt="ギターチューナー">
-  </div>
-    
   </div>
         <h3>ギターチューナー</h3>
         <p>マイクで音を拾って正確にチューニング。各種チューニングプリセット対応。</p>
         <div class="go">使ってみる →</div>
       </a>
-
       <a class="card" href="apps/shutter/" style="--c:var(--gold)">
         <span class="accent"></span>
         <div class="ico">♪</div>
@@ -214,14 +194,11 @@
       </a>
     </div>
   </section>
-
  <!-- 情報塾のセクション -->
 <section id="joho">
     <div class="sec-head"><h2>情報塾</h2><span class="bar"></span></div>
     <p class="sec-desc">知っておくと得をする知識を、これから学ぶ人にもわかるように解説します。</p>
-
     <div class="topics">
-
       <!-- ポーカー用語 -->
       <div class="topic" style="--c:var(--coral)">
         <span class="accent"></span>
@@ -236,7 +213,6 @@
           <a class="chip" href="info/poker/advanced/">上級</a>
         </div>
       </div>
-
       <!-- 海外旅行の基礎知識 -->
       <div class="topic" style="--c:var(--teal)">
         <span class="accent"></span>
@@ -256,16 +232,13 @@
           <span class="chip soon">作成中</span>
         </div>
       </div>
-
     </div>
   </section>
-
   <!-- ===== 広告：情報塾の下（このページで唯一の広告枠） ===== -->
   <div class="ad-unit" data-ad="display">
     <span class="ad-label">スポンサーリンク</span>
     <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
   </div>
-
   <!-- ===== その他の塾 =====
        poker/ と anime/ のページを作ったらコメントを外してください
   <section>
@@ -283,7 +256,6 @@
     </div>
   </section>
   ====================== -->
-
   <footer>
     <span>© 2026 Juku-Cho</span>
     <span>
@@ -291,9 +263,7 @@
       <a href="contact.html">お問い合わせ</a>
     </span>
   </footer>
-
 </div>
-
 <script src="assets/ads.js"></script>
 </body>
 </html>
