@@ -19,12 +19,20 @@
   @font-face{font-family:'BIZ UDPGothic';font-style:normal;font-weight:700;font-display:swap;src:url('assets/BIZUDPGothic-Bold.woff2') format('woff2');}
 </style>
 <style>
+  /* ===== DARK (default) ===== */
   :root{
     --ink:#14161c;--ink-2:#1e1c22;--panel:#20232c;--panel-2:#2a2e3a;
     --line:rgba(255,109,92,.16);
     --accent:#ff6d5c;--accent-soft:#ff8776;--on-ink:#2a0c08;
     --text:#f0f3f9;--muted:#8c96a6;--save:#ffb85c;
     --key:#272b36;--key-press:#323849;--danger:#f08a8a;
+
+    --bg-top:#24222b;                                   /* body gradient top */
+    --card-bg:linear-gradient(180deg,rgba(42,46,58,.55),rgba(30,28,34,.85));
+    --card-shadow:0 40px 90px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.02);
+    --overlay-bg:rgba(6,7,11,.62);
+    --ad-bg:rgba(255,255,255,.02);
+    --meta-color:#5c6472;
 
     /* responsive scale tokens */
     --pad-y:16px;      /* keypad button height */
@@ -33,24 +41,65 @@
     --price-fs:30px;   /* 元の価格 */
     --gap:12px;
   }
+
+  /* ===== LIGHT palette (grey base, same orange accent) ===== */
+  :root[data-theme="light"]{
+    --ink:#eceef2;--ink-2:#e3e6ec;--panel:#ffffff;--panel-2:#f1f3f7;
+    --line:rgba(20,24,34,.10);
+    --accent:#ff6d5c;--accent-soft:#ff8776;--on-ink:#ffffff;
+    --text:#1f2430;--muted:#727b8c;--save:#e08a2e;
+    --key:#f3f5f9;--key-press:#e5e8ee;--danger:#d9534f;
+
+    --bg-top:#fafbfd;
+    --card-bg:linear-gradient(180deg,#ffffff,#f4f6fa);
+    --card-shadow:0 30px 70px -34px rgba(31,36,48,.35), 0 0 0 1px rgba(20,24,34,.04);
+    --overlay-bg:rgba(31,36,48,.34);
+    --ad-bg:rgba(20,24,34,.03);
+    --meta-color:#9aa2b0;
+  }
+  /* system がライトを要求している場合のみライトに切替 */
+  @media (prefers-color-scheme:light){
+    :root[data-theme="system"]{
+      --ink:#eceef2;--ink-2:#e3e6ec;--panel:#ffffff;--panel-2:#f1f3f7;
+      --line:rgba(20,24,34,.10);
+      --on-ink:#ffffff;
+      --text:#1f2430;--muted:#727b8c;--save:#e08a2e;
+      --key:#f3f5f9;--key-press:#e5e8ee;--danger:#d9534f;
+      --bg-top:#fafbfd;
+      --card-bg:linear-gradient(180deg,#ffffff,#f4f6fa);
+      --card-shadow:0 30px 70px -34px rgba(31,36,48,.35), 0 0 0 1px rgba(20,24,34,.04);
+      --overlay-bg:rgba(31,36,48,.34);
+      --ad-bg:rgba(20,24,34,.03);
+      --meta-color:#9aa2b0;
+    }
+  }
+
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html{-webkit-text-size-adjust:100%}
   html,body{height:100%}
   body{
     font-family:"BIZ UDPGothic",system-ui,sans-serif;
-    background:radial-gradient(120% 60% at 50% -10%, #24222b 0%, var(--ink) 55%) fixed;
+    background:radial-gradient(120% 60% at 50% -10%, var(--bg-top) 0%, var(--ink) 55%) fixed;
     color:var(--text);display:flex;justify-content:center;min-height:100dvh;overflow-x:hidden;
+    transition:background .2s,color .2s;
   }
   .app{width:100%;max-width:430px;display:flex;flex-direction:column;
-    padding:14px 16px calc(14px + env(safe-area-inset-bottom));gap:var(--gap);position:relative}
+    padding:calc(28px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));
+    gap:var(--gap);position:relative}
 
   /* ===== header ===== */
-  header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 0}
-  .brand{display:flex;align-items:center;gap:10px;min-width:0}
-  .brand-icon{width:34px;height:34px;flex:0 0 auto;border-radius:9px;display:block;
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:2px 2px 2px}
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;padding-top:5px}
+  .brand-icon{width:36px;height:36px;flex:0 0 auto;border-radius:10px;display:block;
     box-shadow:0 5px 14px -6px rgba(255,109,92,.7)}
   .brand h1{font-size:21px;font-weight:700;letter-spacing:.02em;line-height:1.1;white-space:nowrap}
-  .brand .dot{color:var(--accent)}
+
+  .head-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:0 0 auto}
+  .gear{width:38px;height:38px;display:flex;align-items:center;justify-content:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:50%;cursor:pointer;color:var(--muted);transition:.15s}
+  .gear:active{transform:scale(.92)}
+  .gear svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
   .tax{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;font-size:11px;font-weight:700;flex:0 0 auto}
   .tax button{border:0;background:transparent;color:var(--muted);padding:6px 10px;border-radius:999px;cursor:pointer;font-family:inherit;font-weight:700;white-space:nowrap}
   .tax button.on{background:var(--accent);color:var(--on-ink)}
@@ -112,7 +161,7 @@
   .rev-out .big{font-size:42px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
   .rev-out .sub{font-size:12px;color:var(--muted);margin-top:2px}
 
-  .overlay{position:fixed;inset:0;background:rgba(6,7,11,.62);backdrop-filter:blur(3px);
+  .overlay{position:fixed;inset:0;background:var(--overlay-bg);backdrop-filter:blur(3px);
     display:none;align-items:flex-end;justify-content:center;z-index:50}
   .overlay.on{display:flex}
   .sheet{width:100%;max-width:430px;background:var(--ink-2);border:1px solid var(--line);
@@ -154,14 +203,14 @@
     display:flex;align-items:center;justify-content:center;
     border:1px dashed var(--line);
     border-radius:14px;
-    background:rgba(255,255,255,.02);
+    background:var(--ad-bg);
     overflow:hidden;
   }
   .ad-slot ins{display:block;width:100%}
   .ad-ph{                            /* placeholder shown until AdSense is live */
     text-align:center;color:var(--muted);font-size:11px;line-height:1.6;padding:12px;
   }
-  .ad-ph b{display:block;color:#6d7686;font-size:10px;letter-spacing:.14em;margin-bottom:3px}
+  .ad-ph b{display:block;color:var(--meta-color);font-size:10px;letter-spacing:.14em;margin-bottom:3px}
 
   /* ===== footer ===== */
   .footer{margin-top:10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -171,8 +220,37 @@
   }
   .made-in::before,.made-in::after{content:"";width:22px;height:1px;background:var(--line)}
   .made-in b{color:var(--accent-soft);font-weight:700;letter-spacing:.22em}
-  .footer a{font-size:10px;color:#5c6472;text-decoration:none}
-  .footer a:hover{color:var(--muted)}
+
+  /* ===== settings sheet ===== */
+  .set-group{margin-bottom:16px}
+  .set-group:last-of-type{margin-bottom:4px}
+  .set-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.08em;margin:0 2px 8px}
+  .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:4px;gap:4px}
+  .seg button{flex:1;border:0;background:transparent;color:var(--muted);padding:11px 6px;border-radius:10px;
+    font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:.14s}
+  .seg button.on{background:var(--accent);color:var(--on-ink)}
+  .set-list{display:flex;flex-direction:column;gap:8px}
+  .set-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 15px;
+    font-family:inherit;font-weight:700;font-size:14px;color:var(--text);cursor:pointer;transition:.12s}
+  .set-item:active{background:var(--panel-2)}
+  .set-item .ic{flex:0 0 auto;width:20px;height:20px;color:var(--accent-soft);
+    display:flex;align-items:center;justify-content:center}
+  .set-item .ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .set-item .arrow{margin-left:auto;color:var(--muted);font-size:16px}
+  .set-item.danger{color:var(--danger)}
+  .set-item.danger .ic{color:var(--danger)}
+
+  /* how-to content */
+  .howto{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:2px 2px 6px}
+  .howto .step{display:flex;gap:12px;align-items:flex-start}
+  .howto .n{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--on-ink);
+    font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+  .howto .tx{font-size:13px;line-height:1.6;color:var(--text)}
+  .howto .tx b{color:var(--accent-soft)}
+  .howto .tx .sub{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+  .howto .priv{font-size:11px;text-align:center;color:var(--muted);padding-top:4px}
+  .howto .priv a{color:var(--accent-soft);text-decoration:none}
 
   /* =========================================================
      RESPONSIVE
@@ -203,17 +281,20 @@
     body{align-items:center;padding:28px 16px}
     .app{
       max-width:460px;
-      background:linear-gradient(180deg,rgba(42,46,58,.55),rgba(30,28,34,.85));
+      background:var(--card-bg);
       border:1px solid var(--line);
       border-radius:28px;
-      padding:20px 22px 22px;
-      box-shadow:0 40px 90px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.02);
+      padding:calc(24px + env(safe-area-inset-top)) 22px 22px;
+      box-shadow:var(--card-shadow);
     }
     .pad button,.chips button,.actions button,.tabs button{cursor:pointer}
     .pad button:hover{background:var(--key-press)}
     .chips button:not(.on):hover,.actions button:not(.primary):hover,.tabs button:not(.on):hover{border-color:rgba(255,109,92,.38)}
     .actions .primary:hover{filter:brightness(1.06)}
     .hist-item:hover{background:var(--panel-2)}
+    .gear:hover{border-color:rgba(255,109,92,.4);color:var(--accent-soft)}
+    .set-item:hover{background:var(--panel-2)}
+    .seg button:not(.on):hover{color:var(--text)}
     .sheet{border-radius:24px;margin-bottom:24px;max-width:460px}
     .overlay{align-items:center}
   }
@@ -234,13 +315,18 @@
 <div class="app">
   <header>
     <div class="brand">
-      <img class="brand-icon" src="assets/icon-192.png" width="34" height="34" alt="割引電卓アイコン">
-      <h1>割引電卓<span class="dot">.</span></h1>
+      <img class="brand-icon" src="assets/icon-192.png" width="36" height="36" alt="割引電卓アイコン">
+      <h1>割引電卓</h1>
     </div>
-    <div class="tax" id="tax">
-      <button data-tax="0" class="on">税抜</button>
-      <button data-tax="10">+10%</button>
-      <button data-tax="8">+8%</button>
+    <div class="head-right">
+      <button class="gear" id="gearBtn" aria-label="設定">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H2a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 3.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H8a1.65 1.65 0 0 0 1-1.51V2a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V8a1.65 1.65 0 0 0 1.51 1H22a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <div class="tax" id="tax">
+        <button data-tax="0" class="on">税抜</button>
+        <button data-tax="10">+10%</button>
+        <button data-tax="8">+8%</button>
+      </div>
     </div>
   </header>
 
@@ -322,7 +408,6 @@
   <!-- ===== FOOTER ===== -->
   <div class="footer">
     <div class="made-in">MADE IN <b>JUKU-CHO</b></div>
-    <a href="privacy.html">プライバシーポリシー</a>
   </div>
 </div>
 
@@ -346,6 +431,88 @@
     <div class="sheet-head"><h2>計算履歴</h2><button class="x" id="histClose">×</button></div>
     <div class="hist-list" id="histList"></div>
     <button class="hist-clear" id="histClear" style="display:none">すべて削除</button>
+  </div>
+</div>
+
+<!-- ===== SETTINGS SHEET ===== -->
+<div class="overlay" id="setOverlay">
+  <div class="sheet">
+    <div class="sheet-head"><h2>設定</h2><button class="x" id="setClose">×</button></div>
+
+    <div class="set-group">
+      <div class="set-label">ベースカラー</div>
+      <div class="seg" id="themeSeg">
+        <button data-theme="system">システム</button>
+        <button data-theme="light">ライト</button>
+        <button data-theme="dark">ダーク</button>
+      </div>
+    </div>
+
+    <div class="set-group">
+      <div class="set-label">履歴</div>
+      <div class="set-list">
+        <button class="set-item" id="setHist">
+          <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          計算履歴を表示<span class="arrow">›</span>
+        </button>
+        <button class="set-item danger" id="setHistClear">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6"/></svg></span>
+          履歴をすべて削除
+        </button>
+      </div>
+    </div>
+
+    <div class="set-group">
+      <div class="set-label">その他</div>
+      <div class="set-list">
+        <button class="set-item" id="setHowto">
+          <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg></span>
+          使い方<span class="arrow">›</span>
+        </button>
+        <button class="set-item" id="setRestore">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></span>
+          購入を復元<span class="arrow">›</span>
+        </button>
+        <a class="set-item" id="setPrivacy" href="privacy.html">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          プライバシーポリシー<span class="arrow">›</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HOW-TO SHEET ===== -->
+<div class="overlay" id="howtoOverlay">
+  <div class="sheet">
+    <div class="sheet-head"><h2>使い方</h2><button class="x" id="howtoClose">×</button></div>
+    <div class="howto">
+      <div class="step"><div class="n">1</div><div class="tx">
+        <b>割引率を選ぶ</b>
+        <span class="sub">5〜70%のボタンをタップ。任意の率は「カスタム」から入力できます。</span>
+      </div></div>
+      <div class="step"><div class="n">2</div><div class="tx">
+        <b>価格を入力</b>
+        <span class="sub">キーパッドで元の価格を入れると、割引後の価格と「◯円お得」がすぐ表示されます。</span>
+      </div></div>
+      <div class="step"><div class="n">3</div><div class="tx">
+        <b>税込で計算したいとき</b>
+        <span class="sub">右上の「＋10%」「＋8%」を選ぶと、税込価格に割引を適用します。「税抜」で元に戻ります。</span>
+      </div></div>
+      <div class="step"><div class="n">4</div><div class="tx">
+        <b>割引率を逆算</b>
+        <span class="sub">上部タブの「割引率を逆算」で、元の価格と割引後の価格を入れると割引率がわかります。</span>
+      </div></div>
+      <div class="step"><div class="n">5</div><div class="tx">
+        <b>履歴に保存</b>
+        <span class="sub">「履歴に保存」で結果を記録。履歴の項目をタップすると同じ条件を呼び出せます。</span>
+      </div></div>
+      <div class="step"><div class="n">6</div><div class="tx">
+        <b>アプリのように使う</b>
+        <span class="sub">ブラウザの「ホーム画面に追加」で、オフラインでも起動できるアプリになります。</span>
+      </div></div>
+      <div class="priv">端末内にのみ履歴を保存します。詳しくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。</div>
+    </div>
   </div>
 </div>
 
@@ -488,8 +655,9 @@ histClear.addEventListener("click",()=>{ history=[]; persist(); updateBadge(); r
 
 /* PCのキーボード入力にも対応（Web表示時の使い勝手向上） */
 document.addEventListener("keydown",e=>{
-  if(custOverlay.classList.contains("on")||histOverlay.classList.contains("on")){
-    if(e.key==="Escape"){ closeCustom(); closeHist(); }
+  const anyOverlay=document.querySelector(".overlay.on");
+  if(anyOverlay){
+    if(e.key==="Escape"){ document.querySelectorAll(".overlay.on").forEach(o=>o.classList.remove("on")); }
     return;
   }
   const isRev=document.getElementById("revMode").classList.contains("on");
@@ -501,6 +669,73 @@ document.addEventListener("keydown",e=>{
   e.preventDefault();
   if(isRev){ if(activeF==="orig") orig=press(orig,k); else sale=press(sale,k); revRender(); }
   else { price=press(price,k); render(); }
+});
+
+/* =========================================================
+   THEME （ベースカラー：システム / ライト / ダーク）
+   ========================================================= */
+const THEME_KEY="jukucho_theme";
+const themeSeg=document.getElementById("themeSeg");
+const metaTheme=document.querySelector('meta[name="theme-color"]');
+function currentTheme(){ try{ return localStorage.getItem(THEME_KEY)||"system"; }catch(e){ return "system"; } }
+function isLightNow(){
+  const t=document.documentElement.dataset.theme;
+  if(t==="light") return true;
+  if(t==="dark") return false;
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme:light)").matches;
+}
+function applyTheme(t){
+  document.documentElement.dataset.theme=t;
+  try{ localStorage.setItem(THEME_KEY,t); }catch(e){}
+  themeSeg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.theme===t));
+  // ステータスバー色を追従
+  metaTheme.setAttribute("content", isLightNow()? "#fafbfd" : "#14161c");
+}
+themeSeg.addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b)return; applyTheme(b.dataset.theme); });
+// システム設定の変更にも追従
+if(window.matchMedia){
+  window.matchMedia("(prefers-color-scheme:light)").addEventListener("change",()=>{
+    if(currentTheme()==="system") metaTheme.setAttribute("content", isLightNow()? "#fafbfd" : "#14161c");
+  });
+}
+applyTheme(currentTheme());
+
+/* =========================================================
+   SETTINGS SHEET
+   ========================================================= */
+const setOverlay=document.getElementById("setOverlay");
+function openSet(){ setOverlay.classList.add("on"); }
+function closeSet(){ setOverlay.classList.remove("on"); }
+document.getElementById("gearBtn").addEventListener("click",openSet);
+document.getElementById("setClose").addEventListener("click",closeSet);
+setOverlay.addEventListener("click",e=>{ if(e.target===setOverlay) closeSet(); });
+
+// 履歴を表示
+document.getElementById("setHist").addEventListener("click",()=>{ closeSet(); openHist(); });
+// 履歴をすべて削除（確認あり）
+document.getElementById("setHistClear").addEventListener("click",()=>{
+  if(!history.length){ showToast("履歴はありません"); return; }
+  if(confirm("計算履歴をすべて削除しますか？")){
+    history=[]; persist(); updateBadge(); renderHistory(); showToast("履歴を削除しました");
+  }
+});
+
+// 使い方
+const howtoOverlay=document.getElementById("howtoOverlay");
+document.getElementById("setHowto").addEventListener("click",()=>{ closeSet(); howtoOverlay.classList.add("on"); });
+document.getElementById("howtoClose").addEventListener("click",()=>howtoOverlay.classList.remove("on"));
+howtoOverlay.addEventListener("click",e=>{ if(e.target===howtoOverlay) howtoOverlay.classList.remove("on"); });
+
+/* 購入を復元
+   ─ 現状は広告モデルのため復元対象の購入はありません。
+     将来 App内課金（広告非表示など）を Capacitor / StoreKit・Google Play Billing で
+     追加した際に、ここでネイティブの restorePurchases() を呼び出してください。 */
+document.getElementById("setRestore").addEventListener("click",()=>{
+  showToast("購入情報を確認しています…");
+  setTimeout(()=>{
+    // TODO: ネイティブ課金導入後は実際の復元処理に差し替え
+    showToast("復元できる購入はありませんでした");
+  },900);
 });
 
 updateBadge(); render(); revRender();
