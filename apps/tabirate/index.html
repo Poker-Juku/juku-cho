@@ -157,6 +157,9 @@
   .kp-g button.dis{opacity:.25;pointer-events:none}
 
   /* ad + footer */
+  .ad{flex:0 0 auto;height:56px;margin-top:8px;border-radius:12px;background:var(--raise);
+    border:1px solid var(--hair);display:grid;place-items:center;overflow:hidden}
+  .ad span{font-size:9px;color:var(--ink-3);letter-spacing:.18em;font-weight:700}
   .foot{flex:0 0 auto;text-align:center;font-size:9px;color:var(--ink-3);letter-spacing:.14em;
     font-weight:600;padding:8px 0 0}
   .foot b{color:var(--ink-2);font-weight:700}
@@ -201,7 +204,12 @@
     font-weight:600;color:var(--ink-3);cursor:pointer;transition:.15s}
   .seg button.on{background:var(--raise-2);color:var(--ink)}
   .qe{background:var(--raise);border:1px solid var(--hair);border-radius:12px;padding:0 12px}
-  .qer{display:flex;align-items:center;gap:8px;padding:12px 0}
+  .manual{background:var(--raise);border:1px solid var(--hair);border-radius:12px;padding:4px 14px}
+  .mstep{display:flex;align-items:flex-start;gap:12px;padding:12px 0}
+  .mstep+.mstep{border-top:1px solid var(--hair)}
+  .mstep .num{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--accent-dim);
+    color:var(--accent);font-size:11px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+  .mstep .txt{font-size:13px;color:var(--ink-2);line-height:1.6;padding-top:1px}  .qer{display:flex;align-items:center;gap:8px;padding:12px 0}
   .qer+.qer{border-top:1px solid var(--hair)}
   .qer>span{font-size:12px;font-weight:600;color:var(--ink-2);min-width:72px}
   .qeb{display:flex;gap:8px;flex:1}
@@ -315,6 +323,7 @@
     .kp-top .l{font-size:12px}
     .kp-top .done{font-size:15px}
 
+    .ad{height:64px;border-radius:14px}
     .foot{font-size:10px;padding-top:10px}
 
     .sheet{max-width:520px;height:80vh;border-radius:24px;bottom:auto;top:50%;
@@ -414,6 +423,7 @@
     </div>
   </div>
 
+  <div class="ad" id="adSlot"><span>ADVERTISEMENT</span></div>
   <div class="foot">MADE IN <b>JUKU-CHO</b></div>
 </div>
 
@@ -424,6 +434,9 @@
   <div class="sb">
     <div class="lbl" id="tLang">言語</div>
     <div class="langs" id="langSeg"></div>
+
+    <div class="lbl" id="tManual">使い方</div>
+    <div class="manual" id="manualBox"></div>
 
     <div class="lbl"><span id="tCountries">表示する国</span><span class="c" id="selCnt"></span></div>
     <div id="egrid"></div>
@@ -472,7 +485,7 @@
       recPrompt:'メモ(例: 旅行 / 空港レート)',recDone:'のレートを記録しました',records:'件',noRec:'記録なし',
       min1:'最低1か国は必要です',max4:'タブは最大4か国です',wiped:'履歴を削除しました',
       regA:'アジア',regE:'北米・欧州',regO:'オセアニア・その他',
-      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円'},
+      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',mTab:'上部のタブで国を切り替え',mTap:'金額をタップすると電卓が開きます',mRec:'「記録」ボタンでレートを旅の履歴に残せます',mSet:'設定から国・言語・テーマを変更できます'},
     en:{settings:'Settings',countries:'Countries',quick:'Quick amounts',appearance:'Appearance',language:'Language',history:'Rate history',
       light:'Light',dark:'Dark',system:'System',trend:'Trend',noHist:'No history yet.',
       hintC:'Up to 4. Tabs follow your selection order.',hintQ:'Tap to pick an amount.',
@@ -481,7 +494,7 @@
       recPrompt:'Note (e.g. Trip / Airport rate)',recDone:' rate saved',records:'',noRec:'No records',
       min1:'At least 1 country required',max4:'Up to 4 tabs',wiped:'History deleted',
       regA:'Asia',regE:'North America & Europe',regO:'Oceania & Others',
-      note:'Auto-updates each morning. Rates are indicative.',jpyName:'Japanese Yen'},
+      note:'Auto-updates each morning. Rates are indicative.',jpyName:'Japanese Yen',manual:'How to use',mTab:'Switch countries using the tabs above',mTap:'Tap an amount to open the keypad',mRec:'Tap "Save" to keep a rate in your travel history',mSet:'Change countries, language, and theme in Settings'},
     zh:{settings:'设置',countries:'显示国家',quick:'快捷金额',appearance:'外观',language:'语言',history:'汇率记录',
       light:'浅色',dark:'深色',system:'跟随系统',trend:'走势',noHist:'暂无记录。',
       hintC:'最多4个国家，按选择顺序排列。',hintQ:'点击可选择金额。',
@@ -490,7 +503,7 @@
       recPrompt:'备注(例: 旅行 / 机场汇率)',recDone:' 汇率已保存',records:'条',noRec:'无记录',
       min1:'至少需要1个国家',max4:'最多4个标签',wiped:'记录已删除',
       regA:'亚洲',regE:'北美・欧洲',regO:'大洋洲・其他',
-      note:'每天早上自动更新。汇率仅供参考。',jpyName:'日元'},
+      note:'每天早上自动更新。汇率仅供参考。',jpyName:'日元',manual:'使用说明',mTab:'点击上方标签切换国家',mTap:'点击金额即可打开数字键盘',mRec:'点击「记录」将汇率保存到旅行记录',mSet:'可在设置中更改国家、语言与主题'},
     ko:{settings:'설정',countries:'표시 국가',quick:'빠른 입력 금액',appearance:'테마',language:'언어',history:'환율 기록',
       light:'라이트',dark:'다크',system:'시스템',trend:'추이',noHist:'기록이 없습니다.',
       hintC:'최대 4개국. 선택한 순서대로 표시됩니다.',hintQ:'탭하여 금액을 선택하세요.',
@@ -499,7 +512,7 @@
       recPrompt:'메모 (예: 여행 / 공항 환율)',recDone:' 환율을 저장했습니다',records:'건',noRec:'기록 없음',
       min1:'최소 1개국이 필요합니다',max4:'탭은 최대 4개입니다',wiped:'기록을 삭제했습니다',
       regA:'아시아',regE:'북미・유럽',regO:'오세아니아・기타',
-      note:'매일 아침 자동 업데이트. 환율은 참고용입니다.',jpyName:'일본 엔'},
+      note:'매일 아침 자동 업데이트. 환율은 참고용입니다.',jpyName:'일본 엔',manual:'사용 방법',mTab:'상단 탭에서 국가를 전환하세요',mTap:'금액을 탭하면 키패드가 열립니다',mRec:'"기록" 버튼으로 환율을 여행 기록에 저장하세요',mSet:'설정에서 국가·언어·테마를 변경할 수 있습니다'},
     vi:{settings:'Cài đặt',countries:'Quốc gia hiển thị',quick:'Số tiền nhanh',appearance:'Giao diện',language:'Ngôn ngữ',history:'Lịch sử tỷ giá',
       light:'Sáng',dark:'Tối',system:'Hệ thống',trend:'Xu hướng',noHist:'Chưa có lịch sử.',
       hintC:'Tối đa 4 quốc gia, theo thứ tự chọn.',hintQ:'Chạm để chọn số tiền.',
@@ -508,7 +521,7 @@
       recPrompt:'Ghi chú (VD: Du lịch / Tỷ giá sân bay)',recDone:' đã lưu tỷ giá',records:'',noRec:'Chưa có',
       min1:'Cần ít nhất 1 quốc gia',max4:'Tối đa 4 tab',wiped:'Đã xóa lịch sử',
       regA:'Châu Á',regE:'Bắc Mỹ & Châu Âu',regO:'Châu Đại Dương & Khác',
-      note:'Tự động cập nhật mỗi sáng. Tỷ giá chỉ mang tính tham khảo.',jpyName:'Yên Nhật'},
+      note:'Tự động cập nhật mỗi sáng. Tỷ giá chỉ mang tính tham khảo.',jpyName:'Yên Nhật',manual:'Hướng dẫn sử dụng',mTab:'Chuyển quốc gia bằng các tab phía trên',mTap:'Chạm vào số tiền để mở bàn phím',mRec:'Chạm "Lưu" để lưu tỷ giá vào lịch sử du lịch',mSet:'Thay đổi quốc gia, ngôn ngữ, giao diện trong Cài đặt'},
     th:{settings:'ตั้งค่า',countries:'ประเทศที่แสดง',quick:'จำนวนเงินด่วน',appearance:'ธีม',language:'ภาษา',history:'ประวัติอัตรา',
       light:'สว่าง',dark:'มืด',system:'ตามระบบ',trend:'แนวโน้ม',noHist:'ยังไม่มีประวัติ',
       hintC:'สูงสุด 4 ประเทศ ตามลำดับที่เลือก',hintQ:'แตะเพื่อเลือกจำนวนเงิน',
@@ -517,7 +530,7 @@
       recPrompt:'บันทึก (เช่น ทริป / อัตราสนามบิน)',recDone:' บันทึกอัตราแล้ว',records:'',noRec:'ไม่มีบันทึก',
       min1:'ต้องมีอย่างน้อย 1 ประเทศ',max4:'สูงสุด 4 แท็บ',wiped:'ลบประวัติแล้ว',
       regA:'เอเชีย',regE:'อเมริกาเหนือ & ยุโรป',regO:'โอเชียเนีย & อื่นๆ',
-      note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น'}
+      note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น',manual:'วิธีใช้',mTab:'สลับประเทศได้ที่แท็บด้านบน',mTap:'แตะจำนวนเงินเพื่อเปิดแป้นตัวเลข',mRec:'แตะ "บันทึก" เพื่อเก็บอัตราไว้ในประวัติการเดินทาง',mSet:'เปลี่ยนประเทศ ภาษา และธีมได้ที่ตั้งค่า'}
   };
   var lang='ja';
   function t(k){return (T[lang]&&T[lang][k])||T.ja[k]||k;}
@@ -569,8 +582,8 @@
   var byCode={};COUNTRIES.forEach(function(c){byCode[c.code]=c;});
 
   var rates={},dateStr=null,source='cache';
-  var displayed=['KRW','TWD','CNY','THB'];
-  var active='CNY',theme='dark';
+  var displayed=['USD','EUR','VND'];
+  var active='USD',theme='dark';
   var side='jpy',raw='',replaceNext=false,kpOpen=false;
   var qJpy=[5000,10000,50000],qFor=[1000,5000,10000];
   var LADDER=[100,300,500,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
@@ -588,6 +601,13 @@
   function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,active:active,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang}));}catch(e){}}
   function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
 
+  function renderManual(){
+    var box=$('manualBox');if(!box)return;
+    var steps=[t('mTab'),t('mTap'),t('mRec'),t('mSet')];
+    box.innerHTML=steps.map(function(s,i){
+      return '<div class="mstep"><span class="num">'+(i+1)+'</span><span class="txt">'+s+'</span></div>';
+    }).join('');
+  }
   function applyLang(){
     document.documentElement.setAttribute('lang',lang);
     $('tSettings').textContent=t('settings');
@@ -609,6 +629,8 @@
     var g=$('kpGrid').querySelector('.go');if(g)g.textContent=t('done');
     var cl=lang==='ja'?'入力中':lang==='en'?'EDITING':lang==='zh'?'输入中':lang==='ko'?'입력 중':lang==='vi'?'ĐANG NHẬP':'กำลังป้อน';
     $('caretJ').textContent=cl;$('caretF').textContent=cl;
+    $('tManual').textContent=t('manual');
+    renderManual();
     var seg=$('langSeg');seg.innerHTML='';
     LANGS.forEach(function(L){var b=document.createElement('button');b.textContent=L.n;
       b.className=(L.c===lang?'on':'');b.onclick=function(){lang=L.c;saveCfg();applyLang();renderAll();
