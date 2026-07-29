@@ -38,7 +38,7 @@
     --pad-y:16px;      /* keypad button height */
     --key-fs:22px;     /* keypad font size */
     --final-fs:34px;   /* 割引後の価格 */
-    --price-fs:30px;   /* 元の価格 */
+    --price-fs:44px;   /* 元の価格（入力中の数字を大きく） */
     --gap:12px;
   }
 
@@ -138,9 +138,9 @@
   .actions svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .badge{display:inline-flex;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--accent);color:var(--on-ink);font-size:11px;font-weight:700;align-items:center;justify-content:center}
 
-  .chips{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:12px}
+  .chips{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:12px}
   .chips button{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:11px 0;border-radius:12px;
-    font-family:inherit;font-weight:700;font-size:14px;cursor:pointer;transition:.12s;font-variant-numeric:tabular-nums}
+    font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:.12s;font-variant-numeric:tabular-nums}
   .chips button:active{transform:scale(.94)}
   .chips button.on{background:linear-gradient(180deg,var(--accent-soft),var(--accent));color:var(--on-ink);border-color:transparent}
   .chips button.custom{color:var(--accent-soft);font-size:11px;line-height:1.15}
@@ -259,9 +259,26 @@
      RESPONSIVE
      ========================================================= */
 
+  /* =========================================================
+     スマホ：画面にぴったり固定（バウンド／アドレスバーのズレ防止）
+     ========================================================= */
+  @media (max-width:519px){
+    :root{--pad-y:13px;--gap:10px}
+    html,body{height:100dvh;overflow:hidden;overscroll-behavior:none}
+    body{position:fixed;inset:0;width:100%}
+    .app{
+      height:100dvh;margin:0;
+      padding-top:calc(10px + env(safe-area-inset-top));
+      padding-bottom:calc(8px + env(safe-area-inset-bottom));
+      overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    }
+    .ad-slot{min-height:56px}
+    .hint{display:none}
+  }
+
   /* 小さいスマホ（iPhone SE 等 / 幅360px以下） */
   @media (max-width:360px){
-    :root{--pad-y:13px;--key-fs:20px;--final-fs:29px;--price-fs:26px;--gap:10px}
+    :root{--pad-y:13px;--key-fs:20px;--final-fs:29px;--price-fs:38px;--gap:10px}
     .app{padding-left:12px;padding-right:12px}
     .brand h1{font-size:19px}
     .brand-icon{width:30px;height:30px}
@@ -278,7 +295,7 @@
     .divider{margin:11px 0}
   }
   @media (max-height:720px){
-    :root{--pad-y:11px;--gap:8px;--final-fs:30px;--price-fs:27px}
+    :root{--pad-y:11px;--gap:8px;--final-fs:30px;--price-fs:40px}
     .display{padding:12px 15px}
     .divider{margin:9px 0}
     .hint{display:none}
@@ -375,8 +392,9 @@
     </div>
 
     <div class="chips" id="chips">
+      <button data-off="0" class="on">0%</button>
       <button data-off="5">5%</button>
-      <button data-off="10" class="on">10%</button>
+      <button data-off="10">10%</button>
       <button data-off="15">15%</button>
       <button data-off="20">20%</button>
       <button data-off="30">30%</button>
@@ -535,7 +553,7 @@
 const yen = n => "¥" + Math.round(n).toLocaleString("ja-JP");
 const fmtField = (el,val)=>{el.classList.toggle("empty",val===0);el.innerHTML='<span class="yen">¥</span>'+val.toLocaleString("ja-JP");};
 
-let price=0, off=10, tax=0;
+let price=0, off=0, tax=0;
 
 let history = [];
 const KEY="jukucho_discount_history";
