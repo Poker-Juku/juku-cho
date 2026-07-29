@@ -80,11 +80,14 @@
   body{
     font-family:"BIZ UDPGothic",system-ui,sans-serif;
     background:radial-gradient(120% 60% at 50% -10%, var(--bg-top) 0%, var(--ink) 55%) fixed;
-    color:var(--text);display:flex;justify-content:center;min-height:100dvh;overflow-x:hidden;
+    color:var(--text);
+    display:flex;flex-direction:column;align-items:center;   /* 横中央 */
+    min-height:100dvh;overflow-x:hidden;
     transition:background .2s,color .2s;
   }
   .app{width:100%;max-width:430px;display:flex;flex-direction:column;
-    padding:calc(28px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));
+    margin:auto 0;                                            /* 縦中央・上が隠れない */
+    padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
     gap:var(--gap);position:relative}
 
   /* ===== header ===== */
@@ -268,23 +271,31 @@
     .result{gap:10px}
   }
 
-  /* 画面の縦が短い端末 */
-  @media (max-height:700px) and (max-width:520px){
-    :root{--pad-y:12px;--gap:9px}
-    .display{padding:13px 15px}
-    .divider{margin:10px 0}
+  /* 縦が短いウィンドウ：詰めてウィンドウ内に収める（幅は問わない） */
+  @media (max-height:820px){
+    :root{--pad-y:13px;--gap:10px}
+    .display{padding:14px 16px}
+    .divider{margin:11px 0}
+  }
+  @media (max-height:720px){
+    :root{--pad-y:11px;--gap:8px;--final-fs:30px;--price-fs:27px}
+    .display{padding:12px 15px}
+    .divider{margin:9px 0}
     .hint{display:none}
+    .actions{margin-top:9px}
+    .chips{margin-top:9px}
+    .pad{margin-top:9px}
   }
 
   /* タブレット・PC：カード状に浮かせて中央表示 */
   @media (min-width:520px){
-    body{align-items:center;padding:28px 16px}
+    body{padding:24px 16px}
     .app{
       max-width:460px;
       background:var(--card-bg);
       border:1px solid var(--line);
       border-radius:28px;
-      padding:calc(24px + env(safe-area-inset-top)) 22px 22px;
+      padding:22px 22px;
       box-shadow:var(--card-shadow);
     }
     .pad button,.chips button,.actions button,.tabs button{cursor:pointer}
@@ -299,9 +310,11 @@
     .overlay{align-items:center}
   }
 
-  /* 大画面：少しだけゆとりを持たせる */
-  @media (min-width:900px){
+  /* 大画面：少しだけゆとりを持たせる（縦に余裕がある時だけ拡大） */
+  @media (min-width:900px) and (min-height:821px){
     :root{--pad-y:17px;--key-fs:23px}
+  }
+  @media (min-width:900px){
     .app{max-width:480px}
   }
 
