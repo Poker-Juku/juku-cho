@@ -127,13 +127,13 @@
     padding:9px;border-radius:12px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;transition:.15s}
   .tabs button.on{background:var(--panel-2);color:var(--accent-soft);border-color:rgba(255,109,92,.4)}
 
-  .display{background:linear-gradient(180deg,var(--panel),var(--ink-2));border:1px solid var(--line);border-radius:20px;padding:16px 18px;position:relative;overflow:hidden}
+  .display{flex:0 0 auto;background:linear-gradient(180deg,var(--panel),var(--ink-2));border:1px solid var(--line);border-radius:20px;padding:14px 16px;position:relative;overflow:hidden}
   .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px}
   .label{font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.04em}
   .price-in{font-size:var(--price-fs);font-weight:700;letter-spacing:.01em;font-variant-numeric:tabular-nums}
   .price-in.empty{color:var(--muted)}
   .yen{color:var(--accent);font-weight:700;margin-right:2px}
-  .divider{height:1px;background:var(--line);margin:13px 0}
+  .divider{height:1px;background:var(--line);margin:11px 0}
   .result{display:flex;align-items:center;gap:14px}
   .tag{position:relative;flex:0 0 auto;background:var(--accent);color:var(--on-ink);border-radius:10px;
     padding:9px 13px 9px 17px;font-weight:700;font-size:18px;line-height:1;box-shadow:0 6px 18px -6px rgba(255,109,92,.55)}
@@ -168,8 +168,8 @@
   .pad .fn{color:var(--accent-soft);font-size:calc(var(--key-fs) - 4px)}
   .pad .clr{color:var(--muted);font-weight:700}
   /* 画面内メインのキーパッドだけ、残り高さに合わせて伸縮（モーダルの電卓は固定のまま） */
-  #pad,#revpad{flex:1;min-height:0;grid-auto-rows:1fr;margin-top:0}
-  #pad button,#revpad button{padding:0;height:100%;display:flex;align-items:center;justify-content:center}
+  #pad,#revpad{flex:1 1 0;min-height:0;grid-template-rows:repeat(4,minmax(0,1fr));margin-top:0}
+  #pad button,#revpad button{padding:0;height:100%;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center}
   .hint{text-align:center;font-size:11px;color:var(--muted);padding:2px 0 0;flex:0 0 auto}
 
   .rev{display:none;flex-direction:column;gap:10px}
