@@ -53,22 +53,30 @@
     padding:env(safe-area-inset-top) 16px calc(8px + env(safe-area-inset-bottom));overflow:hidden}
 
   /* ============ header ============ */
-  .hdr{flex:0 0 auto;display:flex;align-items:center;gap:8px;height:64px;margin-top:8px}
-  .brand{flex:1;min-width:0;display:flex;align-items:center;gap:10px}
-  .glyph{width:36px;height:36px;flex:0 0 auto;border-radius:11px;position:relative;
+  .hdr{flex:0 0 auto;position:relative;display:flex;align-items:center;gap:10px;
+    height:84px;margin-top:8px;padding:10px 14px;border-radius:20px;
+    background:linear-gradient(155deg,var(--raise),var(--raise-2));border:1px solid var(--hair);
+    overflow:hidden}
+  .hdr::before{content:"";position:absolute;left:-30px;top:-40px;width:160px;height:160px;
+    border-radius:50%;background:radial-gradient(circle,var(--accent-dim),transparent 70%);
+    pointer-events:none;z-index:0}
+  .hdr::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;
+    background:linear-gradient(90deg,var(--accent),transparent 70%);opacity:.55;pointer-events:none}
+  .brand{position:relative;z-index:1;flex:1;min-width:0;display:flex;align-items:center;gap:12px}
+  .glyph{width:50px;height:50px;flex:0 0 auto;border-radius:15px;position:relative;
     background:linear-gradient(160deg,var(--raise-2),var(--raise));border:1px solid var(--hair);
-    display:grid;place-items:center;overflow:hidden}
+    display:grid;place-items:center;overflow:hidden;box-shadow:0 6px 16px -8px rgba(0,0,0,.4)}
   .glyph::after{content:"";position:absolute;inset:0;
     background:radial-gradient(circle at 30% 20%,var(--accent-dim),transparent 65%);pointer-events:none}
-  .glyph svg{width:19px;height:19px;color:var(--accent);position:relative;z-index:1}
+  .glyph svg{width:24px;height:24px;color:var(--accent);position:relative;z-index:1}
   .glyph-img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1;display:block}
   .wm{min-width:0}
-  .wm .t{display:flex;align-items:center;gap:6px;font-size:17px;font-weight:800;letter-spacing:.14em;
+  .wm .t{display:flex;align-items:center;gap:8px;font-size:26px;font-weight:800;letter-spacing:.1em;
     line-height:1;white-space:nowrap}
-  .wm .t .sep{width:12px;height:1.5px;background:var(--accent);border-radius:1px;flex:0 0 auto;opacity:.9}
-  .wm .s{font-size:9px;font-weight:600;color:var(--ink-3);letter-spacing:.26em;
-    margin-top:5px;white-space:nowrap;text-transform:uppercase}
-  .gear{width:40px;height:40px;flex:0 0 auto;border-radius:12px;background:var(--raise);border:1px solid var(--hair);
+  .wm .t .sep{width:15px;height:2px;background:var(--accent);border-radius:1px;flex:0 0 auto;opacity:.9}
+  .wm .s{font-size:10px;font-weight:600;color:var(--ink-3);letter-spacing:.24em;
+    margin-top:6px;white-space:nowrap;text-transform:uppercase}
+  .gear{position:relative;z-index:1;width:40px;height:40px;flex:0 0 auto;border-radius:12px;background:var(--raise);border:1px solid var(--hair);
     color:var(--ink-2);display:grid;place-items:center;cursor:pointer;transition:.15s}
   .gear:active{transform:scale(.94);color:var(--ink)}
   .gear svg{width:18px;height:18px}
@@ -112,6 +120,13 @@
   .cname{font-size:11px;font-weight:600;color:var(--ink-3)}
   .caret{margin-left:auto;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.12em;opacity:0;transition:.15s}
   .row.on .caret{opacity:1}
+  .pinctl{display:inline-flex;align-items:center;flex:0 0 auto;position:relative;padding:2px;border-radius:8px;
+    -webkit-user-select:none;user-select:none;touch-action:manipulation}
+  .pinctl.unlocked{animation:pinpulse 1.1s ease-in-out infinite}
+  @keyframes pinpulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .lock-ic{width:11px;height:11px;color:var(--ink-3);flex:0 0 auto}
+  .unlock-hint{display:none;align-items:center;font-size:8.5px;font-weight:800;color:var(--accent);
+    letter-spacing:.08em;white-space:nowrap}
   .row-val{display:flex;align-items:baseline;gap:8px}
   .sym{font-size:20px;font-weight:600;color:var(--ink-3);flex:0 0 auto}
   .amt{flex:1;min-width:0;text-align:right;font-size:40px;font-weight:700;letter-spacing:-.025em;
@@ -209,7 +224,9 @@
   .mstep+.mstep{border-top:1px solid var(--hair)}
   .mstep .num{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--accent-dim);
     color:var(--accent);font-size:11px;font-weight:800;display:grid;place-items:center;margin-top:1px}
-  .mstep .txt{font-size:13px;color:var(--ink-2);line-height:1.6;padding-top:1px}  .qer{display:flex;align-items:center;gap:8px;padding:12px 0}
+  .mstep .txt{font-size:13px;color:var(--ink-2);line-height:1.6;padding-top:1px}
+  .helpsheet{height:auto;max-height:70dvh}
+  .helpsheet .sb{padding-bottom:calc(20px + env(safe-area-inset-bottom))}  .qer{display:flex;align-items:center;gap:8px;padding:12px 0}
   .qer+.qer{border-top:1px solid var(--hair)}
   .qer>span{font-size:12px;font-weight:600;color:var(--ink-2);min-width:72px}
   .qeb{display:flex;gap:8px;flex:1}
@@ -274,7 +291,10 @@
   @media (max-height:700px){
     .amt{font-size:34px}
     .row{padding:12px 8px}
-    .hdr{height:48px}
+    .hdr{height:64px;padding:8px 12px}
+    .glyph{width:40px;height:40px;border-radius:12px}
+    .wm .t{font-size:21px}
+    .gear{width:36px;height:36px}
   }
 
   /* ============ desktop: fill window, scale up ============ */
@@ -287,10 +307,11 @@
       padding:20px 26px 14px}
     [data-theme="light"] .app{box-shadow:0 30px 80px -30px rgba(20,22,28,.22)}
 
-    .hdr{height:76px}
-    .glyph{width:46px;height:46px;border-radius:14px}
-    .wm .t{font-size:22px}
-    .wm .s{font-size:11px}
+    .hdr{height:96px;padding:14px 20px}
+    .glyph{width:60px;height:60px;border-radius:17px}
+    .glyph svg{width:28px;height:28px}
+    .wm .t{font-size:32px}
+    .wm .s{font-size:12px}
     .gear{width:46px;height:46px}
     .gear svg{width:21px;height:21px}
 
@@ -338,6 +359,20 @@
     .drum.show{transform:translate(-50%,-50%) scale(1);opacity:1}
     .dscrim{cursor:pointer}
   }
+
+  /* ============ portrait lock (phones/tablets only) ============ */
+  /* デスクトップ(760px以上)は元々横長ウィンドウ前提のレイアウトなので対象外。
+     スマホ・タブレットを横向きにした場合のみ、見た目を縦向きのまま回転させる。 */
+  @media screen and (orientation:landscape) and (max-width:759px){
+    html{
+      transform:rotate(-90deg);
+      transform-origin:left top;
+      width:100vh;height:100vw;
+      overflow-x:hidden;
+      position:absolute;
+      top:100%;left:0;
+    }
+  }
 </style>
 </head>
 <body>
@@ -353,6 +388,9 @@
         <div class="s">Currency Converter</div>
       </div>
     </div>
+    <button class="gear" id="helpBtn" aria-label="Help">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 1.7-2.4 3.5"/><path d="M12 17h.01"/></svg>
+    </button>
     <button class="gear" id="myBtn" aria-label="Settings">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
@@ -374,14 +412,18 @@
   </div>
 
   <div class="conv">
-    <div class="row" id="rJpy">
+    <div class="row" id="rTop">
       <div class="row-head">
-        <span class="fl-big">🇯🇵</span>
-        <span class="iso">JPY</span>
-        <span class="cname" id="jpyName">日本円</span>
-        <span class="caret" id="caretJ"></span>
+        <span class="pinctl" id="pinCtl">
+          <span class="fl-big" id="topFlag">🇯🇵</span>
+        </span>
+        <span class="iso" id="topIso">JPY</span>
+        <span class="cname" id="topName">日本円</span>
+        <svg id="lockIcon" class="lock-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span class="unlock-hint" id="unlockHint">TAP TO CHANGE</span>
+        <span class="caret" id="caretT"></span>
       </div>
-      <div class="row-val"><span class="sym">¥</span><div class="amt zero" id="jpy">0</div></div>
+      <div class="row-val"><span class="sym" id="topSym">¥</span><div class="amt zero" id="top">0</div></div>
     </div>
 
     <div class="mid">
@@ -392,14 +434,14 @@
       <span class="ln"></span>
     </div>
 
-    <div class="row" id="rFor">
+    <div class="row" id="rBottom">
       <div class="row-head">
-        <span class="fl-big" id="forFlag">🇨🇳</span>
-        <span class="iso" id="forIso">CNY</span>
-        <span class="cname" id="forName">人民元</span>
-        <span class="caret" id="caretF"></span>
+        <span class="fl-big" id="botFlag">🇨🇳</span>
+        <span class="iso" id="botIso">CNY</span>
+        <span class="cname" id="botName">人民元</span>
+        <span class="caret" id="caretB"></span>
       </div>
-      <div class="row-val"><span class="sym" id="forSym">元</span><div class="amt zero" id="for">0</div></div>
+      <div class="row-val"><span class="sym" id="botSym">元</span><div class="amt zero" id="bottom">0</div></div>
     </div>
   </div>
 
@@ -435,12 +477,10 @@
     <div class="lbl" id="tLang">言語</div>
     <div class="langs" id="langSeg"></div>
 
-    <div class="lbl" id="tManual">使い方</div>
-    <div class="manual" id="manualBox"></div>
-
-    <div class="lbl"><span id="tCountries">表示する国</span><span class="c" id="selCnt"></span></div>
-    <div id="egrid"></div>
-    <div class="hint" id="tHintC">最大4か国まで。</div>
+    <div class="lbl" id="tAppearance">外観</div>
+    <div class="seg" id="themeSeg">
+      <button data-th="light" id="tLight">ライト</button><button data-th="dark" id="tDark">ダーク</button><button data-th="system" id="tSystem">システム</button>
+    </div>
 
     <div class="lbl" id="tQuick">簡単入力の金額</div>
     <div class="qe">
@@ -449,16 +489,24 @@
     </div>
     <div class="hint" id="tHintQ">タップするとドラムで金額を選べます。</div>
 
-    <div class="lbl" id="tAppearance">外観</div>
-    <div class="seg" id="themeSeg">
-      <button data-th="light" id="tLight">ライト</button><button data-th="dark" id="tDark">ダーク</button><button data-th="system" id="tSystem">システム</button>
-    </div>
+    <div class="lbl"><span id="tCountries">表示する国</span><span class="c" id="selCnt"></span></div>
+    <div id="egrid"></div>
+    <div class="hint" id="tHintC">最大4か国まで。</div>
 
     <div class="lbl" id="tHistory">レート履歴</div>
     <div class="spk"><b id="sparkTitle">推移</b><svg class="spark" id="spark" viewBox="0 0 300 40" preserveAspectRatio="none"></svg><div class="spk-e" id="sparkEmpty">—</div></div>
     <div id="histList"></div>
     <button class="dg" id="wipeBtn">すべての履歴を削除</button>
     <div class="note">Rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener" style="color:var(--ink-2);text-decoration:underline">ExchangeRate-API</a> / <a href="https://www.frankfurter.app" target="_blank" rel="noopener" style="color:var(--ink-2);text-decoration:underline">Frankfurter</a><br><span id="tNote"></span><br><a href="./privacy.html" style="color:var(--ink-2);text-decoration:underline">プライバシーポリシー</a></div>
+  </div>
+</div>
+
+<div class="scrim" id="helpScrim"></div>
+<div class="sheet helpsheet" id="helpSheet">
+  <div class="grip"></div>
+  <div class="sh"><h2 id="tHelpTitle">使い方</h2><button class="x" id="helpCloseBtn">✕</button></div>
+  <div class="sb">
+    <div class="manual" id="manualBox"></div>
   </div>
 </div>
 
@@ -485,7 +533,7 @@
       recPrompt:'メモ(例: 旅行 / 空港レート)',recDone:'のレートを記録しました',records:'件',noRec:'記録なし',
       min1:'最低1か国は必要です',max4:'タブは最大4か国です',wiped:'履歴を削除しました',
       regA:'アジア',regE:'北米・欧州',regO:'オセアニア・その他',
-      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',mTab:'上部のタブで国を切り替え',mTap:'金額をタップすると電卓が開きます',mRec:'「記録」ボタンでレートを旅の履歴に残せます',mSet:'設定から国・言語・テーマを変更できます'},
+      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',mTab:'上部のタブで国を切り替え（4つまで選択可）',mTap:'入力したい国の通貨をタップすると電卓が表示されます。',mRec:'「記録」ボタンでレートを履歴に残せます。',mLang:'言語は6カ国から選択可',mFetch:'為替レートは毎日一度取得します',tapChange:'タップで変更'},
     en:{settings:'Settings',countries:'Countries',quick:'Quick amounts',appearance:'Appearance',language:'Language',history:'Rate history',
       light:'Light',dark:'Dark',system:'System',trend:'Trend',noHist:'No history yet.',
       hintC:'Up to 4. Tabs follow your selection order.',hintQ:'Tap to pick an amount.',
@@ -494,7 +542,7 @@
       recPrompt:'Note (e.g. Trip / Airport rate)',recDone:' rate saved',records:'',noRec:'No records',
       min1:'At least 1 country required',max4:'Up to 4 tabs',wiped:'History deleted',
       regA:'Asia',regE:'North America & Europe',regO:'Oceania & Others',
-      note:'Auto-updates each morning. Rates are indicative.',jpyName:'Japanese Yen',manual:'How to use',mTab:'Switch countries using the tabs above',mTap:'Tap an amount to open the keypad',mRec:'Tap "Save" to keep a rate in your travel history',mSet:'Change countries, language, and theme in Settings'},
+      note:'Auto-updates each morning. Rates are indicative.',jpyName:'Japanese Yen',manual:'How to use',mTab:'Switch countries with the tabs above (up to 4)',mTap:'Tap the currency you want to enter to open the keypad.',mRec:'Tap "Save" to keep the rate in your history.',mLang:'Choose from 6 available languages',mFetch:'Rates are fetched once every day',tapChange:'TAP TO CHANGE'},
     zh:{settings:'设置',countries:'显示国家',quick:'快捷金额',appearance:'外观',language:'语言',history:'汇率记录',
       light:'浅色',dark:'深色',system:'跟随系统',trend:'走势',noHist:'暂无记录。',
       hintC:'最多4个国家，按选择顺序排列。',hintQ:'点击可选择金额。',
@@ -503,7 +551,7 @@
       recPrompt:'备注(例: 旅行 / 机场汇率)',recDone:' 汇率已保存',records:'条',noRec:'无记录',
       min1:'至少需要1个国家',max4:'最多4个标签',wiped:'记录已删除',
       regA:'亚洲',regE:'北美・欧洲',regO:'大洋洲・其他',
-      note:'每天早上自动更新。汇率仅供参考。',jpyName:'日元',manual:'使用说明',mTab:'点击上方标签切换国家',mTap:'点击金额即可打开数字键盘',mRec:'点击「记录」将汇率保存到旅行记录',mSet:'可在设置中更改国家、语言与主题'},
+      note:'每天早上自动更新。汇率仅供参考。',jpyName:'日元',manual:'使用说明',mTab:'点击上方标签切换国家（最多4个）',mTap:'点击想要输入的国家货币即可打开计算器。',mRec:'点击「记录」将汇率保存到历史记录。',mLang:'可选择6种语言',mFetch:'汇率每天获取一次',tapChange:'点击可更改'},
     ko:{settings:'설정',countries:'표시 국가',quick:'빠른 입력 금액',appearance:'테마',language:'언어',history:'환율 기록',
       light:'라이트',dark:'다크',system:'시스템',trend:'추이',noHist:'기록이 없습니다.',
       hintC:'최대 4개국. 선택한 순서대로 표시됩니다.',hintQ:'탭하여 금액을 선택하세요.',
@@ -512,7 +560,7 @@
       recPrompt:'메모 (예: 여행 / 공항 환율)',recDone:' 환율을 저장했습니다',records:'건',noRec:'기록 없음',
       min1:'최소 1개국이 필요합니다',max4:'탭은 최대 4개입니다',wiped:'기록을 삭제했습니다',
       regA:'아시아',regE:'북미・유럽',regO:'오세아니아・기타',
-      note:'매일 아침 자동 업데이트. 환율은 참고용입니다.',jpyName:'일본 엔',manual:'사용 방법',mTab:'상단 탭에서 국가를 전환하세요',mTap:'금액을 탭하면 키패드가 열립니다',mRec:'"기록" 버튼으로 환율을 여행 기록에 저장하세요',mSet:'설정에서 국가·언어·테마를 변경할 수 있습니다'},
+      note:'매일 아침 자동 업데이트. 환율은 참고용입니다.',jpyName:'일본 엔',manual:'사용 방법',mTab:'상단 탭에서 국가를 전환하세요（최대 4개）',mTap:'입력하려는 국가의 통화를 탭하면 계산기가 표시됩니다.',mRec:'"기록" 버튼으로 환율을 기록에 저장하세요.',mLang:'6개 언어 중 선택 가능',mFetch:'환율은 매일 한 번 가져옵니다',tapChange:'탭하여 변경'},
     vi:{settings:'Cài đặt',countries:'Quốc gia hiển thị',quick:'Số tiền nhanh',appearance:'Giao diện',language:'Ngôn ngữ',history:'Lịch sử tỷ giá',
       light:'Sáng',dark:'Tối',system:'Hệ thống',trend:'Xu hướng',noHist:'Chưa có lịch sử.',
       hintC:'Tối đa 4 quốc gia, theo thứ tự chọn.',hintQ:'Chạm để chọn số tiền.',
@@ -521,7 +569,7 @@
       recPrompt:'Ghi chú (VD: Du lịch / Tỷ giá sân bay)',recDone:' đã lưu tỷ giá',records:'',noRec:'Chưa có',
       min1:'Cần ít nhất 1 quốc gia',max4:'Tối đa 4 tab',wiped:'Đã xóa lịch sử',
       regA:'Châu Á',regE:'Bắc Mỹ & Châu Âu',regO:'Châu Đại Dương & Khác',
-      note:'Tự động cập nhật mỗi sáng. Tỷ giá chỉ mang tính tham khảo.',jpyName:'Yên Nhật',manual:'Hướng dẫn sử dụng',mTab:'Chuyển quốc gia bằng các tab phía trên',mTap:'Chạm vào số tiền để mở bàn phím',mRec:'Chạm "Lưu" để lưu tỷ giá vào lịch sử du lịch',mSet:'Thay đổi quốc gia, ngôn ngữ, giao diện trong Cài đặt'},
+      note:'Tự động cập nhật mỗi sáng. Tỷ giá chỉ mang tính tham khảo.',jpyName:'Yên Nhật',manual:'Hướng dẫn sử dụng',mTab:'Chuyển quốc gia bằng các tab phía trên (tối đa 4)',mTap:'Chạm vào đơn vị tiền tệ muốn nhập để mở bàn phím.',mRec:'Chạm "Lưu" để lưu tỷ giá vào lịch sử.',mLang:'Có thể chọn 1 trong 6 ngôn ngữ',mFetch:'Tỷ giá được cập nhật mỗi ngày một lần',tapChange:'CHẠM ĐỂ ĐỔI'},
     th:{settings:'ตั้งค่า',countries:'ประเทศที่แสดง',quick:'จำนวนเงินด่วน',appearance:'ธีม',language:'ภาษา',history:'ประวัติอัตรา',
       light:'สว่าง',dark:'มืด',system:'ตามระบบ',trend:'แนวโน้ม',noHist:'ยังไม่มีประวัติ',
       hintC:'สูงสุด 4 ประเทศ ตามลำดับที่เลือก',hintQ:'แตะเพื่อเลือกจำนวนเงิน',
@@ -530,7 +578,7 @@
       recPrompt:'บันทึก (เช่น ทริป / อัตราสนามบิน)',recDone:' บันทึกอัตราแล้ว',records:'',noRec:'ไม่มีบันทึก',
       min1:'ต้องมีอย่างน้อย 1 ประเทศ',max4:'สูงสุด 4 แท็บ',wiped:'ลบประวัติแล้ว',
       regA:'เอเชีย',regE:'อเมริกาเหนือ & ยุโรป',regO:'โอเชียเนีย & อื่นๆ',
-      note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น',manual:'วิธีใช้',mTab:'สลับประเทศได้ที่แท็บด้านบน',mTap:'แตะจำนวนเงินเพื่อเปิดแป้นตัวเลข',mRec:'แตะ "บันทึก" เพื่อเก็บอัตราไว้ในประวัติการเดินทาง',mSet:'เปลี่ยนประเทศ ภาษา และธีมได้ที่ตั้งค่า'}
+      note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น',manual:'วิธีใช้',mTab:'สลับประเทศได้ที่แท็บด้านบน (สูงสุด 4 ประเทศ)',mTap:'แตะสกุลเงินของประเทศที่ต้องการป้อนเพื่อเปิดเครื่องคิดเลข',mRec:'แตะ "บันทึก" เพื่อเก็บอัตราไว้ในประวัติ',mLang:'เลือกได้จาก 6 ภาษา',mFetch:'อัตราแลกเปลี่ยนจะอัปเดตวันละครั้ง',tapChange:'แตะเพื่อเปลี่ยน'}
   };
   var lang='ja';
   function t(k){return (T[lang]&&T[lang][k])||T.ja[k]||k;}
@@ -584,7 +632,8 @@
   var rates={},dateStr=null,source='cache';
   var displayed=['USD','EUR','VND'];
   var active='USD',theme='dark';
-  var side='jpy',raw='',replaceNext=false,kpOpen=false;
+  var side='bottom',raw='',replaceNext=false,kpOpen=false;
+  var pinned='JPY',pinLocked=true,pinIdleTimer=null,longPressTimer=null,longPressFired=false;
   var qJpy=[5000,10000,50000],qFor=[1000,5000,10000];
   var LADDER=[100,300,500,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
   var drumTarget=null;
@@ -595,15 +644,22 @@
   function fmtFull(d){return d.getFullYear()+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+('0'+d.getDate()).slice(-2);}
   function nf(n,dec){return new Intl.NumberFormat('ja-JP',{minimumFractionDigits:dec,maximumFractionDigits:dec}).format(n);}
   function getRate(c){return rates[c]||byCode[c].fb;}
+  function rateJPY(code){return code==='JPY'?1:getRate(code);}
+  function infoFor(code){
+    if(code==='JPY')return{code:'JPY',flag:'🇯🇵',name:t('jpyName'),sym:'¥',dec:0};
+    var c=byCode[code];return{code:c.code,flag:c.flag,name:cname(c),sym:c.sym,dec:c.dec};
+  }
+  function topCode(){return pinned;}
+  function bottomCode(){return (pinned===active)?'JPY':active;}
   function groupInt(s){return s.replace(/\B(?=(\d{3})+(?!\d))/g,',');}
   function loadHist(){try{return JSON.parse(localStorage.getItem(KEY_HIST)||'{}');}catch(e){return {};}}
   function saveHist(h){try{localStorage.setItem(KEY_HIST,JSON.stringify(h));}catch(e){}}
-  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,active:active,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang}));}catch(e){}}
+  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,active:active,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang,pinned:pinned}));}catch(e){}}
   function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
 
   function renderManual(){
     var box=$('manualBox');if(!box)return;
-    var steps=[t('mTab'),t('mTap'),t('mRec'),t('mSet')];
+    var steps=[t('mTab'),t('mTap'),t('mRec'),t('mLang'),t('mFetch')];
     box.innerHTML=steps.map(function(s,i){
       return '<div class="mstep"><span class="num">'+(i+1)+'</span><span class="txt">'+s+'</span></div>';
     }).join('');
@@ -628,8 +684,8 @@
     $('kpDone').textContent=t('done');
     var g=$('kpGrid').querySelector('.go');if(g)g.textContent=t('done');
     var cl=lang==='ja'?'入力中':lang==='en'?'EDITING':lang==='zh'?'输入中':lang==='ko'?'입력 중':lang==='vi'?'ĐANG NHẬP':'กำลังป้อน';
-    $('caretJ').textContent=cl;$('caretF').textContent=cl;
-    $('tManual').textContent=t('manual');
+    $('caretT').textContent=cl;$('caretB').textContent=cl;
+    $('tHelpTitle').textContent=t('manual');
     renderManual();
     var seg=$('langSeg');seg.innerHTML='';
     LANGS.forEach(function(L){var b=document.createElement('button');b.textContent=L.n;
@@ -646,21 +702,29 @@
   }
   if(mq&&mq.addEventListener)mq.addEventListener('change',function(){if(theme==='system'){applyTheme();renderSpark();}});
 
-  function decOf(){return side==='for'?byCode[active].dec:0;}
-  function curNums(){var r=getRate(active);
-    if(side==='for'){var f=raw===''?0:parseFloat(raw||'0');return{jpy:f*r,for:f};}
-    var j=raw===''?0:parseFloat(raw||'0');return{jpy:j,for:j/r};}
+  function decOf(){return infoFor(side==='top'?topCode():bottomCode()).dec;}
+  function curNums(){
+    var tC=topCode(),bC=bottomCode();
+    var sideCode=side==='top'?tC:bC, otherCode=side==='top'?bC:tC;
+    var v=raw===''?0:parseFloat(raw||'0');
+    var vJPY=v*rateJPY(sideCode);
+    var vOther=vJPY/rateJPY(otherCode);
+    return{top:side==='top'?v:vOther, bottom:side==='bottom'?v:vOther};
+  }
   function seed(n,dec){if(!n||!isFinite(n))return '';return dec>0?String(n.toFixed(dec)).replace(/\.?0+$/,''):String(Math.round(n));}
   function fmtRaw(s){if(s==='')return '0';var p=s.split('.');var ip=p[0].replace(/^0+(?=\d)/,'');if(ip==='')ip='0';ip=groupInt(ip);
     if(p.length>1)return ip+'.'+p[1];if(s.slice(-1)==='.')return ip+'.';return ip;}
   function renderConv(){
-    var c=byCode[active],r=getRate(active),js,fs,jz,fz;
-    if(side==='for'){var fN=raw===''?0:parseFloat(raw||'0');fs=raw===''?'0':fmtRaw(raw);fz=(fN===0);var jN=fN*r;js=nf(jN,0);jz=(jN===0);}
-    else{var j2=raw===''?0:parseFloat(raw||'0');js=raw===''?'0':fmtRaw(raw);jz=(j2===0);var f2=j2/r;fs=nf(f2,c.dec);fz=(f2===0);}
-    var je=$('jpy');je.textContent=js;je.classList.toggle('zero',jz);
-    var fe=$('for');fe.textContent=fs;fe.classList.toggle('zero',fz);
-    $('rJpy').classList.toggle('on',kpOpen&&side==='jpy');
-    $('rFor').classList.toggle('on',kpOpen&&side==='for');
+    var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
+    var ts,bs,tz,bz;
+    if(side==='top'){var tN=raw===''?0:parseFloat(raw||'0');ts=raw===''?'0':fmtRaw(raw);tz=(tN===0);
+      var bN=tN*rateJPY(tC)/rateJPY(bC);bs=nf(bN,bInfo.dec);bz=(bN===0);}
+    else{var bN2=raw===''?0:parseFloat(raw||'0');bs=raw===''?'0':fmtRaw(raw);bz=(bN2===0);
+      var tN2=bN2*rateJPY(bC)/rateJPY(tC);ts=nf(tN2,tInfo.dec);tz=(tN2===0);}
+    var te=$('top');te.textContent=ts;te.classList.toggle('zero',tz);
+    var be=$('bottom');be.textContent=bs;be.classList.toggle('zero',bz);
+    $('rTop').classList.toggle('on',kpOpen&&side==='top');
+    $('rBottom').classList.toggle('on',kpOpen&&side==='bottom');
   }
   function appendDigits(cur,d,dec){var p=(cur+d).split('.');
     p[0]=p[0].replace(/^0+(?=\d)/,'');if(p[0]==='')p[0]='0';
@@ -675,27 +739,35 @@
     else{if(replaceNext){raw='';replaceNext=false;}raw=appendDigits(raw,k,dec);}
     renderConv();}
   function focusSide(w){var n=curNums();
-    if(w==='jpy'){side='jpy';raw=seed(n.jpy,0);}else{side='for';raw=seed(n.for,byCode[active].dec);}
+    if(w==='top'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
     replaceNext=true;openKp();renderConv();}
   function openKp(){kpOpen=true;$('paneQuick').classList.remove('on');$('paneKp').classList.add('on');updateKp();}
   function closeKp(){kpOpen=false;$('paneKp').classList.remove('on');$('paneQuick').classList.add('on');renderConv();}
-  function updateKp(){var c=byCode[active];$('kpLabel').textContent=side==='for'?c.code:'JPY';$('dotBtn').classList.toggle('dis',decOf()===0);}
+  function updateKp(){$('kpLabel').textContent=side==='top'?topCode():bottomCode();$('dotBtn').classList.toggle('dis',decOf()===0);}
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
     displayed.forEach(function(code){var c=byCode[code];var el=document.createElement('button');el.className='tab'+(code===active?' on':'');
       el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
       el.onclick=function(){active=code;saveCfg();renderAll();if(kpOpen)updateKp();};t2.appendChild(el);});}
-  function renderRate(){var c=byCode[active],r=getRate(active);
-    $('pair').textContent='JPY / '+c.code;
-    $('rateVal').textContent='1'+c.sym+' = '+nf(r,r>=1?2:4)+'円';
+  function renderRate(){
+    var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
+    var rate=rateJPY(bC)/rateJPY(tC);
+    $('pair').textContent=tC+' / '+bC;
+    $('rateVal').textContent='1'+bInfo.sym+' = '+nf(rate,rate>=1?2:4)+tInfo.sym;
     $('dot').classList.toggle('warn',source==='warn');
     $('when').textContent=dateStr||'—';}
-  function renderForeign(){var c=byCode[active];
-    $('forFlag').textContent=c.flag;$('forIso').textContent=c.code;$('forName').textContent=cname(c);$('forSym').textContent=c.sym;
-    $('jpyName').textContent=t('jpyName');}
-  function renderQuick(){var c=byCode[active];$('qForH').textContent=c.code;
-    var a=$('qJpy');a.innerHTML='';qJpy.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='jpy';raw=String(v);replaceNext=false;renderConv();};a.appendChild(b);});
-    var d=$('qFor');d.innerHTML='';qFor.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='for';raw=String(v);replaceNext=false;renderConv();};d.appendChild(b);});}
+  function renderRows(){
+    var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
+    $('topFlag').textContent=tInfo.flag;$('topIso').textContent=tInfo.code;$('topName').textContent=tInfo.name;$('topSym').textContent=tInfo.sym;
+    $('botFlag').textContent=bInfo.flag;$('botIso').textContent=bInfo.code;$('botName').textContent=bInfo.name;$('botSym').textContent=bInfo.sym;
+    $('lockIcon').style.display=pinLocked?'inline-flex':'none';
+    $('unlockHint').style.display=(!pinLocked)?'inline-flex':'none';
+    $('unlockHint').textContent=t('tapChange');
+    $('pinCtl').classList.toggle('unlocked',!pinLocked);
+  }
+  function renderQuick(){var bC=bottomCode(),bInfo=infoFor(bC);$('qForH').textContent=bInfo.code;
+    var a=$('qJpy');a.innerHTML='';qJpy.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='top';raw=String(v);replaceNext=false;renderConv();};a.appendChild(b);});
+    var d=$('qFor');d.innerHTML='';qFor.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='bottom';raw=String(v);replaceNext=false;renderConv();};d.appendChild(b);});}
   function renderSpark(){var c=byCode[active],h=(loadHist()[active]||[]),svg=$('spark'),e=$('sparkEmpty');
     $('sparkTitle').textContent=cname(c)+' · '+c.code;
     e.textContent=t('noHist');
@@ -706,7 +778,43 @@
     var pts=v.map(function(x,i){var X=n===1?W/2:p+i*(W-2*p)/(n-1);var Y=H-p-((x-mn)/rg)*(H-2*p);return X.toFixed(1)+','+Y.toFixed(1);});
     var l=pts[pts.length-1].split(',');
     svg.innerHTML='<polyline fill="none" stroke="'+col+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="'+pts.join(' ')+'"/><circle cx="'+l[0]+'" cy="'+l[1]+'" r="2.5" fill="'+col+'"/>';}
-  function renderAll(){renderTabs();renderRate();renderForeign();renderQuick();renderConv();if($('sheet').classList.contains('show'))renderSpark();}
+  function renderAll(){renderTabs();renderRate();renderRows();renderQuick();renderConv();if($('sheet').classList.contains('show'))renderSpark();}
+
+  /* ---- pin lock / unlock ---- */
+  function pinCandidates(){return ['JPY'].concat(displayed).filter(function(c){return c!==pinned;});}
+  function cyclePinned(){
+    var cands=['JPY'].concat(displayed);
+    var idx=cands.indexOf(pinned);
+    var next=cands[(idx+1)%cands.length];
+    pinned=next;
+    if(pinned===active){ // avoid top===bottom; bottomCode() handles it, but keep active sane
+      // no-op: bottomCode() already resolves to JPY when pinned===active
+    }
+    saveCfg();renderAll();if(kpOpen)updateKp();
+    armIdleRelock();
+  }
+  function armIdleRelock(){
+    clearTimeout(pinIdleTimer);
+    pinIdleTimer=setTimeout(function(){pinLocked=true;renderRows();},3200);
+  }
+  function startLongPress(e){
+    if(e.type==='mousedown'&&e.button!==0)return;
+    longPressFired=false;
+    clearTimeout(longPressTimer);
+    longPressTimer=setTimeout(function(){
+      longPressFired=true;
+      pinLocked=false;
+      renderRows();
+      armIdleRelock();
+      if(navigator.vibrate)navigator.vibrate(12);
+    },900);
+  }
+  function cancelLongPress(){clearTimeout(longPressTimer);}
+  function onPinTap(e){
+    if(longPressFired){longPressFired=false;e.stopPropagation();return;}
+    if(!pinLocked){e.stopPropagation();cyclePinned();return;}
+    // locked + short tap: let the click bubble up to the row (opens keypad as usual)
+  }
 
   function logAuto(){var h=loadHist(),d=dateStr||fmtDate(new Date());
     COUNTRIES.forEach(function(c){var a=h[c.code]||[],r=getRate(c.code),last=a[a.length-1];
@@ -732,7 +840,8 @@
         el.onclick=function(){toggleCountry(c.code);};gr.appendChild(el);});
       g.appendChild(gr);});}
   function toggleCountry(code){var i=displayed.indexOf(code);
-    if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);if(active===code){active=displayed[0];side='jpy';raw='';}}
+    if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);if(active===code){active=displayed[0];side='bottom';raw='';}
+      if(pinned===code){pinned='JPY';pinLocked=true;}}
     else{if(displayed.length>=4){toast(t('max4'));return;}displayed.push(code);}
     saveCfg();renderEdit();renderQEdit();renderAll();renderSpark();}
   function renderQEdit(){var c=byCode[active];$('qeForLbl').textContent=c.code;
@@ -755,6 +864,8 @@
     box.querySelectorAll('[data-clr]').forEach(function(b){b.onclick=function(){var c=b.getAttribute('data-clr');if(!confirm(cname(byCode[c])+t('clearQ')))return;var h2=loadHist();h2[c]=[];saveHist(h2);renderHist();renderSpark();};});}
   function openSheet(){closeKp();renderEdit();renderQEdit();renderHist();renderSpark();applyTheme();$('scrim').classList.add('show');$('sheet').classList.add('show');}
   function closeSheet(){$('scrim').classList.remove('show');$('sheet').classList.remove('show');}
+  function openHelp(){closeKp();renderManual();$('helpScrim').classList.add('show');$('helpSheet').classList.add('show');}
+  function closeHelp(){$('helpScrim').classList.remove('show');$('helpSheet').classList.remove('show');}
 
   function openDrum(g,i,cur){drumTarget={g:g,i:i};var l=$('drumList');
     l.innerHTML='<div class="dp"></div>'+LADDER.map(function(v){return '<div class="di">'+nf(v,0)+'</div>';}).join('')+'<div class="dp"></div>';
@@ -788,27 +899,40 @@
       if(cfg.active&&byCode[cfg.active])active=cfg.active;if(cfg.theme)theme=cfg.theme;
       if(Array.isArray(cfg.qJpy)&&cfg.qJpy.length===3)qJpy=cfg.qJpy;
       if(Array.isArray(cfg.qFor)&&cfg.qFor.length===3)qFor=cfg.qFor;
-      if(cfg.lang&&T[cfg.lang])lang=cfg.lang;}
+      if(cfg.lang&&T[cfg.lang])lang=cfg.lang;
+      if(cfg.pinned)pinned=cfg.pinned;}
     else{var nl=(navigator.language||'ja').slice(0,2);if(T[nl])lang=nl;}
     if(displayed.indexOf(active)<0)active=displayed[0];
+    if(pinned!=='JPY'&&displayed.indexOf(pinned)<0)pinned='JPY';
+    pinLocked=true;
     applyTheme();applyLang();
     var cached=null;try{cached=JSON.parse(localStorage.getItem(KEY_RATE)||'null');}catch(e){}
     if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';}
     renderAll();
     if(!cached||cached.day!==todayKey())fetchRates();
 
-    $('rJpy').addEventListener('click',function(){focusSide('jpy');});
-    $('rFor').addEventListener('click',function(){focusSide('for');});
+    $('rTop').addEventListener('click',function(){focusSide('top');});
+    $('rBottom').addEventListener('click',function(){focusSide('bottom');});
+    var pc=$('pinCtl');
+    pc.addEventListener('pointerdown',startLongPress);
+    pc.addEventListener('pointerup',cancelLongPress);
+    pc.addEventListener('pointerleave',cancelLongPress);
+    pc.addEventListener('pointercancel',cancelLongPress);
+    pc.addEventListener('click',onPinTap);
+    pc.addEventListener('contextmenu',function(e){e.preventDefault();});
     $('kpGrid').addEventListener('click',function(e){var b=e.target.closest('button');if(b)press(b.getAttribute('data-k'));});
     $('kpDone').addEventListener('click',closeKp);
     $('swapBtn').addEventListener('click',function(e){e.stopPropagation();var n=curNums();
-      if(side==='for'){side='jpy';raw=seed(n.for,0);}else{side='for';raw=seed(n.jpy,byCode[active].dec);}
+      if(side==='bottom'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
       replaceNext=true;renderConv();if(kpOpen)updateKp();});
     $('refBtn').addEventListener('click',fetchRates);
     $('recBtn').addEventListener('click',function(){recordNote(active);});
     $('myBtn').addEventListener('click',openSheet);
     $('closeBtn').addEventListener('click',closeSheet);
     $('scrim').addEventListener('click',closeSheet);
+    $('helpBtn').addEventListener('click',openHelp);
+    $('helpCloseBtn').addEventListener('click',closeHelp);
+    $('helpScrim').addEventListener('click',closeHelp);
     document.querySelectorAll('#themeSeg button').forEach(function(b){b.addEventListener('click',function(){theme=b.getAttribute('data-th');saveCfg();applyTheme();renderSpark();});});
     $('wipeBtn').addEventListener('click',function(){if(!confirm(t('wipeQ')))return;saveHist({});renderHist();renderSpark();toast(t('wiped'));});
     var dl=$('drumList'),raf;dl.addEventListener('scroll',function(){if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(hlDrum);});
@@ -829,6 +953,11 @@
         console.warn('[sw] registration failed:', err);
       });
     });
+  }
+  // 縦向き固定: フルスクリーン/インストール済みPWA環境で対応ブラウザのみ有効
+  // (通常のブラウザタブでは仕様上ロックできないため、下のCSSで見た目を縦に保つ)
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('portrait').catch(function () {});
   }
 </script>
 </body>
