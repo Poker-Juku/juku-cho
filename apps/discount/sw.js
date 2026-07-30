@@ -1,4 +1,4 @@
-const CACHE = "discount-calc-v2";
+const CACHE_NAME = 'discount-calc-20260730';
 const ASSETS = [
   "./",
   "./index.html",
