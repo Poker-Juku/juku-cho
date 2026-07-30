@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<script>try{var t=localStorage.getItem("jukucho_theme")||"system";document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","system");}</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#14161c">
@@ -21,6 +22,7 @@
 <style>
   /* ===== DARK (default) ===== */
   :root{
+    color-scheme:dark;
     --ink:#14161c;--ink-2:#1e1c22;--panel:#20232c;--panel-2:#2a2e3a;
     --line:rgba(255,109,92,.16);
     --accent:#ff6d5c;--accent-soft:#ff8776;--on-ink:#2a0c08;
@@ -42,8 +44,12 @@
     --gap:12px;
   }
 
+  /* ===== explicit DARK（明示） ===== */
+  :root[data-theme="dark"]{ color-scheme:dark; }
+
   /* ===== LIGHT palette (grey base, same orange accent) ===== */
   :root[data-theme="light"]{
+    color-scheme:light;
     --ink:#eceef2;--ink-2:#e3e6ec;--panel:#ffffff;--panel-2:#f1f3f7;
     --line:rgba(20,24,34,.10);
     --accent:#ff6d5c;--accent-soft:#ff8776;--on-ink:#ffffff;
@@ -60,6 +66,7 @@
   /* system がライトを要求している場合のみライトに切替 */
   @media (prefers-color-scheme:light){
     :root[data-theme="system"]{
+      color-scheme:light;
       --ink:#eceef2;--ink-2:#e3e6ec;--panel:#ffffff;--panel-2:#f1f3f7;
       --line:rgba(20,24,34,.10);
       --on-ink:#ffffff;
@@ -79,19 +86,24 @@
   html,body{height:100%;overflow:hidden;overscroll-behavior:none;position:fixed;width:100%}
   body{
     font-family:"BIZ UDPGothic",system-ui,sans-serif;
-    background:radial-gradient(120% 60% at 50% -10%, var(--bg-top) 0%, var(--ink) 55%) fixed;
+    background:var(--ink);
     color:var(--text);
-    display:flex;justify-content:center;align-items:stretch;
     touch-action:manipulation;
     transition:background .2s,color .2s;
   }
-  .app{width:100%;max-width:430px;height:100dvh;display:flex;flex-direction:column;
+  /* stage：ここが実際の表示領域。横向き時はこれを回転させて縦固定にする */
+  #stage{
+    position:relative;width:100%;height:100dvh;overflow:hidden;
+    display:flex;justify-content:center;align-items:stretch;
+    background:radial-gradient(120% 60% at 50% -10%, var(--bg-top) 0%, var(--ink) 55%);
+  }
+  .app{width:100%;max-width:430px;height:100%;display:flex;flex-direction:column;
     overflow:hidden;                                          /* スクロールさせない＝動かない */
     padding:calc(10px + env(safe-area-inset-top)) 16px calc(10px + env(safe-area-inset-bottom));
     gap:var(--gap);position:relative}
 
   /* アクティブなモード（計算/逆算）が残り高さを埋める → キーパッドが伸縮して常に画面内に収まる */
-  #calcMode{flex:1;min-height:0;display:flex;flex-direction:column;gap:var(--gap)}
+  #calcMode{flex:1;min-height:0;display:flex;flex-direction:column;gap:var(--gap);overflow:hidden}
 
   /* ===== header ===== */
   header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:2px 2px 2px}
@@ -157,11 +169,11 @@
   .pad .clr{color:var(--muted);font-weight:700}
   /* 画面内メインのキーパッドだけ、残り高さに合わせて伸縮（モーダルの電卓は固定のまま） */
   #pad,#revpad{flex:1;min-height:0;grid-auto-rows:1fr;margin-top:0}
-  #pad button,#revpad button{padding:0;height:100%;min-height:42px;display:flex;align-items:center;justify-content:center}
+  #pad button,#revpad button{padding:0;height:100%;display:flex;align-items:center;justify-content:center}
   .hint{text-align:center;font-size:11px;color:var(--muted);padding:2px 0 0;flex:0 0 auto}
 
   .rev{display:none;flex-direction:column;gap:10px}
-  .rev.on{display:flex;flex:1;min-height:0}
+  .rev.on{display:flex;flex:1;min-height:0;overflow:hidden}
   .field{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px}
   .field.active{border-color:rgba(255,109,92,.5)}
   .field .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -299,7 +311,7 @@
 
   /* タブレット・PC：カード状に浮かせて中央表示（ウィンドウ内に収める） */
   @media (min-width:520px){
-    body{align-items:center;padding:20px 16px}
+    #stage{align-items:center;padding:20px 16px}
     .app{
       max-width:460px;
       height:min(760px, calc(100dvh - 40px));
@@ -333,9 +345,30 @@
   @media (hover:hover) and (pointer:fine){
     .pad button:active{transform:none}
   }
+
+  /* =========================================================
+     スマホ横向き：画面を90°回転させて“縦固定”にする
+     （高さの低い landscape = スマホ横向きだけを対象。PCの横長は対象外）
+     ========================================================= */
+  @media (orientation:landscape) and (max-height:600px){
+    #stage{
+      position:fixed;top:0;left:100%;
+      width:100vh;height:100vw;
+      transform:rotate(90deg);
+      transform-origin:left top;
+      /* カード装飾は使わず全面表示に戻す */
+      align-items:stretch;padding:0;
+    }
+    .app{
+      max-width:430px;height:100%;
+      background:none;border:0;border-radius:0;box-shadow:none;
+      padding:calc(8px + env(safe-area-inset-top)) 16px calc(8px + env(safe-area-inset-bottom));
+    }
+  }
 </style>
 </head>
 <body>
+<div id="stage">
 <div class="app">
   <header>
     <div class="brand">
@@ -542,6 +575,7 @@
 </div>
 
 <div class="toast" id="toast">履歴に保存しました</div>
+</div><!-- /#stage -->
 
 <script>
 const yen = n => "¥" + Math.round(n).toLocaleString("ja-JP");
@@ -711,6 +745,7 @@ function isLightNow(){
 }
 function applyTheme(t){
   document.documentElement.dataset.theme=t;
+  document.documentElement.style.colorScheme = isLightNow() ? "light" : "dark";
   try{ localStorage.setItem(THEME_KEY,t); }catch(e){}
   themeSeg.querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.theme===t));
   // ステータスバー色を追従
