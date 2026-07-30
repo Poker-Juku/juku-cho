@@ -167,9 +167,12 @@
   .pad button:active{background:var(--key-press);transform:translateY(1px)}
   .pad .fn{color:var(--accent-soft);font-size:calc(var(--key-fs) - 4px)}
   .pad .clr{color:var(--muted);font-weight:700}
-  /* 画面内メインのキーパッドだけ、残り高さに合わせて伸縮（モーダルの電卓は固定のまま） */
-  #pad,#revpad{flex:1 1 0;min-height:0;grid-template-rows:repeat(4,minmax(0,1fr));margin-top:0}
-  #pad button,#revpad button{padding:0;height:100%;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center}
+  /* 画面内メインのキーパッド：flexで4行を等分（iOSでも確実に縦を埋める） */
+  #pad,#revpad{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px;margin-top:0}
+  #pad .prow,#revpad .prow{flex:1 1 0;min-height:0;display:flex;gap:8px}
+  #pad .prow button,#revpad .prow button{flex:1 1 0;min-width:0;width:auto;height:100%;padding:0;
+    display:flex;align-items:center;justify-content:center}
+  #pad .prow button.wide,#revpad .prow button.wide{flex:2 1 0}
   .hint{text-align:center;font-size:11px;color:var(--muted);padding:2px 0 0;flex:0 0 auto}
 
   .rev{display:none;flex-direction:column;gap:10px}
@@ -433,10 +436,18 @@
     </div>
 
     <div class="pad" id="pad">
-      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="back" class="fn">⌫</button>
-      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="00" class="fn">00</button>
-      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="clear" class="clr">C</button>
-      <button data-k="0" style="grid-column:span 2">0</button><button data-k="000" class="fn">000</button><button data-k="clear2" class="clr">AC</button>
+      <div class="prow">
+        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="back" class="fn">⌫</button>
+      </div>
+      <div class="prow">
+        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="00" class="fn">00</button>
+      </div>
+      <div class="prow">
+        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="clear" class="clr">C</button>
+      </div>
+      <div class="prow">
+        <button data-k="0" class="wide">0</button><button data-k="000" class="fn">000</button><button data-k="clear2" class="clr">AC</button>
+      </div>
     </div>
     <div class="hint">オフ率をタップ → 価格を入力するだけ</div>
   </section>
@@ -447,10 +458,18 @@
     <div class="field" data-f="sale"><span class="label">割引後の価格</span><span class="v empty" id="saleV"><span class="yen">¥</span>0</span></div>
     <div class="rev-out"><div class="big" id="revPct">—</div><div class="sub" id="revSub">割引後の価格を入力すると割引率を表示</div></div>
     <div class="pad" id="revpad">
-      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="back" class="fn">⌫</button>
-      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="00" class="fn">00</button>
-      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="clear" class="clr">C</button>
-      <button data-k="0" style="grid-column:span 2">0</button><button data-k="000" class="fn">000</button><button data-k="clear2" class="clr">AC</button>
+      <div class="prow">
+        <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="back" class="fn">⌫</button>
+      </div>
+      <div class="prow">
+        <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="00" class="fn">00</button>
+      </div>
+      <div class="prow">
+        <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="clear" class="clr">C</button>
+      </div>
+      <div class="prow">
+        <button data-k="0" class="wide">0</button><button data-k="000" class="fn">000</button><button data-k="clear2" class="clr">AC</button>
+      </div>
     </div>
     <div class="hint">入力する欄をタップして切り替え</div>
   </section>
