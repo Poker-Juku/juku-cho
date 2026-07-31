@@ -111,7 +111,9 @@
   @keyframes spin{to{transform:rotate(360deg)}}
 
   /* ============ converter — the hero ============ */
-  .conv{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:center}
+  .conv{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:center;
+    transition:transform .22s cubic-bezier(.32,.72,0,1)}
+  .conv.lift{transform:translateY(var(--lift,0px))}
   .row{padding:16px 8px;cursor:pointer;border-radius:var(--r);transition:background .15s}
   .row.on{background:var(--raise)}
   .row-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -372,9 +374,17 @@
     .dscrim{cursor:pointer}
   }
 
-  /* ============ portrait lock (phones/tablets only) ============ */
-  /* デスクトップ(760px以上)は元々横長ウィンドウ前提のレイアウトなので対象外。
-     スマホ・タブレットを横向きにした場合のみ、見た目を縦向きのまま回転させる。 */
+  /* ============ portrait lock (phones only) ============ */
+  /* JS が「タッチ端末 かつ 横向き かつ 短辺が実機スマホ級」を判定したときだけ
+     body.force-portrait を付与する。CSS 単独では判定しない(PC 誤爆防止)。 */
+  body.force-portrait{
+    position:fixed;top:0;left:0;
+    width:100vh;height:100vw;
+    overflow:hidden;
+    transform-origin:top left;
+    transform:translateX(100vw) rotate(90deg);
+  }
+  body.force-portrait .app{max-width:none}
 
 </style>
 </head>
@@ -746,8 +756,26 @@
   function focusSide(w){var n=curNums();
     if(w==='top'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
     replaceNext=true;openKp();renderConv();}
-  function openKp(){kpOpen=true;$('paneKp').classList.add('on');$('kpScrim').classList.add('on');updateKp();}
-  function closeKp(){kpOpen=false;$('paneKp').classList.remove('on');$('kpScrim').classList.remove('on');renderConv();}
+  function openKp(){kpOpen=true;$('paneKp').classList.add('on');$('kpScrim').classList.add('on');updateKp();liftActiveRow();}
+  function closeKp(){kpOpen=false;$('paneKp').classList.remove('on');$('kpScrim').classList.remove('on');
+    var conv=document.querySelector('.conv');conv.classList.remove('lift');conv.style.setProperty('--lift','0px');renderConv();}
+  function liftActiveRow(){
+    // 入力中の行が電卓に隠れないよう、必要な分だけ .conv を上へ持ち上げる
+    requestAnimationFrame(function(){
+      setTimeout(function(){
+        var conv=document.querySelector('.conv');
+        var activeRow=$(side==='top'?'rTop':'rBottom');
+        var kp=$('paneKp');
+        if(!conv||!activeRow||!kp)return;
+        var rowBottom=activeRow.getBoundingClientRect().bottom;
+        var kpTop=kp.getBoundingClientRect().top;
+        var overlap=rowBottom-kpTop+16; // 16px の余白を確保
+        var lift=overlap>0?Math.round(overlap):0;
+        conv.style.setProperty('--lift','-'+lift+'px');
+        conv.classList.toggle('lift',lift>0);
+      },30);
+    });
+  }
   function updateKp(){$('kpLabel').textContent=side==='top'?topCode():bottomCode();$('dotBtn').classList.toggle('dis',decOf()===0);}
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
@@ -930,7 +958,7 @@
     $('kpScrim').addEventListener('click',closeKp);
     $('swapBtn').addEventListener('click',function(e){e.stopPropagation();var n=curNums();
       if(side==='bottom'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
-      replaceNext=true;renderConv();if(kpOpen)updateKp();});
+      replaceNext=true;renderConv();if(kpOpen){updateKp();liftActiveRow();}});
     $('refBtn').addEventListener('click',fetchRates);
     $('recBtn').addEventListener('click',function(){recordNote(active);});
     $('myBtn').addEventListener('click',openSheet);
@@ -965,6 +993,25 @@
   if (screen.orientation && screen.orientation.lock) {
     screen.orientation.lock('portrait').catch(function () {});
   }
+
+  // ブラウザのタブ向けフォールバック: 実機スマホの横向きだけ、見た目を縦に回転。
+  // 二重ガード(タッチ端末 + 横向き + 短辺がスマホ級)で PC を確実に除外する。
+  (function(){
+    var isTouch = ('ontouchstart' in window) ||
+                  (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+    function apply(){
+      var w = window.innerWidth, h = window.innerHeight;
+      var landscape = w > h;
+      var shortEdge = Math.min(w, h);
+      // 短辺が 560px 以下 = スマホ級。タブレット大型やPCは対象外。
+      var isPhone = isTouch && shortEdge <= 560;
+      var on = isPhone && landscape;
+      document.body.classList.toggle('force-portrait', on);
+    }
+    apply();
+    window.addEventListener('resize', apply);
+    window.addEventListener('orientationchange', function(){ setTimeout(apply, 60); });
+  })();
 </script>
 </body>
 </html>
