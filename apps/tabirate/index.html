@@ -308,9 +308,9 @@
     html,body{position:static;overflow:auto}
     body{align-items:center;padding:40px 24px;min-height:100vh}
     body::before{width:640px;height:520px;top:-220px}
-    .app{max-width:640px;height:auto;min-height:min(880px,94vh);border-radius:28px;overflow:visible;
+    .app{max-width:640px;height:min(880px,94dvh);min-height:0;border-radius:28px;overflow:hidden;
       border:1px solid var(--hair);box-shadow:0 30px 80px -30px rgba(0,0,0,.55);
-      padding:20px 26px 20px}
+      padding:20px 26px 18px}
     [data-theme="light"] .app{box-shadow:0 30px 80px -30px rgba(20,22,28,.22)}
 
     .hdr{height:96px;padding:14px 20px}
@@ -350,13 +350,11 @@
     .kp-top .l{font-size:12px}
     .kp-top .done{font-size:15px}
 
-    .ad{height:64px;border-radius:14px;flex:0 0 auto}
-    .foot{font-size:10px;padding-top:10px}
-    .zone{flex:0 0 auto;min-height:300px}
-    .pane.on{flex:0 0 auto}
-    .quick{flex:0 0 auto}
-    .kp{flex:0 0 auto}
-    .kp-g{min-height:260px}
+    .ad{height:60px;border-radius:14px;flex:0 0 auto}
+    .foot{font-size:10px;padding-top:8px}
+    .zone{flex:1 1 auto;min-height:0}
+    .pane.on{flex:1 1 auto;min-height:0}
+    .kp-g{min-height:0}
 
     .sheet{max-width:520px;height:80vh;border-radius:24px;bottom:auto;top:50%;
       transform:translate(-50%,-46%) scale(.97);left:50%;right:auto;opacity:0;
@@ -374,16 +372,7 @@
   /* ============ portrait lock (phones/tablets only) ============ */
   /* デスクトップ(760px以上)は元々横長ウィンドウ前提のレイアウトなので対象外。
      スマホ・タブレットを横向きにした場合のみ、見た目を縦向きのまま回転させる。 */
-  @media screen and (orientation:landscape) and (max-width:759px){
-    html{
-      transform:rotate(-90deg);
-      transform-origin:left top;
-      width:100vh;height:100vw;
-      overflow-x:hidden;
-      position:absolute;
-      top:100%;left:0;
-    }
-  }
+
 </style>
 </head>
 <body>
