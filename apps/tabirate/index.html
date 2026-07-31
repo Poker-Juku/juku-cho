@@ -49,14 +49,8 @@
   body::before{content:"";position:fixed;top:-160px;left:50%;transform:translateX(-50%);
     width:420px;height:340px;border-radius:50%;pointer-events:none;z-index:0;
     background:radial-gradient(closest-side,var(--accent-dim),transparent 100%);opacity:.9}
-  .app{position:relative;z-index:1;width:100%;max-width:440px;height:100dvh;min-height:100dvh;display:flex;flex-direction:column;
-    padding:env(safe-area-inset-top) 16px calc(8px + env(safe-area-inset-bottom));overflow:hidden}
-  /* 画面が低いときは潰さずスクロールさせる(電卓・タブの重なり防止) */
-  @media (max-height:600px){
-    html,body{position:static;overflow:auto;height:auto}
-    .app{height:auto;min-height:100dvh;overflow:visible}
-    .zone{min-height:300px}
-  }
+  .app{position:relative;z-index:1;width:100%;max-width:440px;height:100dvh;display:flex;flex-direction:column;
+    padding:env(safe-area-inset-top) 16px calc(10px + env(safe-area-inset-bottom));overflow:hidden}
 
   /* ============ header ============ */
   .hdr{flex:0 0 auto;position:relative;display:flex;align-items:center;gap:10px;
@@ -117,7 +111,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
 
   /* ============ converter — the hero ============ */
-  .conv{flex:0 0 auto;position:relative}
+  .conv{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:center}
   .row{padding:16px 8px;cursor:pointer;border-radius:var(--r);transition:background .15s}
   .row.on{background:var(--raise)}
   .row-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -148,9 +142,9 @@
   .swap svg{width:14px;height:14px}
 
   /* ============ bottom zone ============ */
-  .zone{flex:1 1 auto;min-height:248px;display:flex;flex-direction:column;justify-content:flex-end;padding-top:8px}
+  .zone{flex:0 0 auto;display:flex;flex-direction:column;padding-top:8px}
   .pane{display:none}
-  .pane.on{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;justify-content:flex-end}
+  .pane#paneQuick.on{display:flex;flex-direction:column}
 
   /* quick — hairline pills, no cards */
   .quick{display:flex;gap:8px;padding-bottom:8px}
@@ -158,24 +152,34 @@
   .qg-h{font-size:9px;font-weight:700;color:var(--ink-3);letter-spacing:.14em;margin:0 0 8px 2px;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .qg-b{display:flex;gap:6px}
-  .qb{flex:1 1 0;min-width:0;height:32px;border:1px solid var(--hair);background:transparent;border-radius:10px;
+  .qb{flex:1 1 0;min-width:0;height:36px;border:1px solid var(--hair);background:transparent;border-radius:10px;
     font-size:11px;font-weight:600;color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums;
     transition:.12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
   .qb:active{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
 
-  /* keypad */
-  .kp{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:8px}
+  /* keypad — fixed bottom overlay */
+  #paneKp{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;z-index:30;
+    background:var(--bg);border-top:1px solid var(--hair);border-radius:20px 20px 0 0;
+    padding:12px 16px calc(14px + env(safe-area-inset-bottom));
+    box-shadow:0 -12px 40px -8px rgba(0,0,0,.5);
+    transform:translateY(110%);transition:transform .22s cubic-bezier(.32,.72,0,1);display:block}
+  #paneKp.on{transform:translateY(0)}
+  .kp{display:flex;flex-direction:column;gap:10px}
   .kp-top{display:flex;align-items:center;justify-content:space-between;flex:0 0 auto;padding:0 2px}
   .kp-top .l{font-size:10px;font-weight:700;color:var(--ink-3);letter-spacing:.14em}
   .kp-top .done{border:none;background:transparent;color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;padding:4px 8px}
-  .kp-g{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:8px;flex:1 1 auto;min-height:208px}
-  .kp-g button{border:none;border-radius:14px;background:var(--raise);color:var(--ink);min-height:44px;
-    font-size:20px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums;transition:.1s;padding:0;min-height:0}
+  .kp-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .kp-g button{border:none;border-radius:14px;background:var(--raise);color:var(--ink);height:58px;
+    font-size:22px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums;transition:.1s;padding:0}
   .kp-g button:active{background:var(--raise-2);transform:scale(.96)}
-  .kp-g button.u{color:var(--ink-3);font-size:16px;background:transparent}
+  .kp-g button.u{color:var(--ink-3);font-size:18px;background:transparent}
   .kp-g button.u:active{background:var(--raise)}
-  .kp-g button.go{background:var(--accent);color:#04150E;font-size:14px;font-weight:700}
+  .kp-g button.go{background:var(--accent);color:#04150E;font-size:15px;font-weight:700}
   .kp-g button.dis{opacity:.25;pointer-events:none}
+  /* dim scrim behind keypad */
+  .kp-scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;visibility:hidden;
+    transition:.2s;z-index:29}
+  .kp-scrim.on{opacity:1;visibility:visible}
 
   /* ad + footer */
   .ad{flex:0 0 auto;height:56px;margin-top:8px;border-radius:12px;background:var(--raise);
@@ -352,9 +356,8 @@
 
     .ad{height:60px;border-radius:14px;flex:0 0 auto}
     .foot{font-size:10px;padding-top:8px}
-    .zone{flex:1 1 auto;min-height:0}
-    .pane.on{flex:1 1 auto;min-height:0}
-    .kp-g{min-height:0}
+    #paneKp{max-width:588px}
+    .kp-g button{height:52px}
 
     .sheet{max-width:520px;height:80vh;border-radius:24px;bottom:auto;top:50%;
       transform:translate(-50%,-46%) scale(.97);left:50%;right:auto;opacity:0;
@@ -452,21 +455,23 @@
         <div class="qg"><div class="qg-h" id="qForH">CNY</div><div class="qg-b" id="qFor"></div></div>
       </div>
     </div>
-    <div class="pane" id="paneKp">
-      <div class="kp">
-        <div class="kp-top"><span class="l" id="kpLabel">JPY</span><button class="done" id="kpDone">完了</button></div>
-        <div class="kp-g" id="kpGrid">
-          <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="u" data-k="BS">⌫</button>
-          <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="u" data-k="C">C</button>
-          <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="u" id="dotBtn" data-k=".">.</button>
-          <button data-k="000">000</button><button data-k="0">0</button><button data-k="00">00</button><button class="go" data-k="DONE">完了</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div class="ad" id="adSlot"><span>ADVERTISEMENT</span></div>
   <div class="foot">MADE IN <b>JUKU-CHO</b></div>
+</div>
+
+<div class="kp-scrim" id="kpScrim"></div>
+<div class="pane" id="paneKp">
+  <div class="kp">
+    <div class="kp-top"><span class="l" id="kpLabel">JPY</span><button class="done" id="kpDone">完了</button></div>
+    <div class="kp-g" id="kpGrid">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="u" data-k="BS">⌫</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="u" data-k="C">C</button>
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="u" id="dotBtn" data-k=".">.</button>
+      <button data-k="000">000</button><button data-k="0">0</button><button data-k="00">00</button><button class="go" data-k="DONE">完了</button>
+    </div>
+  </div>
 </div>
 
 <div class="scrim" id="scrim"></div>
@@ -741,8 +746,8 @@
   function focusSide(w){var n=curNums();
     if(w==='top'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
     replaceNext=true;openKp();renderConv();}
-  function openKp(){kpOpen=true;$('paneQuick').classList.remove('on');$('paneKp').classList.add('on');updateKp();}
-  function closeKp(){kpOpen=false;$('paneKp').classList.remove('on');$('paneQuick').classList.add('on');renderConv();}
+  function openKp(){kpOpen=true;$('paneKp').classList.add('on');$('kpScrim').classList.add('on');updateKp();}
+  function closeKp(){kpOpen=false;$('paneKp').classList.remove('on');$('kpScrim').classList.remove('on');renderConv();}
   function updateKp(){$('kpLabel').textContent=side==='top'?topCode():bottomCode();$('dotBtn').classList.toggle('dis',decOf()===0);}
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
@@ -922,6 +927,7 @@
     pc.addEventListener('contextmenu',function(e){e.preventDefault();});
     $('kpGrid').addEventListener('click',function(e){var b=e.target.closest('button');if(b)press(b.getAttribute('data-k'));});
     $('kpDone').addEventListener('click',closeKp);
+    $('kpScrim').addEventListener('click',closeKp);
     $('swapBtn').addEventListener('click',function(e){e.stopPropagation();var n=curNums();
       if(side==='bottom'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
       replaceNext=true;renderConv();if(kpOpen)updateKp();});
