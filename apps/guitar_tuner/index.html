@@ -1046,9 +1046,42 @@ const GUITAR_TUNINGS = {
   fulldown: { name:'FULL DOWN', notes:['D','G','C','F','A','D'], freqs:[73.42,98.00,130.81,174.61,220.00,293.66] },
   dropd:    { name:'DROP D',    notes:['D','A','D','G','B','E'], freqs:[73.42,110.00,146.83,196.00,246.94,329.63] },
 };
+// チューニング別コード構成音（ルート音×4オクターブ）
+const TUNING_CHORDS = {
+  // STANDARD: E A D G B E → コードE, コードA
+  standard: {
+    E: { label:'CODE : E', notes:'E B E G# B E',
+         freqs:[82.41,246.94,82.41,103.83,246.94,82.41].map(f=>f*4) },
+    A: { label:'CODE : A', notes:'A E A C# E A',
+         freqs:[110.00,329.63,110.00,138.59,329.63,110.00].map(f=>f*4) },
+  },
+  // HALF DOWN: Eb Ab Db Gb Bb Eb → コード♭E, コード♭A
+  halfdown: {
+    E: { label:'CODE : ♭E', notes:'Eb Bb Eb G Bb Eb',
+         freqs:[77.78,233.08,77.78,98.00,233.08,77.78].map(f=>f*4) },
+    A: { label:'CODE : ♭A', notes:'Ab Eb Ab C Eb Ab',
+         freqs:[103.83,311.13,103.83,130.81,311.13,103.83].map(f=>f*4) },
+  },
+  // FULL DOWN: D G C F A D → コードD, コードG
+  fulldown: {
+    E: { label:'CODE : D', notes:'D A D F# A D',
+         freqs:[73.42,220.00,73.42,92.50,220.00,73.42].map(f=>f*4) },
+    A: { label:'CODE : G', notes:'G D G B D G',
+         freqs:[98.00,293.66,98.00,123.47,293.66,98.00].map(f=>f*4) },
+  },
+  // DROP D: D A D G B E → コードD5(パワー), コードA
+  dropd: {
+    E: { label:'CODE : D5', notes:'D A D A D',
+         freqs:[73.42,110.00,73.42,110.00,73.42].map(f=>f*4) },
+    A: { label:'CODE : A',  notes:'A E A C# E A',
+         freqs:[110.00,329.63,110.00,138.59,329.63,110.00].map(f=>f*4) },
+  },
+};
+
+// 後方互換用（playChordから参照）
 const CHORD_FREQS = {
-  codeE: [82.41,246.94,82.41,103.83,246.94,82.41].map(f=>f*4),
-  codeA: [110.00,329.63,110.00,138.59,329.63,110.00].map(f=>f*4),
+  codeE: TUNING_CHORDS.standard.E.freqs,
+  codeA: TUNING_CHORDS.standard.A.freqs,
 };
 
 const TUNINGS = GUITAR_TUNINGS;
@@ -1158,11 +1191,12 @@ function playAllStrings(btn) {
 }
 
 function playChord(type, btn) {
-  if (type === 'none') { stopAll(); return; }
   stopAll();
-  const ac   = AC();
-  const dur  = waveMode === 'sustain' ? 12 : 7;
-  const freqs = CHORD_FREQS[type];
+  const ac  = AC();
+  const dur = waveMode === 'sustain' ? 12 : 7;
+  const chords = TUNING_CHORDS[curKey] || TUNING_CHORDS.standard;
+  const chord  = type === 'codeE' ? chords.E : chords.A;
+  const freqs  = chord.freqs;
   freqs.forEach((f, i) => playFreq(f, ac.currentTime + i * 0.08, dur));
   btn.classList.add('playing');
   setTimeout(() => btn.classList.remove('playing'), (dur + freqs.length * 0.08 + 0.5) * 1000);
@@ -1218,6 +1252,21 @@ function buildStrings() {
 function onTuningChange() {
   curKey = document.getElementById('tuningSelect').value;
   buildStrings();
+  updateChordButtons();
+}
+
+function updateChordButtons() {
+  const chords = TUNING_CHORDS[curKey] || TUNING_CHORDS.standard;
+  const btnE = document.getElementById('btnCodeE');
+  const btnA = document.getElementById('btnCodeA');
+  if (btnE) {
+    btnE.querySelector('.chord-label').textContent = chords.E.label;
+    btnE.querySelector('.chord-notes').textContent = chords.E.notes;
+  }
+  if (btnA) {
+    btnA.querySelector('.chord-label').textContent = chords.A.label;
+    btnA.querySelector('.chord-notes').textContent = chords.A.notes;
+  }
 }
 
 
@@ -1541,6 +1590,7 @@ function drawChord() {
 // INIT
 // ═══════════════════════════════════════
 buildStrings();
+updateChordButtons();
 initMetro();
 updateChord();
 
