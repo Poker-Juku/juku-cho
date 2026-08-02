@@ -134,12 +134,8 @@
     transition:color .15s}
   .amt.zero{color:var(--ink-3)}
   .row.on .amt{color:var(--accent)}
-  .mid{display:flex;align-items:center;gap:8px;padding:0 8px}
+  .mid{display:flex;align-items:center;padding:6px 8px}
   .mid .ln{flex:1;height:1px;background:var(--hair)}
-  .swap{width:32px;height:32px;border-radius:50%;background:var(--raise-2);border:1px solid var(--hair);
-    color:var(--ink-2);display:grid;place-items:center;cursor:pointer;transition:transform .2s,color .15s;flex:0 0 auto}
-  .swap:active{transform:rotate(180deg);color:var(--accent)}
-  .swap svg{width:14px;height:14px}
 
   /* ============ bottom zone ============ */
   .zone{flex:0 0 auto;display:flex;flex-direction:column;padding-top:8px}
@@ -350,8 +346,6 @@
     .cname{font-size:13px}
     .sym{font-size:24px}
     .amt{font-size:48px}
-    .swap{width:46px;height:46px}
-    .swap svg{width:18px;height:18px}
 
     .qg-h{font-size:11px}
     .qb{height:38px;font-size:13px;border-radius:11px}
@@ -446,10 +440,6 @@
     </div>
 
     <div class="mid">
-      <span class="ln"></span>
-      <button class="swap" id="swapBtn" aria-label="入れ替え">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg>
-      </button>
       <span class="ln"></span>
     </div>
 
@@ -792,9 +782,12 @@
       el.onclick=function(){active=code;saveCfg();renderAll();if(kpOpen)updateKp();};t2.appendChild(el);});}
   function renderRate(){
     var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
-    var rate=rateJPY(bC)/rateJPY(tC);
-    $('pair').textContent=tC+' / '+bC;
-    $('rateVal').textContent='1'+bInfo.sym+' = '+nf(rate,rate>=1?2:4)+tInfo.sym;
+    // 外貨(JPY以外)を基準に「1外貨 = ¥○○」で表示。両方がJPY以外なら下段基準。
+    var foreignCode = (tC==='JPY') ? bC : tC;
+    var fInfo=infoFor(foreignCode);
+    var perYen = rateJPY(foreignCode); // 1外貨あたりの円
+    $('pair').textContent = fInfo.code + ' / JPY';
+    $('rateVal').textContent = '= ¥' + nf(perYen, perYen>=1?2:4);
     $('dot').classList.toggle('warn',source==='warn');
     $('when').textContent=dateStr||'—';}
   function renderRows(){
@@ -964,9 +957,6 @@
     $('kpGrid').addEventListener('click',function(e){var b=e.target.closest('button');if(b)press(b.getAttribute('data-k'));});
     $('kpDone').addEventListener('click',closeKp);
     $('kpScrim').addEventListener('click',closeKp);
-    $('swapBtn').addEventListener('click',function(e){e.stopPropagation();var n=curNums();
-      if(side==='bottom'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
-      replaceNext=true;renderConv();if(kpOpen){updateKp();}});
     $('refBtn').addEventListener('click',fetchRates);
     $('recBtn').addEventListener('click',function(){recordNote(active);});
     $('myBtn').addEventListener('click',openSheet);
