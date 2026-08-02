@@ -120,13 +120,7 @@
   .cname{font-size:11px;font-weight:600;color:var(--ink-3)}
   .caret{margin-left:auto;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.12em;opacity:0;transition:.15s}
   .row.on .caret{opacity:1}
-  .pinctl{display:inline-flex;align-items:center;flex:0 0 auto;position:relative;padding:2px;border-radius:8px;
-    -webkit-user-select:none;user-select:none;touch-action:manipulation}
-  .pinctl.unlocked{animation:pinpulse 1.1s ease-in-out infinite}
-  @keyframes pinpulse{0%,100%{opacity:1}50%{opacity:.5}}
-  .lock-ic{width:11px;height:11px;color:var(--ink-3);flex:0 0 auto}
-  .unlock-hint{display:none;align-items:center;font-size:8.5px;font-weight:800;color:var(--accent);
-    letter-spacing:.08em;white-space:nowrap}
+  .row{-webkit-user-select:none;user-select:none;touch-action:manipulation}
   .row-val{display:flex;align-items:baseline;gap:8px}
   .sym{font-size:20px;font-weight:600;color:var(--ink-3);flex:0 0 auto}
   .amt{flex:1;min-width:0;text-align:right;font-size:40px;font-weight:700;letter-spacing:-.025em;
@@ -427,13 +421,9 @@
   <div class="conv">
     <div class="row" id="rTop">
       <div class="row-head">
-        <span class="pinctl" id="pinCtl">
-          <span class="fl-big" id="topFlag">🇯🇵</span>
-        </span>
+        <span class="fl-big" id="topFlag">🇯🇵</span>
         <span class="iso" id="topIso">JPY</span>
         <span class="cname" id="topName">日本円</span>
-        <svg id="lockIcon" class="lock-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <span class="unlock-hint" id="unlockHint">TAP TO CHANGE</span>
         <span class="caret" id="caretT"></span>
       </div>
       <div class="row-val"><span class="sym" id="topSym">¥</span><div class="amt zero" id="top">0</div></div>
@@ -464,7 +454,6 @@
   </div>
 
   <div class="ad" id="adSlot"><span>ADVERTISEMENT</span></div>
-  <div class="foot">MADE IN <b>JUKU-CHO</b></div>
 </div>
 
 <div class="kp-scrim" id="kpScrim"></div>
@@ -647,12 +636,20 @@
     {code:'EGP',flag:'🇪🇬',name:'ポンド',country:'エジプト',sym:'E£',dec:2,fb:3.30,rg:'オセアニア・その他'}
   ];
   var byCode={};COUNTRIES.forEach(function(c){byCode[c.code]=c;});
+  // 国ごとのタブ色(国旗の主要色に近い淡いアクセント)
+  var TABHUE={USD:'#3B6FE0',EUR:'#3B6FE0',KRW:'#2E7DD1',TWD:'#2E7DD1',CNY:'#D64545',HKD:'#D64545',
+    MOP:'#3AA76D',THB:'#D64545',VND:'#D64545',SGD:'#D64545',MYR:'#2E7DD1',PHP:'#3B6FE0',
+    IDR:'#D64545',KHR:'#2E7DD1',INR:'#E08A3B',AED:'#3AA76D',GBP:'#3B6FE0',CAD:'#D64545',
+    CHF:'#D64545',TRY:'#D64545',CZK:'#3B6FE0',SEK:'#3B6FE0',NOK:'#D64545',DKK:'#D64545',
+    PLN:'#D64545',HUF:'#3AA76D',AUD:'#3B6FE0',NZD:'#3B6FE0',MXN:'#3AA76D',BRL:'#3AA76D',
+    ZAR:'#3AA76D',EGP:'#D64545'};
+  function tabHue(code){return TABHUE[code]||'#34D399';}
 
   var rates={},dateStr=null,source='cache';
   var displayed=['USD','EUR','VND'];
   var active='USD',theme='dark';
   var side='bottom',raw='',replaceNext=false,kpOpen=false;
-  var pinned='JPY',pinLocked=true,pinIdleTimer=null,longPressTimer=null,longPressFired=false;
+  var swapped=false,longPressTimer=null,longPressFired=false;
   var qJpy=[5000,10000,50000],qFor=[1000,5000,10000];
   var LADDER=[100,300,500,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
   var drumTarget=null;
@@ -668,12 +665,12 @@
     if(code==='JPY')return{code:'JPY',flag:'🇯🇵',name:t('jpyName'),sym:'¥',dec:0};
     var c=byCode[code];return{code:c.code,flag:c.flag,name:cname(c),sym:c.sym,dec:c.dec};
   }
-  function topCode(){return pinned;}
-  function bottomCode(){return (pinned===active)?'JPY':active;}
+  function topCode(){return swapped?active:'JPY';}
+  function bottomCode(){return swapped?'JPY':active;}
   function groupInt(s){return s.replace(/\B(?=(\d{3})+(?!\d))/g,',');}
   function loadHist(){try{return JSON.parse(localStorage.getItem(KEY_HIST)||'{}');}catch(e){return {};}}
   function saveHist(h){try{localStorage.setItem(KEY_HIST,JSON.stringify(h));}catch(e){}}
-  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,active:active,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang,pinned:pinned}));}catch(e){}}
+  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,active:active,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang,swapped:swapped}));}catch(e){}}
   function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
 
   function renderManual(){
@@ -777,27 +774,24 @@
   }
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
-    displayed.forEach(function(code){var c=byCode[code];var el=document.createElement('button');el.className='tab'+(code===active?' on':'');
+    displayed.forEach(function(code){var c=byCode[code];var on=code===active;var el=document.createElement('button');el.className='tab'+(on?' on':'');
       el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
-      el.onclick=function(){active=code;saveCfg();renderAll();if(kpOpen)updateKp();};t2.appendChild(el);});}
+      if(on){var hue=tabHue(code);el.style.boxShadow='inset 3px 0 0 '+hue;el.style.background='color-mix(in srgb,'+hue+' 14%, var(--raise-2))';}
+      el.onclick=function(){active=code;swapped=false;saveCfg();renderAll();if(kpOpen)updateKp();};t2.appendChild(el);});}
   function renderRate(){
     var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
-    // 外貨(JPY以外)を基準に「1外貨 = ¥○○」で表示。両方がJPY以外なら下段基準。
+    // 外貨(JPY以外)を基準に「$1 = ¥○○」で表示。両方がJPY以外なら下段基準。
     var foreignCode = (tC==='JPY') ? bC : tC;
     var fInfo=infoFor(foreignCode);
     var perYen = rateJPY(foreignCode); // 1外貨あたりの円
-    $('pair').textContent = fInfo.code + ' / JPY';
-    $('rateVal').textContent = '= ¥' + nf(perYen, perYen>=1?2:4);
+    $('pair').textContent = fInfo.code + ' | JPY';
+    $('rateVal').textContent = fInfo.sym + '1 = ¥' + nf(perYen, perYen>=1?2:4);
     $('dot').classList.toggle('warn',source==='warn');
     $('when').textContent=dateStr||'—';}
   function renderRows(){
     var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
     $('topFlag').textContent=tInfo.flag;$('topIso').textContent=tInfo.code;$('topName').textContent=tInfo.name;$('topSym').textContent=tInfo.sym;
     $('botFlag').textContent=bInfo.flag;$('botIso').textContent=bInfo.code;$('botName').textContent=bInfo.name;$('botSym').textContent=bInfo.sym;
-    $('lockIcon').style.display=pinLocked?'inline-flex':'none';
-    $('unlockHint').style.display=(!pinLocked)?'inline-flex':'none';
-    $('unlockHint').textContent=t('tapChange');
-    $('pinCtl').classList.toggle('unlocked',!pinLocked);
   }
   function renderQuick(){var bC=bottomCode(),bInfo=infoFor(bC);$('qForH').textContent=bInfo.code;
     var a=$('qJpy');a.innerHTML='';qJpy.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='top';raw=String(v);replaceNext=false;renderConv();};a.appendChild(b);});
@@ -814,22 +808,13 @@
     svg.innerHTML='<polyline fill="none" stroke="'+col+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="'+pts.join(' ')+'"/><circle cx="'+l[0]+'" cy="'+l[1]+'" r="2.5" fill="'+col+'"/>';}
   function renderAll(){renderTabs();renderRate();renderRows();renderQuick();renderConv();if($('sheet').classList.contains('show'))renderSpark();}
 
-  /* ---- pin lock / unlock ---- */
-  function pinCandidates(){return ['JPY'].concat(displayed).filter(function(c){return c!==pinned;});}
-  function cyclePinned(){
-    var cands=['JPY'].concat(displayed);
-    var idx=cands.indexOf(pinned);
-    var next=cands[(idx+1)%cands.length];
-    pinned=next;
-    if(pinned===active){ // avoid top===bottom; bottomCode() handles it, but keep active sane
-      // no-op: bottomCode() already resolves to JPY when pinned===active
-    }
+  /* ---- long-press to swap top/bottom rows ---- */
+  function doSwapRows(){
+    swapped=!swapped;
+    // 入力中だった側を新しい位置に合わせて維持
+    if(side==='top')side='bottom'; else if(side==='bottom')side='top';
     saveCfg();renderAll();if(kpOpen)updateKp();
-    armIdleRelock();
-  }
-  function armIdleRelock(){
-    clearTimeout(pinIdleTimer);
-    pinIdleTimer=setTimeout(function(){pinLocked=true;renderRows();},3200);
+    if(navigator.vibrate)navigator.vibrate(12);
   }
   function startLongPress(e){
     if(e.type==='mousedown'&&e.button!==0)return;
@@ -837,17 +822,13 @@
     clearTimeout(longPressTimer);
     longPressTimer=setTimeout(function(){
       longPressFired=true;
-      pinLocked=false;
-      renderRows();
-      armIdleRelock();
-      if(navigator.vibrate)navigator.vibrate(12);
-    },900);
+      doSwapRows();
+    },550);
   }
   function cancelLongPress(){clearTimeout(longPressTimer);}
-  function onPinTap(e){
-    if(longPressFired){longPressFired=false;e.stopPropagation();return;}
-    if(!pinLocked){e.stopPropagation();cyclePinned();return;}
-    // locked + short tap: let the click bubble up to the row (opens keypad as usual)
+  function onRowTap(which,e){
+    if(longPressFired){longPressFired=false;e.stopPropagation();return;} // 長押しで入れ替えた場合はタップ無効
+    focusSide(which);
   }
 
   function logAuto(){var h=loadHist(),d=dateStr||fmtDate(new Date());
@@ -874,8 +855,7 @@
         el.onclick=function(){toggleCountry(c.code);};gr.appendChild(el);});
       g.appendChild(gr);});}
   function toggleCountry(code){var i=displayed.indexOf(code);
-    if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);if(active===code){active=displayed[0];side='bottom';raw='';}
-      if(pinned===code){pinned='JPY';pinLocked=true;}}
+    if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);if(active===code){active=displayed[0];swapped=false;side='bottom';raw='';}}
     else{if(displayed.length>=4){toast(t('max4'));return;}displayed.push(code);}
     saveCfg();renderEdit();renderQEdit();renderAll();renderSpark();}
   function renderQEdit(){var c=byCode[active];$('qeForLbl').textContent=c.code;
@@ -934,26 +914,24 @@
       if(Array.isArray(cfg.qJpy)&&cfg.qJpy.length===3)qJpy=cfg.qJpy;
       if(Array.isArray(cfg.qFor)&&cfg.qFor.length===3)qFor=cfg.qFor;
       if(cfg.lang&&T[cfg.lang])lang=cfg.lang;
-      if(cfg.pinned)pinned=cfg.pinned;}
+      if(typeof cfg.swapped==='boolean')swapped=cfg.swapped;}
     else{var nl=(navigator.language||'ja').slice(0,2);if(T[nl])lang=nl;}
     if(displayed.indexOf(active)<0)active=displayed[0];
-    if(pinned!=='JPY'&&displayed.indexOf(pinned)<0)pinned='JPY';
-    pinLocked=true;
     applyTheme();applyLang();
     var cached=null;try{cached=JSON.parse(localStorage.getItem(KEY_RATE)||'null');}catch(e){}
     if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';}
     renderAll();
     if(!cached||cached.day!==todayKey())fetchRates();
 
-    $('rTop').addEventListener('click',function(){focusSide('top');});
-    $('rBottom').addEventListener('click',function(){focusSide('bottom');});
-    var pc=$('pinCtl');
-    pc.addEventListener('pointerdown',startLongPress);
-    pc.addEventListener('pointerup',cancelLongPress);
-    pc.addEventListener('pointerleave',cancelLongPress);
-    pc.addEventListener('pointercancel',cancelLongPress);
-    pc.addEventListener('click',onPinTap);
-    pc.addEventListener('contextmenu',function(e){e.preventDefault();});
+    ['rTop','rBottom'].forEach(function(rid){
+      var el=$(rid);var which=(rid==='rTop')?'top':'bottom';
+      el.addEventListener('pointerdown',startLongPress);
+      el.addEventListener('pointerup',cancelLongPress);
+      el.addEventListener('pointerleave',cancelLongPress);
+      el.addEventListener('pointercancel',cancelLongPress);
+      el.addEventListener('click',function(e){onRowTap(which,e);});
+      el.addEventListener('contextmenu',function(e){e.preventDefault();});
+    });
     $('kpGrid').addEventListener('click',function(e){var b=e.target.closest('button');if(b)press(b.getAttribute('data-k'));});
     $('kpDone').addEventListener('click',closeKp);
     $('kpScrim').addEventListener('click',closeKp);
