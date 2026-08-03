@@ -865,7 +865,9 @@
     displayed=arr;
     tabDrag=null;
     $('tabs').classList.remove('dragging');
-    saveCfg();renderTabs();
+    // 入力中の位置が変わる可能性があるのでリセット
+    if(kpOpen){side='top';raw='';replaceNext=false;}
+    saveCfg();renderAll();if(kpOpen)updateKp();
   }
   function renderRate(){
     var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
