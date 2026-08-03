@@ -39,6 +39,7 @@
     /* responsive scale tokens */
     --pad-y:16px;      /* keypad button height */
     --key-fs:22px;     /* keypad font size */
+    --key-h:58px;      /* キーの高さ（固定・ウィンドウで変えない） */
     --final-fs:34px;   /* 割引後の価格 */
     --price-fs:44px;   /* 元の価格（入力中の数字を大きく） */
     --gap:12px;
@@ -91,19 +92,20 @@
     touch-action:manipulation;
     transition:background .2s,color .2s;
   }
-  /* stage：ここが実際の表示領域。横向き時はこれを回転させて縦固定にする */
+  /* stage：表示領域。中身が収まる時はそのまま、収まらない時だけ内部スクロール（ページは動かない） */
   #stage{
-    position:relative;width:100%;height:100dvh;overflow:hidden;
-    display:flex;justify-content:center;align-items:stretch;
+    position:relative;width:100%;height:100dvh;
+    overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    display:flex;flex-direction:column;align-items:center;
     background:radial-gradient(120% 60% at 50% -10%, var(--bg-top) 0%, var(--ink) 55%);
   }
-  .app{width:100%;max-width:430px;height:100%;display:flex;flex-direction:column;
-    overflow:hidden;                                          /* スクロールさせない＝動かない */
-    padding:calc(10px + env(safe-area-inset-top)) 16px calc(10px + env(safe-area-inset-bottom));
+  .app{width:100%;max-width:430px;display:flex;flex-direction:column;
+    margin:auto 0;                                            /* 収まる時は縦中央、はみ出す時は上詰めでスクロール */
+    padding:calc(10px + env(safe-area-inset-top)) 16px calc(12px + env(safe-area-inset-bottom));
     gap:var(--gap);position:relative}
 
-  /* アクティブなモード（計算/逆算）が残り高さを埋める → キーパッドが伸縮して常に画面内に収まる */
-  #calcMode{flex:1;min-height:0;display:flex;flex-direction:column;gap:var(--gap);overflow:hidden}
+  /* 計算/逆算エリアは中身なりの高さ（キーパッドは固定サイズ） */
+  #calcMode{display:flex;flex-direction:column;gap:var(--gap)}
 
   /* ===== header ===== */
   header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:2px 2px 2px}
@@ -167,16 +169,16 @@
   .pad button:active{background:var(--key-press);transform:translateY(1px)}
   .pad .fn{color:var(--accent-soft);font-size:calc(var(--key-fs) - 4px)}
   .pad .clr{color:var(--muted);font-weight:700}
-  /* 画面内メインのキーパッド：flexで4行を等分（iOSでも確実に縦を埋める） */
-  #pad,#revpad{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:8px;margin-top:0}
-  #pad .prow,#revpad .prow{flex:1 1 0;min-height:0;display:flex;gap:8px}
+  /* キーパッド：固定サイズ（ウィンドウで伸縮しない） */
+  #pad,#revpad{display:flex;flex-direction:column;gap:9px;margin-top:0}
+  #pad .prow,#revpad .prow{flex:0 0 auto;height:var(--key-h);display:flex;gap:9px}
   #pad .prow button,#revpad .prow button{flex:1 1 0;min-width:0;width:auto;height:100%;padding:0;
     display:flex;align-items:center;justify-content:center}
   #pad .prow button.wide,#revpad .prow button.wide{flex:2 1 0}
   .hint{text-align:center;font-size:11px;color:var(--muted);padding:2px 0 0;flex:0 0 auto}
 
   .rev{display:none;flex-direction:column;gap:10px}
-  .rev.on{display:flex;flex:1;min-height:0;overflow:hidden}
+  .rev.on{display:flex;flex-direction:column}
   .field{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px}
   .field.active{border-color:rgba(255,109,92,.5)}
   .field .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
@@ -280,44 +282,28 @@
      RESPONSIVE
      ========================================================= */
 
-  /* スマホ：画面内に収める微調整（固定は全体で既に有効） */
+  /* スマホ：はみ出し防止の微調整（キーのサイズは変えない） */
   @media (max-width:519px){
-    :root{--gap:10px}
     .ad-slot{min-height:52px}
     .hint{display:none}
   }
 
-  /* 小さいスマホ（iPhone SE 等 / 幅360px以下） */
+  /* 小さいスマホ（幅360px以下）：はみ出し防止の微調整のみ。キー自体のサイズは変えない */
   @media (max-width:360px){
-    :root{--pad-y:13px;--key-fs:20px;--final-fs:29px;--price-fs:38px;--gap:10px}
     .app{padding-left:12px;padding-right:12px}
     .brand h1{font-size:19px}
     .brand-icon{width:30px;height:30px}
     .tax button{padding:6px 8px;font-size:10px}
-    .chips button{font-size:13px;padding:10px 0}
+    .chips button{font-size:13px}
     .chips button.custom{font-size:10px}
     .result{gap:10px}
   }
 
-  /* 縦が短いウィンドウ：詰めてウィンドウ内に収める（幅は問わない） */
-  @media (max-height:820px){
-    :root{--pad-y:13px;--gap:10px}
-    .display{padding:14px 16px}
-    .divider{margin:11px 0}
-  }
-  @media (max-height:720px){
-    :root{--gap:8px;--final-fs:30px;--price-fs:40px}
-    .display{padding:12px 15px}
-    .divider{margin:9px 0}
-    .hint{display:none}
-  }
-
-  /* タブレット・PC：カード状に浮かせて中央表示（ウィンドウ内に収める） */
+  /* タブレット・PC：カード状に浮かせて中央表示（キーのサイズはスマホと同じ） */
   @media (min-width:520px){
     #stage{align-items:center;padding:20px 16px}
     .app{
-      max-width:460px;
-      height:min(760px, calc(100dvh - 40px));
+      max-width:430px;
       background:var(--card-bg);
       border:1px solid var(--line);
       border-radius:28px;
@@ -334,14 +320,6 @@
     .seg button:not(.on):hover{color:var(--text)}
     .sheet{border-radius:24px;margin-bottom:24px;max-width:460px}
     .overlay{align-items:center}
-  }
-
-  /* 大画面：少しだけゆとりを持たせる（縦に余裕がある時だけ拡大） */
-  @media (min-width:900px) and (min-height:821px){
-    :root{--pad-y:17px;--key-fs:23px}
-  }
-  @media (min-width:900px){
-    .app{max-width:480px}
   }
 
   /* マウス環境ではタップ縮小アニメを控えめに */
@@ -363,7 +341,7 @@
       align-items:stretch;padding:0;
     }
     .app{
-      max-width:430px;height:100%;
+      max-width:430px;
       background:none;border:0;border-radius:0;box-shadow:none;
       padding:calc(8px + env(safe-area-inset-top)) 16px calc(8px + env(safe-area-inset-bottom));
     }
@@ -481,11 +459,6 @@
       広告枠（審査通過後にここへ表示されます）
     </div>
   </div>
-
-  <!-- ===== FOOTER ===== -->
-  <div class="footer">
-    <div class="made-in">MADE IN <b>JUKU-CHO</b></div>
-  </div>
 </div>
 
 <!-- ===== CUSTOM % MODAL ===== -->
@@ -545,10 +518,6 @@
         <button class="set-item" id="setHowto">
           <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.5-3 4"/><path d="M12 17h.01"/></svg></span>
           使い方<span class="arrow">›</span>
-        </button>
-        <button class="set-item" id="setRestore">
-          <span class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></span>
-          購入を復元<span class="arrow">›</span>
         </button>
         <a class="set-item" id="setPrivacy" href="privacy.html">
           <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
@@ -804,18 +773,6 @@ const howtoOverlay=document.getElementById("howtoOverlay");
 document.getElementById("setHowto").addEventListener("click",()=>{ closeSet(); howtoOverlay.classList.add("on"); });
 document.getElementById("howtoClose").addEventListener("click",()=>howtoOverlay.classList.remove("on"));
 howtoOverlay.addEventListener("click",e=>{ if(e.target===howtoOverlay) howtoOverlay.classList.remove("on"); });
-
-/* 購入を復元
-   ─ 現状は広告モデルのため復元対象の購入はありません。
-     将来 App内課金（広告非表示など）を Capacitor / StoreKit・Google Play Billing で
-     追加した際に、ここでネイティブの restorePurchases() を呼び出してください。 */
-document.getElementById("setRestore").addEventListener("click",()=>{
-  showToast("購入情報を確認しています…");
-  setTimeout(()=>{
-    // TODO: ネイティブ課金導入後は実際の復元処理に差し替え
-    showToast("復元できる購入はありませんでした");
-  },900);
-});
 
 updateBadge(); render(); revRender();
 </script>
