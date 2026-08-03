@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="brass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タブ譜の読み方 | ギター塾 - 譜面が読めなくても曲は弾ける</title>
+<meta name="description" content="ギターのタブ譜（TAB譜）の読み方をやさしく解説。6本の線と数字の意味、弦の並び、コードとメロディの違い、h/p/スライドなどの記号まで図解で。">
+<link rel="canonical" href="https://juku-cho.com/info/guitar/tab/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="タブ譜の読み方 | ギター塾">
+<meta property="og:description" content="6本の線と数字の意味から。譜面が読めなくても、タブ譜なら曲が弾けます。">
+<meta property="og:url" content="https://juku-cho.com/info/guitar/tab/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"タブ譜の読み方","description":"ギターのタブ譜の読み方を図解でやさしく解説。","author":{"@type":"Organization","name":"ギター塾 Juku-Cho"},"publisher":{"@type":"Organization","name":"ギター塾 Juku-Cho"},"mainEntityOfPage":"https://juku-cho.com/info/guitar/tab/"}
+</script>
+<style>
+:root{
+  --bg:#0A0C10; --surface:#12151C; --surface2:#181C25; --raised:#1E2330;
+  --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --text:#E9EBEF; --muted:#98A0AD; --faint:#6B7280;
+  --accent:#E0A860; --accent-ink:#1A130A; --accent-soft:rgba(224,168,96,.14); --accent-line:rgba(224,168,96,.35);
+  --r:14px; --maxw:760px;
+  --font:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",Meiryo,sans-serif;
+}
+[data-theme="studio"]{
+  --bg:#0A0A0B; --surface:#131316; --surface2:#191920;
+  --line:rgba(255,255,255,.06); --line2:rgba(255,255,255,.11);
+  --text:#EDEDF0; --muted:#9A9AA2; --faint:#68686F;
+  --accent:#C9A96A; --accent-ink:#171308; --accent-soft:rgba(201,169,106,.13); --accent-line:rgba(201,169,106,.32);
+}
+[data-theme="neon"]{
+  --bg:#0A0D18; --surface:#111524; --surface2:#171C2E;
+  --line:rgba(255,255,255,.07); --line2:rgba(120,170,255,.16);
+  --text:#E7ECF5; --muted:#8C97B0; --faint:#5D6784;
+  --accent:#3FD6E3; --accent-ink:#04171A; --accent-soft:rgba(63,214,227,.12); --accent-line:rgba(63,214,227,.34);
+}
+[data-theme="wood"]{
+  --bg:#14100B; --surface:#1C1710; --surface2:#241D14;
+  --line:rgba(255,240,220,.07); --line2:rgba(255,240,220,.13);
+  --text:#F0E9DF; --muted:#AC9F8C; --faint:#7A6E5C;
+  --accent:#D99A5B; --accent-ink:#1C1207; --accent-soft:rgba(217,154,91,.14); --accent-line:rgba(217,154,91,.36);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.85;
+  -webkit-font-smoothing:antialiased;font-feature-settings:"palt";transition:background .3s,color .3s}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+a{color:inherit;text-decoration:none}
+
+.themebar{position:fixed;top:12px;right:12px;z-index:80;display:flex;gap:5px;
+  background:rgba(0,0,0,.45);backdrop-filter:blur(10px);border:1px solid var(--line2);border-radius:999px;padding:5px}
+.themebar button{border:none;background:transparent;color:var(--muted);font-family:inherit;
+  font-size:12px;padding:6px 11px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap}
+.themebar button:hover{color:var(--text)}
+.themebar button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+
+header{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.strings{position:absolute;inset:0;pointer-events:none;opacity:.5}
+.strings span{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--line2) 16%,var(--line2) 84%,transparent)}
+.strings span:nth-child(1){top:26%}.strings span:nth-child(2){top:38%}.strings span:nth-child(3){top:50%}
+.strings span:nth-child(4){top:62%}.strings span:nth-child(5){top:74%}.strings span:nth-child(6){top:86%}
+.hero{position:relative;padding:44px 0 34px}
+.crumb{font-size:12px;color:var(--faint);margin-bottom:16px}
+.crumb a{color:var(--muted)}.crumb a:hover{color:var(--accent)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;
+  color:var(--accent);text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.eyebrow::before{content:"";width:20px;height:1px;background:var(--accent-line)}
+.hero h1{font-size:clamp(27px,6vw,40px);font-weight:800;letter-spacing:-.01em;line-height:1.18}
+.hero .sub{color:var(--muted);margin-top:14px;font-size:16px}
+
+article{padding:36px 0}
+article h2{font-size:22px;font-weight:800;margin:40px 0 4px;letter-spacing:-.01em;
+  display:flex;align-items:baseline;gap:12px}
+article h2 .num{font-size:13px;color:var(--accent);font-weight:800;font-variant-numeric:tabular-nums}
+article h2:first-child{margin-top:0}
+article p{margin:14px 0;color:var(--text)}
+article p.lead{color:var(--muted)}
+article strong{color:var(--accent);font-weight:600}
+.hl{background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--text)}
+
+/* tab figure */
+.tabfig{background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:18px 16px 14px;margin:18px 0;overflow-x:auto}
+.tab-svg{display:block;margin:0 auto;min-width:480px}
+.tab-svg line{stroke:var(--line2)}
+.tab-svg .slabel{fill:var(--muted);font-size:11px;font-family:var(--font)}
+.tab-svg .thin{stroke-width:.8}.tab-svg .thick{stroke-width:2}
+.tab-svg .numbg{fill:var(--surface)}
+.tab-svg .num{fill:var(--text);font-size:14px;font-weight:700;font-family:var(--font);text-anchor:middle}
+.tab-svg .anno{fill:var(--accent);font-size:11px;font-family:var(--font)}
+.tab-svg .annoline{stroke:var(--accent-line);stroke-width:1;stroke-dasharray:3 3}
+.tabcap{font-size:12px;color:var(--faint);margin-top:12px;text-align:center}
+
+/* callout */
+.note{background:var(--surface2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;
+  padding:14px 18px;margin:20px 0;font-size:14px;color:var(--muted)}
+.note b{color:var(--text)}
+
+/* symbol table */
+.symtable{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:18px 0}
+.symrow{display:grid;grid-template-columns:64px 1fr;gap:0;border-top:1px solid var(--line);background:var(--surface)}
+.symrow:first-child{border-top:none}
+.symrow:hover{background:var(--surface2)}
+.symrow .sym{padding:14px;font-weight:800;font-size:17px;color:var(--accent);
+  border-right:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.symrow .desc{padding:13px 16px}
+.symrow .desc a{color:var(--text);font-weight:700;border-bottom:1px solid var(--accent-line)}
+.symrow .desc a:hover{color:var(--accent)}
+.symrow .desc small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+.ad-slot{margin:26px 0;min-height:100px;display:flex;align-items:center;justify-content:center;
+  border:1px dashed var(--line2);border-radius:12px;color:var(--faint);font-size:11px;letter-spacing:.1em}
+.ad-slot::before{content:"広告"}
+
+/* CTA */
+.cta{margin:30px 0;background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border:1px solid var(--accent-line);border-radius:var(--r);padding:22px 24px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.cta .ic{width:46px;height:46px;flex:none;border-radius:12px;background:var(--accent-soft);
+  display:grid;place-items:center;color:var(--accent)}
+.cta .txt{flex:1;min-width:200px}
+.cta h3{font-size:16px;font-weight:700}
+.cta p{font-size:13px;color:var(--muted);margin-top:3px}
+.btn{background:var(--accent);color:var(--accent-ink);font-weight:700;border:none;border-radius:10px;
+  padding:12px 22px;font-size:14px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--text)}
+.btn.ghost:hover{border-color:var(--accent-line);color:var(--accent)}
+
+footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--faint);font-size:12px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="themebar">
+  <button data-t="brass" class="on" onclick="setTheme('brass',this)">真鍮</button>
+  <button data-t="studio" onclick="setTheme('studio',this)">スタジオ</button>
+  <button data-t="neon" onclick="setTheme('neon',this)">ネオン</button>
+  <button data-t="wood" onclick="setTheme('wood',this)">ウッド</button>
+</div>
+
+<header>
+  <div class="strings"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="wrap hero">
+    <div class="crumb"><a href="/info/guitar/">ギター塾</a> ／ タブ譜の読み方</div>
+    <span class="eyebrow">教則 / 譜面</span>
+    <h1>タブ譜の読み方</h1>
+    <p class="sub">音符が読めなくても大丈夫。ギターには「タブ譜（TAB譜）」という、押さえる場所がそのまま分かる楽譜があります。仕組みはとてもシンプルです。</p>
+  </div>
+</header>
+
+<div class="wrap">
+<article>
+
+  <h2><span class="num">01</span>タブ譜って何？</h2>
+  <p class="lead">タブ譜は、ギターのために作られた楽譜です。<strong>6本の横線がギターの6本の弦</strong>を、<strong>線の上の数字がフレット（押さえる場所）</strong>を表します。「どこを押さえて弾くか」がそのまま描いてあるので、五線譜が読めなくても曲を弾けます。</p>
+
+  <div class="tabfig">
+    <svg class="tab-svg" viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="タブ譜の6本の線と弦の対応">
+      <!-- 6 lines, top = 1弦(細い) → bottom = 6弦(太い) -->
+      <g>
+        <line class="thin"  x1="70" y1="20"  x2="470" y2="20"/>
+        <line class="thin"  x1="70" y1="44"  x2="470" y2="44"/>
+        <line class="thin"  x1="70" y1="68"  x2="470" y2="68"/>
+        <line class=""      x1="70" y1="92"  x2="470" y2="92"/>
+        <line class=""      x1="70" y1="116" x2="470" y2="116"/>
+        <line class="thick" x1="70" y1="140" x2="470" y2="140"/>
+      </g>
+      <text class="slabel" x="10" y="24">1弦 e</text>
+      <text class="slabel" x="10" y="48">2弦 B</text>
+      <text class="slabel" x="10" y="72">3弦 G</text>
+      <text class="slabel" x="10" y="96">4弦 D</text>
+      <text class="slabel" x="10" y="120">5弦 A</text>
+      <text class="slabel" x="10" y="144">6弦 E</text>
+      <text class="anno" x="482" y="24">細い・高い</text>
+      <text class="anno" x="482" y="144">太い・低い</text>
+    </svg>
+    <div class="tabcap">6本の線＝6本の弦。いちばん上が細い1弦、いちばん下が太い6弦です。</div>
+  </div>
+
+  <div class="note"><b>ここが最初のつまずきポイント。</b> タブ譜の一番上の線は、ギターを構えたとき<strong>下側にある細い弦（1弦）</strong>です。上下が逆に感じますが、慣れれば自然に読めます。</div>
+
+  <div class="ad-slot" data-ad="tab-1"></div>
+
+  <h2><span class="num">02</span>数字＝フレット。「0」は開放弦</h2>
+  <p>線の上の数字は、その弦の<strong>何フレットを押さえるか</strong>を表します。<span class="hl">3</span>なら3フレットを押さえて鳴らす、という意味です。数字が <strong>0</strong> のときは、どこも押さえずに弦をそのまま鳴らします（＝<a href="/info/guitar/terms/#t=47" style="color:var(--accent)">開放弦</a>）。</p>
+
+  <div class="tabfig">
+    <svg class="tab-svg" viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="フレット番号の読み方">
+      <g>
+        <line class="thin"  x1="40" y1="20"  x2="490" y2="20"/>
+        <line class="thin"  x1="40" y1="44"  x2="490" y2="44"/>
+        <line class="thin"  x1="40" y1="68"  x2="490" y2="68"/>
+        <line class=""      x1="40" y1="92"  x2="490" y2="92"/>
+        <line class=""      x1="40" y1="116" x2="490" y2="116"/>
+        <line class="thick" x1="40" y1="140" x2="490" y2="140"/>
+      </g>
+      <!-- open string 0 on 3弦(y68) -->
+      <rect class="numbg" x="133" y="59" width="16" height="18"/>
+      <text class="num" x="141" y="73">0</text>
+      <line class="annoline" x1="141" y1="59" x2="141" y2="158"/>
+      <text class="anno" x="105" y="166">開放弦</text>
+      <!-- 2 on 4弦(y92) -->
+      <rect class="numbg" x="243" y="83" width="16" height="18"/>
+      <text class="num" x="251" y="97">2</text>
+      <line class="annoline" x1="251" y1="92" x2="251" y2="12"/>
+      <text class="anno" x="228" y="9">2フレット</text>
+      <!-- 3 on 1弦(y20) -->
+      <rect class="numbg" x="360" y="11" width="16" height="18"/>
+      <text class="num" x="368" y="25">3</text>
+    </svg>
+    <div class="tabcap">左から右へ時間が流れます。数字の位置＝弦、数字＝フレット。</div>
+  </div>
+
+  <h2><span class="num">03</span>縦は「同時」、横は「順番」</h2>
+  <p>数字が<strong>縦にそろっている</strong>ときは、その弦を<strong>いっしょに鳴らす</strong>＝<a href="/info/guitar/terms/#t=15" style="color:var(--accent)">コード</a>です。数字が<strong>横に並んでいる</strong>ときは、<strong>左から順番に1音ずつ</strong>鳴らす＝メロディやフレーズになります。</p>
+
+  <div class="tabfig">
+    <svg class="tab-svg" viewBox="0 0 520 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="コードとメロディの違い">
+      <g>
+        <line class="thin"  x1="30" y1="24"  x2="490" y2="24"/>
+        <line class="thin"  x1="30" y1="46"  x2="490" y2="46"/>
+        <line class="thin"  x1="30" y1="68"  x2="490" y2="68"/>
+        <line class=""      x1="30" y1="90"  x2="490" y2="90"/>
+        <line class=""      x1="30" y1="112" x2="490" y2="112"/>
+        <line class="thick" x1="30" y1="134" x2="490" y2="134"/>
+      </g>
+      <!-- chord: vertical stack at x=110 (Em shape: 6=0,5=2,4=2,3=0,2=0,1=0) -->
+      <g>
+        <rect class="numbg" x="102" y="15" width="16" height="18"/><text class="num" x="110" y="29">0</text>
+        <rect class="numbg" x="102" y="37" width="16" height="18"/><text class="num" x="110" y="51">0</text>
+        <rect class="numbg" x="102" y="59" width="16" height="18"/><text class="num" x="110" y="73">0</text>
+        <rect class="numbg" x="102" y="81" width="16" height="18"/><text class="num" x="110" y="95">2</text>
+        <rect class="numbg" x="102" y="103" width="16" height="18"/><text class="num" x="110" y="117">2</text>
+        <rect class="numbg" x="102" y="125" width="16" height="18"/><text class="num" x="110" y="139">0</text>
+      </g>
+      <text class="anno" x="72" y="162">縦＝同時（コード）</text>
+      <!-- divider -->
+      <line x1="250" y1="12" x2="250" y2="146" class="annoline"/>
+      <!-- melody: sequential -->
+      <g>
+        <rect class="numbg" x="312" y="59" width="16" height="18"/><text class="num" x="320" y="73">0</text>
+        <rect class="numbg" x="352" y="59" width="16" height="18"/><text class="num" x="360" y="73">2</text>
+        <rect class="numbg" x="392" y="37" width="16" height="18"/><text class="num" x="400" y="51">0</text>
+        <rect class="numbg" x="432" y="37" width="16" height="18"/><text class="num" x="440" y="51">1</text>
+        <rect class="numbg" x="472" y="15" width="16" height="18"/><text class="num" x="480" y="29">0</text>
+      </g>
+      <text class="anno" x="330" y="162">横＝順番（メロディ）</text>
+    </svg>
+    <div class="tabcap">左：Emコードを一度に鳴らす。右：1音ずつ弾いていくメロディ。</div>
+  </div>
+
+  <div class="cta">
+    <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v13"/><circle cx="12" cy="18.5" r="3"/><path d="M7.5 6h9"/></svg></div>
+    <div class="txt"><h3>弦が合っていないと、正しく読んでもズレます</h3><p>タブ譜を試す前に、まずチューニングを。ブラウザですぐ合わせられます。</p></div>
+    <button class="btn" onclick="goTuner('tab_mid')">チューナーを開く</button>
+  </div>
+
+  <h2><span class="num">04</span>覚えておきたい記号</h2>
+  <p>タブ譜には、弾き方を表すアルファベットや記号が添えられることがあります。よく出るものだけ押さえておけば十分です。<strong>用語をタップすると辞典で詳しく</strong>確認できます。</p>
+
+  <div class="symtable">
+    <div class="symrow"><div class="sym">h</div><div class="desc"><a href="/info/guitar/terms/#t=35">ハンマリングオン</a><small>弾いた後、指で叩いて次の（高い）音を出す</small></div></div>
+    <div class="symrow"><div class="sym">p</div><div class="desc"><a href="/info/guitar/terms/#t=36">プリングオフ</a><small>押さえた指を引っかけて離し、低い音を出す</small></div></div>
+    <div class="symrow"><div class="sym">/ \</div><div class="desc"><a href="/info/guitar/terms/#t=37">スライド</a><small>押さえたまま弦を滑らせて音程を移動する</small></div></div>
+    <div class="symrow"><div class="sym">b</div><div class="desc"><a href="/info/guitar/terms/#t=38">チョーキング（ベンド）</a><small>弦を押し上げて音程を上げる、ギターの泣きの表現</small></div></div>
+    <div class="symrow"><div class="sym">~</div><div class="desc"><a href="/info/guitar/terms/#t=39">ビブラート</a><small>音を細かく揺らして伸びと表情を加える</small></div></div>
+    <div class="symrow"><div class="sym">PM</div><div class="desc"><a href="/info/guitar/terms/#t=41">ブリッジミュート</a><small>右手側面を弦に軽く乗せ、音を詰めて刻む</small></div></div>
+    <div class="symrow"><div class="sym">x</div><div class="desc"><a href="/info/guitar/terms/#t=40">ミュート</a><small>音程を出さず「ジャッ」というリズム音だけを出す</small></div></div>
+  </div>
+
+  <div class="ad-slot" data-ad="tab-2"></div>
+
+  <h2><span class="num">05</span>やってみよう：指ならしフレーズ</h2>
+  <p>最後に、実際にタブ譜を読んで弾いてみましょう。細い弦（1弦・2弦）だけを使う、やさしい練習フレーズです。<strong>左から順に、ゆっくり</strong>1音ずつ。数字は押さえるフレットです。</p>
+
+  <div class="tabfig">
+    <svg class="tab-svg" viewBox="0 0 520 165" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="練習フレーズのタブ譜">
+      <g>
+        <line class="thin"  x1="30" y1="22"  x2="500" y2="22"/>
+        <line class="thin"  x1="30" y1="44"  x2="500" y2="44"/>
+        <line class="thin"  x1="30" y1="66"  x2="500" y2="66"/>
+        <line class=""      x1="30" y1="88"  x2="500" y2="88"/>
+        <line class=""      x1="30" y1="110" x2="500" y2="110"/>
+        <line class="thick" x1="30" y1="132" x2="500" y2="132"/>
+      </g>
+      <text class="slabel" x="6" y="26">1</text>
+      <text class="slabel" x="6" y="48">2</text>
+      <!-- 1弦: 0 2 3  (y22) -->
+      <rect class="numbg" x="72" y="13" width="16" height="18"/><text class="num" x="80" y="27">0</text>
+      <rect class="numbg" x="122" y="13" width="16" height="18"/><text class="num" x="130" y="27">2</text>
+      <rect class="numbg" x="172" y="13" width="16" height="18"/><text class="num" x="180" y="27">3</text>
+      <!-- 2弦: 0 2 3 (y44) -->
+      <rect class="numbg" x="242" y="35" width="16" height="18"/><text class="num" x="250" y="49">0</text>
+      <rect class="numbg" x="292" y="35" width="16" height="18"/><text class="num" x="300" y="49">2</text>
+      <rect class="numbg" x="342" y="35" width="16" height="18"/><text class="num" x="350" y="49">3</text>
+      <!-- back up 1弦: 2 0 -->
+      <rect class="numbg" x="412" y="13" width="16" height="18"/><text class="num" x="420" y="27">2</text>
+      <rect class="numbg" x="462" y="13" width="16" height="18"/><text class="num" x="470" y="27">0</text>
+    </svg>
+    <div class="tabcap">1弦で 0→2→3、2弦で 0→2→3、また1弦に戻って 2→0。弾けたら少しずつ速く。</div>
+  </div>
+
+  <p class="lead">読めましたか？ これがタブ譜の基本のすべてです。あとは弾きたい曲のタブ譜を用意して、同じ要領で読んでいくだけ。分からない言葉が出てきたら、<a href="/info/guitar/terms/" style="color:var(--accent)">音楽用語辞典</a>で確認しながら進めましょう。</p>
+
+  <div class="cta">
+    <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 12h16M4 19h10"/></svg></div>
+    <div class="txt"><h3>分からない用語は辞典へ</h3><p>楽典・コード・奏法・機材まで、検索してやさしく確認できます。</p></div>
+    <a href="/info/guitar/terms/"><button class="btn ghost">用語辞典を開く</button></a>
+  </div>
+
+</article>
+</div>
+
+<footer>
+  <div class="wrap">
+    <nav>
+      <a href="/info/guitar/">教則トップ</a>
+      <a href="/info/guitar/terms/">音楽用語辞典</a>
+      <a href="/info/guitar/chords/">コードの押さえ方</a>
+      <a href="/apps/tuner/">ギターチューナー</a>
+    </nav>
+    <div>© Juku-Cho ギター塾 — やさしく、丁寧に。</div>
+  </div>
+</footer>
+
+<script>
+function setTheme(t,btn){
+  document.documentElement.setAttribute("data-theme",t);
+  document.querySelectorAll(".themebar button").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+}
+function goTuner(src){location.href="/apps/tuner/?from="+encodeURIComponent(src);}
+</script>
+</body>
+</html>

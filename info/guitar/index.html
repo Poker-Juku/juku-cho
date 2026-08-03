@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="brass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ギター塾 | 用語・弾き方・タブ譜をやさしく学ぶ</title>
+<meta name="description" content="ギターを始めたばかりの人のための教則サイト。音楽用語・コード・タブ譜の読み方・弾き方をやさしく丁寧に。ブラウザですぐ使えるギターチューナーも。">
+<link rel="canonical" href="https://juku-cho.com/info/guitar/">
+<style>
+:root{
+  --bg:#0A0C10; --surface:#12151C; --surface2:#181C25; --raised:#1E2330;
+  --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --text:#E9EBEF; --muted:#98A0AD; --faint:#6B7280;
+  --accent:#E0A860; --accent-ink:#1A130A; --accent-soft:rgba(224,168,96,.14); --accent-line:rgba(224,168,96,.35);
+  --r:14px; --maxw:960px;
+  --font:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",Meiryo,sans-serif;
+}
+/* --- テーマ4案 --- */
+[data-theme="studio"]{
+  --bg:#0A0A0B; --surface:#131316; --surface2:#191920; --raised:#20202A;
+  --line:rgba(255,255,255,.06); --line2:rgba(255,255,255,.11);
+  --text:#EDEDF0; --muted:#9A9AA2; --faint:#68686F;
+  --accent:#C9A96A; --accent-ink:#171308; --accent-soft:rgba(201,169,106,.13); --accent-line:rgba(201,169,106,.32);
+}
+[data-theme="neon"]{
+  --bg:#0A0D18; --surface:#111524; --surface2:#171C2E; --raised:#1E243A;
+  --line:rgba(255,255,255,.07); --line2:rgba(120,170,255,.16);
+  --text:#E7ECF5; --muted:#8C97B0; --faint:#5D6784;
+  --accent:#3FD6E3; --accent-ink:#04171A; --accent-soft:rgba(63,214,227,.12); --accent-line:rgba(63,214,227,.34);
+}
+[data-theme="wood"]{
+  --bg:#14100B; --surface:#1C1710; --surface2:#241D14; --raised:#2C231800;
+  --raised:#2C2318; --line:rgba(255,240,220,.07); --line2:rgba(255,240,220,.13);
+  --text:#F0E9DF; --muted:#AC9F8C; --faint:#7A6E5C;
+  --accent:#D99A5B; --accent-ink:#1C1207; --accent-soft:rgba(217,154,91,.14); --accent-line:rgba(217,154,91,.36);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;
+  -webkit-font-smoothing:antialiased;font-feature-settings:"palt";transition:background .3s,color .3s}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.tnum{font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+
+/* theme switcher */
+.themebar{position:fixed;top:12px;right:12px;z-index:80;display:flex;gap:5px;
+  background:rgba(0,0,0,.4);backdrop-filter:blur(10px);border:1px solid var(--line2);border-radius:999px;padding:5px}
+.themebar button{border:none;background:transparent;color:var(--muted);font-family:inherit;
+  font-size:12px;padding:6px 11px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap}
+.themebar button:hover{color:var(--text)}
+.themebar button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+
+/* header */
+header{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.strings{position:absolute;inset:0;pointer-events:none;opacity:.55}
+.strings span{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--line2) 16%,var(--line2) 84%,transparent)}
+.strings span:nth-child(1){top:24%}.strings span:nth-child(2){top:36%}.strings span:nth-child(3){top:48%}
+.strings span:nth-child(4){top:60%}.strings span:nth-child(5){top:72%}.strings span:nth-child(6){top:84%}
+.hero{position:relative;padding:64px 0 48px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;
+  color:var(--accent);text-transform:uppercase;font-weight:700;margin-bottom:18px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--accent-line)}
+.hero h1{font-size:clamp(30px,7vw,50px);font-weight:800;letter-spacing:-.015em;line-height:1.12}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:var(--muted);margin-top:16px;max-width:46ch;font-size:16px}
+
+/* primary tuner CTA */
+.hook{margin:34px 0 0;background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border:1px solid var(--accent-line);border-radius:18px;padding:26px 28px;
+  display:flex;align-items:center;gap:22px;flex-wrap:wrap;position:relative;overflow:hidden}
+.hook .ic{width:56px;height:56px;flex:none;border-radius:14px;background:var(--accent-soft);
+  display:grid;place-items:center;color:var(--accent)}
+.hook .txt{flex:1;min-width:220px}
+.hook .kick{font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;font-weight:700}
+.hook h2{font-size:21px;font-weight:800;margin-top:6px}
+.hook p{font-size:14px;color:var(--muted);margin-top:5px}
+.btn{background:var(--accent);color:var(--accent-ink);font-weight:700;border:none;border-radius:11px;
+  padding:13px 24px;font-size:15px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line2)}
+.btn.ghost:hover{border-color:var(--accent-line);color:var(--accent)}
+
+/* section */
+section{padding:52px 0}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.sec-h h3{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.sec-h .lead{color:var(--faint);font-size:13px}
+
+/* first 3 steps (a real sequence → numbering is meaningful) */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:640px){.steps{grid-template-columns:1fr}}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;position:relative}
+.step .n{font-size:12px;font-weight:800;color:var(--accent-ink);background:var(--accent);
+  width:26px;height:26px;border-radius:8px;display:grid;place-items:center;margin-bottom:14px;font-variant-numeric:tabular-nums}
+.step h4{font-size:16px;font-weight:700}
+.step p{font-size:13px;color:var(--muted);margin-top:6px}
+.step a.more{display:inline-block;margin-top:12px;font-size:13px;color:var(--accent);font-weight:600}
+
+/* content cards */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media(max-width:640px){.cards{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;
+  transition:.18s;display:block;position:relative}
+.card:hover{border-color:var(--accent-line);transform:translateY(-2px);background:var(--surface2)}
+.card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card .ci{width:40px;height:40px;border-radius:11px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
+.tag{font-size:10px;letter-spacing:.08em;padding:4px 9px;border-radius:999px;font-weight:700}
+.tag.live{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line)}
+.tag.soon{background:var(--surface2);color:var(--faint);border:1px solid var(--line2)}
+.card h4{font-size:17px;font-weight:700}
+.card p{font-size:13px;color:var(--muted);margin-top:6px}
+.card .arrow{color:var(--faint);margin-top:14px;font-size:13px;display:flex;align-items:center;gap:6px}
+.card:hover .arrow{color:var(--accent)}
+
+.ad-slot{margin:8px 0 0;min-height:100px;display:flex;align-items:center;justify-content:center;
+  border:1px dashed var(--line2);border-radius:12px;color:var(--faint);font-size:11px;letter-spacing:.1em}
+.ad-slot::before{content:"広告"}
+
+footer{border-top:1px solid var(--line);padding:30px 0 40px;color:var(--faint);font-size:12px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="themebar">
+  <button data-t="brass" class="on" onclick="setTheme('brass',this)">真鍮</button>
+  <button data-t="studio" onclick="setTheme('studio',this)">スタジオ</button>
+  <button data-t="neon" onclick="setTheme('neon',this)">ネオン</button>
+  <button data-t="wood" onclick="setTheme('wood',this)">ウッド</button>
+</div>
+
+<header>
+  <div class="strings"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="wrap hero">
+    <span class="eyebrow">ギター塾 / Juku-Cho</span>
+    <h1>はじめてのギターを、<br><em>やさしく</em>。</h1>
+    <p>用語も、コードも、タブ譜も。つまずきやすいところを、ひとつずつ丁寧に。今日から弾き始めるための教則サイトです。</p>
+
+    <div class="hook">
+      <div class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v13"/><circle cx="12" cy="18.5" r="3"/><path d="M7.5 6h9M8.5 9.2h7"/></svg></div>
+      <div class="txt">
+        <div class="kick">まずはここから</div>
+        <h2>ギターチューナー</h2>
+        <p>練習の前に弦を合わせよう。ブラウザで今すぐ、インストール不要。</p>
+      </div>
+      <button class="btn" onclick="goTuner('hub_hook')">チューナーを開く</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section>
+    <div class="sec-h">
+      <h3>はじめの3ステップ</h3>
+      <span class="lead">この順番でOK</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>弦を合わせる</h4>
+        <p>チューニングがずれていると、正しく押さえても曲になりません。まずは音を合わせるところから。</p>
+        <a class="more" href="#" onclick="goTuner('step1');return false;">チューナーで合わせる →</a>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>コードを覚える</h4>
+        <p>押さえやすいオープンコードから。数個覚えるだけで、弾ける曲が一気に増えます。</p>
+        <a class="more" href="/info/guitar/chords/">コードの押さえ方 →</a>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>曲を弾く</h4>
+        <p>タブ譜が読めれば、好きな曲に挑戦できます。用語で分からない言葉が出たら辞典へ。</p>
+        <a class="more" href="/info/guitar/tab/">タブ譜の読み方 →</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="sec-h">
+      <h3>学べること</h3>
+      <span class="lead">気になるところから</span>
+    </div>
+    <div class="cards">
+      <a class="card" href="/info/guitar/terms/">
+        <div class="top">
+          <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 12h16M4 19h10"/></svg></div>
+          <span class="tag live">公開中</span>
+        </div>
+        <h4>音楽用語辞典</h4>
+        <p>楽典・コード・スケール・奏法・機材まで、よく使う用語を検索してやさしく確認。</p>
+        <div class="arrow">辞典を見る →</div>
+      </a>
+      <a class="card" href="/info/guitar/tab/">
+        <div class="top">
+          <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 10h18M3 14h18M3 18h18"/><circle cx="8" cy="10" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg></div>
+          <span class="tag soon">準備中</span>
+        </div>
+        <h4>タブ譜の読み方</h4>
+        <p>6本の線と数字の意味から。譜面が読めなくても、曲を弾けるようになります。</p>
+        <div class="arrow">近日公開 →</div>
+      </a>
+      <a class="card" href="/info/guitar/chords/">
+        <div class="top">
+          <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/></svg></div>
+          <span class="tag soon">準備中</span>
+        </div>
+        <h4>コードの押さえ方</h4>
+        <p>ダイアグラムの読み方と、定番コードの押さえ方をひとつずつ。Fコードの壁も。</p>
+        <div class="arrow">近日公開 →</div>
+      </a>
+      <a class="card" href="/info/guitar/beginner/">
+        <div class="top">
+          <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20" opacity=".35"/><path d="M5 12a7 7 0 0 1 14 0"/><circle cx="12" cy="12" r="2.4"/></svg></div>
+          <span class="tag soon">準備中</span>
+        </div>
+        <h4>初心者ロードマップ</h4>
+        <p>最初の1ヶ月で何をやればいい？ 挫折しないための練習の順番をまとめます。</p>
+        <div class="arrow">近日公開 →</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="ad-slot" data-ad="hub-mid"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <nav>
+      <a href="/info/guitar/terms/">音楽用語辞典</a>
+      <a href="/info/guitar/tab/">タブ譜の読み方</a>
+      <a href="/info/guitar/chords/">コードの押さえ方</a>
+      <a href="/info/guitar/beginner/">初心者ロードマップ</a>
+      <a href="/apps/tuner/">ギターチューナー</a>
+    </nav>
+    <div>© Juku-Cho ギター塾 — やさしく、丁寧に。</div>
+  </div>
+</footer>
+
+<script>
+function setTheme(t,btn){
+  document.documentElement.setAttribute("data-theme",t);
+  document.querySelectorAll(".themebar button").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+}
+function goTuner(src){location.href="/apps/tuner/?from="+encodeURIComponent(src);}
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="brass">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音楽用語辞典 | ギター塾 - 用語・奏法・コードをやさしく解説</title>
+<meta name="description" content="ギター初心者のための音楽用語辞典。楽典・コード・スケール・奏法・タブ譜・機材まで、よく使う用語をやさしく丁寧に解説。弦を合わせるならギターチューナーもどうぞ。">
+<link rel="canonical" href="https://juku-cho.com/info/guitar/terms/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="音楽用語辞典 | ギター塾">
+<meta property="og:description" content="ギター初心者のための音楽用語辞典。楽典・コード・奏法・タブ譜・機材までやさしく解説。">
+<meta property="og:url" content="https://juku-cho.com/info/guitar/terms/">
+<meta property="og:site_name" content="ギター塾 - Juku-Cho">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTermSet","name":"音楽用語辞典（ギター塾）","description":"ギター初心者のための音楽用語辞典。楽典・コード・スケール・奏法・タブ譜・機材の用語をやさしく解説。","url":"https://juku-cho.com/info/guitar/terms/"}
+</script>
+<style>
+:root{
+  --bg:#0A0C10; --surface:#12151C; --surface2:#181C25; --raised:#1E2330;
+  --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --text:#E9EBEF; --muted:#98A0AD; --faint:#6B7280;
+  --accent:#E0A860; --accent-soft:rgba(224,168,96,.14); --accent-line:rgba(224,168,96,.35);
+  --lv-in:#7FB98A; --lv-ba:#6FA8DC; --lv-ap:#D98F6E;
+  --r:14px; --maxw:960px;
+  --accent-ink:#1A130A;
+  --font:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP","Segoe UI",Meiryo,sans-serif;
+}
+[data-theme="studio"]{
+  --bg:#0A0A0B; --surface:#131316; --surface2:#191920; --raised:#20202A;
+  --line:rgba(255,255,255,.06); --line2:rgba(255,255,255,.11);
+  --text:#EDEDF0; --muted:#9A9AA2; --faint:#68686F;
+  --accent:#C9A96A; --accent-ink:#171308; --accent-soft:rgba(201,169,106,.13); --accent-line:rgba(201,169,106,.32);
+}
+[data-theme="neon"]{
+  --bg:#0A0D18; --surface:#111524; --surface2:#171C2E; --raised:#1E243A;
+  --line:rgba(255,255,255,.07); --line2:rgba(120,170,255,.16);
+  --text:#E7ECF5; --muted:#8C97B0; --faint:#5D6784;
+  --accent:#3FD6E3; --accent-ink:#04171A; --accent-soft:rgba(63,214,227,.12); --accent-line:rgba(63,214,227,.34);
+}
+[data-theme="wood"]{
+  --bg:#14100B; --surface:#1C1710; --surface2:#241D14; --raised:#2C2318;
+  --line:rgba(255,240,220,.07); --line2:rgba(255,240,220,.13);
+  --text:#F0E9DF; --muted:#AC9F8C; --faint:#7A6E5C;
+  --accent:#D99A5B; --accent-ink:#1C1207; --accent-soft:rgba(217,154,91,.14); --accent-line:rgba(217,154,91,.36);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.7;
+  -webkit-font-smoothing:antialiased;font-feature-settings:"palt";padding-bottom:88px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.tnum{font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+.themebar{position:fixed;top:12px;right:12px;z-index:80;display:flex;gap:5px;
+  background:rgba(0,0,0,.45);backdrop-filter:blur(10px);border:1px solid var(--line2);border-radius:999px;padding:5px}
+.themebar button{border:none;background:transparent;color:var(--muted);font-family:inherit;
+  font-size:12px;padding:6px 11px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap}
+.themebar button:hover{color:var(--text)}
+.themebar button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+
+/* ---- header / hero ---- */
+header{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.strings{position:absolute;inset:0;pointer-events:none;opacity:.5}
+.strings span{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--line2) 18%,var(--line2) 82%,transparent)}
+.strings span:nth-child(1){top:26%}.strings span:nth-child(2){top:38%}.strings span:nth-child(3){top:50%}
+.strings span:nth-child(4){top:62%}.strings span:nth-child(5){top:74%}.strings span:nth-child(6){top:86%}
+.hero{position:relative;padding:40px 0 30px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;
+  color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:14px}
+.eyebrow::before{content:"";width:20px;height:1px;background:var(--accent-line)}
+.hero h1{font-size:clamp(28px,6vw,42px);font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.hero p{color:var(--muted);margin-top:12px;max-width:52ch;font-size:15px}
+.stat{margin-top:20px;display:flex;gap:22px;flex-wrap:wrap;align-items:baseline}
+.stat b{font-size:22px;font-weight:800;color:var(--accent)}
+.stat small{color:var(--faint);font-size:12px;display:block}
+
+/* ---- search + filters ---- */
+.controls{position:sticky;top:0;z-index:30;background:rgba(10,12,16,.82);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:14px 0}
+.search{position:relative}
+.search input{width:100%;background:var(--surface);border:1px solid var(--line2);color:var(--text);
+  border-radius:12px;padding:13px 16px 13px 44px;font-size:15px;font-family:inherit}
+.search input:focus{outline:none;border-color:var(--accent-line);box-shadow:0 0 0 3px var(--accent-soft)}
+.search svg{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{background:var(--surface);border:1px solid var(--line2);color:var(--muted);
+  padding:7px 14px;border-radius:999px;font-size:13px;cursor:pointer;transition:.15s;font-family:inherit;white-space:nowrap}
+.chip:hover{border-color:var(--accent-line);color:var(--text)}
+.chip.on{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);font-weight:600}
+.lvfilters{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.lvchip{font-size:12px;padding:5px 11px;border-radius:999px;border:1px solid var(--line2);
+  background:transparent;color:var(--muted);cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+.lvchip .dot{width:7px;height:7px;border-radius:50%}
+.lvchip.on{color:var(--text);border-color:var(--line2);background:var(--surface2)}
+
+/* ---- ad slot (reserved to avoid layout shift) ---- */
+.ad-slot{margin:22px 0;min-height:90px;display:flex;align-items:center;justify-content:center;
+  border:1px dashed var(--line2);border-radius:12px;color:var(--faint);font-size:11px;letter-spacing:.1em}
+.ad-slot::before{content:"広告"}
+
+/* ---- funnel: tuner CTA ---- */
+.tuner-cta{margin:26px 0;background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border:1px solid var(--accent-line);border-radius:var(--r);padding:22px 24px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.tuner-cta .ic{width:46px;height:46px;flex:none;border-radius:12px;background:var(--accent-soft);
+  display:grid;place-items:center;color:var(--accent)}
+.tuner-cta .txt{flex:1;min-width:200px}
+.tuner-cta h3{font-size:16px;font-weight:700}
+.tuner-cta p{font-size:13px;color:var(--muted);margin-top:3px}
+.btn{background:var(--accent);color:var(--accent-ink);font-weight:700;border:none;border-radius:10px;
+  padding:11px 20px;font-size:14px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+
+/* ---- term list ---- */
+.count{color:var(--faint);font-size:13px;margin:20px 0 10px}
+.list{display:flex;flex-direction:column;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.term{background:var(--surface);padding:16px 18px;cursor:pointer;transition:background .12s;
+  display:flex;align-items:center;gap:14px}
+.term:hover{background:var(--surface2)}
+.term .lvbar{width:3px;align-self:stretch;border-radius:2px;flex:none}
+.term .main{flex:1;min-width:0}
+.term h2{font-size:16px;font-weight:700;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.term .rd{font-size:12px;color:var(--faint);font-weight:400}
+.term .snip{font-size:13px;color:var(--muted);margin-top:3px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.term .cat{font-size:11px;color:var(--faint);flex:none;padding:3px 9px;border:1px solid var(--line2);
+  border-radius:999px}
+.empty{text-align:center;color:var(--faint);padding:50px 20px;font-size:14px}
+
+/* ---- detail overlay ---- */
+.overlay{position:fixed;inset:0;z-index:60;background:rgba(6,8,11,.7);backdrop-filter:blur(4px);
+  display:none;align-items:flex-end;justify-content:center}
+.overlay.show{display:flex}
+.sheet{background:var(--surface);width:100%;max-width:600px;max-height:86vh;overflow-y:auto;
+  border-radius:20px 20px 0 0;border:1px solid var(--line2);border-bottom:none;
+  animation:up .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:translateY(0);opacity:1}}
+@media(min-width:640px){.overlay{align-items:center;padding:20px}.sheet{border-radius:18px;border-bottom:1px solid var(--line2)}}
+.sheet-hd{position:sticky;top:0;background:var(--surface);padding:22px 24px 14px;
+  border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:12px}
+.sheet-hd .info{flex:1}
+.sheet-hd .badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;
+  border-radius:999px;background:var(--surface2);border:1px solid var(--line2);color:var(--muted);margin-bottom:10px}
+.sheet-hd h2{font-size:24px;font-weight:800}
+.sheet-hd .rd{font-size:13px;color:var(--faint);margin-top:2px}
+.close{width:34px;height:34px;flex:none;border-radius:10px;border:1px solid var(--line2);
+  background:var(--surface2);color:var(--muted);cursor:pointer;font-size:18px;line-height:1;font-family:inherit}
+.close:hover{color:var(--text);border-color:var(--line2)}
+.sheet-bd{padding:20px 24px 28px}
+.sheet-bd .def{font-size:15px;line-height:1.85;color:var(--text)}
+.sheet-bd .def strong{color:var(--accent);font-weight:600}
+.rel{margin-top:22px}
+.rel-t{font-size:11px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;margin-bottom:10px}
+.rel-tags{display:flex;gap:8px;flex-wrap:wrap}
+.rel-tag{font-size:13px;padding:7px 13px;background:var(--surface2);border:1px solid var(--line2);
+  border-radius:999px;cursor:pointer;color:var(--muted);transition:.15s}
+.rel-tag:hover{color:var(--accent);border-color:var(--accent-line)}
+.mini-cta{margin-top:22px;background:var(--accent-soft);border:1px solid var(--accent-line);
+  border-radius:12px;padding:15px 17px;display:flex;align-items:center;gap:13px}
+.mini-cta .mtxt{flex:1}
+.mini-cta h4{font-size:14px;font-weight:700;color:var(--accent)}
+.mini-cta p{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ---- footer ---- */
+footer{margin-top:40px;border-top:1px solid var(--line);padding:26px 0 30px;color:var(--faint);font-size:12px}
+footer nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
+
+/* ---- sticky bottom bar (funnel) ---- */
+.dock{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(10,12,16,.9);
+  backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:12px 0}
+.dock .wrap{display:flex;align-items:center;gap:14px}
+.dock .dtxt{flex:1;min-width:0}
+.dock .dtxt b{font-size:14px;font-weight:700;display:block}
+.dock .dtxt small{font-size:11px;color:var(--muted)}
+@media(max-width:420px){.dock .dtxt small{display:none}}
+</style>
+</head>
+<body>
+
+<div class="themebar">
+  <button data-t="brass" class="on" onclick="setTheme('brass',this)">真鍮</button>
+  <button data-t="studio" onclick="setTheme('studio',this)">スタジオ</button>
+  <button data-t="neon" onclick="setTheme('neon',this)">ネオン</button>
+  <button data-t="wood" onclick="setTheme('wood',this)">ウッド</button>
+</div>
+
+<header>
+  <div class="strings"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <div class="wrap hero">
+    <span class="eyebrow">ギター塾 / 教則</span>
+    <h1>音楽用語辞典</h1>
+    <p>ギターを始めたばかりの人がつまずきやすい用語を、やさしく丁寧に。楽典・コード・スケール・奏法・タブ譜・機材まで、必要なところだけサッと調べられます。</p>
+    <div class="stat">
+      <div><b class="tnum" id="totalCount">0</b><small>収録用語</small></div>
+      <div><b>7</b><small>カテゴリ</small></div>
+      <div><b>3</b><small>レベル別</small></div>
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap">
+    <div class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="search" placeholder="用語を検索（例：チョーキング、パワーコード）" autocomplete="off">
+    </div>
+    <div class="filters" id="catFilters"></div>
+    <div class="lvfilters" id="lvFilters"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- 広告枠（承認後に ads.js の ENABLED フラグで一斉有効化） -->
+  <div class="ad-slot" data-ad="terms-top"></div>
+
+  <div class="tuner-cta">
+    <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v14"/><circle cx="12" cy="19" r="3"/><path d="M8 6h8M9 9h6"/></svg></div>
+    <div class="txt">
+      <h3>まずは弦を合わせよう</h3>
+      <p>練習の前に正しいチューニングを。ブラウザですぐ使えるギターチューナーへ。</p>
+    </div>
+    <button class="btn" onclick="goTuner('cta_top')">チューナーを開く</button>
+  </div>
+
+  <div class="count" id="count"></div>
+  <div class="list" id="list"></div>
+  <div class="empty" id="empty" style="display:none">該当する用語が見つかりませんでした。別のキーワードでお試しください。</div>
+
+  <div class="ad-slot" data-ad="terms-bottom"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <nav>
+      <a href="/info/guitar/">教則トップ</a>
+      <a href="/info/guitar/tab/">タブ譜の読み方</a>
+      <a href="/info/guitar/chords/">コードの押さえ方</a>
+      <a href="/info/guitar/beginner/">初心者ロードマップ</a>
+      <a href="/apps/tuner/">ギターチューナー</a>
+    </nav>
+    <div>© Juku-Cho ギター塾 — 用語は随時追加しています。</div>
+  </div>
+</footer>
+
+<div class="dock">
+  <div class="wrap">
+    <div class="dtxt"><b>ギターチューナー</b><small>ブラウザで今すぐ調弦。インストール不要。</small></div>
+    <button class="btn" onclick="goTuner('dock')">開く</button>
+  </div>
+</div>
+
+<!-- detail overlay -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+/* ===== データ =====
+   cat: 楽典/コード/スケール/奏法/記譜/機材/バンド
+   lv : in(入門) / ba(基礎) / ap(応用)
+   tuner:true → 詳細内にチューナー導線を表示 */
+const TERMS=[
+// 楽典
+{id:1,t:"音符",rd:"おんぷ",cat:"楽典",lv:"in",def:"音の<strong>高さと長さ</strong>を表す記号。玉の位置で高さを、玉の色や旗（符尾・符鉤）で長さを示します。4分音符・8分音符などの種類を覚えると、リズムが読めるようになります。",rel:["休符","拍子","五線譜"]},
+{id:2,t:"休符",rd:"きゅうふ",cat:"楽典",lv:"in",def:"<strong>音を鳴らさない（休む）時間</strong>を表す記号。音符と同じく長さの種類があり、休符も立派な音楽の一部です。ギターでは弦をミュートして休符を作ります。",rel:["音符","ミュート"]},
+{id:3,t:"五線譜",rd:"ごせんふ",cat:"楽典",lv:"in",def:"5本の線と間で音の高さを表す、いちばん基本の楽譜。ギターでは五線譜より<strong>タブ譜</strong>を使うことが多いですが、リズムを読むには五線譜の知識が役立ちます。",rel:["TAB譜","音符","小節"]},
+{id:4,t:"拍子",rd:"ひょうし",cat:"楽典",lv:"ba",def:"1小節に入る拍の数とまとまりのこと。「4/4」なら4分音符が1小節に4つ。ポップスの多くは4/4拍子です。<strong>数え方の土台</strong>になります。",rel:["小節","テンポ","BPM"]},
+{id:5,t:"テンポ",rd:"てんぽ",cat:"楽典",lv:"ba",def:"曲の<strong>速さ</strong>。速い・遅いで曲の印象が大きく変わります。数値で表すときはBPMを使います。メトロノームでテンポを一定に保つ練習が上達の近道です。",rel:["BPM","拍子"]},
+{id:6,t:"BPM",rd:"ビーピーエム",cat:"楽典",lv:"ba",def:"Beats Per Minute。<strong>1分間の拍数</strong>で速さを表す単位。BPM120なら1分間に120拍。練習用アプリやメトロノームで指定して使います。",rel:["テンポ","拍子"]},
+{id:7,t:"小節",rd:"しょうせつ",cat:"楽典",lv:"in",def:"楽譜を縦線で区切った<strong>ひとかたまり</strong>。拍子で決めた拍数ごとに区切られます。「4小節ずつ練習」のように、曲を扱いやすい単位に分けてくれます。",rel:["拍子","五線譜"]},
+{id:8,t:"キー（調）",rd:"きー",cat:"楽典",lv:"ba",def:"曲の<strong>中心となる音とその雰囲気</strong>。「Cメジャー」「Aマイナー」のように表します。キーが分かると、使えるコードやスケールが見えてきます。",rel:["メジャー／マイナー","ダイアトニック","スケール"]},
+{id:9,t:"シャープ",rd:"しゃーぷ",cat:"楽典",lv:"in",def:"音を<strong>半音上げる</strong>記号（♯）。ギターでは1フレット分だけ高くすることに相当します。",rel:["フラット","半音・全音"]},
+{id:10,t:"フラット",rd:"ふらっと",cat:"楽典",lv:"in",def:"音を<strong>半音下げる</strong>記号（♭）。ギターでは1フレット分だけ低くすることに相当します。",rel:["シャープ","半音・全音"]},
+{id:11,t:"半音・全音",rd:"はんおん・ぜんおん",cat:"楽典",lv:"ba",def:"半音はギターの<strong>1フレット</strong>分、全音は<strong>2フレット</strong>分の音の隔たり。スケールやコードの仕組みは、この2つの組み合わせでできています。",rel:["シャープ","スケール"]},
+{id:12,t:"メジャー／マイナー",rd:"めじゃー／まいなー",cat:"楽典",lv:"ba",def:"ざっくり言うと<strong>明るい響き（メジャー）／切ない響き（マイナー）</strong>。コードにもスケールにもキーにもある考え方で、曲の表情を決める基本です。",rel:["メジャーコード","マイナーコード","キー（調）"]},
+{id:13,t:"強弱記号",rd:"きょうじゃくきごう",cat:"楽典",lv:"ba",def:"音の大きさの指示。<strong>p（弱く）／f（強く）</strong>などで表します。イタリア語由来で、pp・ff・mf のように段階があります。演奏に感情を乗せる要素です。",rel:["テンポ"]},
+{id:14,t:"オクターブ",rd:"おくたーぶ",cat:"楽典",lv:"in",def:"同じ音名で高さが<strong>ちょうど倍（または半分）</strong>の関係。低いドと高いドは同じ「ド」でオクターブ違い。ギターでは12フレット上がると1オクターブ上がります。",rel:["フレット","チューニング"]},
+// コード
+{id:15,t:"コード",rd:"こーど",cat:"コード",lv:"in",def:"高さの違う音を<strong>3つ以上同時に鳴らした和音</strong>。曲の伴奏の骨組みで、ギターの弾き語りはコードを押さえて鳴らすことから始まります。",rel:["ルート音","コード進行","コードダイアグラム"],tuner:true},
+{id:16,t:"メジャーコード",rd:"めじゃーこーど",cat:"コード",lv:"ba",def:"<strong>明るく安定した響き</strong>の基本コード。「C」「G」のように音名だけで表記します。まずはこの明るいコードから覚えるのが定番です。",rel:["マイナーコード","メジャー／マイナー"]},
+{id:17,t:"マイナーコード",rd:"まいなーこーど",cat:"コード",lv:"ba",def:"<strong>切なく落ち着いた響き</strong>のコード。「Am」「Em」のように音名の後ろに小文字の m を付けて表します。メジャーとの対比で曲に陰影が生まれます。",rel:["メジャーコード","メジャー／マイナー"]},
+{id:18,t:"パワーコード",rd:"ぱわーこーど",cat:"コード",lv:"in",def:"ルート音と5度の<strong>2音だけ</strong>で鳴らすシンプルなコード。「C5」のように表記。明るい・暗いの色がなく、歪ませたロック/パンクで大活躍。初心者が最初に鳴らせる達成感の大きいコードです。",rel:["ルート音","ディストーション","ブリッジミュート"]},
+{id:19,t:"オープンコード",rd:"おーぷんこーど",cat:"コード",lv:"ba",def:"<strong>開放弦を含む</strong>、ローポジションで押さえるコード。C・G・D・Em など、弾き語りの定番はほぼこれ。響きが豊かで押さえやすいのが魅力です。",rel:["開放弦","バレーコード"]},
+{id:20,t:"バレーコード",rd:"ばれーこーど",cat:"コード",lv:"ap",def:"人差し指で<strong>複数の弦を一度に押さえる（セーハ）</strong>コード。Fコードが代表格で、多くの初心者の壁。押さえられると弾ける曲が一気に増えます。",rel:["オープンコード","セーハ"]},
+{id:21,t:"セブンスコード",rd:"せぶんすこーど",cat:"コード",lv:"ap",def:"基本の和音に<strong>7度の音を足した</strong>コード。「G7」「Cmaj7」など。少しおしゃれで、次のコードへ進みたくなる推進力を生みます。",rel:["テンションコード","コード進行"]},
+{id:22,t:"コードダイアグラム",rd:"こーどだいあぐらむ",cat:"コード",lv:"in",def:"どの弦の<strong>どこを押さえるか</strong>を格子で示した図。縦線が弦、横線がフレット。丸印が押さえる位置。これが読めれば教本や譜面のコードを再現できます。",rel:["フレット","コード","TAB譜"]},
+{id:23,t:"ルート音",rd:"るーとおん",cat:"コード",lv:"ba",def:"コードの<strong>土台となる音</strong>。「C」のコードならルートは「ド」。ルートを意識すると、パワーコードやアドリブの起点がつかめます。",rel:["パワーコード","スケール"]},
+{id:24,t:"テンションコード",rd:"てんしょんこーど",cat:"コード",lv:"ap",def:"基本の和音に<strong>9th・11th・13th などの色づけの音</strong>を加えたコード。ジャズやシティポップの洗練された響きの正体。",rel:["セブンスコード"]},
+{id:25,t:"コード進行",rd:"こーどしんこう",cat:"コード",lv:"ba",def:"コードが<strong>並んで移り変わる流れ</strong>。「王道進行」など定番パターンがあり、曲の展開を支えます。進行を覚えると耳コピや作曲がぐっと楽に。",rel:["ダイアトニック","キー（調）"]},
+// スケール
+{id:26,t:"スケール",rd:"すけーる",cat:"スケール",lv:"ba",def:"音を高さ順に<strong>階段状に並べたもの（音階）</strong>。メロディやアドリブの素材で、どの音が使えるかの地図。まずはメジャーとペンタトニックから。",rel:["メジャースケール","ペンタトニックスケール"]},
+{id:27,t:"メジャースケール",rd:"めじゃーすけーる",cat:"スケール",lv:"ba",def:"「ドレミファソラシド」でおなじみの<strong>明るい基本の音階</strong>。全音と半音の並び方に決まったルールがあり、あらゆる音楽理論の出発点です。",rel:["マイナースケール","半音・全音"]},
+{id:28,t:"マイナースケール",rd:"まいなーすけーる",cat:"スケール",lv:"ba",def:"<strong>切ない雰囲気の音階</strong>。ナチュラル・ハーモニック・メロディックの3種類があります。ロックやバラードのソロで多用されます。",rel:["メジャースケール","キー（調）"]},
+{id:29,t:"ペンタトニックスケール",rd:"ぺんたとにっくすけーる",cat:"スケール",lv:"ap",def:"<strong>5音でできた</strong>使いやすい音階。外れた音が少なく、ギターソロやアドリブの入門に最適。ブルースやロックの土台でもあります。",rel:["ブルーススケール","スケール"]},
+{id:30,t:"ブルーススケール",rd:"ぶるーすすけーる",cat:"スケール",lv:"ap",def:"ペンタトニックに<strong>ブルーノート</strong>を1音加えた、泥くさく味のある音階。チョーキングと組み合わせるとギターらしい表現に。",rel:["ペンタトニックスケール","チョーキング"]},
+{id:31,t:"ダイアトニック",rd:"だいあとにっく",cat:"スケール",lv:"ap",def:"あるキーの中で<strong>自然に使えるコードや音の集まり</strong>。この枠を知ると「なぜこのコードが合うのか」が理屈で分かり、作曲や耳コピが速くなります。",rel:["キー（調）","コード進行"]},
+// 奏法
+{id:32,t:"ストローク",rd:"すとろーく",cat:"奏法",lv:"in",def:"ピックや指で<strong>複数の弦をまとめてかき鳴らす</strong>奏法。ダウン（下げる）とアップ（上げる）の組み合わせでリズムを作ります。弾き語りの基本。",rel:["ピッキング","アルペジオ"]},
+{id:33,t:"アルペジオ",rd:"あるぺじお",cat:"奏法",lv:"ba",def:"コードの音を<strong>1音ずつバラして</strong>鳴らす奏法（分散和音）。バラードの繊細な伴奏でよく使われ、指弾き（フィンガーピッキング）と相性抜群です。",rel:["ストローク","コード"]},
+{id:34,t:"ピッキング",rd:"ぴっきんぐ",cat:"奏法",lv:"in",def:"ピックで弦を<strong>弾く動作そのもの</strong>。ダウンとアップを交互に行うオルタネイトピッキングが基礎。角度と深さで音色が変わります。",rel:["ストローク","ミュート"]},
+{id:35,t:"ハンマリングオン",rd:"はんまりんぐおん",cat:"奏法",lv:"ap",def:"弾いた後に<strong>指で叩いて（打弦して）</strong>次の音を出す奏法。ピッキングせずに音がつながり、なめらかなフレーズになります。略して「ハンマリング」。",rel:["プリングオフ","スライド"]},
+{id:36,t:"プリングオフ",rd:"ぷりんぐおふ",cat:"奏法",lv:"ap",def:"押さえた指を<strong>引っかけながら離して</strong>低い音を出す奏法。ハンマリングと逆向きの動き。2つを組み合わせるとレガートで流れるソロに。",rel:["ハンマリングオン","スライド"]},
+{id:37,t:"スライド",rd:"すらいど",cat:"奏法",lv:"ba",def:"押さえた指を<strong>弦の上で滑らせて</strong>音程を移動させる奏法。始点から終点へなめらかにつながり、ギターらしい歌うような表現ができます。",rel:["ハンマリングオン","ビブラート"]},
+{id:38,t:"チョーキング",rd:"ちょーきんぐ",cat:"奏法",lv:"ap",def:"弦を<strong>押し上げて（または引き下げて）音程を上げる</strong>、ギター独特の泣きの表現。ブルースやロックのソロの華。半音・1音単位で正確に上げる練習が必要です。",rel:["ビブラート","ブルーススケール"]},
+{id:39,t:"ビブラート",rd:"びぶらーと",cat:"奏法",lv:"ap",def:"音を<strong>細かく揺らして</strong>伸びと表情を加える奏法。チョーキングの延長で弦を小刻みに動かします。同じフレーズでもビブラートで個性が出ます。",rel:["チョーキング","スライド"]},
+{id:40,t:"ミュート",rd:"みゅーと",cat:"奏法",lv:"ba",def:"弦の振動を<strong>手や指で止めて</strong>音を消す・抑えるテクニック。不要な弦のノイズを防いだり、キレのあるリズムを作ったりします。",rel:["ブリッジミュート","ブラッシング"]},
+{id:41,t:"ブリッジミュート",rd:"ぶりっじみゅーと",cat:"奏法",lv:"ap",def:"右手の側面を<strong>ブリッジ付近に軽く乗せて</strong>音を詰めるミュート。ズンズンした重い刻みが作れ、ロックやメタルのパワーコードで多用されます。",rel:["ミュート","パワーコード"]},
+{id:42,t:"カッティング",rd:"かってぃんぐ",cat:"奏法",lv:"ap",def:"ミュートと開放を織り交ぜて<strong>歯切れよく刻む</strong>奏法。ファンクやカッコいいバッキングの決め手。「チャカチャカ」というあの音です。",rel:["ミュート","ブラッシング","リズムギター"]},
+{id:43,t:"タッピング",rd:"たっぴんぐ",cat:"奏法",lv:"ap",def:"右手の指も使って指板を<strong>叩いて音を出す</strong>、両手を使う派手な奏法。速いフレーズや広い音域の跳躍が可能に。ライトハンド奏法とも呼ばれます。",rel:["ハンマリングオン","フレット"]},
+{id:44,t:"ブラッシング",rd:"ぶらっしんぐ",cat:"奏法",lv:"ba",def:"すべての弦を<strong>ミュートしたまま</strong>ストロークして「ジャッ」というリズム音だけを出す奏法。ストロークにノリと躍動感を足します。",rel:["ミュート","カッティング","ストローク"]},
+// 記譜
+{id:45,t:"TAB譜",rd:"たぶふ",cat:"記譜",lv:"in",def:"ギター専用の楽譜。<strong>6本の線が弦、数字がフレット</strong>を表します。「どこを押さえるか」が一目で分かるので、譜面が読めなくても曲が弾けます。",rel:["フレット","開放弦","コードダイアグラム"],tuner:true},
+{id:46,t:"フレット",rd:"ふれっと",cat:"記譜",lv:"in",def:"指板に打たれた<strong>金属の仕切り</strong>。この間を指で押さえて音程を決めます。ナット側から1フレット、2フレット…と数えます。",rel:["指板","ポジション","開放弦"]},
+{id:47,t:"開放弦",rd:"かいほうげん",cat:"記譜",lv:"in",def:"どこも押さえずに<strong>弦をそのまま鳴らした音</strong>。TAB譜では「0」と書きます。チューニングは、この開放弦の高さを合わせる作業です。",rel:["チューニング","フレット","ナット"],tuner:true},
+{id:48,t:"ナット",rd:"なっと",cat:"記譜",lv:"ba",def:"ヘッド側で弦を支える<strong>溝のついた部品</strong>。弦の間隔と高さを決める大事なパーツで、開放弦の音程の起点になります。",rel:["フレット","開放弦"]},
+{id:49,t:"指板",rd:"しばん",cat:"記譜",lv:"in",def:"ネックの表面、<strong>弦を押さえる板</strong>。フィンガーボードとも。ここに並ぶフレットの位置関係を覚えることが上達の土台になります。",rel:["フレット","ポジション"]},
+{id:50,t:"ポジション",rd:"ぽじしょん",cat:"記譜",lv:"ba",def:"指板上で<strong>手を置く位置（何フレット付近か）</strong>。同じ音でも複数のポジションで出せます。ポジション移動をスムーズにするのがソロ練習の肝。",rel:["指板","フレット","スライド"]},
+{id:51,t:"カポタスト",rd:"かぽたすと",cat:"記譜",lv:"ba",def:"指板を<strong>まとめて挟んで全体の音程を上げる</strong>器具。略して「カポ」。押さえやすいコードのまま、曲のキーを歌いやすい高さに変えられます。",rel:["キー（調）","オープンコード"]},
+{id:52,t:"チューニング",rd:"ちゅーにんぐ",cat:"記譜",lv:"in",def:"各弦の音程を<strong>正しい高さに合わせる</strong>作業。ここがずれていると、正しく押さえても曲になりません。<strong>練習前に毎回</strong>行うのが基本です。",rel:["レギュラーチューニング","開放弦","ドロップDチューニング"],tuner:true},
+{id:53,t:"レギュラーチューニング",rd:"れぎゅらーちゅーにんぐ",cat:"記譜",lv:"in",def:"最も標準的な合わせ方。6弦から<strong>E・A・D・G・B・E</strong>。教本やTAB譜の多くはこれが前提です。まずはこの音を覚えましょう。",rel:["チューニング","ドロップDチューニング"],tuner:true},
+{id:54,t:"ドロップDチューニング",rd:"どろっぷでぃー",cat:"記譜",lv:"ap",def:"6弦だけを<strong>1音下げてD</strong>にする変則チューニング。低音が重くなり、パワーコードを指1本で押さえられます。ロック/メタルの定番。",rel:["レギュラーチューニング","パワーコード"],tuner:true},
+// 機材
+{id:55,t:"ピックアップ",rd:"ぴっくあっぷ",cat:"機材",lv:"ba",def:"エレキギターで弦の振動を<strong>電気信号に変える</strong>装置。種類（シングル／ハムバッカー）で音色が大きく変わり、ギターの個性を決めます。",rel:["アンプ","エフェクター"]},
+{id:56,t:"アンプ",rd:"あんぷ",cat:"機材",lv:"in",def:"ギターの信号を<strong>増幅して音を出す</strong>機材。エレキはアンプを通して初めて本来の音になります。音色を作る要でもあります。",rel:["ピックアップ","ディストーション","シールド"]},
+{id:57,t:"エフェクター",rd:"えふぇくたー",cat:"機材",lv:"ba",def:"音を<strong>加工する装置</strong>。歪み・空間系・揺れものなど種類は豊富。踏んで切り替えるコンパクトタイプが定番で、音作りの幅を広げます。",rel:["ディストーション","リバーブ","ディレイ"]},
+{id:58,t:"ディストーション",rd:"でぃすとーしょん",cat:"機材",lv:"ba",def:"音を<strong>歪ませて</strong>激しく分厚くするエフェクト。ロックの象徴的なサウンド。パワーコードとの相性が抜群です。",rel:["エフェクター","パワーコード"]},
+{id:59,t:"リバーブ",rd:"りばーぶ",cat:"機材",lv:"ba",def:"<strong>残響（響き）</strong>を加えるエフェクト。ホールや部屋で鳴らしたような広がりが出て、音に奥行きと余韻が生まれます。",rel:["ディレイ","エフェクター"]},
+{id:60,t:"ディレイ",rd:"でぃれい",cat:"機材",lv:"ap",def:"音を<strong>遅らせて繰り返す（やまびこ）</strong>エフェクト。フレーズに立体感を出したり、幻想的な雰囲気を作ったりします。",rel:["リバーブ","エフェクター"]},
+{id:61,t:"シールド",rd:"しーるど",cat:"機材",lv:"in",def:"ギターとアンプ/エフェクターをつなぐ<strong>ケーブル</strong>。地味ですが音質に影響し、断線するとトラブルの原因に。1本目の必需品です。",rel:["アンプ","エフェクター"]},
+// バンド
+{id:62,t:"リフ",rd:"りふ",cat:"バンド",lv:"ba",def:"曲中で<strong>繰り返される印象的な短いフレーズ</strong>。イントロやサビ裏で流れる「あの耳に残るギター」の正体。曲の顔になります。",rel:["フレーズ","イントロ／アウトロ"]},
+{id:63,t:"イントロ／アウトロ",rd:"いんとろ／あうとろ",cat:"バンド",lv:"in",def:"曲の<strong>始まり（イントロ）と終わり（アウトロ）</strong>の部分。イントロで曲の世界に引き込み、アウトロで余韻を残します。",rel:["Aメロ・Bメロ・サビ","リフ"]},
+{id:64,t:"Aメロ・Bメロ・サビ",rd:"えーめろ・びーめろ・さび",cat:"バンド",lv:"in",def:"曲の<strong>構成を表す呼び名</strong>。静かに始まるAメロ、盛り上げるBメロ、いちばん聴かせるサビ。この流れが分かると曲を覚えやすくなります。",rel:["イントロ／アウトロ","コード進行"]},
+{id:65,t:"キメ",rd:"きめ",cat:"バンド",lv:"ap",def:"バンド全員で<strong>ピタッと合わせて演奏する決めどころ</strong>。リズムが揃うと一気にカッコよくなる、ライブの見せ場です。",rel:["リフ","リズムギター"]},
+{id:66,t:"リードギター",rd:"りーどぎたー",cat:"バンド",lv:"ba",def:"<strong>メロディやソロ</strong>を担当するギター。曲の主役級のフレーズを弾きます。1曲の中でリズムギターと役割を入れ替えることも多いです。",rel:["リズムギター","チョーキング"]},
+{id:67,t:"リズムギター",rd:"りずむぎたー",cat:"バンド",lv:"ba",def:"コードの<strong>刻みで伴奏を支える</strong>ギター。バンドのグルーヴの土台。地味に見えて、実は曲のノリを左右する重要な役割です。",rel:["リードギター","カッティング","ストローク"]}
+];
+
+const CATS=["すべて","楽典","コード","スケール","奏法","記譜","機材","バンド"];
+const LEVELS=[{k:"in",label:"入門",c:"var(--lv-in)"},{k:"ba",label:"基礎",c:"var(--lv-ba)"},{k:"ap",label:"応用",c:"var(--lv-ap)"}];
+const lvInfo={in:{label:"入門",c:"var(--lv-in)"},ba:{label:"基礎",c:"var(--lv-ba)"},ap:{label:"応用",c:"var(--lv-ap)"}};
+
+let curCat="すべて", curLevels=new Set(), curSearch="";
+
+/* build filters */
+const catBox=document.getElementById("catFilters");
+CATS.forEach(c=>{const b=document.createElement("button");b.className="chip"+(c==="すべて"?" on":"");b.textContent=c;
+  b.onclick=()=>{curCat=c;[...catBox.children].forEach(x=>x.classList.remove("on"));b.classList.add("on");render();};catBox.appendChild(b);});
+const lvBox=document.getElementById("lvFilters");
+LEVELS.forEach(l=>{const b=document.createElement("button");b.className="lvchip";
+  b.innerHTML=`<span class="dot" style="background:${l.c}"></span>${l.label}`;
+  b.onclick=()=>{b.classList.toggle("on");if(curLevels.has(l.k))curLevels.delete(l.k);else curLevels.add(l.k);render();};lvBox.appendChild(b);});
+
+document.getElementById("search").addEventListener("input",e=>{curSearch=e.target.value.trim();render();});
+document.getElementById("totalCount").textContent=TERMS.length;
+
+function filtered(){
+  return TERMS.filter(t=>{
+    if(curCat!=="すべて"&&t.cat!==curCat)return false;
+    if(curLevels.size&&!curLevels.has(t.lv))return false;
+    if(curSearch){const q=curSearch.toLowerCase();
+      const hay=(t.t+t.rd+t.def+t.cat).toLowerCase();if(!hay.includes(q))return false;}
+    return true;
+  });
+}
+function stripHtml(h){return h.replace(/<[^>]+>/g,"");}
+
+function render(){
+  const items=filtered();
+  const list=document.getElementById("list");
+  document.getElementById("count").textContent=`${items.length} 件の用語`;
+  document.getElementById("empty").style.display=items.length?"none":"block";
+  list.style.display=items.length?"flex":"none";
+  list.innerHTML=items.map(t=>{const lv=lvInfo[t.lv];return `
+    <div class="term" onclick="openSheet(${t.id})">
+      <div class="lvbar" style="background:${lv.c}"></div>
+      <div class="main">
+        <h2>${t.t}<span class="rd">${t.rd}</span></h2>
+        <div class="snip">${stripHtml(t.def)}</div>
+      </div>
+      <span class="cat">${t.cat}</span>
+    </div>`;}).join("");
+}
+
+function openSheet(id){
+  const t=TERMS.find(x=>x.id===id);if(!t)return;
+  const lv=lvInfo[t.lv];
+  const rel=(t.rel||[]).map(name=>{const rt=TERMS.find(x=>x.t===name);
+    return rt?`<span class="rel-tag" onclick="openSheet(${rt.id})">${name}</span>`:`<span class="rel-tag" style="opacity:.5">${name}</span>`;}).join("");
+  const tunerBlock=t.tuner?`
+    <div class="mini-cta">
+      <div class="ic" style="width:38px;height:38px;flex:none;border-radius:10px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v14"/><circle cx="12" cy="19" r="3"/></svg></div>
+      <div class="mtxt"><h4>この用語はチューナーと相性◎</h4><p>実際に弦を合わせながら覚えると理解が早いです。</p></div>
+      <button class="btn" onclick="goTuner('term_${t.id}')">開く</button>
+    </div>`:"";
+  document.getElementById("sheet").innerHTML=`
+    <div class="sheet-hd">
+      <div class="info">
+        <span class="badge"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:${lv.c};display:inline-block"></span>${t.cat} ・ ${lv.label}</span>
+        <h2>${t.t}</h2><div class="rd">${t.rd}</div>
+      </div>
+      <button class="close" onclick="closeSheet()">×</button>
+    </div>
+    <div class="sheet-bd">
+      <div class="def">${t.def}</div>
+      ${tunerBlock}
+      ${rel?`<div class="rel"><div class="rel-t">関連する用語</div><div class="rel-tags">${rel}</div></div>`:""}
+      <div class="ad-slot" data-ad="term-detail"></div>
+    </div>`;
+  document.getElementById("overlay").classList.add("show");
+  document.body.style.overflow="hidden";
+  history.replaceState(null,"",`#t=${id}`);
+}
+function closeSheet(){
+  document.getElementById("overlay").classList.remove("show");
+  document.body.style.overflow="";
+  history.replaceState(null,"",location.pathname);
+}
+function goTuner(src){
+  // 実運用では /apps/tuner/ へ遷移（計測用パラメータ付き）
+  location.href="/apps/tuner/?from="+encodeURIComponent(src);
+}
+function setTheme(t,btn){
+  document.documentElement.setAttribute("data-theme",t);
+  document.querySelectorAll(".themebar button").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet();});
+
+/* hash routing: #t=ID で個別用語を直接開ける（SEO/共有用） */
+function checkHash(){const m=location.hash.match(/t=(\d+)/);if(m)openSheet(+m[1]);}
+render();
+checkHash();
+</script>
+</body>
+</html>
