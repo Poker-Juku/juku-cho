@@ -655,6 +655,7 @@
 
   var rates={},dateStr=null,source='cache';
   var displayed=['JPY','USD','EUR','VND'];  var theme='dark';
+  var selBottom='USD'; // 下段に表示する通貨(2〜4番目のタブから選択)
   var side='top',raw='',replaceNext=false,kpOpen=false;
   var qJpy=[5000,10000,50000],qFor=[1000,5000,10000];
   var LADDER=[100,300,500,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
@@ -672,12 +673,16 @@
     var c=byCode[code];return{code:c.code,flag:c.flag,name:cname(c),sym:c.sym,dec:c.dec};
   }
   function topCode(){return displayed[0];}
-  function bottomCode(){return displayed[1]||displayed[0];}
+  function bottomCode(){
+    // 下段は選択中の通貨。ただし左端(上段)とは別で、表示中のタブに含まれる必要がある
+    if(selBottom&&selBottom!==displayed[0]&&displayed.indexOf(selBottom)>=0)return selBottom;
+    return displayed[1]||displayed[0];
+  }
   function activeCode(){return bottomCode();} // 履歴/記録/簡単入力の対象は下段通貨
   function groupInt(s){return s.replace(/\B(?=(\d{3})+(?!\d))/g,',');}
   function loadHist(){try{return JSON.parse(localStorage.getItem(KEY_HIST)||'{}');}catch(e){return {};}}
   function saveHist(h){try{localStorage.setItem(KEY_HIST,JSON.stringify(h));}catch(e){}}
-  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang}));}catch(e){}}
+  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang,selBottom:selBottom}));}catch(e){}}
   function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
 
   function renderManual(){
@@ -781,7 +786,11 @@
   }
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
-    displayed.forEach(function(code,idx){var c=byCode[code];var on=(idx<2);var el=document.createElement('button');el.className='tab'+(on?' on':'')+(idx===0?' top':'')+(idx===1?' bot':'');
+    var bC=bottomCode();
+    displayed.forEach(function(code,idx){var c=byCode[code];
+      var isTop=(idx===0);var isBot=(!isTop&&code===bC);
+      var on=isTop||isBot;
+      var el=document.createElement('button');el.className='tab'+(on?' on':'')+(isTop?' top':'')+(isBot?' bot':'');
       el.setAttribute('data-code',code);el.setAttribute('data-idx',idx);
       el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
       if(on){var hue=tabHue(code);el.style.boxShadow='inset 3px 0 0 '+hue;el.style.background='color-mix(in srgb,'+hue+' 14%, var(--raise-2))';}
@@ -805,7 +814,10 @@
       clearTimeout(pressTimer);
       window.removeEventListener('pointermove',el._mv);
       if(started){e.preventDefault();return;}
-      if(!moved){/* タップは選択に使わない。上下は並び順で決まる */}
+      if(!moved){
+        // 左端(上段)以外のタブをタップ → 下段に選択
+        if(code!==displayed[0]){selBottom=code;if(kpOpen){side='top';raw='';replaceNext=false;}saveCfg();renderAll();if(kpOpen)updateKp();}
+      }
     });
     el.addEventListener('pointercancel',function(){clearTimeout(pressTimer);window.removeEventListener('pointermove',el._mv);});
     el.addEventListener('contextmenu',function(e){e.preventDefault();});
@@ -865,6 +877,8 @@
     displayed=arr;
     tabDrag=null;
     $('tabs').classList.remove('dragging');
+    // 並べ替えで下段選択が左端(上段)に来てしまった場合は、2番目を下段に
+    if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
     // 入力中の位置が変わる可能性があるのでリセット
     if(kpOpen){side='top';raw='';replaceNext=false;}
     saveCfg();renderAll();if(kpOpen)updateKp();
@@ -926,6 +940,7 @@
   function toggleCountry(code){var i=displayed.indexOf(code);
     if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);side='top';raw='';}
     else{if(displayed.length>=4){toast(t('max4'));return;}displayed.push(code);}
+    if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
     saveCfg();renderEdit();renderQEdit();renderAll();renderSpark();}
   function renderQEdit(){var c=byCode[activeCode()];$('qeForLbl').textContent=c.code;
     var a=$('qeJpy');a.innerHTML='';qJpy.forEach(function(v,i){var b=document.createElement('button');b.textContent=nf(v,0);b.onclick=function(){openDrum('jpy',i,v);};a.appendChild(b);});
@@ -983,8 +998,10 @@
       if(Array.isArray(cfg.qJpy)&&cfg.qJpy.length===3)qJpy=cfg.qJpy;
       if(Array.isArray(cfg.qFor)&&cfg.qFor.length===3)qFor=cfg.qFor;
       if(cfg.lang&&T[cfg.lang])lang=cfg.lang;
-      ;}
+      if(cfg.selBottom)selBottom=cfg.selBottom;}
     else{var nl=(navigator.language||'ja').slice(0,2);if(T[nl])lang=nl;}
+    // selBottom の妥当性確認(左端と別・表示中である)
+    if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
     applyTheme();applyLang();
     var cached=null;try{cached=JSON.parse(localStorage.getItem(KEY_RATE)||'null');}catch(e){}
     if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';}
