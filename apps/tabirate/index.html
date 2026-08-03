@@ -91,6 +91,13 @@
   .tab .fl{font-size:15px;line-height:1;flex:0 0 auto}
   .tab .nm{overflow:hidden;text-overflow:ellipsis}
   .tab.on{background:var(--raise-2);color:var(--ink)}
+  .tab.top .nm::after{content:"▲";font-size:7px;margin-left:4px;color:var(--ink-3);vertical-align:middle}
+  .tab.bot .nm::after{content:"▼";font-size:7px;margin-left:4px;color:var(--ink-3);vertical-align:middle}
+  .tab{transition:transform .18s cubic-bezier(.32,.72,0,1),background .15s,color .15s}
+  .tabs.dragging .tab{transition:transform .18s cubic-bezier(.32,.72,0,1)}
+  .tab.drag{z-index:10;transition:none;box-shadow:0 8px 24px -6px rgba(0,0,0,.6)!important;
+    opacity:.96;cursor:grabbing}
+  .tab.armed{cursor:grab}
 
   /* ============ rate line (hairline, not a card) ============ */
   .rate{position:relative;z-index:1;flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:2px 4px 14px;
@@ -594,14 +601,15 @@
 
   /* localized country names */
   var CN={
-    en:{KRW:'Korea',TWD:'Taiwan',CNY:'China',HKD:'Hong Kong',MOP:'Macau',THB:'Thailand',VND:'Vietnam',SGD:'Singapore',MYR:'Malaysia',PHP:'Philippines',IDR:'Indonesia',KHR:'Cambodia',INR:'India',AED:'Dubai/UAE',USD:'USA',EUR:'Eurozone',GBP:'UK',CAD:'Canada',CHF:'Switzerland',TRY:'Türkiye',CZK:'Czechia',SEK:'Sweden',NOK:'Norway',DKK:'Denmark',PLN:'Poland',HUF:'Hungary',AUD:'Australia',NZD:'New Zealand',MXN:'Mexico',BRL:'Brazil',ZAR:'South Africa',EGP:'Egypt'},
-    zh:{KRW:'韩国',TWD:'台湾',CNY:'中国',HKD:'香港',MOP:'澳门',THB:'泰国',VND:'越南',SGD:'新加坡',MYR:'马来西亚',PHP:'菲律宾',IDR:'印度尼西亚',KHR:'柬埔寨',INR:'印度',AED:'迪拜/阿联酋',USD:'美国',EUR:'欧元区',GBP:'英国',CAD:'加拿大',CHF:'瑞士',TRY:'土耳其',CZK:'捷克',SEK:'瑞典',NOK:'挪威',DKK:'丹麦',PLN:'波兰',HUF:'匈牙利',AUD:'澳大利亚',NZD:'新西兰',MXN:'墨西哥',BRL:'巴西',ZAR:'南非',EGP:'埃及'},
-    ko:{KRW:'한국',TWD:'대만',CNY:'중국',HKD:'홍콩',MOP:'마카오',THB:'태국',VND:'베트남',SGD:'싱가포르',MYR:'말레이시아',PHP:'필리핀',IDR:'인도네시아',KHR:'캄보디아',INR:'인도',AED:'두바이/UAE',USD:'미국',EUR:'유로존',GBP:'영국',CAD:'캐나다',CHF:'스위스',TRY:'튀르키예',CZK:'체코',SEK:'스웨덴',NOK:'노르웨이',DKK:'덴마크',PLN:'폴란드',HUF:'헝가리',AUD:'호주',NZD:'뉴질랜드',MXN:'멕시코',BRL:'브라질',ZAR:'남아공',EGP:'이집트'},
-    vi:{KRW:'Hàn Quốc',TWD:'Đài Loan',CNY:'Trung Quốc',HKD:'Hồng Kông',MOP:'Ma Cao',THB:'Thái Lan',VND:'Việt Nam',SGD:'Singapore',MYR:'Malaysia',PHP:'Philippines',IDR:'Indonesia',KHR:'Campuchia',INR:'Ấn Độ',AED:'Dubai/UAE',USD:'Mỹ',EUR:'Khu vực Euro',GBP:'Anh',CAD:'Canada',CHF:'Thụy Sĩ',TRY:'Thổ Nhĩ Kỳ',CZK:'Séc',SEK:'Thụy Điển',NOK:'Na Uy',DKK:'Đan Mạch',PLN:'Ba Lan',HUF:'Hungary',AUD:'Úc',NZD:'New Zealand',MXN:'Mexico',BRL:'Brazil',ZAR:'Nam Phi',EGP:'Ai Cập'},
-    th:{KRW:'เกาหลี',TWD:'ไต้หวัน',CNY:'จีน',HKD:'ฮ่องกง',MOP:'มาเก๊า',THB:'ไทย',VND:'เวียดนาม',SGD:'สิงคโปร์',MYR:'มาเลเซีย',PHP:'ฟิลิปปินส์',IDR:'อินโดนีเซีย',KHR:'กัมพูชา',INR:'อินเดีย',AED:'ดูไบ/UAE',USD:'สหรัฐฯ',EUR:'ยูโรโซน',GBP:'อังกฤษ',CAD:'แคนาดา',CHF:'สวิส',TRY:'ตุรกี',CZK:'เช็ก',SEK:'สวีเดน',NOK:'นอร์เวย์',DKK:'เดนมาร์ก',PLN:'โปแลนด์',HUF:'ฮังการี',AUD:'ออสเตรเลีย',NZD:'นิวซีแลนด์',MXN:'เม็กซิโก',BRL:'บราซิล',ZAR:'แอฟริกาใต้',EGP:'อียิปต์'}
+    en:{JPY:'Japan',KRW:'Korea',TWD:'Taiwan',CNY:'China',HKD:'Hong Kong',MOP:'Macau',THB:'Thailand',VND:'Vietnam',SGD:'Singapore',MYR:'Malaysia',PHP:'Philippines',IDR:'Indonesia',KHR:'Cambodia',INR:'India',AED:'Dubai/UAE',USD:'USA',EUR:'Eurozone',GBP:'UK',CAD:'Canada',CHF:'Switzerland',TRY:'Türkiye',CZK:'Czechia',SEK:'Sweden',NOK:'Norway',DKK:'Denmark',PLN:'Poland',HUF:'Hungary',AUD:'Australia',NZD:'New Zealand',MXN:'Mexico',BRL:'Brazil',ZAR:'South Africa',EGP:'Egypt'},
+    zh:{JPY:'日本',KRW:'韩国',TWD:'台湾',CNY:'中国',HKD:'香港',MOP:'澳门',THB:'泰国',VND:'越南',SGD:'新加坡',MYR:'马来西亚',PHP:'菲律宾',IDR:'印度尼西亚',KHR:'柬埔寨',INR:'印度',AED:'迪拜/阿联酋',USD:'美国',EUR:'欧元区',GBP:'英国',CAD:'加拿大',CHF:'瑞士',TRY:'土耳其',CZK:'捷克',SEK:'瑞典',NOK:'挪威',DKK:'丹麦',PLN:'波兰',HUF:'匈牙利',AUD:'澳大利亚',NZD:'新西兰',MXN:'墨西哥',BRL:'巴西',ZAR:'南非',EGP:'埃及'},
+    ko:{JPY:'일본',KRW:'한국',TWD:'대만',CNY:'중국',HKD:'홍콩',MOP:'마카오',THB:'태국',VND:'베트남',SGD:'싱가포르',MYR:'말레이시아',PHP:'필리핀',IDR:'인도네시아',KHR:'캄보디아',INR:'인도',AED:'두바이/UAE',USD:'미국',EUR:'유로존',GBP:'영국',CAD:'캐나다',CHF:'스위스',TRY:'튀르키예',CZK:'체코',SEK:'스웨덴',NOK:'노르웨이',DKK:'덴마크',PLN:'폴란드',HUF:'헝가리',AUD:'호주',NZD:'뉴질랜드',MXN:'멕시코',BRL:'브라질',ZAR:'남아공',EGP:'이집트'},
+    vi:{JPY:'Nhật Bản',KRW:'Hàn Quốc',TWD:'Đài Loan',CNY:'Trung Quốc',HKD:'Hồng Kông',MOP:'Ma Cao',THB:'Thái Lan',VND:'Việt Nam',SGD:'Singapore',MYR:'Malaysia',PHP:'Philippines',IDR:'Indonesia',KHR:'Campuchia',INR:'Ấn Độ',AED:'Dubai/UAE',USD:'Mỹ',EUR:'Khu vực Euro',GBP:'Anh',CAD:'Canada',CHF:'Thụy Sĩ',TRY:'Thổ Nhĩ Kỳ',CZK:'Séc',SEK:'Thụy Điển',NOK:'Na Uy',DKK:'Đan Mạch',PLN:'Ba Lan',HUF:'Hungary',AUD:'Úc',NZD:'New Zealand',MXN:'Mexico',BRL:'Brazil',ZAR:'Nam Phi',EGP:'Ai Cập'},
+    th:{JPY:'ญี่ปุ่น',KRW:'เกาหลี',TWD:'ไต้หวัน',CNY:'จีน',HKD:'ฮ่องกง',MOP:'มาเก๊า',THB:'ไทย',VND:'เวียดนาม',SGD:'สิงคโปร์',MYR:'มาเลเซีย',PHP:'ฟิลิปปินส์',IDR:'อินโดนีเซีย',KHR:'กัมพูชา',INR:'อินเดีย',AED:'ดูไบ/UAE',USD:'สหรัฐฯ',EUR:'ยูโรโซน',GBP:'อังกฤษ',CAD:'แคนาดา',CHF:'สวิส',TRY:'ตุรกี',CZK:'เช็ก',SEK:'สวีเดน',NOK:'นอร์เวย์',DKK:'เดนมาร์ก',PLN:'โปแลนด์',HUF:'ฮังการี',AUD:'ออสเตรเลีย',NZD:'นิวซีแลนด์',MXN:'เม็กซิโก',BRL:'บราซิล',ZAR:'แอฟริกาใต้',EGP:'อียิปต์'}
   };
 
   var COUNTRIES=[
+    {code:'JPY',flag:'🇯🇵',name:'日本円',country:'日本',sym:'¥',dec:0,fb:1,rg:'アジア'},
     {code:'KRW',flag:'🇰🇷',name:'ウォン',country:'韓国',sym:'₩',dec:0,fb:0.116,rg:'アジア'},
     {code:'TWD',flag:'🇹🇼',name:'台湾ドル',country:'台湾',sym:'NT$',dec:2,fb:5.00,rg:'アジア'},
     {code:'CNY',flag:'🇨🇳',name:'人民元',country:'中国',sym:'元',dec:2,fb:22.30,rg:'アジア'},
@@ -637,7 +645,7 @@
   ];
   var byCode={};COUNTRIES.forEach(function(c){byCode[c.code]=c;});
   // 国ごとのタブ色(国旗の主要色に近い淡いアクセント)
-  var TABHUE={USD:'#3B6FE0',EUR:'#3B6FE0',KRW:'#2E7DD1',TWD:'#2E7DD1',CNY:'#D64545',HKD:'#D64545',
+  var TABHUE={JPY:'#D64545',USD:'#3B6FE0',EUR:'#3B6FE0',KRW:'#2E7DD1',TWD:'#2E7DD1',CNY:'#D64545',HKD:'#D64545',
     MOP:'#3AA76D',THB:'#D64545',VND:'#D64545',SGD:'#D64545',MYR:'#2E7DD1',PHP:'#3B6FE0',
     IDR:'#D64545',KHR:'#2E7DD1',INR:'#E08A3B',AED:'#3AA76D',GBP:'#3B6FE0',CAD:'#D64545',
     CHF:'#D64545',TRY:'#D64545',CZK:'#3B6FE0',SEK:'#3B6FE0',NOK:'#D64545',DKK:'#D64545',
@@ -646,10 +654,8 @@
   function tabHue(code){return TABHUE[code]||'#34D399';}
 
   var rates={},dateStr=null,source='cache';
-  var displayed=['USD','EUR','VND'];
-  var active='USD',theme='dark';
-  var side='bottom',raw='',replaceNext=false,kpOpen=false;
-  var swapped=false,longPressTimer=null,longPressFired=false;
+  var displayed=['JPY','USD','EUR','VND'];  var theme='dark';
+  var side='top',raw='',replaceNext=false,kpOpen=false;
   var qJpy=[5000,10000,50000],qFor=[1000,5000,10000];
   var LADDER=[100,300,500,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
   var drumTarget=null;
@@ -665,12 +671,13 @@
     if(code==='JPY')return{code:'JPY',flag:'🇯🇵',name:t('jpyName'),sym:'¥',dec:0};
     var c=byCode[code];return{code:c.code,flag:c.flag,name:cname(c),sym:c.sym,dec:c.dec};
   }
-  function topCode(){return swapped?active:'JPY';}
-  function bottomCode(){return swapped?'JPY':active;}
+  function topCode(){return displayed[0];}
+  function bottomCode(){return displayed[1]||displayed[0];}
+  function activeCode(){return bottomCode();} // 履歴/記録/簡単入力の対象は下段通貨
   function groupInt(s){return s.replace(/\B(?=(\d{3})+(?!\d))/g,',');}
   function loadHist(){try{return JSON.parse(localStorage.getItem(KEY_HIST)||'{}');}catch(e){return {};}}
   function saveHist(h){try{localStorage.setItem(KEY_HIST,JSON.stringify(h));}catch(e){}}
-  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,active:active,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang,swapped:swapped}));}catch(e){}}
+  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang}));}catch(e){}}
   function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
 
   function renderManual(){
@@ -774,10 +781,92 @@
   }
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
-    displayed.forEach(function(code){var c=byCode[code];var on=code===active;var el=document.createElement('button');el.className='tab'+(on?' on':'');
+    displayed.forEach(function(code,idx){var c=byCode[code];var on=(idx<2);var el=document.createElement('button');el.className='tab'+(on?' on':'')+(idx===0?' top':'')+(idx===1?' bot':'');
+      el.setAttribute('data-code',code);el.setAttribute('data-idx',idx);
       el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
       if(on){var hue=tabHue(code);el.style.boxShadow='inset 3px 0 0 '+hue;el.style.background='color-mix(in srgb,'+hue+' 14%, var(--raise-2))';}
-      el.onclick=function(){active=code;swapped=false;saveCfg();renderAll();if(kpOpen)updateKp();};t2.appendChild(el);});}
+      attachTabHandlers(el,code);
+      t2.appendChild(el);});}
+
+  // ---- tab long-press drag reorder ----
+  var tabDrag=null;
+  function attachTabHandlers(el,code){
+    var pressTimer=null,started=false,moved=false;
+    el.addEventListener('pointerdown',function(e){
+      if(e.button!==undefined&&e.button!==0)return;
+      moved=false;started=false;
+      var startX=e.clientX;
+      pressTimer=setTimeout(function(){started=true;beginTabDrag(el,code,startX);},450);
+      var sx=e.clientX,sy=e.clientY;
+      el._mv=function(ev){if(Math.abs(ev.clientX-sx)>8||Math.abs(ev.clientY-sy)>8){moved=true;if(!started){clearTimeout(pressTimer);}}};
+      window.addEventListener('pointermove',el._mv);
+    });
+    el.addEventListener('pointerup',function(e){
+      clearTimeout(pressTimer);
+      window.removeEventListener('pointermove',el._mv);
+      if(started){e.preventDefault();return;}
+      if(!moved){/* タップは選択に使わない。上下は並び順で決まる */}
+    });
+    el.addEventListener('pointercancel',function(){clearTimeout(pressTimer);window.removeEventListener('pointermove',el._mv);});
+    el.addEventListener('contextmenu',function(e){e.preventDefault();});
+  }
+  function beginTabDrag(el,code,startX){
+    if(navigator.vibrate)navigator.vibrate(12);
+    var tabs=$('tabs');tabs.classList.add('dragging');
+    var els=Array.prototype.slice.call(tabs.querySelectorAll('.tab'));
+    var rects=els.map(function(n){return n.getBoundingClientRect();});
+    var fromIdx=els.indexOf(el);
+    var elRect=rects[fromIdx];
+    var baseLeft=elRect.left;
+    el.classList.add('drag');
+    tabDrag={el:el,code:code,els:els,rects:rects,fromIdx:fromIdx,curIdx:fromIdx,baseLeft:baseLeft,offsetX:startX-elRect.left};
+    var move=function(ev){
+      var x=ev.clientX;
+      var dx=x-startX;
+      el.style.transform='translateX('+dx+'px)';
+      // 指の中心位置から挿入インデックスを決める
+      var centerX=x - tabDrag.offsetX + elRect.width/2;
+      var newIdx=tabDrag.curIdx;
+      for(var i=0;i<rects.length;i++){
+        var mid=rects[i].left+rects[i].width/2;
+        if(centerX<mid){newIdx=i;break;}
+        newIdx=i;
+      }
+      if(newIdx!==tabDrag.curIdx){shiftTabs(newIdx);tabDrag.curIdx=newIdx;}
+    };
+    var up=function(){
+      window.removeEventListener('pointermove',move);
+      window.removeEventListener('pointerup',up);
+      endTabDrag();
+    };
+    window.addEventListener('pointermove',move);
+    window.addEventListener('pointerup',up);
+    // 初期シフト適用
+    shiftTabs(fromIdx);
+  }
+  function shiftTabs(targetIdx){
+    // ドラッグ中要素を除いた並びで、他タブを左右へずらす
+    var d=tabDrag;var w=d.rects[0].width;var gap=d.rects.length>1?(d.rects[1].left-d.rects[0].right):0;var step=w+gap;
+    d.els.forEach(function(n,i){
+      if(n===d.el)return;
+      var shift=0;
+      if(d.fromIdx<targetIdx){ if(i>d.fromIdx&&i<=targetIdx)shift=-step; }
+      else if(d.fromIdx>targetIdx){ if(i>=targetIdx&&i<d.fromIdx)shift=step; }
+      n.style.transform=shift?('translateX('+shift+'px)'):'translateX(0)';
+    });
+  }
+  function endTabDrag(){
+    var d=tabDrag;if(!d)return;
+    var to=d.curIdx;
+    // displayed 配列を並べ替え
+    var arr=displayed.slice();
+    var moving=arr.splice(d.fromIdx,1)[0];
+    arr.splice(to,0,moving);
+    displayed=arr;
+    tabDrag=null;
+    $('tabs').classList.remove('dragging');
+    saveCfg();renderTabs();
+  }
   function renderRate(){
     var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
     // 外貨(JPY以外)を基準に「$1 = ¥○○」で表示。両方がJPY以外なら下段基準。
@@ -796,7 +885,7 @@
   function renderQuick(){var bC=bottomCode(),bInfo=infoFor(bC);$('qForH').textContent=bInfo.code;
     var a=$('qJpy');a.innerHTML='';qJpy.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='top';raw=String(v);replaceNext=false;renderConv();};a.appendChild(b);});
     var d=$('qFor');d.innerHTML='';qFor.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='bottom';raw=String(v);replaceNext=false;renderConv();};d.appendChild(b);});}
-  function renderSpark(){var c=byCode[active],h=(loadHist()[active]||[]),svg=$('spark'),e=$('sparkEmpty');
+  function renderSpark(){var ac=activeCode();var c=byCode[ac],h=(loadHist()[ac]||[]),svg=$('spark'),e=$('sparkEmpty');
     $('sparkTitle').textContent=cname(c)+' · '+c.code;
     e.textContent=t('noHist');
     if(h.length<2){svg.innerHTML='';e.style.display='block';return;}
@@ -808,28 +897,6 @@
     svg.innerHTML='<polyline fill="none" stroke="'+col+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="'+pts.join(' ')+'"/><circle cx="'+l[0]+'" cy="'+l[1]+'" r="2.5" fill="'+col+'"/>';}
   function renderAll(){renderTabs();renderRate();renderRows();renderQuick();renderConv();if($('sheet').classList.contains('show'))renderSpark();}
 
-  /* ---- long-press to swap top/bottom rows ---- */
-  function doSwapRows(){
-    swapped=!swapped;
-    // 入力中だった側を新しい位置に合わせて維持
-    if(side==='top')side='bottom'; else if(side==='bottom')side='top';
-    saveCfg();renderAll();if(kpOpen)updateKp();
-    if(navigator.vibrate)navigator.vibrate(12);
-  }
-  function startLongPress(e){
-    if(e.type==='mousedown'&&e.button!==0)return;
-    longPressFired=false;
-    clearTimeout(longPressTimer);
-    longPressTimer=setTimeout(function(){
-      longPressFired=true;
-      doSwapRows();
-    },550);
-  }
-  function cancelLongPress(){clearTimeout(longPressTimer);}
-  function onRowTap(which,e){
-    if(longPressFired){longPressFired=false;e.stopPropagation();return;} // 長押しで入れ替えた場合はタップ無効
-    focusSide(which);
-  }
 
   function logAuto(){var h=loadHist(),d=dateStr||fmtDate(new Date());
     COUNTRIES.forEach(function(c){var a=h[c.code]||[],r=getRate(c.code),last=a[a.length-1];
@@ -855,15 +922,15 @@
         el.onclick=function(){toggleCountry(c.code);};gr.appendChild(el);});
       g.appendChild(gr);});}
   function toggleCountry(code){var i=displayed.indexOf(code);
-    if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);if(active===code){active=displayed[0];swapped=false;side='bottom';raw='';}}
+    if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);side='top';raw='';}
     else{if(displayed.length>=4){toast(t('max4'));return;}displayed.push(code);}
     saveCfg();renderEdit();renderQEdit();renderAll();renderSpark();}
-  function renderQEdit(){var c=byCode[active];$('qeForLbl').textContent=c.code;
+  function renderQEdit(){var c=byCode[activeCode()];$('qeForLbl').textContent=c.code;
     var a=$('qeJpy');a.innerHTML='';qJpy.forEach(function(v,i){var b=document.createElement('button');b.textContent=nf(v,0);b.onclick=function(){openDrum('jpy',i,v);};a.appendChild(b);});
     var d=$('qeFor');d.innerHTML='';qFor.forEach(function(v,i){var b=document.createElement('button');b.textContent=nf(v,0);b.onclick=function(){openDrum('for',i,v);};d.appendChild(b);});}
   function renderHist(){var h=loadHist(),box=$('histList');box.innerHTML='';
     COUNTRIES.forEach(function(c){var a=(h[c.code]||[]).slice().reverse(),lt=a[0];
-      var card=document.createElement('div');card.className='cc'+(c.code===active?' open':'');
+      var card=document.createElement('div');card.className='cc'+(c.code===activeCode()?' open':'');
       var hd=document.createElement('div');hd.className='cch';
       hd.innerHTML='<span class="f">'+c.flag+'</span><div class="i"><b>'+cname(c)+'</b><small>'+c.name+' · '+c.code+'</small></div><div class="lt">'+(lt?(nf(lt.r,lt.r>=1?2:4)+'¥'):'—')+'<small>'+(a.length?(a.length+t('records')):t('noRec'))+'</small></div>';
       hd.onclick=function(){card.classList.toggle('open');};
@@ -883,7 +950,7 @@
 
   function openDrum(g,i,cur){drumTarget={g:g,i:i};var l=$('drumList');
     l.innerHTML='<div class="dp"></div>'+LADDER.map(function(v){return '<div class="di">'+nf(v,0)+'</div>';}).join('')+'<div class="dp"></div>';
-    $('drumTitle').textContent=(g==='jpy'?'JPY':byCode[active].code)+t('amount');
+    $('drumTitle').textContent=(g==='jpy'?'JPY':byCode[activeCode()].code)+t('amount');
     var ci=LADDER.indexOf(cur);if(ci<0)ci=0;
     $('drumScrim').classList.add('show');$('drum').classList.add('show');
     setTimeout(function(){l.scrollTop=ci*40;hlDrum();},40);}
@@ -910,33 +977,25 @@
   function init(){
     var cfg=null;try{cfg=JSON.parse(localStorage.getItem(KEY_CFG)||'null');}catch(e){}
     if(cfg){if(Array.isArray(cfg.displayed)&&cfg.displayed.length)displayed=cfg.displayed.filter(function(c){return byCode[c];}).slice(0,4);
-      if(cfg.active&&byCode[cfg.active])active=cfg.active;if(cfg.theme)theme=cfg.theme;
+      if(cfg.theme)theme=cfg.theme;
       if(Array.isArray(cfg.qJpy)&&cfg.qJpy.length===3)qJpy=cfg.qJpy;
       if(Array.isArray(cfg.qFor)&&cfg.qFor.length===3)qFor=cfg.qFor;
       if(cfg.lang&&T[cfg.lang])lang=cfg.lang;
-      if(typeof cfg.swapped==='boolean')swapped=cfg.swapped;}
+      ;}
     else{var nl=(navigator.language||'ja').slice(0,2);if(T[nl])lang=nl;}
-    if(displayed.indexOf(active)<0)active=displayed[0];
     applyTheme();applyLang();
     var cached=null;try{cached=JSON.parse(localStorage.getItem(KEY_RATE)||'null');}catch(e){}
     if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';}
     renderAll();
     if(!cached||cached.day!==todayKey())fetchRates();
 
-    ['rTop','rBottom'].forEach(function(rid){
-      var el=$(rid);var which=(rid==='rTop')?'top':'bottom';
-      el.addEventListener('pointerdown',startLongPress);
-      el.addEventListener('pointerup',cancelLongPress);
-      el.addEventListener('pointerleave',cancelLongPress);
-      el.addEventListener('pointercancel',cancelLongPress);
-      el.addEventListener('click',function(e){onRowTap(which,e);});
-      el.addEventListener('contextmenu',function(e){e.preventDefault();});
-    });
+    $('rTop').addEventListener('click',function(){focusSide('top');});
+    $('rBottom').addEventListener('click',function(){focusSide('bottom');});
     $('kpGrid').addEventListener('click',function(e){var b=e.target.closest('button');if(b)press(b.getAttribute('data-k'));});
     $('kpDone').addEventListener('click',closeKp);
     $('kpScrim').addEventListener('click',closeKp);
     $('refBtn').addEventListener('click',fetchRates);
-    $('recBtn').addEventListener('click',function(){recordNote(active);});
+    $('recBtn').addEventListener('click',function(){recordNote(activeCode());});
     $('myBtn').addEventListener('click',openSheet);
     $('closeBtn').addEventListener('click',closeSheet);
     $('scrim').addEventListener('click',closeSheet);
