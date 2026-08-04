@@ -505,14 +505,12 @@ body {
 .settings-overlay.open { display:flex; flex-direction:column; }
 
 .settings-panel {
-  position:absolute; top:0; left:0; right:0;
+  position:absolute; top:0; left:0; right:0; bottom:0;
   background:linear-gradient(180deg,#0d1828 0%,#070d14 100%);
-  border-bottom:1px solid var(--border);
-  border-radius:16px 16px 0 0;
+  border-radius:16px;
   overflow:hidden;
   transform:translateY(-100%);
   transition:transform 0.3s cubic-bezier(0.34,1.4,0.64,1);
-  max-height:90%;
   display:flex; flex-direction:column;
 }
 .settings-overlay.open .settings-panel { transform:translateY(0); }
@@ -544,7 +542,12 @@ body {
 
 /* スクロール可能コンテンツ */
 .settings-content {
-  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
   padding:8px 0 20px;
 }
 
@@ -650,7 +653,12 @@ body {
   letter-spacing:2px; color:#fff;
 }
 .sub-content {
-  flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
   padding:16px 18px;
 }
 .sub-content p, .sub-content li {
@@ -995,6 +1003,55 @@ body {
 .app.theme-light .chord-info-card .ci-label { color: #4070a0; font-weight: 600; }
 .app.theme-light .chord-info-card .ci-value { color: #003060; font-weight: 700; }
 
+
+/* ── 音色ボタン（横長・2行グリッド） ── */
+.sound-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 5px;
+  padding: 0 10px;
+}
+/* 3列2行→5個：最後の1個（5番目）を中央に */
+.sound-btn:last-child {
+  grid-column: 2 / 3;
+}
+.sound-btn {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border); border-radius: 4px;
+  color: var(--text-mid); cursor: pointer;
+  padding: 8px 10px; transition: all 0.15s; text-align: left;
+  font-family: "Exo 2", sans-serif;
+  display: flex; align-items: center; gap: 8px;
+}
+.sound-btn .sb-num {
+  font-family: "Orbitron", sans-serif; font-size: 13px; font-weight: 700;
+  color: var(--text-mid); flex-shrink: 0; width: 16px; text-align: center;
+}
+.sound-btn .sb-name {
+  font-size: 10px; color: var(--text-dim); letter-spacing: 0.5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sound-btn:hover { border-color: var(--cyan-dk); background: #0d2030; }
+.sound-btn.active {
+  border-color: var(--cyan); background: rgba(0,200,240,0.08);
+  box-shadow: 0 0 8px rgba(0,200,240,0.2);
+}
+.sound-btn.active .sb-num { color: var(--cyan); }
+.sound-btn.active .sb-name { color: var(--text-mid); }
+
+/* Light theme */
+.app.theme-light .sound-btn {
+  background: #fff; border-color: #6090b8;
+}
+.app.theme-light .sound-btn .sb-num { color: #003060; }
+.app.theme-light .sound-btn .sb-name { color: #5080a0; }
+.app.theme-light .sound-btn:hover { background: #e0f0ff; border-color: #0070a0; }
+.app.theme-light .sound-btn.active {
+  background: rgba(0,112,160,0.1); border-color: #0070a0;
+}
+.app.theme-light .sound-btn.active .sb-num { color: #003060; }
+.app.theme-light .sound-btn.active .sb-name { color: #0070a0; }
 </style>
 </head>
 <body>
@@ -1124,21 +1181,26 @@ body {
       <!-- BPMスライダー -->
       <div class="bpm-controls">
         <div class="bpm-slider-wrap">
-          <button class="bpm-adj" onclick="adjBPM(-5)">−</button>
+          <button class="bpm-adj" onclick="adjBPM(-1)">−</button>
           <input type="range" class="bpm-slider" id="bpmSlider" min="40" max="220" value="120" oninput="setBPM(this.value)">
-          <button class="bpm-adj" onclick="adjBPM(+5)">+</button>
+          <button class="bpm-adj" onclick="adjBPM(+1)">+</button>
         </div>
 
         <!-- 拍子 -->
         <div class="beat-row" id="beatRow"></div>
 
-        <!-- テンポプリセット -->
-        <div class="tempo-row" id="tempoRow"></div>
       </div>
+
 
       <!-- スタート/タップ -->
       <button class="metro-start-btn" id="metroStartBtn" onclick="toggleMetro()">▶ START</button>
       <button class="tap-btn" onclick="tapTempo()">🎵 TAP TEMPO</button>
+
+      <!-- 広告バナー -->
+      <div class="ad-banner" style="margin:4px 0 0; border-radius:4px; flex-shrink:0;">
+        <!-- Google AdSense コードをここに挿入 -->
+        <div class="ad-banner-inner">ADVERTISEMENT</div>
+      </div>
     </div>
 </div><!-- /screen-metro -->
 
@@ -1206,6 +1268,12 @@ body {
           </div>
         </div>
       </div>
+
+      <!-- 広告バナー -->
+      <div class="ad-banner" style="flex-shrink:0;">
+        <!-- Google AdSense コードをここに挿入 -->
+        <div class="ad-banner-inner">ADVERTISEMENT</div>
+      </div>
     </div>
 </div><!-- /screen-chord -->
 
@@ -1262,6 +1330,14 @@ body {
               <option value="zh">🇨🇳 中文</option>
               <option value="ko">🇰🇷 한국어</option>
             </select>
+          </div>
+        </div>
+
+        <!-- 音色 -->
+        <div class="settings-section">
+          <div class="settings-section-label">METRONOME SOUND</div>
+          <div class="settings-row" style="flex-direction:column; align-items:stretch; gap:8px; cursor:default;">
+            <div class="sound-row" id="soundRow" style="display:grid; grid-template-columns:repeat(3,1fr); gap:6px; padding:0;"></div>
           </div>
         </div>
 
@@ -1323,28 +1399,45 @@ body {
       </div>
       <div class="sub-content">
         <h3>🎸 TUNER（チューナー）</h3>
-        <p>各弦のボタンをタップすると、その弦の基準音が鳴ります。音を聞きながらギターのペグを回してチューニングを合わせてください。</p>
+        <p>各弦のボタンをタップするとその弦の基準音が鳴ります。音を聞きながらギターのペグを回してチューニングを合わせてください。</p>
         <ul>
           <li><b>ELECTRIC</b>：エレキギター向けのサウンド</li>
           <li><b>ACOUSTIC</b>：アコースティック向けのやわらかい音</li>
           <li><b>FADE</b>：音が自然にフェードアウト</li>
           <li><b>SUSTAIN</b>：音が長く伸びる</li>
-          <li><b>ALL STRINGS</b>：6弦すべてを順に鳴らす</li>
-          <li><b>CODE:E / CODE:A</b>：コードの構成音を鳴らす</li>
+          <li><b>ALL STRINGS</b>：全弦を順に鳴らす</li>
+          <li><b>CODE : E / CODE : A</b>：コードの構成音をストローク風に鳴らす（チューニングに連動して自動変化）</li>
+          <li>音が鳴っている弦はアニメーションで振動します</li>
         </ul>
+
         <h3>🎵 METRONOME（メトロノーム）</h3>
-        <p>STARTをタップするとメトロノームが動き始めます。スライダーでBPMを調整、拍子ボタンで拍子を変更できます。</p>
+        <p>▶ START をタップするとメトロノームが動き始めます。</p>
         <ul>
-          <li><b>TAP TEMPO</b>：ボタンをリズムに合わせてタップするとBPMが自動計算されます</li>
-          <li><b>テンポ名ボタン</b>：Largo〜Prestoの定番テンポをワンタップで設定</li>
+          <li><b>スライダー</b>：BPMを調整（40〜220）</li>
+          <li><b>− / +</b>：1ずつBPMを増減</li>
+          <li><b>拍子ボタン</b>：2/4〜8/4から選択</li>
+          <li><b>TAP TEMPO</b>：リズムに合わせてタップするとBPMが自動計算</li>
+          <li><b>音色</b>：設定メニューから5種類の音色を選択できます</li>
         </ul>
+
         <h3>🎼 CHORD FINDER（コード検索）</h3>
-        <p>ルート音とコードタイプを選ぶと、ギターのフォームがダイアグラムで表示されます。</p>
+        <p>ROOT（ルート音）と TYPE（コード種類）を選ぶと、ローポジションのフォームがダイアグラムで表示されます。</p>
         <ul>
           <li>✕：弾かない弦</li>
           <li>○：開放弦（フレットを押さえない）</li>
           <li>●：フレットを押さえる位置</li>
-          <li>バリエーションボタンで別のフォームに切り替えられます</li>
+          <li><b>フォームボタン</b>（E shape / A shape など）：バレーコードのフォームに切り替え。もう一度タップすると解除してローポジションに戻ります</li>
+          <li><b>NOTES</b>：コードの構成音</li>
+          <li><b>INTERVALS</b>：度数（1=ルート、3=3度、5=5度など）</li>
+        </ul>
+
+        <h3>⚙ 設定</h3>
+        <p>右上のメニューボタンから設定を開けます。</p>
+        <ul>
+          <li><b>言語</b>：日本語・English・中文・한국어</li>
+          <li><b>メトロノーム音色</b>：5種類から選択</li>
+          <li><b>テーマ</b>：Dark / Light / Ocean</li>
+          <li><b>グロー演出</b>：シアンの発光エフェクトのON/OFF</li>
         </ul>
       </div>
     </div>
@@ -1650,10 +1743,17 @@ let tapTimes = [];
 const metroAC = () => { if (!window._mac) window._mac = new (window.AudioContext||window.webkitAudioContext)(); return window._mac; };
 
 const BEAT_OPTIONS  = [2, 3, 4, 5, 6, 7, 8];
-const TEMPO_PRESETS = [
-  {name:'Largo',bpm:52},{name:'Adagio',bpm:72},{name:'Andante',bpm:92},
-  {name:'Moderato',bpm:108},{name:'Allegro',bpm:132},{name:'Presto',bpm:176},
+// テンポプリセット削除済み
+
+// ── 音色定義 ──
+const SOUND_TYPES = [
+  { id:1, name:'アナログ', label:'現在の音',     accent:1100, beat:880 },
+  { id:2, name:'木製',     label:'アナログ音',   accent:800,  beat:600 },
+  { id:3, name:'電子音',   label:'電子音',       accent:1600, beat:1200 },
+  { id:4, name:'三角',     label:'トライアングル', accent:2400, beat:2000 },
+  { id:5, name:'スネア',   label:'ドラム',       accent:0,    beat:0 },
 ];
+let currentSound = 1;
 
 function initMetro() {
   // 拍子ボタン
@@ -1662,18 +1762,30 @@ function initMetro() {
     const btn = document.createElement('button');
     btn.className = 'beat-btn' + (b === 4 ? ' active' : '');
     btn.textContent = b + '/4';
-    btn.onclick = () => { metroBeats = b; document.querySelectorAll('.beat-btn').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); buildBeatDots(); };
+    btn.onclick = () => {
+      metroBeats = b;
+      document.querySelectorAll('.beat-btn').forEach(x => x.classList.remove('active'));
+      btn.classList.add('active');
+      buildBeatDots();
+    };
     br.appendChild(btn);
   });
-  // テンポプリセット
-  const tr = document.getElementById('tempoRow');
-  TEMPO_PRESETS.forEach(p => {
+
+  // 音色ボタン
+  const sr = document.getElementById('soundRow');
+  SOUND_TYPES.forEach(s => {
     const btn = document.createElement('button');
-    btn.className = 'tempo-btn';
-    btn.textContent = p.name;
-    btn.onclick = () => setBPM(p.bpm);
-    tr.appendChild(btn);
+    btn.className = 'sound-btn' + (s.id === 1 ? ' active' : '');
+    btn.dataset.id = s.id;
+    btn.innerHTML = '<span class="sb-num">' + s.id + '</span><span class="sb-name">' + s.name + '</span>';
+    btn.onclick = () => {
+      currentSound = s.id;
+      document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    sr.appendChild(btn);
   });
+
   buildBeatDots();
   updateSliderFill();
 }
@@ -1705,6 +1817,82 @@ function updateSliderFill() {
 
 function metroClick(isAccent) {
   const ac = metroAC();
+  const s  = SOUND_TYPES.find(x => x.id === currentSound) || SOUND_TYPES[0];
+
+  if (currentSound === 5) {
+    // ドラム（スネア＋ハイハット）
+    if (isAccent) {
+      // スネア：ノイズバッファ
+      const buf = ac.createBuffer(1, ac.sampleRate * 0.1, ac.sampleRate);
+      const d   = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const src = ac.createBufferSource();
+      src.buffer = buf;
+      const g = ac.createGain();
+      const f = ac.createBiquadFilter();
+      f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = 0.5;
+      src.connect(f); f.connect(g); g.connect(ac.destination);
+      g.gain.setValueAtTime(0.8, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
+      src.start(); src.stop(ac.currentTime + 0.15);
+    } else {
+      // ハイハット：高周波ノイズ
+      const buf = ac.createBuffer(1, ac.sampleRate * 0.05, ac.sampleRate);
+      const d   = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      const src = ac.createBufferSource();
+      src.buffer = buf;
+      const g = ac.createGain();
+      const f = ac.createBiquadFilter();
+      f.type = 'highpass'; f.frequency.value = 8000;
+      src.connect(f); f.connect(g); g.connect(ac.destination);
+      g.gain.setValueAtTime(0.4, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.05);
+      src.start(); src.stop(ac.currentTime + 0.05);
+    }
+    return;
+  }
+
+  if (currentSound === 4) {
+    // トライアングル：正弦波の高音、長めの余韻
+    const osc = ac.createOscillator();
+    const g   = ac.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = isAccent ? s.accent : s.beat;
+    osc.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(0.5, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.6);
+    osc.start(); osc.stop(ac.currentTime + 0.65);
+    return;
+  }
+
+  if (currentSound === 2) {
+    // 木製メトロノーム：短い三角波クリック
+    const osc = ac.createOscillator();
+    const g   = ac.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = isAccent ? s.accent : s.beat;
+    osc.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(0.7, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.06);
+    osc.start(); osc.stop(ac.currentTime + 0.07);
+    return;
+  }
+
+  if (currentSound === 3) {
+    // 電子音：矩形波、短くシャープ
+    const osc = ac.createOscillator();
+    const g   = ac.createGain();
+    osc.type = 'square';
+    osc.frequency.value = isAccent ? s.accent : s.beat;
+    osc.connect(g); g.connect(ac.destination);
+    g.gain.setValueAtTime(0.3, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.04);
+    osc.start(); osc.stop(ac.currentTime + 0.05);
+    return;
+  }
+
+  // デフォルト（1:現在の音）
   const osc = ac.createOscillator();
   const g   = ac.createGain();
   osc.connect(g); g.connect(ac.destination);
@@ -1767,46 +1955,172 @@ function tapTempo() {
 // ═══════════════════════════════════════
 const NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 
-const CHORD_TYPES = {
-  maj:  { name:'Major',     intervals:[0,4,7],     suffix:'',      frets:{ C:[-1,3,2,0,1,0], G:[3,2,0,0,0,3], D:[-1,-1,0,2,3,2], A:[-1,0,2,2,2,0], E:[0,2,2,1,0,0] } },
-  min:  { name:'Minor',     intervals:[0,3,7],     suffix:'m',     frets:{ C:[-1,3,5,5,4,3], G:[3,1,0,0,3,3], D:[-1,-1,0,2,3,1], A:[-1,0,2,2,1,0], E:[0,2,2,0,0,0] } },
-  7:    { name:'7th',       intervals:[0,4,7,10],  suffix:'7',     frets:{ C:-1,G:[3,2,0,0,0,1], D:[-1,-1,0,2,1,2], A:[-1,0,2,0,2,0], E:[0,2,0,1,0,0] } },
-  maj7: { name:'Major 7th', intervals:[0,4,7,11],  suffix:'maj7',  frets:{ C:[-1,3,2,0,0,0], G:[3,2,0,0,0,2], D:[-1,-1,0,2,2,2], A:[-1,0,2,1,2,0] } },
-  min7: { name:'Minor 7th', intervals:[0,3,7,10],  suffix:'m7',    frets:{ A:[-1,0,2,0,1,0], E:[0,2,0,0,3,0], D:[-1,-1,0,2,1,1] } },
-  sus2: { name:'Sus2',      intervals:[0,2,7],     suffix:'sus2',  frets:{ A:[-1,0,2,2,0,0], D:[-1,-1,0,2,3,0] } },
-  sus4: { name:'Sus4',      intervals:[0,5,7],     suffix:'sus4',  frets:{ A:[-1,0,2,2,3,0], G:[3,3,0,0,1,3] } },
-  dim:  { name:'Diminished',intervals:[0,3,6],     suffix:'dim',   frets:{ A:[-1,0,1,2,1,-1], E:[0,1,2,0,2,0] } },
-  aug:  { name:'Augmented', intervals:[0,4,8],     suffix:'aug',   frets:{ A:[-1,0,3,2,2,1], C:[-1,3,2,1,1,0] } },
-  add9: { name:'Add9',      intervals:[0,2,4,7],   suffix:'add9',  frets:{ G:[3,2,0,2,0,3], D:[-1,-1,0,2,3,0] } },
+// ── 各コード・各ルートのデフォルト（ローポジション）フレット ──
+// ルートに対して実際のフレット配列を直接定義
+const DEFAULT_FRETS = {
+  maj: {
+    C:[-1,3,2,0,1,0], 'C#':[-1,4,3,1,2,1], D:[-1,-1,0,2,3,2],
+    'D#':[-1,-1,1,3,4,3], E:[0,2,2,1,0,0], F:[1,3,3,2,1,1],
+    'F#':[2,4,4,3,2,2], G:[3,2,0,0,0,3], 'G#':[-1,-1,1,1,1,4],
+    A:[-1,0,2,2,2,0], 'A#':[-1,1,3,3,3,1], B:[-1,2,4,4,4,2],
+  },
+  min: {
+    C:[-1,3,5,5,4,3], 'C#':[-1,4,6,6,5,4], D:[-1,-1,0,2,3,1],
+    'D#':[-1,-1,1,3,4,2], E:[0,2,2,0,0,0], F:[1,3,3,1,1,1],
+    'F#':[2,4,4,2,2,2], G:[3,5,5,3,3,3], 'G#':[-1,-1,1,1,0,4],
+    A:[-1,0,2,2,1,0], 'A#':[-1,1,3,3,2,1], B:[-1,2,4,4,3,2],
+  },
+  7: {
+    C:[-1,3,2,3,1,0], 'C#':[-1,4,3,4,2,4], D:[-1,-1,0,2,1,2],
+    'D#':[-1,-1,1,3,2,3], E:[0,2,0,1,0,0], F:[1,3,1,2,1,1],
+    'F#':[2,4,2,3,2,2], G:[3,2,0,0,0,1], 'G#':[-1,-1,1,1,0,1],
+    A:[-1,0,2,0,2,0], 'A#':[-1,1,3,1,3,1], B:[-1,2,4,2,4,2],
+  },
+  maj7: {
+    C:[-1,3,2,0,0,0], 'C#':[-1,4,3,1,1,1], D:[-1,-1,0,2,2,2],
+    'D#':[-1,-1,1,3,3,3], E:[0,2,1,1,0,0], F:[1,3,2,2,1,0],
+    'F#':[2,4,3,3,2,2], G:[3,2,0,0,0,2], 'G#':[-1,-1,1,1,0,3],
+    A:[-1,0,2,1,2,0], 'A#':[-1,1,3,2,3,1], B:[-1,2,4,3,4,2],
+  },
+  min7: {
+    C:[-1,3,5,3,4,3], 'C#':[-1,4,6,4,5,4], D:[-1,-1,0,2,1,1],
+    'D#':[-1,-1,1,3,2,2], E:[0,2,0,0,3,0], F:[1,3,1,1,4,1],
+    'F#':[2,4,2,2,5,2], G:[3,5,3,3,3,3], 'G#':[-1,-1,1,1,0,2],
+    A:[-1,0,2,0,1,0], 'A#':[-1,1,3,1,2,1], B:[-1,2,4,2,3,2],
+  },
+  sus2: {
+    C:[-1,3,0,0,1,3], 'C#':[-1,4,1,1,2,4], D:[-1,-1,0,2,3,0],
+    'D#':[-1,-1,1,3,4,1], E:[0,2,2,4,0,0], F:[1,3,3,5,1,1],
+    'F#':[2,4,4,4,2,2], G:[3,5,0,0,3,3], 'G#':[-1,4,1,1,4,4],
+    A:[-1,0,2,2,0,0], 'A#':[-1,1,3,3,1,1], B:[-1,2,4,4,2,2],
+  },
+  sus4: {
+    C:[-1,3,3,0,1,1], 'C#':[-1,4,4,1,2,2], D:[-1,-1,0,2,3,3],
+    'D#':[-1,-1,1,3,4,4], E:[0,2,2,2,0,0], F:[1,3,3,3,1,1],
+    'F#':[2,4,4,4,2,2], G:[3,5,5,0,3,3], 'G#':[-1,4,1,1,0,4],
+    A:[-1,0,2,2,3,0], 'A#':[-1,1,3,3,4,1], B:[-1,2,4,4,5,2],
+  },
+  dim: {
+    C:[-1,3,4,5,4,-1], 'C#':[-1,4,5,6,5,-1], D:[-1,-1,0,1,3,1],
+    'D#':[-1,-1,1,2,4,2], E:[0,1,2,0,2,0], F:[1,2,3,1,3,1],
+    'F#':[2,3,4,2,4,2], G:[3,4,5,3,5,3], 'G#':[-1,-1,1,2,1,2],
+    A:[-1,0,1,2,1,-1], 'A#':[-1,1,2,3,2,-1], B:[-1,2,3,4,3,-1],
+  },
+  aug: {
+    C:[-1,3,2,1,1,0], 'C#':[-1,4,3,2,2,1], D:[-1,-1,0,3,3,2],
+    'D#':[-1,-1,1,4,4,3], E:[0,3,2,1,1,0], F:[1,4,3,2,2,1],
+    'F#':[2,1,4,3,3,2], G:[3,2,1,0,0,3], 'G#':[4,3,2,1,1,4],
+    A:[-1,0,3,2,2,1], 'A#':[-1,1,4,3,3,2], B:[-1,2,1,4,4,3],
+  },
+  add9: {
+    C:[-1,3,2,0,3,0], 'C#':[-1,4,3,1,4,1], D:[-1,-1,0,2,3,0],
+    'D#':[-1,-1,1,3,4,1], E:[0,2,4,1,0,2], F:[1,3,5,2,1,3],
+    'F#':[2,4,4,3,2,0], G:[3,2,0,2,0,3], 'G#':[-1,-1,1,1,0,1],
+    A:[-1,0,2,4,2,0], 'A#':[-1,1,3,3,3,1], B:[-1,2,4,4,4,2],
+  },
 };
 
-let currentVarIndex = 0;
+// shapeボタン用フォーム定義（ルートにトランスポーズして使う）
+// 各フォームの「基準ルート音」と「フレット配列（その基準のとき）」を定義
+const SHAPE_FORMS = {
+  maj: {
+    E: { baseRoot:'E', frets:[0,2,2,1,0,0],   rootStr:5, rootFret:0 },
+    A: { baseRoot:'A', frets:[-1,0,2,2,2,0],  rootStr:4, rootFret:0 },
+    G: { baseRoot:'G', frets:[3,2,0,0,0,3],   rootStr:5, rootFret:3 },
+    D: { baseRoot:'D', frets:[-1,-1,0,2,3,2], rootStr:3, rootFret:0 },
+    C: { baseRoot:'C', frets:[-1,3,2,0,1,0],  rootStr:4, rootFret:3 },
+  },
+  min: {
+    E: { baseRoot:'E', frets:[0,2,2,0,0,0],   rootStr:5, rootFret:0 },
+    A: { baseRoot:'A', frets:[-1,0,2,2,1,0],  rootStr:4, rootFret:0 },
+    D: { baseRoot:'D', frets:[-1,-1,0,2,3,1], rootStr:3, rootFret:0 },
+  },
+  7: {
+    E: { baseRoot:'E', frets:[0,2,0,1,0,0],   rootStr:5, rootFret:0 },
+    A: { baseRoot:'A', frets:[-1,0,2,0,2,0],  rootStr:4, rootFret:0 },
+    G: { baseRoot:'G', frets:[3,2,0,0,0,1],   rootStr:5, rootFret:3 },
+    D: { baseRoot:'D', frets:[-1,-1,0,2,1,2], rootStr:3, rootFret:0 },
+  },
+  maj7: {
+    E: { baseRoot:'E', frets:[0,2,1,1,0,0],   rootStr:5, rootFret:0 },
+    A: { baseRoot:'A', frets:[-1,0,2,1,2,0],  rootStr:4, rootFret:0 },
+    C: { baseRoot:'C', frets:[-1,3,2,0,0,0],  rootStr:4, rootFret:3 },
+    D: { baseRoot:'D', frets:[-1,-1,0,2,2,2], rootStr:3, rootFret:0 },
+  },
+  min7: {
+    E: { baseRoot:'E', frets:[0,2,0,0,3,0],   rootStr:5, rootFret:0 },
+    A: { baseRoot:'A', frets:[-1,0,2,0,1,0],  rootStr:4, rootFret:0 },
+    D: { baseRoot:'D', frets:[-1,-1,0,2,1,1], rootStr:3, rootFret:0 },
+  },
+  sus2: {
+    A: { baseRoot:'A', frets:[-1,0,2,2,0,0],  rootStr:4, rootFret:0 },
+    D: { baseRoot:'D', frets:[-1,-1,0,2,3,0], rootStr:3, rootFret:0 },
+  },
+  sus4: {
+    A: { baseRoot:'A', frets:[-1,0,2,2,3,0],  rootStr:4, rootFret:0 },
+    G: { baseRoot:'G', frets:[3,3,0,0,1,3],   rootStr:5, rootFret:3 },
+  },
+  dim: {
+    E: { baseRoot:'E', frets:[0,1,2,0,2,0],   rootStr:5, rootFret:0 },
+    A: { baseRoot:'A', frets:[-1,0,1,2,1,-1], rootStr:4, rootFret:0 },
+  },
+  aug: {
+    A: { baseRoot:'A', frets:[-1,0,3,2,2,1],  rootStr:4, rootFret:0 },
+    C: { baseRoot:'C', frets:[-1,3,2,1,1,0],  rootStr:4, rootFret:3 },
+  },
+  add9: {
+    G: { baseRoot:'G', frets:[3,2,0,2,0,3],   rootStr:5, rootFret:3 },
+    D: { baseRoot:'D', frets:[-1,-1,0,2,3,0], rootStr:3, rootFret:0 },
+  },
+};
 
-function getChordFrets() {
-  const root = document.getElementById('chordRoot').value;
-  const type = document.getElementById('chordType').value;
-  const ct = CHORD_TYPES[type];
-  if (!ct || !ct.frets) return [0,2,2,1,0,0];
-  if (ct.frets[root]) {
-    const f = ct.frets[root];
-    return Array.isArray(f) ? f : Object.values(ct.frets)[0];
-  }
-  // 代替フォームを返す
-  const vals = Object.values(ct.frets);
-  return Array.isArray(vals[currentVarIndex % vals.length]) ? vals[currentVarIndex % vals.length] : vals[0];
+const STRING_OPEN = [40,45,50,55,59,64]; // E2,A2,D3,G3,B3,E4
+
+// shapeフォームを目的のルートにトランスポーズ
+function transposeShape(shape, targetRoot) {
+  const baseRootMidi  = NOTES.indexOf(shape.baseRoot);
+  const targetRootMidi = NOTES.indexOf(targetRoot);
+  const shift = (targetRootMidi - baseRootMidi + 12) % 12;
+  return shape.frets.map(f => {
+    if (f < 0) return f;
+    return f + shift;
+  });
 }
 
+let currentVarKey = null; // null = デフォルト（ローポジション）
+
 function getChordNotes(root, type) {
-  const ct = CHORD_TYPES[type];
-  if (!ct) return [];
+  const intervals = {
+    maj:[0,4,7], min:[0,3,7], 7:[0,4,7,10], maj7:[0,4,7,11],
+    min7:[0,3,7,10], sus2:[0,2,7], sus4:[0,5,7], dim:[0,3,6],
+    aug:[0,4,8], add9:[0,2,4,7]
+  };
+  const iv = intervals[type] || [0,4,7];
   const ri = NOTES.indexOf(root);
-  return ct.intervals.map(i => NOTES[(ri + i) % 12]);
+  return iv.map(i => NOTES[(ri + i) % 12]);
 }
 
 function getIntervalNames(type) {
-  const map = { maj:'1 · 3 · 5', min:'1 · ♭3 · 5', 7:'1 · 3 · 5 · ♭7', maj7:'1 · 3 · 5 · 7', min7:'1 · ♭3 · 5 · ♭7', sus2:'1 · 2 · 5', sus4:'1 · 4 · 5', dim:'1 · ♭3 · ♭5', aug:'1 · 3 · #5', add9:'1 · 2 · 3 · 5' };
+  const map = {
+    maj:'1 · 3 · 5', min:'1 · ♭3 · 5', 7:'1 · 3 · 5 · ♭7',
+    maj7:'1 · 3 · 5 · 7', min7:'1 · ♭3 · 5 · ♭7', sus2:'1 · 2 · 5',
+    sus4:'1 · 4 · 5', dim:'1 · ♭3 · ♭5', aug:'1 · 3 · #5', add9:'1 · 2 · 3 · 5'
+  };
   return map[type] || '1 · 3 · 5';
 }
+
+const CHORD_TYPES = {
+  maj:  { name:'Major',      intervals:[0,4,7],    suffix:'' },
+  min:  { name:'Minor',      intervals:[0,3,7],    suffix:'m' },
+  7:    { name:'7th',        intervals:[0,4,7,10], suffix:'7' },
+  maj7: { name:'Major 7th',  intervals:[0,4,7,11], suffix:'maj7' },
+  min7: { name:'Minor 7th',  intervals:[0,3,7,10], suffix:'m7' },
+  sus2: { name:'Sus2',       intervals:[0,2,7],    suffix:'sus2' },
+  sus4: { name:'Sus4',       intervals:[0,5,7],    suffix:'sus4' },
+  dim:  { name:'Diminished', intervals:[0,3,6],    suffix:'dim' },
+  aug:  { name:'Augmented',  intervals:[0,4,8],    suffix:'aug' },
+  add9: { name:'Add9',       intervals:[0,2,4,7],  suffix:'add9' },
+};
 
 function drawChordDiagram(frets) {
   const canvas = document.getElementById('chordCanvas');
@@ -1919,43 +2233,66 @@ function drawChordDiagram(frets) {
   });
 }
 
+// プルダウン変更時（shape選択リセット）
 function updateChord() {
+  currentVarKey = null;
+  renderChord();
+}
+
+function renderChord() {
   const root = document.getElementById('chordRoot').value;
   const type = document.getElementById('chordType').value;
   const ct   = CHORD_TYPES[type];
 
-  // 名前
-  document.getElementById('chordNameDisplay').innerHTML = root + ' <span class="chord-suffix">' + ct.name + '</span>';
-
-  // ノート・インターバル
+  // コード名
+  document.getElementById('chordNameDisplay').innerHTML =
+    root + ' <span class="chord-suffix">' + ct.name + '</span>';
   document.getElementById('chordNotes').textContent     = getChordNotes(root, type).join(' · ');
   document.getElementById('chordIntervals').textContent = getIntervalNames(type);
 
-  // バリエーション
-  const vars = document.getElementById('chordVars');
-  vars.innerHTML = '';
-  if (ct.frets) {
-    Object.keys(ct.frets).forEach((k, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'chord-var-btn' + (i === 0 ? ' active' : '');
-      btn.textContent = k + ' shape';
-      btn.onclick = () => {
-        currentVarIndex = i;
-        document.querySelectorAll('.chord-var-btn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        const f = ct.frets[k];
-        drawChordDiagram(Array.isArray(f) ? f : [0,2,2,1,0,0]);
-      };
-      vars.appendChild(btn);
-    });
-  }
+  // shapeボタン生成
+  const shapes  = SHAPE_FORMS[type] || {};
+  const varsEl  = document.getElementById('chordVars');
+  varsEl.innerHTML = '';
 
-  drawChord();
+  Object.entries(shapes).forEach(([shapeName, shapeData]) => {
+    const btn = document.createElement('button');
+    const isActive = currentVarKey === shapeName;
+    btn.className = 'chord-var-btn' + (isActive ? ' active' : '');
+    btn.textContent = shapeName + ' shape';
+    btn.onclick = () => {
+      if (currentVarKey === shapeName) {
+        // 同じボタン再タップ → 解除してローポジションに戻る
+        currentVarKey = null;
+        document.querySelectorAll('.chord-var-btn').forEach(b => b.classList.remove('active'));
+        drawDefaultFrets(root, type);
+      } else {
+        // 別のshapeを選択
+        currentVarKey = shapeName;
+        document.querySelectorAll('.chord-var-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        drawChordDiagram(transposeShape(shapeData, root));
+      }
+    };
+    varsEl.appendChild(btn);
+  });
+
+  // shape選択中ならそのフレット、未選択ならデフォルト（ローポジション）
+  if (currentVarKey && shapes[currentVarKey]) {
+    drawChordDiagram(transposeShape(shapes[currentVarKey], root));
+  } else {
+    drawDefaultFrets(root, type);
+  }
+}
+
+// デフォルト（ローポジション）フレットを描画
+function drawDefaultFrets(root, type) {
+  const frets = (DEFAULT_FRETS[type] || {})[root] || [0,2,2,1,0,0];
+  drawChordDiagram(frets);
 }
 
 function drawChord() {
-  const frets = getChordFrets();
-  drawChordDiagram(frets);
+  renderChord();
 }
 
 // ═══════════════════════════════════════
