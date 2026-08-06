@@ -35,14 +35,16 @@
     --card-bg:#ffffff; --card-bg-2:#f1f3f5; --card-border:#d4d9de; --card-shadow:0 1px 3px rgba(0,0,0,.14);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0}
+  html,body{margin:0;height:100%;position:fixed;inset:0;overflow:hidden;overscroll-behavior:none}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
     color:var(--ink);
     background:radial-gradient(120% 70% at 50% -10%, var(--glow) 0%, transparent 55%),linear-gradient(180deg,var(--bg-1),var(--bg-0));
-    background-attachment:fixed; min-height:100dvh; -webkit-text-size-adjust:100%;
+    -webkit-text-size-adjust:100%;
   }
-  .wrap{max-width:520px;margin:0 auto;padding:12px 12px calc(20px + env(safe-area-inset-bottom));}
+  .wrap{position:absolute;inset:0;max-width:520px;margin:0 auto;
+    overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+    padding:12px 12px calc(20px + env(safe-area-inset-bottom));}
 
   header.top{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 12px}
   .brand h1{font-size:18px;letter-spacing:.14em;margin:0;font-weight:800}
@@ -187,9 +189,12 @@
   details.foldpanel[open]>summary .chev{transform:rotate(180deg)}
   details.foldpanel>summary+*{margin-top:12px}
 
-  /* ad slot（AdSenseの空き枠は自動で高さ0に畳まれる） */
-  .ad-slot{margin-top:14px;min-height:0;text-align:center}
-  .ad-slot ins{background:transparent}
+  /* ad slot：実広告が入るまでは「広告」プレースホルダーを表示（枠を確保） */
+  .ad-slot{position:relative;margin-top:14px;min-height:96px;border:1px dashed var(--hair-strong);border-radius:12px;
+    background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .ad-slot .ad-tag{position:absolute;font-size:10px;letter-spacing:.24em;color:var(--ink-faint);
+    text-transform:uppercase;font-weight:700;pointer-events:none}
+  .ad-slot ins{position:relative;z-index:1;width:100%;background:transparent}
 
   /* ---- settings drawer ---- */
   .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:40;backdrop-filter:blur(2px)}
@@ -305,7 +310,8 @@
   </details>
 
   <!-- 広告枠（AdSense）: assets/ads.js の ENABLED フラグで一括有効化。承認後に data-ad-client / data-ad-slot を設定 -->
-  <div class="ad-slot" aria-hidden="true">
+  <div class="ad-slot" role="complementary" aria-label="広告">
+    <span class="ad-tag">広告</span>
     <ins class="adsbygoogle" style="display:block"
          data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
          data-ad-slot="XXXXXXXXXX"
