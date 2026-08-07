@@ -644,14 +644,7 @@
     {code:'EGP',flag:'🇪🇬',name:'ポンド',country:'エジプト',sym:'E£',dec:2,fb:3.30,rg:'オセアニア・その他'}
   ];
   var byCode={};COUNTRIES.forEach(function(c){byCode[c.code]=c;});
-  // 国ごとのタブ色(国旗の主要色に近い淡いアクセント)
-  var TABHUE={JPY:'#D64545',USD:'#3B6FE0',EUR:'#3B6FE0',KRW:'#2E7DD1',TWD:'#2E7DD1',CNY:'#D64545',HKD:'#D64545',
-    MOP:'#3AA76D',THB:'#D64545',VND:'#D64545',SGD:'#D64545',MYR:'#2E7DD1',PHP:'#3B6FE0',
-    IDR:'#D64545',KHR:'#2E7DD1',INR:'#E08A3B',AED:'#3AA76D',GBP:'#3B6FE0',CAD:'#D64545',
-    CHF:'#D64545',TRY:'#D64545',CZK:'#3B6FE0',SEK:'#3B6FE0',NOK:'#D64545',DKK:'#D64545',
-    PLN:'#D64545',HUF:'#3AA76D',AUD:'#3B6FE0',NZD:'#3B6FE0',MXN:'#3AA76D',BRL:'#3AA76D',
-    ZAR:'#3AA76D',EGP:'#D64545'};
-  function tabHue(code){return TABHUE[code]||'#34D399';}
+
 
   var rates={},dateStr=null,source='cache';
   var displayed=['JPY','USD','EUR','VND'];  var theme='dark';
@@ -787,13 +780,16 @@
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
     var bC=bottomCode();
+    var RED='#D64545',BLUE='#3B6FE0';
     displayed.forEach(function(code,idx){var c=byCode[code];
       var isTop=(idx===0);var isBot=(!isTop&&code===bC);
       var on=isTop||isBot;
+      var hue=isTop?RED:BLUE;
       var el=document.createElement('button');el.className='tab'+(on?' on':'')+(isTop?' top':'')+(isBot?' bot':'');
       el.setAttribute('data-code',code);el.setAttribute('data-idx',idx);
       el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
-      if(on){var hue=tabHue(code);el.style.boxShadow='inset 3px 0 0 '+hue;el.style.background='color-mix(in srgb,'+hue+' 14%, var(--raise-2))';}
+      if(on){el.style.boxShadow='inset 3px 0 0 '+hue;el.style.background='color-mix(in srgb,'+hue+' 14%, var(--raise-2))';}
+      else{el.style.boxShadow='inset 3px 0 0 color-mix(in srgb,'+hue+' 45%, transparent)';}
       attachTabHandlers(el,code);
       t2.appendChild(el);});}
 
