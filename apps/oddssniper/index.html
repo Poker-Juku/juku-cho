@@ -42,11 +42,13 @@
     background:radial-gradient(120% 70% at 50% -10%, var(--glow) 0%, transparent 55%),linear-gradient(180deg,var(--bg-1),var(--bg-0));
     -webkit-text-size-adjust:100%;
   }
-  .wrap{position:absolute;inset:0;max-width:520px;margin:0 auto;
-    overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
-    padding:12px 12px calc(20px + env(safe-area-inset-bottom));}
+  .wrap{position:absolute;inset:0;max-width:520px;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;
+    padding:10px 12px calc(8px + env(safe-area-inset-bottom));}
+  .scroller{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  .dock{flex:0 0 auto;padding-top:6px}
+  .dock .panel:last-of-type{margin-bottom:0}
 
-  header.top{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 12px}
+  header.top{display:flex;align-items:center;justify-content:space-between;padding:2px 2px 8px;flex:0 0 auto}
   .brand h1{font-size:18px;letter-spacing:.14em;margin:0;font-weight:800}
   .brand h1 .snipe{color:var(--gold)}
   .tools{display:flex;gap:7px;align-items:center}
@@ -260,6 +262,8 @@
     </div>
   </header>
 
+  <div class="scroller">
+
   <div class="panel equity" id="equityPanel">
     <div class="eqtop"><span class="cap">ヒーロー勝率</span><span class="meta" id="metaLine">手札を2枚選択</span></div>
     <div class="eqmain">
@@ -295,6 +299,13 @@
     <div id="villList"></div>
   </div>
 
+  <details class="panel foldpanel" id="distPanel">
+    <summary><span class="lbl">ヒーローの完成役 出現率</span><span class="chev">▾</span></summary>
+    <div class="dist" id="dist"></div>
+  </details>
+  </div><!-- /scroller -->
+
+  <div class="dock">
   <div class="panel">
     <div class="picker-head">
       <div class="target"><span class="dot"></span><span id="targetTxt">カードを選ぶ</span></div>
@@ -304,10 +315,7 @@
     <div class="rank-grid" id="rankGrid"></div>
   </div>
 
-  <details class="panel foldpanel" id="distPanel">
-    <summary><span class="lbl">ヒーローの完成役 出現率</span><span class="chev">▾</span></summary>
-    <div class="dist" id="dist"></div>
-  </details>
+
 
   <!-- 広告枠（AdSense）: assets/ads.js の ENABLED フラグで一括有効化。承認後に data-ad-client / data-ad-slot を設定 -->
   <div class="ad-slot" role="complementary" aria-label="広告">
@@ -318,6 +326,7 @@
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
   </div>
+  </div><!-- /dock -->
 </div>
 
 <!-- settings drawer -->
