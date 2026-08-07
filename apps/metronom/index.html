@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metronome</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 40px;
+    }
+
+    h1 {
+      font-size: 14px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #555;
+      font-weight: 400;
+    }
+
+    /* Beat indicator */
+    .beat-ring {
+      width: 136px;
+      height: 136px;
+      border-radius: 50%;
+      border: 2px solid #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.05s;
+      position: relative;
+    }
+
+    .beat-ring.flash {
+      border-color: #fff;
+    }
+
+    .beat-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #333;
+      transition: background 0.05s, transform 0.05s;
+    }
+
+    .beat-ring.flash .beat-dot {
+      background: #ffffff;
+      transform: scale(1.4);
+    }
+
+    /* BPM display */
+    .bpm-block {
+      text-align: center;
+      margin-bottom: -16px;
+    }
+
+    .bpm-display {
+      font-size: 72px;
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .bpm-label {
+      font-size: 12px;
+      color: #444;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* BPM context */
+    .bpm-context {
+      font-size: 13px;
+      color: #666;
+      letter-spacing: 0.5px;
+      text-align: center;
+      min-height: 20px;
+      transition: opacity 0.3s;
+    }
+
+    .bpm-context .emoji {
+      margin-right: 5px;
+    }
+
+    /* Language toggle */
+    #lang-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: 1px solid #333;
+      color: #555;
+      font-size: 12px;
+      letter-spacing: 1px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    #lang-btn:hover { border-color: #888; color: #aaa; }
+
+    /* Slider */
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 320px;
+    }
+
+    .slider-wrap button {
+      background: none;
+      border: 1px solid #333;
+      color: #888;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .slider-wrap button:hover { border-color: #fff; color: #fff; }
+
+    input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      background: #222;
+      height: 3px;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    /* Tap tempo */
+    #tap-btn {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 1px solid #333;
+      background: none;
+      color: #555;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.1s, color 0.1s, background 0.1s;
+    }
+
+    #tap-btn:active {
+      border-color: #fff;
+      color: #fff;
+      background: #1a1a1a;
+    }
+
+    /* Start/Stop */
+    #toggle-btn {
+      padding: 14px 48px;
+      border-radius: 40px;
+      border: none;
+      background: #ffffff;
+      color: #000;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    #toggle-btn:hover { background: #ddd; }
+    #toggle-btn:active { transform: scale(0.97); }
+    #toggle-btn.running { background: #ff3b30; color: #fff; }
+
+    /* Controls row */
+    .controls-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    /* Beat count */
+    .beat-indicators {
+      display: flex;
+      gap: 8px;
+    }
+
+    .beat-pip {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #222;
+      transition: background 0.05s;
+    }
+
+    .beat-pip.active { background: #fff; }
+    .beat-pip.accent { background: #ff9f0a; }
+  </style>
+</head>
+<body>
+
+  <button id="lang-btn">EN</button>
+  <h1>Metronome</h1>
+
+  <!-- Beat indicators -->
+  <div class="beat-indicators" id="pips"></div>
+
+  <!-- Visual beat -->
+  <div class="beat-ring" id="ring">
+    <div class="beat-dot"></div>
+  </div>
+
+  <!-- BPM -->
+  <div class="bpm-block">
+    <div class="bpm-display" id="bpm-num">120</div>
+    <div class="bpm-label">BPM</div>
+  </div>
+  <div class="bpm-context" id="bpm-context"></div>
+
+  <!-- Slider -->
+  <div class="slider-wrap">
+    <button id="dec">−</button>
+    <input type="range" id="slider" min="20" max="300" value="120">
+    <button id="inc">＋</button>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-row">
+    <button id="tap-btn">TAP</button>
+    <button id="toggle-btn">START</button>
+  </div>
+
+  <script>
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let ctx = null;
+    let bpm = 120;
+    let running = false;
+    let nextBeatTime = 0;
+    let schedulerTimer = null;
+    let beatCount = 0;
+    const BEATS = 4;
+    const LOOKAHEAD = 0.1;
+    const SCHEDULE_INTERVAL = 25;
+
+    let tapTimes = [];
+
+    function ensureCtx() {
+      if (!ctx) ctx = new AudioContext();
+      if (ctx.state === 'suspended') ctx.resume();
+    }
+
+    function playClick(time, isAccent) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.frequency.value = isAccent ? 1200 : 800;
+      gain.gain.setValueAtTime(isAccent ? 0.6 : 0.35, time);
+      gain.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
+
+      osc.start(time);
+      osc.stop(time + 0.05);
+
+      const delay = (time - ctx.currentTime) * 1000;
+      setTimeout(() => flashBeat(beatCount % BEATS), Math.max(0, delay));
+    }
+
+    function scheduler() {
+      while (nextBeatTime < ctx.currentTime + LOOKAHEAD) {
+        const isAccent = (beatCount % BEATS) === 0;
+        playClick(nextBeatTime, isAccent);
+        beatCount++;
+        nextBeatTime += 60 / bpm;
+      }
+      schedulerTimer = setTimeout(scheduler, SCHEDULE_INTERVAL);
+    }
+
+    function flashBeat(beat) {
+      const ring = document.getElementById('ring');
+      ring.classList.add('flash');
+      setTimeout(() => ring.classList.remove('flash'), 80);
+
+      const pips = document.querySelectorAll('.beat-pip');
+      pips.forEach(p => p.classList.remove('active', 'accent'));
+      if (pips[beat]) {
+        pips[beat].classList.add(beat === 0 ? 'accent' : 'active');
+      }
+    }
+
+    function buildPips() {
+      const container = document.getElementById('pips');
+      container.innerHTML = '';
+      for (let i = 0; i < BEATS; i++) {
+        const pip = document.createElement('div');
+        pip.className = 'beat-pip';
+        container.appendChild(pip);
+      }
+    }
+
+    function start() {
+      ensureCtx();
+      beatCount = 0;
+      nextBeatTime = ctx.currentTime + 0.05;
+      running = true;
+      scheduler();
+      document.getElementById('toggle-btn').textContent = 'STOP';
+      document.getElementById('toggle-btn').classList.add('running');
+    }
+
+    function stop() {
+      running = false;
+      clearTimeout(schedulerTimer);
+      document.getElementById('toggle-btn').textContent = 'START';
+      document.getElementById('toggle-btn').classList.remove('running');
+      document.querySelectorAll('.beat-pip').forEach(p => p.classList.remove('active', 'accent'));
+    }
+
+    const BPM_CONTEXTS = [
+      { max: 40,  emoji: '🌙', ja: '眠りにつく前の呼吸くらいゆっくり',        en: 'Slow as breathing before you fall asleep' },
+      { max: 55,  emoji: '😴', ja: '安静時の心拍数。横になって深呼吸',         en: 'Resting heart rate. Take a deep breath' },
+      { max: 65,  emoji: '⏱️', ja: 'ほぼ1秒間隔。時計の秒針のリズム',         en: 'Almost 1 second apart — like a clock ticking' },
+      { max: 75,  emoji: '🚶', ja: 'のんびり散歩のペース',                     en: 'A leisurely stroll in the park' },
+      { max: 90,  emoji: '🛒', ja: 'スーパーをぶらぶら歩く感じ',               en: 'Wandering around a grocery store' },
+      { max: 100, emoji: '💼', ja: 'オフィスを歩くビジネスウォーク',            en: 'Brisk office walk, heading to a meeting' },
+      { max: 115, emoji: '😤', ja: '少し急ぎ足。電車に乗り遅れそうな時',       en: 'Rushing to catch the train' },
+      { max: 125, emoji: '💓', ja: '緊張したり興奮した時の心拍数',              en: 'Heart rate when nervous or excited' },
+      { max: 135, emoji: '🚶‍♂️', ja: '活発なウォーキング・軽い運動',          en: 'Power walking or light exercise' },
+      { max: 150, emoji: '🏃', ja: 'ジョギングのリズム',                       en: 'Jogging pace' },
+      { max: 170, emoji: '🏃‍♂️', ja: '本格的なランニング。息が上がってくる',   en: 'Running hard — breathing gets heavy' },
+      { max: 190, emoji: '⚡', ja: '全力疾走。心拍数MAXに近い',                 en: 'Full sprint — near maximum heart rate' },
+      { max: 300, emoji: '🚀', ja: 'もはや人間の限界を超えた速さ',              en: 'Beyond human limits' },
+    ];
+
+    let lang = navigator.language.startsWith('ja') ? 'ja' : 'en';
+
+    function updateLangBtn() {
+      document.getElementById('lang-btn').textContent = lang === 'ja' ? 'EN' : 'JA';
+    }
+
+    function getBpmContext(v) {
+      for (const c of BPM_CONTEXTS) {
+        if (v <= c.max) return c;
+      }
+      return BPM_CONTEXTS[BPM_CONTEXTS.length - 1];
+    }
+
+    function setBpm(v) {
+      bpm = Math.max(20, Math.min(300, v));
+      document.getElementById('bpm-num').textContent = bpm;
+      document.getElementById('slider').value = bpm;
+      const c = getBpmContext(bpm);
+      document.getElementById('bpm-context').innerHTML =
+        `<span class="emoji">${c.emoji}</span>${c[lang]}`;
+    }
+
+    document.getElementById('lang-btn').addEventListener('click', () => {
+      lang = lang === 'ja' ? 'en' : 'ja';
+      updateLangBtn();
+      setBpm(bpm);
+    });
+
+    document.getElementById('toggle-btn').addEventListener('click', () => {
+      running ? stop() : start();
+    });
+
+    document.getElementById('slider').addEventListener('input', e => {
+      setBpm(parseInt(e.target.value));
+    });
+
+    document.getElementById('inc').addEventListener('click', () => setBpm(bpm + 1));
+    document.getElementById('dec').addEventListener('click', () => setBpm(bpm - 1));
+
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') { e.preventDefault(); running ? stop() : start(); }
+      if (e.code === 'ArrowUp') setBpm(bpm + 1);
+      if (e.code === 'ArrowDown') setBpm(bpm - 1);
+      if (e.code === 'KeyT') tapTempo();
+    });
+
+    document.getElementById('tap-btn').addEventListener('click', tapTempo);
+
+    function tapTempo() {
+      const now = performance.now();
+      tapTimes.push(now);
+      if (tapTimes.length > 8) tapTimes.shift();
+      if (tapTimes.length >= 2) {
+        const intervals = [];
+        for (let i = 1; i < tapTimes.length; i++) {
+          intervals.push(tapTimes[i] - tapTimes[i - 1]);
+        }
+        const avg = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+        setBpm(Math.round(60000 / avg));
+      }
+      clearTimeout(tapTimes._timer);
+      tapTimes._timer = setTimeout(() => { tapTimes = []; }, 2000);
+    }
+
+    buildPips();
+    updateLangBtn();
+    setBpm(bpm);
+  </script>
+</body>
+</html>
