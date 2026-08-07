@@ -58,7 +58,7 @@
   .icon-btn.sq{width:34px;padding:0}
 
   .panel{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);
-    padding:12px;margin-bottom:10px;backdrop-filter:blur(6px)}
+    padding:12px;margin-bottom:8px;backdrop-filter:blur(6px)}
   .panel .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   .lbl{font-size:10.5px;letter-spacing:.16em;color:var(--ink-dim);text-transform:uppercase;font-weight:700}
 
@@ -134,23 +134,23 @@
   .stepper .val{min-width:30px;text-align:center;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
 
   /* picker */
-  .picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .picker-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
   .target{font-size:12px;color:var(--ink-dim);display:flex;align-items:center;gap:7px;min-width:0}
   .target .dot{width:6px;height:6px;border-radius:99px;background:var(--gold);box-shadow:0 0 8px var(--gold-glow);flex:0 0 auto}
   .target b{color:var(--gold);font-weight:700}
   .clear-slot{font-size:11px;color:var(--ink-faint);background:none;border:1px solid var(--hair);border-radius:8px;padding:5px 9px;cursor:pointer;white-space:nowrap}
   .clear-slot:hover{color:var(--ink-dim)}
-  .suit-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
-  .suitbtn{appearance:none;height:46px;border-radius:11px;border:1px solid var(--hair);background:var(--surface);font-size:23px;cursor:pointer;
+  .suit-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:7px}
+  .suitbtn{appearance:none;height:38px;border-radius:10px;border:1px solid var(--hair);background:var(--surface);font-size:20px;cursor:pointer;
     display:flex;align-items:center;justify-content:center;transition:box-shadow .15s,background .15s,transform .1s}
   .suitbtn:active{transform:scale(.96)}
   .suitbtn.sel{box-shadow:0 0 0 2px var(--gold),0 0 16px -3px var(--gold-glow);background:var(--surface-2)}
   .suitbtn[data-s="0"]{color:var(--s-spade-lite)} .suitbtn[data-s="1"]{color:var(--s-heart)}
   .suitbtn[data-s="2"]{color:var(--s-diamond)} .suitbtn[data-s="3"]{color:var(--s-club)}
-  .rank-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-  .pcard{height:52px;border-radius:9px;cursor:pointer;background:linear-gradient(160deg,var(--card-bg),var(--card-bg-2));border:1px solid var(--card-border);
+  .rank-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .pcard{height:40px;border-radius:8px;cursor:pointer;background:linear-gradient(160deg,var(--card-bg),var(--card-bg-2));border:1px solid var(--card-border);
     box-shadow:var(--card-shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;transition:transform .1s,opacity .15s}
-  .pcard .rk{font-weight:800;font-size:20px;letter-spacing:-.03em} .pcard .st{font-size:13px;margin-top:2px} .pcard.ten .rk{font-size:15px}
+  .pcard .rk{font-weight:800;font-size:17px;letter-spacing:-.03em} .pcard .st{font-size:11px;margin-top:1px} .pcard.ten .rk{font-size:13px}
   .pcard[data-s="0"] .rk,.pcard[data-s="0"] .st{color:var(--s-spade)}
   .pcard[data-s="1"] .rk,.pcard[data-s="1"] .st{color:var(--s-heart)}
   .pcard[data-s="2"] .rk,.pcard[data-s="2"] .st{color:var(--s-diamond)}
@@ -190,7 +190,7 @@
   details.foldpanel>summary+*{margin-top:12px}
 
   /* ad slot：実広告が入るまでは「広告」プレースホルダーを表示（枠を確保） */
-  .ad-slot{position:relative;margin-top:14px;min-height:96px;border:1px dashed var(--hair-strong);border-radius:12px;
+  .ad-slot{position:relative;margin-top:10px;min-height:72px;border:1px dashed var(--hair-strong);border-radius:12px;
     background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden}
   .ad-slot .ad-tag{position:absolute;font-size:10px;letter-spacing:.24em;color:var(--ink-faint);
     text-transform:uppercase;font-weight:700;pointer-events:none}
