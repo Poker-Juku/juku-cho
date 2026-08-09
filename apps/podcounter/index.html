@@ -26,10 +26,10 @@
   .gear:active{transform:scale(.95)}
 
   .hero{position:relative;background:linear-gradient(180deg,var(--felt2),#0e1a15);border:1px solid var(--line);
-    border-radius:22px;padding:18px 18px 18px;text-align:center;overflow:hidden}
+    border-radius:22px;padding:16px 18px 20px;text-align:center;overflow:visible}
   .hero .label{color:var(--muted);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
-  .pot{font-size:clamp(44px,14vw,92px);font-weight:700;line-height:1.12;color:var(--gold);
-    font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin:4px 0;white-space:nowrap;
+  .pot{font-size:clamp(44px,13vw,84px);font-weight:700;line-height:1.24;color:var(--gold);
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin:2px 0;padding:4px 0;white-space:nowrap;
     text-shadow:0 2px 28px rgba(244,193,75,.22)}
   .pot.bump{animation:bump .35s ease}
   @keyframes bump{40%{transform:scale(1.05)}100%{transform:scale(1)}}
@@ -142,7 +142,6 @@
     <div class="delta" id="delta"></div>
     <div class="sub" id="sub"></div>
     <div class="modes" id="modes"></div>
-    <div class="arc"></div>
   </section>
 
   <button class="mic" id="mic">
