@@ -9,17 +9,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --felt:#0d1512;--felt2:#122019;--line:#1f3329;--ink:#e8f0ea;--muted:#7f9488;
-    --gold:#f4c14b;--gold-dim:#8a7332;--mint:#4fd39a;--red:#e5605e;--chip:#12261d;--radius:16px;
-  }
+  :root{--felt:#0d1512;--felt2:#122019;--line:#1f3329;--ink:#e8f0ea;--muted:#7f9488;
+    --gold:#f4c14b;--gold-dim:#8a7332;--mint:#4fd39a;--red:#e5605e;--chip:#12261d;--radius:16px}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
-  body{
-    background:radial-gradient(120% 80% at 50% -10%, #14241c 0%, var(--felt) 60%);
-    color:var(--ink);font-family:"Space Grotesk", system-ui, -apple-system, sans-serif;
-    display:flex;justify-content:center;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
-  }
+  body{background:radial-gradient(120% 80% at 50% -10%, #14241c 0%, var(--felt) 60%);color:var(--ink);
+    font-family:"Space Grotesk", system-ui, -apple-system, sans-serif;display:flex;justify-content:center;
+    padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
   .app{width:100%;max-width:520px;padding:14px 16px 28px;display:flex;flex-direction:column;gap:14px}
   header{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .brand{display:flex;align-items:center;gap:9px;font-weight:600;letter-spacing:.02em}
@@ -29,22 +25,28 @@
     color:var(--ink);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .gear:active{transform:scale(.95)}
 
-  .hero{position:relative;background:linear-gradient(180deg,var(--felt2),#0e1a15);
-    border:1px solid var(--line);border-radius:22px;padding:22px 18px 18px;text-align:center;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(180deg,var(--felt2),#0e1a15);border:1px solid var(--line);
+    border-radius:22px;padding:18px 18px 18px;text-align:center;overflow:hidden}
   .hero .label{color:var(--muted);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
-  .pot{font-size:clamp(66px,23vw,108px);font-weight:700;line-height:1;color:var(--gold);
-    font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin:6px 0 2px;text-shadow:0 2px 24px rgba(244,193,75,.18)}
+  .pot{font-size:clamp(74px,26vw,128px);font-weight:700;line-height:.95;color:var(--gold);
+    font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin:6px 0 4px;text-shadow:0 2px 28px rgba(244,193,75,.22)}
   .pot.bump{animation:bump .35s ease}
-  @keyframes bump{40%{transform:scale(1.06)}100%{transform:scale(1)}}
-  .sub{color:var(--muted);font-size:13px;min-height:18px}
+  @keyframes bump{40%{transform:scale(1.05)}100%{transform:scale(1)}}
+  .cb{font-size:14px;color:var(--muted);font-weight:500}
+  .cb b{color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
+  .delta{position:absolute;top:16px;right:18px;color:var(--mint);font-size:22px;font-weight:700;
+    opacity:0;font-variant-numeric:tabular-nums}
+  .delta.show{animation:pop 1.05s ease}
+  @keyframes pop{0%{opacity:0;transform:translateY(8px)}18%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-10px)}}
+  .sub{color:var(--muted);font-size:12px;min-height:16px;margin-top:2px}
   .sub b{color:var(--mint);font-weight:600}
-  .modes{color:var(--muted);font-size:11px;letter-spacing:.03em;margin-top:6px;opacity:.85}
-  .arc{position:absolute;left:0;right:0;bottom:-1px;height:2px;
-    background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+  .modes{color:var(--muted);font-size:11px;letter-spacing:.03em;margin-top:4px;opacity:.85}
+  .arc{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
 
   .mic{display:flex;align-items:center;justify-content:center;gap:12px;background:var(--felt2);
     border:1px solid var(--line);border-radius:var(--radius);padding:16px;cursor:pointer;font:inherit;color:var(--ink);width:100%}
   .mic:active{transform:scale(.995)}
+  .mic.disabled{opacity:.6}
   .dot{width:16px;height:16px;border-radius:50%;background:var(--muted);flex:none}
   .mic.live .dot{background:var(--red);box-shadow:0 0 0 0 rgba(229,96,94,.55);animation:pulse 1.4s infinite}
   @keyframes pulse{70%{box-shadow:0 0 0 14px rgba(229,96,94,0)}100%{box-shadow:0 0 0 0 rgba(229,96,94,0)}}
@@ -67,8 +69,9 @@
   .ic:active{transform:scale(.94)}
 
   .card{background:var(--felt2);border:1px solid var(--line);border-radius:var(--radius);padding:10px}
-  .disp{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .disp .val{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+  .disp{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;padding:0 2px}
+  .disp .k{font-size:11px;color:var(--muted)}
+  .disp .val{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
   .disp .val.empty{color:var(--muted)}
   .acts{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
   .acts button{flex:1;min-width:64px;background:var(--chip);border:1px solid var(--line);color:var(--ink);
@@ -93,9 +96,8 @@
   .hint{color:var(--muted);font-size:11.5px;line-height:1.5;text-align:center}
   .hidden{display:none!important}
 
-  /* settings sheet */
-  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);
-    display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);display:flex;
+    align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
   .scrim.open{opacity:1;pointer-events:auto}
   .sheet{width:100%;max-width:520px;background:var(--felt2);border:1px solid var(--line);
     border-radius:22px 22px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom));
@@ -112,10 +114,9 @@
   .blinds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   .blinds label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
   .blinds input{background:var(--chip);border:1px solid var(--line);color:var(--ink);font:inherit;
-    font-size:20px;font-weight:600;padding:12px;border-radius:12px;text-align:center;width:100%;
-    font-variant-numeric:tabular-nums}
+    font-size:20px;font-weight:600;padding:12px;border-radius:12px;text-align:center;width:100%;font-variant-numeric:tabular-nums}
   .blinds input:focus{outline:1px solid var(--gold-dim)}
-  .note{font-size:12px;color:var(--muted);line-height:1.6;background:var(--chip);border:1px solid var(--line);
+  .note{font-size:12px;color:var(--muted);line-height:1.7;background:var(--chip);border:1px solid var(--line);
     border-radius:12px;padding:10px 12px}
   .note b{color:var(--gold)}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -129,9 +130,11 @@
   </header>
 
   <section class="hero">
-    <div class="label">Current Pot</div>
+    <div class="label">現在のポット</div>
     <div class="pot" id="pot">0</div>
-    <div class="sub" id="sub">卓の発言を拾ってポットに積み上げます</div>
+    <div class="cb" id="cb">現在のベット <b>0</b></div>
+    <div class="delta" id="delta"></div>
+    <div class="sub" id="sub"></div>
     <div class="modes" id="modes"></div>
     <div class="arc"></div>
   </section>
@@ -148,8 +151,8 @@
 
   <section class="card">
     <div class="disp">
+      <span class="k">入力</span>
       <div class="val empty" id="entry">0</div>
-      <div style="color:var(--muted);font-size:12px" id="curBetLbl"></div>
     </div>
     <div class="acts" id="acts">
       <button data-act="加算" class="sel">加算</button>
@@ -171,7 +174,6 @@
 
   <div class="row">
     <button id="undoBtn">&#8630; 元に戻す</button>
-    <button id="streetBtn" class="hidden">ストリート更新</button>
     <button id="resetBtn" class="warn">新しいハンド</button>
   </div>
 
@@ -179,11 +181,9 @@
   <p class="hint" id="hint"></p>
 </div>
 
-<!-- settings sheet -->
 <div class="scrim" id="scrim">
   <div class="sheet" id="sheet">
     <h2>設定<button class="x" id="closeSet">&#10005;</button></h2>
-
     <div class="grp">
       <div class="t">ブラインド / アンティ</div>
       <div class="blinds">
@@ -192,19 +192,12 @@
         <label>アンティ<input id="anteIn" type="tel" inputmode="numeric" placeholder="0"></label>
       </div>
     </div>
-
     <div class="grp">
-      <div class="note">「新しいハンド」を押すと、<b id="startNote">SB+BB+アンティ</b> からポットが始まります。BBは下部のBB換算にも使われます。</div>
+      <div class="note">「新しいハンド」で <b id="startNote">SB+BB+アンティ</b> から開始。現在のベットはBBの額から始まります。<br>
+      ・コール → 現在のベット額を加算<br>
+      ・レイズ（額なし）→ 現在のベットの2倍を加算<br>
+      ・レイズ○○／ベット○○ → その額を加算し現在のベット更新</div>
     </div>
-
-    <div class="grp">
-      <div class="t">解釈モード</div>
-      <div class="seg" data-seg="mode">
-        <button data-v="加算">加算</button>
-        <button data-v="トータル">トータル(簡易)</button>
-      </div>
-    </div>
-
     <div class="grp">
       <div class="t">認識モード</div>
       <div class="seg" data-seg="auto">
@@ -218,26 +211,23 @@
 <script>
 /* ---------- number parsing ---------- */
 const KAN={'〇':0,'零':0,'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9};
-const SMALL={'十':10,'百':100,'千':1000};
-const BIG={'万':10000,'億':100000000};
+const SMALL={'十':10,'百':100,'千':1000};const BIG={'万':10000,'億':100000000};
 function toHalf(s){return s.replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0));}
 function parseAmount(raw){
-  let s=toHalf(String(raw)).replace(/[,\s]/g,'');
-  if(!s) return null;
-  if(/^\d+$/.test(s)) return parseInt(s,10);
+  let s=toHalf(String(raw)).replace(/[,\s]/g,'');if(!s)return null;
+  if(/^\d+$/.test(s))return parseInt(s,10);
   let total=0,section=0,number=0,seen=false;
   for(const ch of s){
     if(/\d/.test(ch)){number=number*10+(+ch);seen=true;continue;}
     if(ch in KAN){number=number*10+KAN[ch];seen=true;continue;}
     if(ch in SMALL){number=(number===0?1:number);section+=number*SMALL[ch];number=0;seen=true;continue;}
     if(ch in BIG){section+=number;total+=(section===0?1:section)*BIG[ch];section=0;number=0;seen=true;continue;}
-    return null;
-  }
-  const r=total+section+number;return (seen&&r>0)?r:null;
+    return null;}
+  const r=total+section+number;return(seen&&r>0)?r:null;
 }
 const NUMRE=/[0-9０-９〇零一二三四五六七八九十百千万億][0-9０-９〇零一二三四五六七八九十百千万億,]*/g;
 function extractAmount(text){let best=null;const m=text.match(NUMRE);
-  if(m) for(const tok of m){const v=parseAmount(tok);if(v&&(best===null||v>best))best=v;}return best;}
+  if(m)for(const tok of m){const v=parseAmount(tok);if(v&&(best===null||v>best))best=v;}return best;}
 function detectAction(text){
   const t=text.replace(/\s/g,'');
   if(/オールイン|オール|allin|all\s*in/i.test(t))return'オールイン';
@@ -250,39 +240,37 @@ function detectAction(text){
 }
 
 /* ---------- state ---------- */
-const S={pot:0,mode:'加算',auto:'半自動',sb:0,bb:0,ante:0,currentBet:0,lastAmt:0,history:[]};
+const S={pot:0,auto:'全自動',sb:10,bb:20,ante:20,currentBet:20,history:[]};
 const $=id=>document.getElementById(id);
 const fmt=n=>n.toLocaleString('ja-JP');
 
 function render(){
   $('pot').textContent=fmt(S.pot);
-  $('sub').innerHTML = S.bb ? `<b>${(S.pot/S.bb).toFixed(1)} BB</b>` : '卓の発言を拾ってポットに積み上げます';
-  const blindTxt=(S.sb||S.bb||S.ante)?` · SB${S.sb}/BB${S.bb}/A${S.ante}`:'';
-  $('modes').textContent=`${S.mode} · ${S.auto}${blindTxt}`;
-  $('streetBtn').classList.toggle('hidden',S.mode!=='トータル');
-  $('curBetLbl').textContent=S.mode==='トータル'?`現在のベット ${fmt(S.currentBet)}`:'';
+  $('cb').innerHTML=`現在のベット <b>${fmt(S.currentBet)}</b>`;
+  $('sub').innerHTML=S.bb?`<b>${(S.pot/S.bb).toFixed(1)} BB</b>`:'';
+  $('modes').textContent=`${S.auto} · SB${S.sb}/BB${S.bb}/A${S.ante}`;
   const start=(S.sb||0)+(S.bb||0)+(S.ante||0);
-  $('startNote').textContent = start>0 ? `${fmt(S.sb)}+${fmt(S.bb)}+${fmt(S.ante)} = ${fmt(start)}` : 'SB+BB+アンティ';
+  $('startNote').textContent=start>0?`${fmt(S.sb)}+${fmt(S.bb)}+${fmt(S.ante)} = ${fmt(start)}`:'SB+BB+アンティ';
   renderLog();
 }
 function bump(){const p=$('pot');p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump');}
-function renderLog(){
-  const el=$('logEl');el.innerHTML='';
-  S.history.slice(-8).reverse().forEach(h=>{
-    const d=document.createElement('div');d.className='li';
-    d.innerHTML=`<span>${h.act}</span><b>+${fmt(h.delta)} → ${fmt(h.after)}</b>`;el.appendChild(d);});
-}
+function showDelta(d){const e=$('delta');e.textContent='+'+fmt(d);e.classList.remove('show');void e.offsetWidth;e.classList.add('show');}
+function renderLog(){const el=$('logEl');el.innerHTML='';
+  S.history.slice(-8).reverse().forEach(h=>{const d=document.createElement('div');d.className='li';
+    d.innerHTML=`<span>${h.act}</span><b>+${fmt(h.delta)} → ${fmt(h.after)}</b>`;el.appendChild(d);});}
+
 function apply(act,amount){
-  let delta=0;
   if(act==='skip'){flash(`${amount?fmt(amount):''} は無視（チップ移動なし）`);return;}
-  if(S.mode==='トータル'){
-    if(act==='ベット'||act==='レイズ'||act==='オールイン'){
-      const target=amount??S.currentBet;delta=Math.max(0,target-S.currentBet);S.currentBet=Math.max(S.currentBet,target);
-    }else if(act==='コール'){delta=amount??S.currentBet;if(amount&&amount>S.currentBet)S.currentBet=amount;}
-    else{delta=amount||0;}
-  }else{ if(act==='コール'&&!amount)delta=S.lastAmt; else delta=amount||0; }
+  const cbBefore=S.currentBet;let delta=0;
+  if(act==='コール'){delta=amount||S.currentBet;}
+  else if(act==='レイズ'){ if(amount){delta=amount;S.currentBet=amount;} else{delta=S.currentBet*2;S.currentBet=delta;} }
+  else if(act==='ベット'){ if(!amount){flash('ベット額を入力してください');return;} delta=amount;S.currentBet=amount; }
+  else if(act==='オールイン'){ if(!amount){flash('オールイン額を入力してください');return;} delta=amount;S.currentBet=Math.max(S.currentBet,amount); }
+  else if(act==='アンティ'){ delta=amount||0; }
+  else { delta=amount||0; if(delta>0)S.currentBet=delta; }
   if(delta<=0){flash('金額が読み取れませんでした');return;}
-  S.pot+=delta;S.lastAmt=delta;S.history.push({act,delta,after:S.pot});bump();render();
+  S.pot+=delta;S.history.push({act,delta,after:S.pot,cbBefore});
+  bump();showDelta(delta);render();
 }
 let flashT;
 function flash(msg){const s=$('sub');s.textContent=msg;clearTimeout(flashT);flashT=setTimeout(render,1600);}
@@ -297,40 +285,50 @@ function addCandidate(act,amount){
   const input=el.querySelector('.amt');
   el.querySelector('.ok').onclick=()=>{apply(act||'加算',parseInt(input.value,10)||0);el.remove();};
   el.querySelector('.no').onclick=()=>el.remove();
-  $('cands').prepend(el);
-  if(!amount)input.focus();
+  $('cands').prepend(el);if(!amount)input.focus();
 }
 function handleHeard(text){
-  $('heard').textContent=text;
+  $('heard').textContent='「'+text+'」';
   const act=detectAction(text);let amt=extractAmount(text);
   if(act==='skip'){apply('skip',amt);return;}
   if(!act&&amt===null)return;
   const action=act||'加算';
-  if(action==='コール'&&amt===null){amt=(S.mode==='トータル'?S.currentBet:S.lastAmt)||null;}
+  const noNumOk=(action==='コール'||action==='レイズ'); // 額なしでも実行できるアクション
   if(S.auto==='全自動'){
-    if(amt===null&&action!=='コール'){addCandidate(action,null);return;}
+    if(amt===null&&!noNumOk){addCandidate(action,null);return;}
     apply(action,amt);
-  }else{addCandidate(action,amt);}
+  }else{
+    let pre=amt;
+    if(pre===null){ if(action==='コール')pre=S.currentBet; else if(action==='レイズ')pre=S.currentBet*2; }
+    addCandidate(action,pre);
+  }
 }
 
 /* ---------- speech ---------- */
-let rec=null,listening=false;
+const isIOS=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,listening=false,supported=!!SR&&!isIOS;
 function initRec(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){$('micText').textContent='この端末は音声非対応';
-    $('hint').textContent='Web Speech API 非対応です。ChromeまたはEdge（PC/Android）で開いてください。手入力は使えます。';return null;}
   const r=new SR();r.lang='ja-JP';r.continuous=true;r.interimResults=false;
   r.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){
     if(e.results[i].isFinal)handleHeard(e.results[i][0].transcript.trim());}};
   r.onend=()=>{if(listening)try{r.start()}catch(_){}};
-  r.onerror=ev=>{if(ev.error==='not-allowed'){flash('マイク許可が必要です');stopRec();}};
+  r.onerror=ev=>{$('heard').textContent='認識エラー: '+ev.error;
+    if(ev.error==='not-allowed'||ev.error==='service-not-allowed'){flash('マイクが許可されていません');stopRec();}};
   return r;
 }
-function startRec(){rec=rec||initRec();if(!rec)return;listening=true;try{rec.start()}catch(_){}
+function startRec(){rec=rec||initRec();listening=true;$('heard').textContent='マイク確認中…';
+  try{rec.start()}catch(_){}
   $('mic').classList.add('live');$('micText').textContent='聞き取り中… タップで停止';}
 function stopRec(){listening=false;if(rec)try{rec.stop()}catch(_){}
-  $('mic').classList.remove('live');$('micText').textContent='タップして聞き取り開始';$('heard').textContent='';}
-$('mic').onclick=()=>listening?stopRec():startRec();
+  $('mic').classList.remove('live');$('micText').textContent='タップして聞き取り開始';}
+$('mic').onclick=()=>{
+  if(!supported){$('micText').textContent='この端末は音声非対応';
+    $('heard').textContent=isIOS?'iPhone/iPadはブラウザ音声認識に非対応。テンキーをご利用ください':'ChromeまたはEdge（PC/Android）で開いてください';return;}
+  listening?stopRec():startRec();
+};
+if(!supported){$('mic').classList.add('disabled');$('micText').textContent='この端末は音声非対応';
+  $('heard').textContent=isIOS?'iPhone/iPadは非対応。PC/AndroidのChromeで音声が使えます':'ChromeまたはEdgeで開いてください';}
 
 /* ---------- keypad ---------- */
 let entry='',selAct='加算';
@@ -339,7 +337,8 @@ $('acts').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)
   selAct=b.dataset.act;[...$('acts').children].forEach(x=>x.classList.toggle('sel',x===b));});
 document.querySelector('.grid').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
-  if(b.id==='addBtn'){const v=parseInt(entry,10);if(v||selAct==='コール'){apply(selAct,v||0);entry='';showEntry();}return;}
+  if(b.id==='addBtn'){const v=parseInt(entry,10)||0;
+    if(v||selAct==='コール'||selAct==='レイズ'){apply(selAct,v);entry='';showEntry();}return;}
   const k=b.dataset.k;
   if(k==='back')entry=entry.slice(0,-1);
   else if(k==='clear')entry='';
@@ -347,43 +346,32 @@ document.querySelector('.grid').addEventListener('click',e=>{
   showEntry();
 });
 
-/* ---------- new hand with blinds ---------- */
+/* ---------- new hand ---------- */
 function newHand(){
-  S.sb=parseInt($('sbIn').value,10)||0;
-  S.bb=parseInt($('bbIn').value,10)||0;
-  S.ante=parseInt($('anteIn').value,10)||0;
-  const start=S.sb+S.bb+S.ante;
-  S.pot=start;S.lastAmt=S.bb||0;S.currentBet=(S.mode==='トータル')?(S.bb||0):0;S.history=[];
-  if(start>0)S.history.push({act:'ブラインド',delta:start,after:start});
+  S.sb=parseInt($('sbIn').value,10)||0;S.bb=parseInt($('bbIn').value,10)||0;S.ante=parseInt($('anteIn').value,10)||0;
+  const start=S.sb+S.bb+S.ante;S.pot=start;S.currentBet=S.bb||0;S.history=[];
+  if(start>0)S.history.push({act:'ブラインド',delta:start,after:start,cbBefore:0});
   $('cands').innerHTML='';render();
 }
-$('undoBtn').onclick=()=>{const last=S.history.pop();if(!last)return;S.pot-=last.delta;render();};
+$('undoBtn').onclick=()=>{const last=S.history.pop();if(!last)return;S.pot-=last.delta;
+  if('cbBefore'in last)S.currentBet=last.cbBefore;render();};
 $('resetBtn').onclick=()=>{if(!confirm('新しいハンドを始めますか？'))return;newHand();};
-$('streetBtn').onclick=()=>{S.currentBet=0;flash('ストリート更新：現在のベットを0に');};
 
-/* ---------- settings sheet ---------- */
-function openSet(){$('scrim').classList.add('open');}
-function closeSet(){$('scrim').classList.remove('open');}
-$('gear').onclick=openSet;
-$('closeSet').onclick=closeSet;
-$('scrim').addEventListener('click',e=>{if(e.target===$('scrim'))closeSet();});
-
-function bindBlind(id,key){
-  const el=$(id);el.value=S[key]||'';
-  el.addEventListener('input',()=>{S[key]=parseInt(el.value,10)||0;render();});
-}
+/* ---------- settings ---------- */
+$('gear').onclick=()=>$('scrim').classList.add('open');
+$('closeSet').onclick=()=>$('scrim').classList.remove('open');
+$('scrim').addEventListener('click',e=>{if(e.target===$('scrim'))$('scrim').classList.remove('open');});
+function bindBlind(id,key){const el=$(id);el.value=S[key]||'';
+  el.addEventListener('input',()=>{S[key]=parseInt(el.value,10)||0;render();});}
 bindBlind('sbIn','sb');bindBlind('bbIn','bb');bindBlind('anteIn','ante');
-
-document.querySelectorAll('.seg').forEach(seg=>{
-  const key=seg.dataset.seg;
+document.querySelectorAll('.seg').forEach(seg=>{const key=seg.dataset.seg;
   const paint=()=>[...seg.children].forEach(b=>b.classList.toggle('sel',b.dataset.v===S[key]));
-  seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
-    S[key]=b.dataset.v;if(key==='mode')S.currentBet=0;paint();render();});
-  paint();
-});
+  seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S[key]=b.dataset.v;paint();render();});paint();});
 
-$('hint').textContent='ヒント：Chrome/Edgeでマイクを許可すると「ベット500」「レイズ千五百」等を拾います。設定(⚙)でブラインドとモードを変更できます。';
-render();
+$('hint').textContent=supported
+  ? 'ヒント：マイクを許可して「コール」「レイズ」「レイズ80」等と話すと加算されます。うまく拾えない時はテンキーで。'
+  : 'この端末では音声が使えないため、テンキーで入力してください。音声はPC/AndroidのChromeで動作します。';
+newHand();
 </script>
 </body>
 </html>
