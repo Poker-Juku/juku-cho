@@ -28,8 +28,9 @@
   .hero{position:relative;background:linear-gradient(180deg,var(--felt2),#0e1a15);border:1px solid var(--line);
     border-radius:22px;padding:18px 18px 18px;text-align:center;overflow:hidden}
   .hero .label{color:var(--muted);font-size:12px;letter-spacing:.18em;text-transform:uppercase}
-  .pot{font-size:clamp(74px,26vw,128px);font-weight:700;line-height:.95;color:var(--gold);
-    font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin:6px 0 4px;text-shadow:0 2px 28px rgba(244,193,75,.22)}
+  .pot{font-size:clamp(44px,14vw,92px);font-weight:700;line-height:1.12;color:var(--gold);
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em;margin:4px 0;white-space:nowrap;
+    text-shadow:0 2px 28px rgba(244,193,75,.22)}
   .pot.bump{animation:bump .35s ease}
   @keyframes bump{40%{transform:scale(1.05)}100%{transform:scale(1)}}
   .cb{font-size:14px;color:var(--muted);font-weight:500}
@@ -119,6 +120,11 @@
   .note{font-size:12px;color:var(--muted);line-height:1.7;background:var(--chip);border:1px solid var(--line);
     border-radius:12px;padding:10px 12px}
   .note b{color:var(--gold)}
+  @media (orientation:landscape) and (max-height:560px){
+    .app{max-width:900px}
+    .hero{padding:14px 18px}
+    .pot{font-size:clamp(44px,11vw,88px)}
+  }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -244,8 +250,17 @@ const S={pot:0,auto:'全自動',sb:10,bb:20,ante:20,currentBet:20,history:[]};
 const $=id=>document.getElementById(id);
 const fmt=n=>n.toLocaleString('ja-JP');
 
+function fitPot(){
+  try{
+    if(!window.getComputedStyle)return;
+    const el=$('pot');el.style.fontSize='';
+    const max=(el.parentElement.clientWidth||360)-20;
+    let size=parseFloat(getComputedStyle(el).fontSize)||88,g=0;
+    while(el.scrollWidth>max&&size>26&&g<50){size-=4;el.style.fontSize=size+'px';g++;}
+  }catch(_){}
+}
 function render(){
-  $('pot').textContent=fmt(S.pot);
+  $('pot').textContent=fmt(S.pot);fitPot();
   $('cb').innerHTML=`現在のベット <b>${fmt(S.currentBet)}</b>`;
   $('sub').innerHTML=S.bb?`<b>${(S.pot/S.bb).toFixed(1)} BB</b>`:'';
   $('modes').textContent=`${S.auto} · SB${S.sb}/BB${S.bb}/A${S.ante}`;
