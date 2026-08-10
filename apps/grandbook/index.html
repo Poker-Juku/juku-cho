@@ -29,7 +29,7 @@
   }
   #app{ height:var(--vh,100dvh); display:flex; flex-direction:column; max-width:480px; margin:0 auto; position:relative; }
   /* 入力欄はどんな圧縮下でも潰れない */
-  input, select, .amtbtn{ flex-shrink:0; min-height:50px; font-size:16px; }
+  input, select, .amtbtn{ flex-shrink:0; min-height:44px; font-size:16px; }
   input{ -webkit-appearance:none; appearance:none; }
   /* キーボード表示中はタブ/広告を隠して入力領域を最大化 */
   body.kb .tabs, body.kb .ad{ display:none; }
@@ -91,18 +91,18 @@
   .tab.on .lbl{ color:var(--goldLt); font-weight:700; }
 
   /* ===== 記録行 ===== */
-  .rowline{ display:flex; align-items:center; gap:9px; padding:7px 2px; }
+  .rowline{ display:flex; align-items:center; gap:8px; padding:3px 2px; }
   .selwrap{ flex:1; min-width:0; position:relative; }
   .selwrap .picon{ position:absolute; left:12px; top:50%; transform:translateY(-50%); pointer-events:none; z-index:1; display:flex; }
   .selwrap .chev{ position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none; display:flex; }
   .sel{ width:100%; -webkit-appearance:none; appearance:none;
     background:linear-gradient(180deg, rgba(24,26,22,.7), rgba(15,17,15,.7));
-    border:1px solid var(--line); border-radius:13px; color:var(--text);
-    font-size:15px; padding:13px 34px 13px 40px; }
-  .amtbtn{ width:132px; text-align:center; border-radius:13px; padding:13px 10px; font-weight:700;
+    border:1px solid var(--line); border-radius:12px; color:var(--text);
+    font-size:16px; padding:10px 32px 10px 38px; }
+  .amtbtn{ width:128px; text-align:center; border-radius:12px; padding:10px 10px; font-weight:700;
     background:linear-gradient(180deg, rgba(24,26,22,.7), rgba(15,17,15,.7)); border:1px solid var(--line); }
   .xbtn{ width:30px; height:30px; border-radius:15px; background:transparent; color:var(--sub); font-size:17px; flex-shrink:0; }
-  .addbtn{ width:100%; margin-top:12px; padding:14px 0; border-radius:13px; background:transparent;
+  .addbtn{ width:100%; margin-top:7px; padding:9px 0; border-radius:12px; background:transparent;
     border:1px dashed rgba(201,162,75,.5); color:var(--gold); font-size:14px; letter-spacing:.1em; }
 
   /* ===== オーバーレイ ===== */
@@ -319,7 +319,7 @@ function renderScore(){
     style:"background:transparent;border:1px solid "+C.line+";border-radius:6px;color:"+C.sub+";font-size:10px;padding:2px 5px",
     onchange:function(e){ if(e.target.value){ commitRows(); S.date=e.target.value; loadDate(); renderScore(); } }});
   var dateLabel=el("span",{class:"serif",style:"font-size:13px;font-weight:700;color:"+C.text,text:fmtDateJP(S.date)});
-  wrap.appendChild(el("div",{style:"text-align:center;flex-shrink:0"},[
+  wrap.appendChild(el("div",{style:"text-align:center;flex-shrink:0;padding:2px 0 0"},[
     el("label",{style:"display:inline-flex;align-items:center;gap:6px"},[dateLabel,dateInput])
   ]));
 
@@ -329,7 +329,7 @@ function renderScore(){
   wrap.appendChild(rowsWrap);
 
   // 入力完了
-  var doneBtn=el("button",{style:"flex-shrink:0;margin:6px 0 12px;padding:14px 0;border-radius:12px;font-size:15px;font-weight:700;letter-spacing:.14em;"+
+  var doneBtn=el("button",{style:"flex-shrink:0;margin:4px 0 8px;padding:12px 0;border-radius:12px;font-size:15px;font-weight:700;letter-spacing:.14em;"+
     "color:#231a06;background:linear-gradient(180deg,#E4C77E,#C9A24B);border:1px solid #B8912F;box-shadow:0 8px 20px -10px rgba(201,162,75,.7)",
     text:"入力完了", onclick:finalizeEntry});
   wrap.appendChild(doneBtn);
@@ -358,7 +358,7 @@ function renderResult(){
   var v=diffVerdict(total,hasInput);
   var msg=v.msg;
   var col=v.tone==="ok"?C.gold:v.tone==="warn"?"#E9C46A":v.tone==="bad"?C.minus:C.sub;
-  card.style.cssText="margin:6px 0 9px;padding:9px 12px;border-radius:12px;position:relative;overflow:hidden;"+
+  card.style.cssText="margin:4px 0 7px;padding:7px 12px;border-radius:12px;position:relative;overflow:hidden;"+
     "background:radial-gradient(120% 140% at 15% 0%, rgba(201,162,75,.14), rgba(20,22,19,.6) 55%);"+
     "border:1px solid "+(balanced?"rgba(201,162,75,.85)":"rgba(201,162,75,.4)")+";"+
     "box-shadow:inset 0 1px 0 rgba(241,220,160,.18)"+(balanced?", 0 0 22px -6px rgba(201,162,75,.6)":"")+";"+
@@ -367,7 +367,7 @@ function renderResult(){
   card.appendChild(svgEl(chipsIcon()));
   card.appendChild(el("div",{style:"flex:1;min-width:0;text-align:center"},[
     el("div",{class:"serif",style:"font-size:9px;letter-spacing:.28em;color:"+C.sub+";font-weight:700",text:"RESULT"}),
-    el("div",{class:"serif",style:"font-size:22px;letter-spacing:.16em;color:"+C.goldLt+";font-weight:700;line-height:1.15;text-shadow:0 2px 8px rgba(201,162,75,.35)",text:"集計中"})
+    el("div",{class:"serif",style:"font-size:19px;letter-spacing:.16em;color:"+C.goldLt+";font-weight:700;line-height:1.1;text-shadow:0 2px 8px rgba(201,162,75,.35)",text:"集計中"})
   ]));
   card.appendChild(el("div",{style:"width:24px;flex-shrink:0"}));
 }
