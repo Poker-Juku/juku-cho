@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>勝率計算ツール｜ハンド対決の確率とアウツ｜塾長</title>
+<meta name="description" content="ポーカーのハンド対決の勝率を完全計算。AA vs KKなどの勝率、フロップ・ターンでのアウツの枚数と逆転する具体的なカード、4-2の法則との誤差まで確認できます。">
+<meta name="theme-color" content="#0B2A24">
+<meta property="og:title" content="勝率計算ツール｜ハンド対決の確率とアウツ">
+<meta property="og:description" content="全ボードを総当たりで計算した正確な勝率と、逆転できるカードの枚数が分かります。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --felt:#0B2A24;--felt-deep:#061A16;--felt-lift:#123A31;
+  --card:#F6F3EA;--card-sub:#ECE7DA;--card-edge:#DDD6C4;
+  --ink:#15181B;--ink-soft:#565D63;--ink-faint:#8B9198;
+  --gold:#C6A24C;--gold-lt:#E8D49A;
+  --club:#17724A;--diamond:#1C57B5;--heart:#B22A2A;--spade:#191919;
+  --p1:#B22A2A;--p2:#1C57B5;--p3:#17724A;--p4:#8A5A1E;
+  --line:rgba(21,24,27,.12);--line-2:rgba(21,24,27,.26);
+  --sh-2:0 2px 6px rgba(0,0,0,.12),0 18px 40px -22px rgba(0,0,0,.5);
+  --face:#F7F4EC;--face-edge:#CFC7B4;
+  --fc-c:#17724A;--fc-d:#1C57B5;--fc-h:#B22A2A;--fc-s:#1A1A1A;
+  --r:12px;
+  --mn:"Shippori Mincho",serif;--gt:"Zen Kaku Gothic New","Hiragino Sans",system-ui,sans-serif;
+  --mo:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+html[data-theme="dark"]{
+  --felt:#050D0B;--felt-deep:#020706;--felt-lift:#0D1D19;
+  --card:#121A18;--card-sub:#182320;--card-edge:#26332E;
+  --ink:#EAE6DA;--ink-soft:#A3ACA7;--ink-faint:#79817C;
+  --club:#4CC189;--diamond:#6FA8F7;--heart:#F0837A;--spade:#CBD4CE;
+  --p1:#D9524B;--p2:#6FA8F7;--p3:#2E9E6B;--p4:#C89A4A;
+  --line:rgba(234,230,218,.14);--line-2:rgba(234,230,218,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--gt);color:var(--ink);line-height:1.7;background:var(--felt);
+  background-image:radial-gradient(130% 70% at 50% -12%,var(--felt-lift) 0%,var(--felt) 45%,var(--felt-deep) 100%);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+
+.head{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--felt-deep) 90%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(198,162,76,.28)}
+.head-in{max-width:1000px;margin:0 auto;padding:9px 16px;display:flex;gap:10px;align-items:center;min-height:60px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex:0 0 auto}
+.logo .mk{width:26px;height:34px;border-radius:4px;background:var(--card);color:var(--felt-deep);
+  display:grid;place-items:center;font-size:15px}
+.logo b{font-family:var(--mn);font-weight:700;font-size:16px;color:#F4F0E5;letter-spacing:.04em;white-space:nowrap}
+.navs{margin-left:auto;display:flex;gap:6px;align-items:center}
+.navs a{font-size:12px;color:rgba(244,240,229,.8);text-decoration:none;padding:6px 12px;
+  border-radius:999px;border:1px solid rgba(244,240,229,.25);white-space:nowrap}
+.navs a:hover{background:rgba(255,255,255,.09)}
+.hbtn{width:34px;height:34px;border-radius:50%;color:#F4F0E5;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.16);font-size:14px;flex:0 0 auto}
+
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px 60px}
+.hero{padding:40px 0 22px;text-align:center;color:#F4F0E5}
+.eyebrow{font-family:var(--mo);font-size:10px;letter-spacing:.34em;color:var(--gold);margin:0 0 14px}
+.hero h1{font-family:var(--mn);font-weight:800;margin:0;letter-spacing:.04em;font-size:clamp(28px,6vw,48px);line-height:1.2}
+.hero p{margin:14px auto 0;max-width:32em;font-size:clamp(13.5px,2.4vw,15.5px);line-height:2;color:rgba(244,240,229,.82)}
+.hero p b{color:var(--gold-lt)}
+
+.pane{background:var(--card);border-radius:var(--r);box-shadow:var(--sh-2);border:1px solid var(--card-edge)}
+.sec{margin-top:14px}
+.sec-t{display:flex;align-items:center;gap:10px;padding:13px 16px 0}
+.sec-t h2{font-family:var(--mn);font-weight:700;font-size:15px;margin:0;letter-spacing:.08em}
+.sec-t .en{font-family:var(--mo);font-size:9px;letter-spacing:.2em;color:var(--gold)}
+.sec-t .sp{flex:1}
+.mini{padding:5px 11px;border-radius:999px;font-size:11.5px;color:var(--ink-soft);border:1px solid var(--line-2)}
+.mini:hover{background:var(--card-sub);color:var(--ink)}
+
+/* 券面 */
+.pc{position:relative;display:inline-block;vertical-align:top;width:var(--cw);height:calc(var(--cw)*1.4);border-radius:calc(var(--cw)*.1);
+  background:var(--face);border:1px solid var(--face-edge);box-shadow:0 1px 3px rgba(0,0,0,.28);
+  padding:0;overflow:hidden;flex:0 0 auto}
+.pc .ix{position:absolute;top:5%;left:8%;line-height:.98;font-family:var(--mo);font-weight:700;
+  font-size:calc(var(--cw)*.30);text-align:center}
+.pc .ix em{display:block;font-style:normal;font-size:calc(var(--cw)*.25);margin-top:calc(var(--cw)*.03)}
+.pc .pip{position:absolute;right:7%;bottom:3%;line-height:1;font-size:calc(var(--cw)*.5)}
+.su-c{color:var(--fc-c)} .su-d{color:var(--fc-d)} .su-h{color:var(--fc-h)} .su-s{color:var(--fc-s)}
+
+/* slots */
+.players{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:12px 14px 14px}
+.players.duo{grid-template-columns:1fr auto 1fr}
+.vs{display:grid;place-items:center;font-family:var(--mn);font-weight:800;font-size:15px;
+  color:var(--ink-faint);letter-spacing:.1em;padding:0 2px}
+.pl-body{display:flex;gap:14px;align-items:center;margin-top:4px}
+.eqwrap{flex:1;min-width:0}
+.eqbar{height:6px;border-radius:3px;background:var(--card-sub);overflow:hidden;margin-top:7px}
+.eqbar i{display:block;height:100%;width:0;border-radius:3px;transition:width .25s ease}
+.made{margin:9px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+.made b{color:var(--ink);font-weight:700}
+.pl{border:1px solid var(--line);border-radius:9px;padding:11px}
+.pl.act{border-color:var(--gold);box-shadow:0 0 0 3px rgba(198,162,76,.16)}
+.pl-h{display:flex;align-items:center;gap:7px;margin-bottom:9px}
+.pl-h .dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto}
+.pl-h b{font-size:12.5px;letter-spacing:.05em}
+.pl-h .rm{margin-left:auto;font-size:11px;color:var(--ink-faint)}
+.pl-h .rm:hover{color:var(--heart)}
+.slots{display:flex;gap:7px;--cw:76px}
+.slot{width:var(--cw);height:calc(var(--cw)*1.4);border-radius:calc(var(--cw)*.1);
+  border:1.5px dashed var(--line-2);background:var(--card-sub);
+  display:grid;place-items:center;padding:0;flex:0 0 auto}
+.slot.pc{background:var(--face);border:1px solid var(--face-edge)}
+.slot.sel{border-color:var(--gold);box-shadow:0 0 0 3px rgba(198,162,76,.24)}
+.slot.pc.sel{border-style:solid}
+.slot .ph{font-size:11px;color:var(--ink-faint);letter-spacing:.1em}
+.eqbadge{font-family:var(--mn);font-weight:800;font-size:52px;line-height:1;letter-spacing:-.01em}
+.eqbadge small{font-family:var(--gt);font-weight:400;font-size:12px;color:var(--ink-faint);
+  display:block;letter-spacing:.06em;margin-top:3px}
+.board{display:flex;gap:10px;padding:12px 14px 14px;flex-wrap:wrap;align-items:center;--cw:62px}
+.bgrp{display:flex;gap:6px;align-items:center}
+.bgrp .lb{font-family:var(--mo);font-size:10.5px;color:var(--ink-faint);
+  letter-spacing:.14em;margin-right:3px}
+
+/* picker */
+.pick{padding:10px 12px 15px}
+.pick .row{display:grid;grid-template-columns:repeat(13,1fr);gap:4px;margin-bottom:4px}
+.pick .row .pc{width:100%;height:auto;aspect-ratio:.72}
+.cb:hover{filter:brightness(1.06)}
+.cb[disabled]{opacity:.24;filter:grayscale(1);cursor:default}
+/* 2段階選択（狭い画面） */
+.pick2 .step{margin:2px 0 8px;font-size:12.5px;color:var(--ink-soft);letter-spacing:.04em}
+.pick2 .step b{color:var(--gold);font-family:var(--mo);margin-right:6px}
+.ranks{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px}
+.ranks button{height:50px;border-radius:8px;border:1px solid var(--line-2);background:var(--card-sub);
+  display:grid;place-items:center;font-family:var(--mo);font-weight:700;font-size:20px}
+.ranks button[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.ranks button[disabled]{opacity:.25;cursor:default}
+.suits{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.suits button{height:64px;border-radius:8px;border:1px solid var(--line-2);background:var(--face);
+  display:grid;place-items:center;align-content:center;gap:2px;line-height:1}
+.suits button .g{font-size:28px}
+.suits button .t{font-size:10.5px;color:#6A7076}
+.suits button[disabled]{opacity:.22;cursor:default}
+
+/* 入力切り替え */
+.segbar{display:flex;gap:0;border:1px solid var(--line-2);border-radius:999px;overflow:hidden;flex:0 0 auto}
+.segbar button{padding:6px 14px;font-size:12px;color:var(--ink-soft);display:flex;align-items:center;gap:6px;border-radius:0}
+.segbar button i{font-size:14px;line-height:1}
+.segbar button+button{border-left:1px solid var(--line-2)}
+.segbar button[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.inputhint{margin:0;padding:0 15px 2px;font-size:12.5px;color:var(--ink-faint);line-height:1.7}
+.inputhint b{color:var(--gold)}
+.matrix-wrap{padding:8px 12px 15px}
+.mxlab{display:flex;align-items:center;gap:8px;margin:0 2px 8px;font-size:12px;color:var(--ink-soft)}
+.mxlab .who{font-weight:700}
+.matrix{max-width:480px;margin:0 auto;background:var(--face);border-radius:10px;padding:10px}
+.mxgrid{display:grid;grid-template-columns:1.4em repeat(13,1fr);gap:2px}
+.mxh{display:grid;place-items:center;font-family:var(--mo);font-weight:700;
+  font-size:clamp(8px,2vw,12px);color:var(--ink-faint);line-height:1}
+.mxc{aspect-ratio:1;border-radius:3px;display:grid;place-items:center;padding:0;line-height:1;
+  font-family:var(--mo);font-weight:700;font-size:clamp(7.5px,1.85vw,12px);color:#565D63;border:0;
+  background:#F0EAD8}
+.mxc.pair{background:#E4DFD1;outline:1px solid rgba(21,24,27,.2);outline-offset:-1px}
+.mxc.off{background:#F7F4EC}
+.mxc i{font-style:normal;font-size:.68em;opacity:.55;margin-left:.03em}
+.mxc:hover{filter:brightness(.96)}
+.mxc.on{background:#C6A34A;color:#1A1A1A;box-shadow:0 0 0 2px var(--gold),0 1px 4px rgba(0,0,0,.3);position:relative;z-index:2}
+.mxc.used{opacity:.26;cursor:default;filter:grayscale(1)}
+.mxlegend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:11.5px;color:var(--ink-soft)}
+/* スート選択ポップ */
+.suitpop{position:absolute;z-index:20;background:var(--card);border:1px solid var(--line-2);
+  border-radius:10px;box-shadow:0 8px 26px -8px rgba(0,0,0,.55);padding:9px;display:flex;gap:6px}
+.suitpop{flex-wrap:wrap;max-width:280px}
+.suitpop .pcpair{--cw:34px}
+.suitpop .pcpair.dead{opacity:.28;filter:grayscale(1)}
+.suitpop-bd{position:fixed;inset:0;z-index:19}
+/* result */
+.bar{display:flex;height:34px;border-radius:7px;overflow:hidden;margin:0 0 12px;background:var(--card-sub)}
+.bar span{display:grid;place-items:center;color:#fff;font-family:var(--mo);font-weight:700;font-size:13px;
+  text-shadow:0 1px 2px rgba(0,0,0,.4);min-width:0;overflow:hidden}
+.res{padding:14px 16px 16px}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th,.tbl td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:right}
+.tbl th{font-weight:400;font-size:11.5px;color:var(--ink-faint);letter-spacing:.05em}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td.eq{font-family:var(--mn);font-weight:800;font-size:19px}
+.tbl td.n{font-family:var(--mo)}
+.prog{height:4px;border-radius:2px;background:var(--card-sub);overflow:hidden;margin-bottom:12px}
+.prog i{display:block;height:100%;background:var(--gold);width:0;transition:width .1s linear}
+.note{font-size:12.5px;color:var(--ink-faint);margin:10px 0 0;font-family:var(--mo)}
+
+.outs{padding:14px 16px 16px}
+.outs .lead{font-size:14.5px;line-height:1.9;margin:0 0 12px;color:var(--ink-soft)}
+.outs .lead b{color:var(--ink)}
+.bigouts{display:flex;align-items:baseline;gap:10px;margin:0 0 12px}
+.bigouts b{font-family:var(--mn);font-weight:800;font-size:40px;line-height:1;color:var(--gold)}
+.bigouts span{font-size:12px;color:var(--ink-soft)}
+.outgrp{margin:0 0 10px}
+.outgrp .gl{font-size:12.5px;color:var(--ink-faint);margin:0 0 5px;letter-spacing:.04em}
+.outcards{display:flex;flex-wrap:wrap;gap:4px}
+.outcards{gap:6px}
+.outcards .pc{--cw:40px}
+.rule42{margin-top:16px;padding:14px 16px;border-left:2px solid var(--gold);background:var(--card-sub);
+  border-radius:0 7px 7px 0;font-size:13.5px;line-height:1.95;color:var(--ink-soft)}
+.rule42 b{color:var(--ink)}
+
+.dist{padding:14px 16px 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.dist h4{margin:0 0 10px;font-size:13px;font-weight:700;letter-spacing:.05em}
+.dl{display:flex;align-items:center;gap:9px;font-size:13px;margin-bottom:5px}
+.dl .nm{flex:0 0 96px;color:var(--ink-soft)}
+.dl .tr{flex:1;height:8px;border-radius:4px;background:var(--card-sub);overflow:hidden}
+.dl .tr i{display:block;height:100%}
+.dl .vv{flex:0 0 52px;text-align:right;font-family:var(--mo);color:var(--ink-faint)}
+
+.presets{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 14px}
+.presets button{padding:6px 13px;border-radius:999px;font-size:12px;border:1px solid var(--line-2);color:var(--ink-soft)}
+.presets button:hover{background:var(--card-sub);color:var(--ink)}
+
+.read{padding:20px}
+.read h3{font-family:var(--mn);font-weight:700;font-size:16px;margin:0 0 10px;letter-spacing:.05em}
+.read p{margin:0 0 12px;font-size:13.5px;line-height:1.95;color:var(--ink-soft)}
+.read p:last-child{margin:0}
+.read b{color:var(--ink)}
+.ad{min-height:100px;display:grid;place-items:center;border-radius:var(--r);margin-top:20px}
+.ad:empty{border:1px dashed rgba(198,162,76,.4);background:rgba(198,162,76,.06)}
+.ad:empty::after{content:"広告";font-family:var(--mo);font-size:10px;letter-spacing:.3em;color:var(--gold)}
+.foot{margin-top:40px;padding-top:20px;border-top:1px solid rgba(244,240,229,.14);
+  color:rgba(244,240,229,.5);font-size:11.5px;line-height:2;text-align:center}
+.foot a{color:var(--gold-lt);text-decoration:none;border-bottom:1px solid rgba(198,162,76,.4)}
+@media (max-width:700px){
+  .wrap{padding:0 10px 44px}
+  .hero{padding:26px 0 16px}
+  .players,.players.duo{grid-template-columns:1fr;padding:10px 12px 12px}
+  .vs{padding:2px 0}
+  .dist{grid-template-columns:1fr}
+  .navs a{padding:5px 9px;font-size:11px}
+  .slots{--cw:64px}
+  .board{--cw:52px;gap:8px}
+  .eqbadge{font-size:44px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="head-in">
+    <a class="logo" href="./"><span class="mk">♠</span><b>勝率計算</b></a>
+    <div class="navs">
+      <a href="../dictionary/">用語辞典</a>
+      <a href="../range/">レンジ表</a>
+      <button class="hbtn" id="theme" aria-label="配色を切り替える">◐</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <p class="eyebrow">EQUITY CALCULATOR</p>
+    <h1>この勝負、何％勝てる</h1>
+    <p>2〜4人のハンドとボードを入れると、<b>残り全部のボードを一枚残らず数え上げて</b>勝率を出します。概算ではなく完全計算です。</p>
+  </section>
+
+  <section class="pane sec">
+    <div class="sec-t"><h2>ハンド</h2><span class="en">HANDS</span><span class="sp"></span>
+      <button class="mini" id="addP">＋プレイヤー</button>
+      <button class="mini" id="deal">ランダムに配る</button>
+      <button class="mini" id="clr">全部消す</button>
+    </div>
+    <div class="players" id="players"></div>
+    <div class="presets" id="presets"></div>
+  </section>
+
+  <section class="pane sec">
+    <div class="sec-t"><h2>ボード</h2><span class="en">BOARD</span><span class="sp"></span>
+      <button class="mini" id="clrB">ボードだけ消す</button>
+    </div>
+    <div class="board" id="board"></div>
+  </section>
+
+  <section class="pane sec" id="inputPane">
+    <div class="sec-t"><h2 id="inputTitle">カードを選ぶ</h2><span class="en">INPUT</span><span class="sp"></span>
+      <div class="segbar" id="segbar" role="group" aria-label="入力方法">
+        <button id="segCard" aria-pressed="true"><i style="font-style:normal">🂠</i>カードで選ぶ</button>
+        <button id="segMx" aria-pressed="false"><i style="font-style:normal">▦</i>マトリクス</button>
+      </div>
+    </div>
+    <p class="inputhint" id="inputHint"></p>
+    <div class="pick" id="pick"></div>
+    <div class="matrix-wrap" id="mxWrap" hidden></div>
+  </section>
+
+  <section class="pane sec">
+    <div class="sec-t"><h2>勝率</h2><span class="en">EQUITY</span></div>
+    <div class="res" id="res"></div>
+  </section>
+
+  <section class="pane sec" id="outsPane">
+    <div class="sec-t"><h2>アウツ</h2><span class="en">OUTS</span></div>
+    <div class="outs" id="outs"></div>
+  </section>
+
+  <section class="pane sec" id="distPane">
+    <div class="sec-t"><h2>最終的にできる役</h2><span class="en">MADE HANDS</span></div>
+    <div class="dist" id="dist"></div>
+  </section>
+
+  <section class="pane sec read">
+    <h3>アウツと「4-2の法則」</h3>
+    <p><b>アウツ</b>とは、次の1枚でめくれたら自分が逆転できるカードのことです。たとえばフラッシュドローなら、残っている同じマークが9枚。この9枚がアウツです。</p>
+    <p>実戦では正確な勝率を計算する時間がないので、<b>4-2の法則</b>という近道を使います。フロップの時点なら<b>アウツ×4</b>、ターンなら<b>アウツ×2</b>が、だいたいの勝率（％）になります。9アウツのフラッシュドローなら、フロップで約36%、ターンで約18%です。</p>
+    <p>この計算ツールは、その概算が<b>実際の数字とどれだけズレるか</b>も一緒に出します。アウツが多いときほど法則は勝率を高く見積もりがちで、逆に相手のハンドを逆転しても再逆転される「ダーティなアウツ」があると実際はもっと低くなります。両方を並べて見ることで、卓上での概算の精度が上がります。</p>
+    <p>なお、ここで数えるアウツは<b>今この瞬間、次の1枚で相手を抜けるカード</b>です。上の勝率はリバーまで全部めくった最終的な数字なので、両者は必ずしも一致しません。その差こそが「まだ2枚残っている」ことの価値です。</p>
+  </section>
+
+  <!-- 広告枠：解説の下 -->
+  <div class="ad" id="adBottom"></div>
+
+  <footer class="foot">
+    勝率計算ツール — <a href="https://juku-cho.com/">塾長</a>　|　<a href="../dictionary/">ポーカー用語辞典</a>　|　<a href="../range/">ハンドレンジ表</a><br>
+    掲載内容は学習用の解説です。ゲームは各自の責任と余裕資金の範囲でお楽しみください。
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var RK="23456789TJQKA".split(''), SU=['♣','♦','♥','♠'], SUC=['su-c','su-d','su-h','su-s'];
+var PCOL=['var(--p1)','var(--p2)','var(--p3)','var(--p4)'];
+var CAT=['ハイカード','ワンペア','ツーペア','スリーカード','ストレート','フラッシュ','フルハウス','フォーカード','ストレートフラッシュ'];
+var $=function(i){return document.getElementById(i);};
+
+/* ---------- 役の評価 ---------- */
+function straightHigh(b){
+  var v=(b<<1)|((b>>>12)&1);
+  for(var k=9;k>=0;k--){var m=0x1F<<k;if((v&m)===m)return k+3;}
+  return -1;
+}
+function topN(b,n){var o=[];for(var r=12;r>=0&&o.length<n;r--)if(b&(1<<r))o.push(r);while(o.length<n)o.push(0);return o;}
+function mk(c,a,b,d,e,f){return (c<<20)|((a||0)<<16)|((b||0)<<12)|((d||0)<<8)|((e||0)<<4)|(f||0);}
+var _rc=new Int8Array(13),_sb=new Int32Array(4),_sn=new Int8Array(4);
+function ev(cs,n){
+  var i,c,r,s,rb=0;
+  for(i=0;i<13;i++)_rc[i]=0;
+  for(i=0;i<4;i++){_sb[i]=0;_sn[i]=0;}
+  for(i=0;i<n;i++){c=cs[i];r=c>>2;s=c&3;_rc[r]++;_sn[s]++;_sb[s]|=1<<r;rb|=1<<r;}
+  var fs=-1;
+  for(s=0;s<4;s++)if(_sn[s]>=5)fs=s;
+  if(fs>=0){
+    var sf=straightHigh(_sb[fs]);
+    if(sf>=0)return mk(8,sf);
+    var f5=topN(_sb[fs],5);
+    return mk(5,f5[0],f5[1],f5[2],f5[3],f5[4]);
+  }
+  var q=-1,t=[],p=[];
+  for(r=12;r>=0;r--){
+    if(_rc[r]===4){if(q<0)q=r;}
+    else if(_rc[r]===3)t.push(r);
+    else if(_rc[r]===2)p.push(r);
+  }
+  if(q>=0){var k=-1;for(r=12;r>=0;r--)if(r!==q&&_rc[r]>0){k=r;break;}return mk(7,q,k);}
+  if(t.length>=2)return mk(6,t[0],t[1]);
+  if(t.length===1&&p.length>=1)return mk(6,t[0],p[0]);
+  var sh=straightHigh(rb);
+  if(sh>=0)return mk(4,sh);
+  if(t.length===1){var ks=[];for(r=12;r>=0&&ks.length<2;r--)if(r!==t[0]&&_rc[r]>0)ks.push(r);return mk(3,t[0],ks[0],ks[1]);}
+  if(p.length>=2){var k2=-1;for(r=12;r>=0;r--)if(r!==p[0]&&r!==p[1]&&_rc[r]>0){k2=r;break;}return mk(2,p[0],p[1],k2);}
+  if(p.length===1){var k3=[];for(r=12;r>=0&&k3.length<3;r--)if(r!==p[0]&&_rc[r]>0)k3.push(r);return mk(1,p[0],k3[0],k3[1],k3[2]);}
+  var h=topN(rb,5);
+  return mk(0,h[0],h[1],h[2],h[3],h[4]);
+}
+
+/* ---------- 状態 ---------- */
+var P=[[null,null],[null,null]], B=[null,null,null,null,null];
+var inputMode='card';  // 'card' | 'matrix'（プレイヤーのハンド入力方法）
+try{ var im=localStorage.getItem('pjd:inputMode'); if(im) inputMode=JSON.parse(im); }catch(e){}
+var active={t:'p',p:0,i:0};
+function used(){
+  var u={};
+  P.forEach(function(h){h.forEach(function(c){if(c!==null)u[c]=1;});});
+  B.forEach(function(c){if(c!==null)u[c]=1;});
+  return u;
+}
+function cname(c){return RK[c>>2]+SU[c&3];}
+
+/* ---------- 描画：スロット ---------- */
+function faceInner(c){
+  var k=SUC[c&3];
+  return '<span class="ix '+k+'">'+RK[c>>2]+'<em>'+SU[c&3]+'</em></span>'+
+         '<span class="pip '+k+'">'+SU[c&3]+'</span>';
+}
+function faceSpan(c,cls){
+  return '<span class="pc '+(cls||'')+'">'+faceInner(c)+'</span>';
+}
+function slotEl(v,on,ph){
+  var b=document.createElement('button');
+  b.className='slot'+(v!==null?' pc':'')+(on?' sel':'');
+  b.innerHTML = v===null ? '<span class="ph">'+ph+'</span>' : faceInner(v);
+  if(v!==null) b.setAttribute('aria-label',RK[v>>2]+SU[v&3]);
+  return b;
+}
+function drawPlayers(){
+  var box=$('players'); box.innerHTML='';
+  box.className='players'+(P.length===2?' duo':'');
+  P.forEach(function(h,pi){
+    if(pi===1&&P.length===2){
+      var v=document.createElement('div'); v.className='vs'; v.textContent='VS'; box.appendChild(v);
+    }
+    var d=document.createElement('div');
+    d.className='pl'+(active.t==='p'&&active.p===pi?' act':'');
+    var hd=document.createElement('div'); hd.className='pl-h';
+    hd.innerHTML='<span class="dot" style="background:'+PCOL[pi]+'"></span><b>プレイヤー'+(pi+1)+'</b>';
+    if(P.length>2){
+      var rm=document.createElement('button'); rm.className='rm'; rm.textContent='削除';
+      rm.onclick=function(){P.splice(pi,1);fixActive();drawAll();calc();};
+      hd.appendChild(rm);
+    }
+    var sl=document.createElement('div'); sl.className='slots';
+    h.forEach(function(v,i){
+      var s=slotEl(v,active.t==='p'&&active.p===pi&&active.i===i,'？');
+      s.onclick=function(){
+        if(v!==null){h[i]=null;drawAll();calc();}
+        active={t:'p',p:pi,i:i};drawAll();
+      };
+      sl.appendChild(s);
+    });
+    var body=document.createElement('div'); body.className='pl-body';
+    var w=document.createElement('div'); w.className='eqwrap';
+    w.innerHTML='<div class="eqbadge" id="eqb'+pi+'" style="color:'+PCOL[pi]+'">—<small>勝率</small></div>'+
+      '<div class="eqbar"><i id="eqbar'+pi+'" style="background:'+PCOL[pi]+'"></i></div>';
+    body.appendChild(sl); body.appendChild(w);
+    var md=document.createElement('p'); md.className='made'; md.id='made'+pi; md.hidden=true;
+    d.appendChild(hd); d.appendChild(body); d.appendChild(md);
+    box.appendChild(d);
+  });
+  $('addP').style.display=P.length<4?'':'none';
+}
+function drawBoard(){
+  var box=$('board'); box.innerHTML='';
+  var groups=[[0,3,'FLOP'],[3,4,'TURN'],[4,5,'RIVER']];
+  groups.forEach(function(g){
+    var w=document.createElement('div'); w.className='bgrp';
+    var l=document.createElement('span'); l.className='lb'; l.textContent=g[2]; w.appendChild(l);
+    for(var i=g[0];i<g[1];i++){(function(i){
+      var s=slotEl(B[i],active.t==='b'&&active.i===i,'—');
+      s.onclick=function(){
+        if(B[i]!==null){B[i]=null;drawAll();calc();}
+        active={t:'b',i:i};drawAll();
+      };
+      w.appendChild(s);
+    })(i);}
+    box.appendChild(w);
+  });
+}
+/* ===== マトリクス入力 ===== */
+function comboList(i,j){
+  // i,j は R のインデックス（0=A..12=2）。ペア/スーテッド/オフスートのカード対を返す
+  var ri=12-i, rj=12-j; // カードのランク値（A=12..2=0）に変換
+  var out=[];
+  if(i===j){
+    for(var s1=0;s1<4;s1++) for(var s2=s1+1;s2<4;s2++) out.push([ri*4+s1, ri*4+s2]);
+  }else{
+    var hi=Math.max(ri,rj), lo=Math.min(ri,rj);
+    if(i<j){ for(var s=0;s<4;s++) out.push([hi*4+s, lo*4+s]); }        // スーテッド
+    else { for(var a=0;a<4;a++) for(var b=0;b<4;b++) if(a!==b) out.push([hi*4+a, lo*4+b]); } // オフスート
+  }
+  return out;
+}
+function labelOf(i,j){
+  var ri=12-i, rj=12-j, hi=RK[Math.max(ri,rj)], lo=RK[Math.min(ri,rj)];
+  if(i===j) return {t:hi+lo, cls:'pair'};
+  if(i<j) return {t:hi+lo, sfx:'s', cls:'s'};
+  return {t:hi+lo, sfx:'o', cls:'off'};
+}
+function currentHandCells(){
+  // 現在の active プレイヤーが持っているハンドを i,j に写像（ハイライト用）
+  var h=P[active.p];
+  if(active.t!=='p'||h[0]===null||h[1]===null) return null;
+  var r0=h[0]>>2, r1=h[1]>>2, s0=h[0]&3, s1=h[1]&3;
+  var hi=Math.max(r0,r1), lo=Math.min(r0,r1);
+  var iHi=12-hi, iLo=12-lo;
+  if(hi===lo) return iHi+'-'+iLo;
+  var suited=(s0===s1);
+  return suited ? iHi+'-'+iLo : iLo+'-'+iHi; // スーテッド=右上(i<j) / オフ=左下(i>j)
+}
+function drawMatrix(){
+  var wrap=$('mxWrap'); wrap.innerHTML='';
+  var lab=document.createElement('div'); lab.className='mxlab';
+  lab.innerHTML='<span class="dot" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'+
+    PCOL[active.p]+'"></span><span class="who">プレイヤー'+(active.p+1)+'</span> のハンドを選ぶ';
+  var mx=document.createElement('div'); mx.className='matrix';
+  var g=document.createElement('div'); g.className='mxgrid';
+  function head(t){var d=document.createElement('div');d.className='mxh';d.textContent=t;d.setAttribute('aria-hidden','true');return d;}
+  g.appendChild(head(''));
+  for(var c=0;c<13;c++) g.appendChild(head(RK[12-c]));
+  var u=used(), curKey=currentHandCells();
+  for(var i=0;i<13;i++){
+    g.appendChild(head(RK[12-i]));
+    for(var j=0;j<13;j++){(function(i,j){
+      var L=labelOf(i,j), combos=comboList(i,j);
+      var avail=combos.filter(function(pr){return !u[pr[0]]&&!u[pr[1]];});
+      var b=document.createElement('button');
+      b.className='mxc'+(L.cls==='pair'?' pair':(L.cls==='off'?' off':''));
+      b.innerHTML=L.t+(L.sfx?'<i>'+L.sfx+'</i>':'');
+      b.setAttribute('aria-label',L.t+(L.sfx||''));
+      if((i+'-'+j)===curKey) b.classList.add('on');
+      if(avail.length===0){ b.classList.add('used'); b.disabled=true; }
+      else{
+        b.onclick=function(){ placeHand(avail[0]); };
+        // 長押し／右クリックでスート指定
+        var timer=null;
+        b.addEventListener('contextmenu',function(e){ e.preventDefault(); suitPop(b,i,j,combos,u); });
+        b.addEventListener('touchstart',function(){ timer=setTimeout(function(){ suitPop(b,i,j,combos,u); },480); },{passive:true});
+        b.addEventListener('touchend',function(){ if(timer)clearTimeout(timer); });
+        b.addEventListener('touchmove',function(){ if(timer)clearTimeout(timer); });
+      }
+      g.appendChild(b);
+    })(i,j);}
+  }
+  mx.appendChild(g);
+  var lg=document.createElement('div'); lg.className='mxlegend';
+  lg.innerHTML='<span><span style="display:inline-block;width:11px;height:11px;border-radius:2px;background:#C6A34A;vertical-align:-1px;margin-right:5px"></span>選択中</span>'+
+    '<span>長押し／右クリックでスート指定</span>';
+  mx.appendChild(lg);
+  wrap.appendChild(lab); wrap.appendChild(mx);
+}
+function placeHand(pair){
+  P[active.p]=[pair[0],pair[1]];
+  // 次の未入力プレイヤーへ送る（ボードには自動で飛ばさない：マトリクスはハンド専用）
+  var moved=false;
+  for(var p=0;p<P.length;p++) if(P[p][0]===null||P[p][1]===null){ active={t:'p',p:p,i:P[p][0]===null?0:1}; moved=true; break; }
+  if(!moved) active={t:'p',p:active.p,i:0};
+  drawAll(); calc();
+}
+function suitPop(anchorEl,i,j,combos,u){
+  closePop();
+  var bd=document.createElement('div'); bd.className='suitpop-bd'; bd.onclick=closePop;
+  var pop=document.createElement('div'); pop.className='suitpop';
+  combos.forEach(function(pr){
+    var dead=u[pr[0]]||u[pr[1]];
+    var el=document.createElement('button');
+    el.className='pcpair'+(dead?' dead':'');
+    el.style.cssText='display:flex;gap:3px;padding:0;background:none;border:0;cursor:'+(dead?'default':'pointer');
+    el.innerHTML=faceSpan(pr[0])+faceSpan(pr[1]);
+    if(!dead) el.onclick=function(){ closePop(); placeHand(pr); };
+    pop.appendChild(el);
+  });
+  var wrap=$('mxWrap'); wrap.style.position='relative';
+  var r=anchorEl.getBoundingClientRect(), wr=wrap.getBoundingClientRect();
+  pop.style.left=Math.max(4,Math.min(r.left-wr.left, wr.width-4-combos.length*52))+'px';
+  pop.style.top=(r.bottom-wr.top+4)+'px';
+  wrap.appendChild(bd); wrap.appendChild(pop);
+  window._pop=[bd,pop];
+}
+function closePop(){ if(window._pop){ window._pop.forEach(function(e){e.remove();}); window._pop=null; } }
+
+var NARROW=window.matchMedia('(max-width:519px)');
+var pickRank=null;
+function drawPick(){
+  if(NARROW.matches) drawPick2(); else { drawPick52(); sizePicker(); }
+}
+function sizePicker(){
+  var box=$('pick'), first=box.querySelector('.row .pc');
+  if(!first) return;
+  var w=first.getBoundingClientRect().width;
+  if(w>0) box.style.setProperty('--cw',w+'px');
+}
+if('ResizeObserver' in window){
+  new ResizeObserver(function(){ if(!NARROW.matches) sizePicker(); }).observe(document.body);
+}else{
+  window.addEventListener('resize',function(){ if(!NARROW.matches) sizePicker(); });
+}
+function drawPick52(){
+  var box=$('pick'); box.className='pick'; box.innerHTML=''; var u=used();
+  for(var s=3;s>=0;s--){
+    var row=document.createElement('div'); row.className='row';
+    for(var r=12;r>=0;r--){(function(r,s){
+      var c=r*4+s;
+      var b=document.createElement('button');
+      b.className='cb pc';
+      b.setAttribute('aria-label',RK[r]+SU[s]);
+      b.innerHTML=faceInner(c);
+      if(u[c]) b.disabled=true;
+      b.onclick=function(){ place(c); };
+      row.appendChild(b);
+    })(r,s);}
+    box.appendChild(row);
+  }
+}
+function drawPick2(){
+  var box=$('pick'); box.className='pick pick2'; box.innerHTML=''; var u=used();
+  var s1=document.createElement('p'); s1.className='step';
+  s1.innerHTML='<b>1</b>ランクを選ぶ';
+  var rw=document.createElement('div'); rw.className='ranks';
+  for(var r=12;r>=0;r--){(function(r){
+    var b=document.createElement('button');
+    b.textContent=RK[r];
+    b.setAttribute('aria-pressed',String(pickRank===r));
+    var free=false;
+    for(var s=0;s<4;s++) if(!u[r*4+s]) free=true;
+    if(!free) b.disabled=true;
+    b.onclick=function(){ pickRank=(pickRank===r?null:r); drawPick(); };
+    rw.appendChild(b);
+  })(r);}
+  var s2=document.createElement('p'); s2.className='step';
+  s2.innerHTML=pickRank===null
+    ? '<b>2</b>マークを選ぶ<span style="color:var(--ink-faint)">（先にランクを選んでください）</span>'
+    : '<b>2</b>マークを選ぶ<span style="color:var(--ink-faint)">（選択中：'+RK[pickRank]+'）</span>';
+  var sw=document.createElement('div'); sw.className='suits';
+  var NM=['クラブ','ダイヤ','ハート','スペード'];
+  for(var s3=0;s3<4;s3++){(function(s3){
+    var b=document.createElement('button');
+    b.innerHTML='<span class="g '+SUC[s3]+'">'+SU[s3]+'</span><span class="t">'+NM[s3]+'</span>';
+    if(pickRank===null||u[pickRank*4+s3]) b.disabled=true;
+    b.onclick=function(){ var c=pickRank*4+s3; pickRank=null; place(c); };
+    sw.appendChild(b);
+  })(s3);}
+  box.appendChild(s1); box.appendChild(rw); box.appendChild(s2); box.appendChild(sw);
+}
+(NARROW.addEventListener?NARROW.addEventListener('change',function(){pickRank=null;drawPick();})
+ :NARROW.addListener(function(){pickRank=null;drawPick();}));
+function place(c){
+  if(active.t==='p') P[active.p][active.i]=c;
+  else B[active.i]=c;
+  nextSlot(); drawAll(); calc();
+}
+function nextSlot(){
+  if(active.t==='p'){
+    if(active.i===0){active={t:'p',p:active.p,i:1};return;}
+    for(var p=active.p+1;p<P.length;p++) if(P[p][0]===null||P[p][1]===null){
+      active={t:'p',p:p,i:P[p][0]===null?0:1};return;}
+    for(var i=0;i<5;i++) if(B[i]===null){active={t:'b',i:i};return;}
+  }else{
+    for(var j=active.i+1;j<5;j++) if(B[j]===null){active={t:'b',i:j};return;}
+  }
+}
+function fixActive(){
+  if(active.t==='p'&&active.p>=P.length) active={t:'p',p:0,i:0};
+}
+function isBoardActive(){ return active.t==='b'; }
+function drawAll(){
+  drawPlayers(); drawBoard();
+  // ボードを触っているときは常に券面ピッカー。プレイヤーは選択中の入力方法に従う。
+  var useMatrix = (inputMode==='matrix' && active.t==='p');
+  $('segbar').style.display = isBoardActive() ? 'none' : '';
+  $('segCard').setAttribute('aria-pressed', String(inputMode==='card'));
+  $('segMx').setAttribute('aria-pressed', String(inputMode==='matrix'));
+  if(useMatrix){
+    $('pick').hidden=true; $('mxWrap').hidden=false;
+    $('inputTitle').textContent='ハンドを選ぶ';
+    $('inputHint').innerHTML='表のマスを押すと、プレイヤー'+(active.p+1)+
+      'にそのハンドが入ります。<b>右上＝スーテッド</b>／左下＝オフスート／対角＝ペア。特定のスートは長押し。';
+    drawMatrix();
+  }else{
+    $('pick').hidden=false; $('mxWrap').hidden=true;
+    if(isBoardActive()){
+      $('inputTitle').textContent='ボードのカードを選ぶ';
+      $('inputHint').innerHTML='フロップ→ターン→リバーの順に置きます。使用済みのカードは選べません。';
+    }else{
+      $('inputTitle').textContent='カードを選ぶ';
+      $('inputHint').innerHTML='上のスロットを押してから選びます。特定のスートまで指定したいときはこちら。';
+    }
+    drawPick();
+  }
+}
+
+/* ---------- 計算 ---------- */
+var token=0;
+function calc(){
+  token++;
+  var my=token;
+  var ready=P.every(function(h){return h[0]!==null&&h[1]!==null;});
+  var bd=B.filter(function(c){return c!==null;});
+  var bn=B.filter(function(c){return c!==null;}).length;
+  var contiguous=(bn===0||bn===3||bn===4||bn===5)&&
+    B.slice(0,bn).every(function(c){return c!==null;});
+  if(!ready){
+    $('res').innerHTML='<p class="note" style="font-family:var(--gt);font-size:13px">'+
+      '各プレイヤーに2枚ずつカードを置いてください。上のスロットを押してから、下の一覧で選びます。</p>';
+    P.forEach(function(_,i){
+      var e=$('eqb'+i); if(e) e.innerHTML='—<small>勝率</small>';
+      var bb=$('eqbar'+i); if(bb) bb.style.width='0';
+      var m=$('made'+i); if(m) m.hidden=true;
+    });
+    $('outsPane').hidden=true; $('distPane').hidden=true; return;
+  }
+  if(!contiguous){
+    $('res').innerHTML='<p class="note" style="font-family:var(--gt);font-size:13px">'+
+      'ボードはフロップ3枚→ターン→リバーの順に、間を空けずに置いてください。</p>';
+    $('outsPane').hidden=true; $('distPane').hidden=true; return;
+  }
+  var u=used(), deck=[];
+  for(var i=0;i<52;i++) if(!u[i]) deck.push(i);
+  var np=P.length, need=5-bn;
+  (function(){
+    var tmp=new Int32Array(7);
+    for(var p=0;p<np;p++){
+      var el=$('made'+p); if(!el) continue;
+      if(bn<3){ el.hidden=true; continue; }
+      var n=0; tmp[n++]=P[p][0]; tmp[n++]=P[p][1];
+      for(var k=0;k<bd.length;k++) tmp[n++]=bd[k];
+      el.hidden=false;
+      el.innerHTML='いまの役　<b>'+CAT[ev(tmp,n)>>20]+'</b>';
+    }
+  })();
+  var win=new Float64Array(np), tie=new Float64Array(np), total=0;
+  var cats=[]; for(i=0;i<np;i++) cats.push(new Float64Array(9));
+  var full=bd.slice(), buf=new Int32Array(7), scs=new Int32Array(np);
+
+  function one(){
+    var best=-1,cnt=0,p,k,n;
+    for(p=0;p<np;p++){
+      n=0; buf[n++]=P[p][0]; buf[n++]=P[p][1];
+      for(k=0;k<full.length;k++) buf[n++]=full[k];
+      var v=ev(buf,n); scs[p]=v; cats[p][v>>20]++;
+      if(v>best){best=v;cnt=1;} else if(v===best) cnt++;
+    }
+    for(p=0;p<np;p++) if(scs[p]===best){ if(cnt===1) win[p]++; else tie[p]+=1/cnt; }
+    total++;
+  }
+  var D=deck.length;
+  function finish(){
+    if(my!==token) return;
+    var eq=[]; for(var p=0;p<np;p++) eq.push((win[p]+tie[p])/total*100);
+    paintRes(eq,win,tie,total,cats);
+    paintOuts(deck,bn,np);
+  }
+  if(need===0){ one(); finish(); }
+  else if(need===1){ for(var a=0;a<D;a++){ full.push(deck[a]); one(); full.pop(); } finish(); }
+  else if(need===2){
+    for(var a2=0;a2<D;a2++)for(var b2=a2+1;b2<D;b2++){ full.push(deck[a2],deck[b2]); one(); full.length=bn; }
+    finish();
+  }
+  else {
+    var outer=[]; for(var o=0;o<=D-5;o++) outer.push(o);
+    var at=0;
+    $('res').innerHTML='<div class="prog"><i id="pgi"></i></div>'+
+      '<p class="note">全ボードを数え上げています…</p>';
+    (function step(){
+      if(my!==token) return;
+      var t0=performance.now();
+      while(at<outer.length&&performance.now()-t0<26){
+        var i1=outer[at++];
+        for(var i2=i1+1;i2<D;i2++)for(var i3=i2+1;i3<D;i3++)
+        for(var i4=i3+1;i4<D;i4++)for(var i5=i4+1;i5<D;i5++){
+          full.push(deck[i1],deck[i2],deck[i3],deck[i4],deck[i5]);
+          one(); full.length=bn;
+        }
+      }
+      var pg=$('pgi'); if(pg) pg.style.width=Math.round(at/outer.length*100)+'%';
+      if(at<outer.length) requestAnimationFrame(step); else finish();
+    })();
+  }
+}
+
+function paintRes(eq,win,tie,total,cats){
+  var np=eq.length;
+  var bar='<div class="bar">';
+  eq.forEach(function(e,i){
+    bar+='<span style="flex:'+Math.max(e,0.001)+';background:'+PCOL[i]+'">'+(e>=8?e.toFixed(1)+'%':'')+'</span>';
+  });
+  bar+='</div>';
+  var t='<table class="tbl"><tr><th>　</th><th>勝率</th><th>勝ち</th><th>引き分け</th><th>負け</th></tr>';
+  for(var i=0;i<np;i++){
+    var w=win[i]/total*100, ti=tie[i]/total*100;
+    t+='<tr><td><span class="dot" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'+
+      PCOL[i]+';margin-right:7px"></span>プレイヤー'+(i+1)+'</td>'+
+      '<td class="eq" style="color:'+PCOL[i]+'">'+eq[i].toFixed(2)+'%</td>'+
+      '<td class="n">'+w.toFixed(2)+'%</td><td class="n">'+ti.toFixed(2)+'%</td>'+
+      '<td class="n">'+(100-w-ti).toFixed(2)+'%</td></tr>';
+  }
+  t+='</table><p class="note">'+total.toLocaleString('ja-JP')+' 通りのボードを全て計算</p>';
+  $('res').innerHTML=bar+t;
+  eq.forEach(function(e,i){
+    var el=$('eqb'+i); if(el) el.innerHTML=e.toFixed(1)+'%<small>勝率</small>';
+    var bb=$('eqbar'+i); if(bb) bb.style.width=e.toFixed(2)+'%';
+  });
+  // 役の内訳
+  $('distPane').hidden=false;
+  var d=$('dist'); d.innerHTML='';
+  cats.forEach(function(cc,pi){
+    var sum=0; for(var k=0;k<9;k++) sum+=cc[k];
+    var h='<div><h4 style="color:'+PCOL[pi]+'">プレイヤー'+(pi+1)+'</h4>';
+    for(var k=8;k>=0;k--){
+      var v=cc[k]/sum*100; if(v<0.05) continue;
+      h+='<div class="dl"><span class="nm">'+CAT[k]+'</span><span class="tr"><i style="width:'+
+        Math.min(v,100)+'%;background:'+PCOL[pi]+'"></i></span><span class="vv">'+v.toFixed(1)+'%</span></div>';
+    }
+    d.innerHTML+=h+'</div>';
+  });
+}
+
+/* ---------- アウツ ---------- */
+function paintOuts(deck,bn,np){
+  var pane=$('outsPane'), box=$('outs');
+  if(np!==2||(bn!==3&&bn!==4)){ pane.hidden=true; return; }
+  pane.hidden=false;
+  var bd=B.slice(0,bn), buf=new Int32Array(7);
+  function scoreOf(p,extra){
+    var n=0; buf[n++]=P[p][0]; buf[n++]=P[p][1];
+    for(var k=0;k<bd.length;k++) buf[n++]=bd[k];
+    if(extra!==undefined) buf[n++]=extra;
+    return ev(buf,n);
+  }
+  var s0=scoreOf(0), s1=scoreOf(1);
+  if(s0===s1){
+    box.innerHTML='<p class="lead">現時点で<b>まったくの同点</b>です。どちらかが抜け出すカードを待つ形になります。</p>';
+    return;
+  }
+  var behind=s0>s1?1:0, ahead=1-behind;
+  var groups={}, n=0, list=[];
+  deck.forEach(function(c){
+    var a=scoreOf(ahead,c), b=scoreOf(behind,c);
+    if(b>a){
+      n++; list.push(c);
+      var g=CAT[b>>20];
+      (groups[g]=groups[g]||[]).push(c);
+    }
+  });
+  var street=bn===3?'ターン':'リバー', mult=bn===3?4:2;
+  var h='<p class="lead">いま前に出ているのは<b style="color:'+PCOL[ahead]+'">プレイヤー'+(ahead+1)+
+    '</b>（'+CAT[Math.max(s0,s1)>>20]+'）。<b style="color:'+PCOL[behind]+'">プレイヤー'+(behind+1)+
+    '</b>が'+street+'の1枚で逆転できるカードは —</p>';
+  if(n===0){
+    h+='<p class="lead"><b>1枚もありません。</b>次の1枚では追いつけない形です。'+
+      (bn===3?'（それでもリバーまで2枚あるので、上の勝率はゼロとは限りません）':'')+'</p>';
+    box.innerHTML=h; return;
+  }
+  h+='<div class="bigouts"><b>'+n+'</b><span>アウツ ／ 残り'+deck.length+'枚中</span></div>';
+  Object.keys(groups).forEach(function(g){
+    h+='<div class="outgrp"><p class="gl">'+g+'になる（'+groups[g].length+'枚）</p><div class="outcards">';
+    groups[g].sort(function(a,b){return b-a;}).forEach(function(c){ h+=faceSpan(c); });
+    h+='</div></div>';
+  });
+  var approx=n*mult, real=n/deck.length*100;
+  h+='<div class="rule42">4-2の法則では <b>'+n+'アウツ × '+mult+' ＝ 約'+approx+'%</b>。'+
+    '実際に'+street+'で当たる確率は <b>'+real.toFixed(1)+'%</b>（'+n+'÷'+deck.length+'）です。'+
+    (bn===3?'フロップの×4はリバーまで2枚めくる前提の概算なので、1枚あたりの当たりやすさとは別物です。上の勝率表がリバーまで含めた本当の数字です。':
+            'ターンからは残り1枚なので、この2つは近い値になります。')+'</div>';
+  box.innerHTML=h;
+}
+
+/* ---------- 操作 ---------- */
+function setInputMode(m){
+  inputMode=m;
+  try{ localStorage.setItem('pjd:inputMode',JSON.stringify(m)); }catch(e){}
+  // マトリクスに切り替えたのにボードを触っていたら、先頭プレイヤーに寄せる
+  if(m==='matrix' && active.t!=='p') active={t:'p',p:0,i:0};
+  drawAll();
+}
+$('segCard').onclick=function(){ setInputMode('card'); };
+$('segMx').onclick=function(){ setInputMode('matrix'); };
+
+$('addP').onclick=function(){ if(P.length<4){P.push([null,null]);active={t:'p',p:P.length-1,i:0};drawAll();calc();} };
+$('clr').onclick=function(){ P=P.map(function(){return [null,null];}); B=[null,null,null,null,null];
+  active={t:'p',p:0,i:0}; drawAll(); calc(); };
+$('clrB').onclick=function(){ B=[null,null,null,null,null]; active={t:'b',i:0}; drawAll(); calc(); };
+$('deal').onclick=function(){
+  var d=[]; for(var i=0;i<52;i++) d.push(i);
+  for(var i2=d.length-1;i2>0;i2--){var j=(Math.random()*(i2+1))|0;var t=d[i2];d[i2]=d[j];d[j]=t;}
+  var k=0;
+  P=P.map(function(){return [d[k++],d[k++]];});
+  B=[null,null,null,null,null];
+  active={t:'b',i:0}; drawAll(); calc();
+};
+var PRESETS=[
+  ['AA vs KK','As Ad','Ks Kd'],
+  ['AKs vs QQ（コインフリップ）','As Ks','Qd Qc'],
+  ['AA vs 72o','As Ah','7d 2c'],
+  ['AKo vs 22','As Kh','2d 2c'],
+  ['JTs vs AKo','Js Ts','Ad Kc'],
+  ['セット vs フラッシュドロー','7h 7d','As Ks']
+];
+(function(){
+  var box=$('presets');
+  PRESETS.forEach(function(pr,idx){
+    var b=document.createElement('button'); b.textContent=pr[0];
+    b.onclick=function(){
+      P=[parse(pr[1]),parse(pr[2])];
+      B=[null,null,null,null,null];
+      if(idx===5) B=[parse('7s')[0],parse('9s')[0],parse('2s')[0],null,null];
+      active={t:'b',i:B[0]===null?0:3};
+      drawAll(); calc();
+    };
+    box.appendChild(b);
+  });
+})();
+function parse(s){
+  return s.split(' ').map(function(x){
+    return RK.indexOf(x[0])*4 + ({'c':0,'d':1,'h':2,'s':3})[x[1]];
+  });
+}
+try{
+  var th=localStorage.getItem('pjd:theme');
+  if(th) document.documentElement.dataset.theme=JSON.parse(th);
+  else if(matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.dataset.theme='dark';
+}catch(e){}
+$('theme').onclick=function(){
+  var t=document.documentElement.dataset.theme==='dark'?'light':'dark';
+  document.documentElement.dataset.theme=t;
+  try{localStorage.setItem('pjd:theme',JSON.stringify(t));}catch(e){}
+};
+
+P=[parse('As Ad'),parse('Ks Kd')];
+active={t:'b',i:0};
+drawAll(); calc();
+})();
+</script>
+</body>
+</html>
