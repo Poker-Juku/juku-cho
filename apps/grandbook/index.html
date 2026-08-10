@@ -343,9 +343,10 @@ function renderScore(){
 function diffVerdict(total, hasInput){
   var a=Math.abs(total);
   if(!hasInput) return { msg:"下記の数値を元に判定します", tone:"idle" };
-  if(total===0)  return { msg:"Congratulations!!  ピッタリ揃いました", tone:"ok" };
-  if(a<1000)     return { msg:"ちょっとズレていますね（"+fmtSigned(total)+"）", tone:"warn" };
-  return { msg:"一度確認しましょう（"+fmtSigned(total)+"）", tone:"bad" };
+  if(total===0)  return { headline:"Amazing !!", msg:"ピッタリ揃いました", tone:"ok" };
+  if(a<1000)     return { headline:"ごまの範囲", msg:"ごまの範囲ですが "+fmtNum(a)+"円 のズレ", tone:"warn" };
+  if(a<3000)     return { headline:"要確認", msg:"もう一度確認が必要　"+fmtNum(a)+"円 のズレ", tone:"bad" };
+  return { headline:"ズーーレーースーーギーー", msg:"ズレすぎだろ　"+fmtNum(a)+"円 ズレ", tone:"over" };
 }
 
 function renderResult(){
@@ -364,11 +365,11 @@ function renderResult(){
     "display:flex;align-items:center;gap:9px;transition:border-color .3s, box-shadow .3s";
   card.innerHTML="";
   card.appendChild(svgEl(chipsIcon()));
-  card.appendChild(el("div",{style:"flex:1;min-width:0"},[
-    el("div",{class:"serif",style:"font-size:13px;letter-spacing:.1em;color:"+C.goldLt+";font-weight:700",text:"結果発表！！！"}),
-    el("div",{style:"font-size:9.5px;color:"+C.sub+";margin-top:1px;line-height:1.35",text:msg})
+  card.appendChild(el("div",{style:"flex:1;min-width:0;text-align:center"},[
+    el("div",{class:"serif",style:"font-size:9px;letter-spacing:.28em;color:"+C.sub+";font-weight:700",text:"RESULT"}),
+    el("div",{class:"serif",style:"font-size:22px;letter-spacing:.16em;color:"+C.goldLt+";font-weight:700;line-height:1.15;text-shadow:0 2px 8px rgba(201,162,75,.35)",text:"集計中"})
   ]));
-  card.appendChild(el("div",{class:"serif tnum",style:"font-size:19px;font-weight:700;color:"+col,text:fmtSigned(total)}));
+  card.appendChild(el("div",{style:"width:24px;flex-shrink:0"}));
 }
 
 function chipsIcon(){
@@ -938,80 +939,189 @@ function finalizeEntry(){
   S.sessions[S.date]={ rows:S.rows };
   saveSessions();
   playShutter();
+  var finalizedDate=S.date;
   showBlackboard(S.date, rows, function(){
-    // まっさらな入力画面へ
+    // 終了：まっさらな入力画面へ
     S.rows=defaultRows();
     renderScore();
-  });
+  }, { onEdit:function(){
+    // 編集画面へ戻る：完了した日付をそのまま開く
+    S.date=finalizedDate; loadDate(); go("score");
+  }});
+}
+
+function verdictColors(tone){
+  if(tone==="ok")   return { fg:"#F2C94C", bg:"rgba(242,201,76,.14)", bd:"rgba(242,201,76,.5)" };
+  if(tone==="warn") return { fg:"#E9C46A", bg:"rgba(233,196,106,.12)", bd:"rgba(233,196,106,.4)" };
+  if(tone==="bad")  return { fg:"#F3A0A0", bg:"rgba(243,160,160,.12)", bd:"rgba(243,160,160,.4)" };
+  return { fg:"#FF6B6B", bg:"rgba(255,107,107,.14)", bd:"rgba(255,107,107,.5)" }; // over
 }
 
 function showBlackboard(dateIso, rows, onClose, opts){
   opts=opts||{};
   var ranked=rows.slice().sort(function(a,b){ return b.amount-a.amount; });
-  var overlay=el("div",{class:"overlay",style:"z-index:80;align-items:center;justify-content:center;padding:18px"});
-  var bg=el("div",{class:"ovbg",style:"background:rgba(2,7,5,.8)"});
-  overlay.appendChild(bg);
+  var total=rows.reduce(function(s2,r){ return s2+r.amount; },0);
+  var vd=diffVerdict(total,true);
+  var vc=verdictColors(vd.tone);
 
-  var board=el("div",{style:"position:relative;width:100%;max-width:400px;max-height:86vh;overflow-y:auto;border-radius:14px;padding:22px 18px 24px;"+
+  var overlay=el("div",{class:"overlay",style:"z-index:80;align-items:center;justify-content:center;padding:16px"});
+  overlay.appendChild(el("div",{class:"ovbg",style:"background:rgba(2,7,5,.82)"}));
+
+  var scroller=el("div",{style:"position:relative;width:100%;max-width:400px;max-height:88vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px"});
+
+  // ==== キャプチャ対象（この部分を画像化） ====
+  var board=el("div",{style:"position:relative;border-radius:14px;padding:20px 18px 22px;overflow:hidden;"+
     "background:radial-gradient(120% 90% at 50% 0%, #24463A 0%, #16302A 55%, #102420 100%);"+
-    "border:10px solid #5B4326;box-shadow:0 20px 50px -12px rgba(0,0,0,.8), inset 0 0 60px rgba(0,0,0,.35)"});
-  // 木枠の質感
+    "border:8px solid #5B4326;box-shadow:0 20px 50px -12px rgba(0,0,0,.8), inset 0 0 60px rgba(0,0,0,.35)"});
   board.style.borderImage="linear-gradient(135deg,#6E5230,#3E2D18,#6E5230) 1";
 
-  board.appendChild(el("div",{class:"serif",style:"text-align:center;font-size:22px;font-weight:700;letter-spacing:.18em;color:#F3E8C8;"+
-    "text-shadow:0 1px 0 rgba(0,0,0,.4);margin-bottom:2px",text:"結果発表"}));
-  board.appendChild(el("div",{style:"text-align:center;font-size:11px;letter-spacing:.2em;color:#A9C3B3;margin-bottom:16px",text:fmtDateJP(dateIso)}));
+  board.appendChild(el("div",{class:"serif",style:"text-align:center;font-size:20px;font-weight:700;letter-spacing:.18em;color:#F3E8C8;text-shadow:0 1px 0 rgba(0,0,0,.4)",text:"結果発表"}));
+  board.appendChild(el("div",{style:"text-align:center;font-size:11px;letter-spacing:.2em;color:#A9C3B3;margin-bottom:12px",text:fmtDateJP(dateIso)}));
+
+  // 判定ヘッドライン（大きく）
+  board.appendChild(el("div",{class:"serif",style:"text-align:center;font-size:30px;font-weight:700;line-height:1.15;letter-spacing:.04em;"+
+    "color:"+vc.fg+";text-shadow:0 0 20px "+vc.bg+", 0 2px 4px rgba(0,0,0,.5);margin-bottom:4px",text:vd.headline}));
+  board.appendChild(el("div",{style:"text-align:center;font-size:12px;color:"+vc.fg+";opacity:.9;margin-bottom:14px",text:vd.msg}));
 
   var medal=["#F2C94C","#D7DCE0","#C88A4B"];
   ranked.forEach(function(r,i){
     var rank=i+1;
     var col=r.amount>0?"#8CE9B5":r.amount<0?"#F3A0A0":"#DCE7DF";
-    var chalk=el("div",{style:"display:flex;align-items:center;gap:12px;padding:11px 6px;border-bottom:1px dashed rgba(233,240,220,.18)"});
-    var badge=el("div",{class:"serif tnum",style:"width:30px;flex-shrink:0;text-align:center;font-size:19px;font-weight:700;"+
-      "color:"+(rank<=3?medal[rank-1]:"#E9F0DC"),text:rank});
-    chalk.appendChild(badge);
+    var chalk=el("div",{style:"display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px dashed rgba(233,240,220,.18)"});
+    chalk.appendChild(el("div",{class:"serif tnum",style:"width:28px;flex-shrink:0;text-align:center;font-size:18px;font-weight:700;color:"+(rank<=3?medal[rank-1]:"#E9F0DC"),text:rank}));
     chalk.appendChild(el("div",{style:"flex:1;min-width:0;font-size:16px;color:#F3E8C8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis",text:r.name}));
     chalk.appendChild(el("div",{class:"tnum",style:"font-size:17px;font-weight:700;color:"+col,text:fmtSigned(r.amount)}));
     board.appendChild(chalk);
   });
 
-  var total=rows.reduce(function(s2,r){ return s2+r.amount; },0);
-  board.appendChild(el("div",{style:"display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(233,240,220,.28)"},[
+  board.appendChild(el("div",{style:"display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid rgba(233,240,220,.28)"},[
     el("span",{style:"font-size:12px;letter-spacing:.15em;color:#A9C3B3",text:"合計差異"}),
     el("span",{class:"tnum",style:"font-size:18px;font-weight:700;color:"+(total===0?"#F2C94C":total>0?"#8CE9B5":"#F3A0A0"),text:fmtSigned(total)})
   ]));
+  board.appendChild(el("div",{style:"text-align:right;margin-top:8px;font-size:8px;letter-spacing:.25em;color:rgba(233,240,220,.4)",text:"GRADEBOOK"}));
 
-  var vd=diffVerdict(total,true);
-  board.appendChild(el("div",{style:"margin-top:8px;padding:9px 12px;border-radius:9px;text-align:center;font-size:12px;line-height:1.5;"+
-    (vd.tone==="ok"
-      ? "color:#F2C94C;background:rgba(242,201,76,.12);border:1px solid rgba(242,201,76,.45)"
-      : vd.tone==="warn"
-        ? "color:#E9C46A;background:rgba(233,196,106,.10);border:1px solid rgba(233,196,106,.35)"
-        : "color:#F3A0A0;background:rgba(243,160,160,.10);border:1px solid rgba(243,160,160,.35)"),
-    text:vd.msg}));
+  scroller.appendChild(board);
 
+  // ==== ボタン群 ====
   function closeBoard(){ if(overlay.parentNode) overlay.parentNode.removeChild(overlay); }
+  function goldBtn(txt,cb,mt){ return el("button",{style:"width:100%;"+(mt?"margin-top:8px;":"")+"padding:13px 0;border-radius:11px;font-size:14px;font-weight:700;letter-spacing:.08em;"+
+    "background:linear-gradient(180deg,#F1DCA0,#C9A24B);color:#231a06;border:1px solid #8A6C2E",text:txt,onclick:cb}); }
+  function ghostBtn(txt,cb,color){ return el("button",{style:"width:100%;margin-top:8px;padding:12px 0;border-radius:11px;font-size:13px;letter-spacing:.08em;"+
+    "background:transparent;color:"+(color||"#A9C3B3")+";border:1px solid rgba(233,240,220,.25)",text:txt,onclick:cb}); }
+
+  var btnWrap=el("div",{style:"flex-shrink:0"});
+
+  // 保存＆共有（画像化）
+  var status=el("div",{style:"height:16px;text-align:center;font-size:10px;color:#A9C3B3;margin-bottom:4px"});
+  btnWrap.appendChild(status);
+  var row2=el("div",{style:"display:grid;grid-template-columns:1fr 1fr;gap:8px"});
+  row2.appendChild(goldBtn("画像を保存",function(){ exportBoard(dateIso, ranked, total, vd, "download", status); }));
+  row2.appendChild(goldBtn("共有",function(){ exportBoard(dateIso, ranked, total, vd, "share", status); }));
+  btnWrap.appendChild(row2);
 
   if(opts.mode==="view"){
-    // 履歴からの表示：編集ボタン＋閉じる
-    board.appendChild(el("button",{style:"width:100%;margin-top:18px;padding:13px 0;border-radius:11px;font-size:14px;font-weight:700;letter-spacing:.1em;"+
-      "background:linear-gradient(180deg,#E4C77E,#C9A24B);color:#231a06;border:1px solid #B8912F",
-      text:"編集する", onclick:function(){ closeBoard(); if(opts.onEdit) opts.onEdit(); }}));
-    board.appendChild(el("button",{style:"width:100%;margin-top:8px;padding:12px 0;border-radius:11px;font-size:13px;letter-spacing:.1em;"+
-      "background:transparent;color:#A9C3B3;border:1px solid rgba(233,240,220,.25)",
-      text:"閉じる", onclick:function(){ closeBoard(); if(onClose) onClose(); }}));
+    btnWrap.appendChild(goldBtn("編集画面へ戻る",function(){ closeBoard(); if(opts.onEdit) opts.onEdit(); },true));
+    btnWrap.appendChild(ghostBtn("表示を消す",function(){ closeBoard(); if(onClose) onClose(); }));
   } else {
-    board.appendChild(el("button",{style:"width:100%;margin-top:18px;padding:13px 0;border-radius:11px;font-size:14px;font-weight:700;letter-spacing:.1em;"+
-      "background:linear-gradient(180deg,#E4C77E,#C9A24B);color:#231a06;border:1px solid #B8912F",
-      text:"閉じて新規入力へ", onclick:function(){ closeBoard(); if(onClose) onClose(); }}));
+    btnWrap.appendChild(goldBtn("編集画面へ戻る",function(){ closeBoard(); if(opts.onEdit) opts.onEdit(); },true));
+    btnWrap.appendChild(ghostBtn("終了（新規入力へ）",function(){ closeBoard(); if(onClose) onClose(); }));
   }
+  scroller.appendChild(btnWrap);
 
-  overlay.appendChild(board);
+  overlay.appendChild(scroller);
   document.body.appendChild(overlay);
-
-  // 登場アニメーション
-  board.animate ? board.animate([{transform:"scale(.92)",opacity:0},{transform:"scale(1)",opacity:1}],{duration:260,easing:"cubic-bezier(.34,1.4,.64,1)"}) : null;
+  if(board.animate) board.animate([{transform:"scale(.92)",opacity:0},{transform:"scale(1)",opacity:1}],{duration:260,easing:"cubic-bezier(.34,1.4,.64,1)"});
 }
+
+// ==== 結果ボードを画像(PNG)化して 保存 / 共有 ====
+function exportBoard(dateIso, ranked, total, vd, action, status){
+  status.textContent="画像を作成中…";
+  try{
+    var W=720, pad=48, rowH=64, headH=300, footH=150;
+    var H=headH + ranked.length*rowH + footH;
+    var vc=verdictColors(vd.tone);
+    function esc(t){ return String(t).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+    var y=headH;
+    var rowsSvg="";
+    var medal=["#F2C94C","#D7DCE0","#C88A4B"];
+    ranked.forEach(function(r,i){
+      var rank=i+1;
+      var col=r.amount>0?"#8CE9B5":r.amount<0?"#F3A0A0":"#DCE7DF";
+      rowsSvg+='<text x="'+pad+'" y="'+(y+rowH/2)+'" font-family="Georgia,serif" font-size="34" font-weight="700" fill="'+(rank<=3?medal[rank-1]:"#E9F0DC")+'" dominant-baseline="middle">'+rank+'</text>';
+      rowsSvg+='<text x="'+(pad+56)+'" y="'+(y+rowH/2)+'" font-family="sans-serif" font-size="30" fill="#F3E8C8" dominant-baseline="middle">'+esc(r.name)+'</text>';
+      rowsSvg+='<text x="'+(W-pad)+'" y="'+(y+rowH/2)+'" font-family="sans-serif" font-size="31" font-weight="700" fill="'+col+'" text-anchor="end" dominant-baseline="middle">'+esc(fmtSigned(r.amount))+'</text>';
+      rowsSvg+='<line x1="'+pad+'" y1="'+(y+rowH)+'" x2="'+(W-pad)+'" y2="'+(y+rowH)+'" stroke="rgba(233,240,220,.18)" stroke-dasharray="4 5" stroke-width="1.5"/>';
+      y+=rowH;
+    });
+    var totalCol=(total===0?"#F2C94C":total>0?"#8CE9B5":"#F3A0A0");
+    var svg=
+    '<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+
+      '<defs><radialGradient id="bgb" cx="50%" cy="0%" r="90%"><stop offset="0%" stop-color="#24463A"/><stop offset="55%" stop-color="#16302A"/><stop offset="100%" stop-color="#102420"/></radialGradient></defs>'+
+      '<rect width="'+W+'" height="'+H+'" fill="#3E2D18"/>'+
+      '<rect x="10" y="10" width="'+(W-20)+'" height="'+(H-20)+'" rx="16" fill="url(#bgb)" stroke="#6E5230" stroke-width="6"/>'+
+      '<text x="'+(W/2)+'" y="66" font-family="Georgia,serif" font-size="34" font-weight="700" letter-spacing="8" fill="#F3E8C8" text-anchor="middle">結果発表</text>'+
+      '<text x="'+(W/2)+'" y="98" font-family="sans-serif" font-size="20" letter-spacing="4" fill="#A9C3B3" text-anchor="middle">'+esc(fmtDateJP(dateIso))+'</text>'+
+      '<text x="'+(W/2)+'" y="182" font-family="Georgia,serif" font-size="'+(vd.headline.length>10?46:64)+'" font-weight="700" fill="'+vc.fg+'" text-anchor="middle">'+esc(vd.headline)+'</text>'+
+      '<text x="'+(W/2)+'" y="222" font-family="sans-serif" font-size="24" fill="'+vc.fg+'" fill-opacity="0.9" text-anchor="middle">'+esc(vd.msg)+'</text>'+
+      '<line x1="'+pad+'" y1="'+(headH-30)+'" x2="'+(W-pad)+'" y2="'+(headH-30)+'" stroke="rgba(233,240,220,.3)" stroke-width="2"/>'+
+      rowsSvg+
+      '<text x="'+pad+'" y="'+(y+50)+'" font-family="sans-serif" font-size="22" letter-spacing="3" fill="#A9C3B3" dominant-baseline="middle">合計差異</text>'+
+      '<text x="'+(W-pad)+'" y="'+(y+50)+'" font-family="sans-serif" font-size="34" font-weight="700" fill="'+totalCol+'" text-anchor="end" dominant-baseline="middle">'+esc(fmtSigned(total))+'</text>'+
+      '<text x="'+(W-pad)+'" y="'+(y+100)+'" font-family="sans-serif" font-size="16" letter-spacing="5" fill="rgba(233,240,220,.45)" text-anchor="end">GRADEBOOK</text>'+
+    '</svg>';
+
+    var svgBlob=new Blob([svg],{type:"image/svg+xml;charset=utf-8"});
+    var url=URL.createObjectURL(svgBlob);
+    var img=new Image();
+    img.onload=function(){
+      try{
+        var scale=2;
+        var canvas=document.createElement("canvas");
+        canvas.width=W*scale; canvas.height=H*scale;
+        var ctx=canvas.getContext("2d");
+        ctx.scale(scale,scale);
+        ctx.drawImage(img,0,0);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(function(blob){
+          if(!blob){ status.textContent="画像の作成に失敗しました"; return; }
+          var fname="gradebook_"+String(dateIso).replace(/\//g,"-")+".png";
+          finishExport(blob, fname, action, status);
+        },"image/png");
+      }catch(err){ status.textContent="画像化に失敗しました"; }
+    };
+    img.onerror=function(){ status.textContent="画像化に失敗しました"; URL.revokeObjectURL(url); };
+    img.src=url;
+  }catch(e){ status.textContent="エラー: "+(e&&e.message?e.message:e); }
+}
+
+function finishExport(blob, fname, action, status){
+  // 共有（LINE / AirDrop 等）
+  if(action==="share"){
+    try{
+      if(navigator.canShare){
+        var file=new File([blob], fname, {type:"image/png"});
+        if(navigator.canShare({files:[file]})){
+          navigator.share({ files:[file], title:"GRADEBOOK 結果", text:"結果発表" })
+            .then(function(){ status.textContent="共有しました"; })
+            .catch(function(){ status.textContent=""; });
+          return;
+        }
+      }
+    }catch(e){}
+    // 共有に非対応なら保存にフォールバック
+    status.textContent="共有に非対応のため保存します";
+  }
+  // 保存（ダウンロード）
+  try{
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download=fname;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(a.href); },500);
+    status.textContent="画像を保存しました";
+  }catch(e){ status.textContent="保存に失敗しました"; }
+}
+
 
 // ===== ルーレット =====
 function renderRoulette(){
