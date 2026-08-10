@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ハンドレンジ表｜ポジション別GTOレンジ｜塾長</title>
+<meta name="description" content="UTG・HJ・CO・BTN・SBのオープンレンジと、3ベット/コールの対応レンジを13×13の表で確認できます。ソルバー基準の混合頻度つき。6max・100BB。">
+<meta name="theme-color" content="#0B2A24">
+<meta property="og:title" content="ハンドレンジ表｜ポジション別GTOレンジ">
+<meta property="og:description" content="席を選ぶだけで、そのポジションのレンジが分かる。ソルバー基準の混合頻度つきレンジ表。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --felt:#0B2A24;--felt-deep:#061A16;--felt-lift:#123A31;
+  --card:#F6F3EA;--card-sub:#ECE7DA;--card-edge:#DDD6C4;
+  --ink:#15181B;--ink-soft:#565D63;--ink-faint:#8B9198;
+  --gold:#C6A24C;--gold-lt:#E8D49A;
+  --raise:#B22A2A;--call:#17724A;--fold:#E4DFD1;
+  --line:rgba(21,24,27,.12);--line-2:rgba(21,24,27,.26);
+  --sh-2:0 2px 6px rgba(0,0,0,.12),0 18px 40px -22px rgba(0,0,0,.5);
+  --r:12px;
+  --mn:"Shippori Mincho",serif;--gt:"Zen Kaku Gothic New","Hiragino Sans",system-ui,sans-serif;
+  --mo:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+html[data-theme="dark"]{
+  --felt:#050D0B;--felt-deep:#020706;--felt-lift:#0D1D19;
+  --card:#121A18;--card-sub:#182320;--card-edge:#26332E;
+  --ink:#EAE6DA;--ink-soft:#A3ACA7;--ink-faint:#79817C;
+  --raise:#D9524B;--call:#2E9E6B;--fold:#232E2A;
+  --line:rgba(234,230,218,.14);--line-2:rgba(234,230,218,.3);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:var(--gt);color:var(--ink);line-height:1.7;background:var(--felt);
+  background-image:radial-gradient(130% 70% at 50% -12%,var(--felt-lift) 0%,var(--felt) 45%,var(--felt-deep) 100%);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+
+.head{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--felt-deep) 90%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(198,162,76,.28)}
+.head-in{max-width:1080px;margin:0 auto;padding:9px 16px;display:flex;gap:12px;align-items:center;min-height:60px}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logo .mk{width:26px;height:34px;border-radius:4px;background:var(--card);color:var(--felt-deep);
+  display:grid;place-items:center;font-size:15px}
+.logo b{font-family:var(--mn);font-weight:700;font-size:17px;color:#F4F0E5;letter-spacing:.04em;white-space:nowrap}
+.nav-link{margin-left:auto;font-size:12.5px;color:rgba(244,240,229,.8);text-decoration:none;
+  padding:7px 14px;border-radius:999px;border:1px solid rgba(244,240,229,.25);white-space:nowrap}
+.nav-link:hover{background:rgba(255,255,255,.09)}
+.hbtn{width:36px;height:36px;border-radius:50%;color:#F4F0E5;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.16);font-size:14px;flex:0 0 auto}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px 60px}
+.hero{padding:44px 0 26px;text-align:center;color:#F4F0E5}
+.eyebrow{font-family:var(--mo);font-size:10px;letter-spacing:.34em;color:var(--gold);margin:0 0 16px}
+.hero h1{font-family:var(--mn);font-weight:800;margin:0;letter-spacing:.04em;font-size:clamp(30px,6.4vw,50px);line-height:1.2}
+.hero p{margin:16px auto 0;max-width:32em;font-size:clamp(13.5px,2.5vw,16px);line-height:2;color:rgba(244,240,229,.82)}
+.hero p b{color:var(--gold-lt)}
+
+.modes{display:flex;gap:6px;justify-content:center;margin:26px 0 0}
+.modes button{padding:9px 20px;border-radius:999px;font-size:13.5px;font-weight:700;
+  color:rgba(244,240,229,.75);border:1px solid rgba(244,240,229,.25)}
+.modes button[aria-pressed="true"]{background:var(--card);color:var(--ink);border-color:var(--card)}
+
+.pane{background:var(--card);border-radius:var(--r);box-shadow:var(--sh-2);border:1px solid var(--card-edge)}
+.sec{margin-top:20px}
+.tablebox{padding:16px 14px 8px}
+.tablebox .hint{margin:0 0 4px;text-align:center;font-size:12px;color:var(--ink-faint)}
+svg.table{display:block;width:100%;height:auto;max-width:520px;margin:0 auto}
+.seat{cursor:pointer}
+.seat .disc{fill:var(--card-sub);stroke:var(--line-2);stroke-width:1}
+.seat .lb{font-family:var(--mn);font-weight:700;font-size:13px;fill:var(--ink-soft);text-anchor:middle}
+.seat:hover .disc{fill:var(--fold)}
+.seat[data-on="hero"] .disc{fill:var(--gold);stroke:var(--gold)}
+.seat[data-on="hero"] .lb{fill:#1A1A1A}
+.seat[data-on="opp"] .disc{fill:none;stroke:var(--raise);stroke-width:2.5}
+.seat[data-on="opp"] .lb{fill:var(--raise)}
+.seat[data-off="1"]{cursor:default;opacity:.32}
+.felt{fill:var(--felt-lift);stroke:var(--gold);stroke-width:1.5;opacity:.95}
+.feltxt{font-family:var(--mo);font-size:9px;fill:var(--gold-lt);text-anchor:middle;letter-spacing:.2em}
+
+.opps{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:0 14px 14px}
+.opps button{padding:7px 15px;border-radius:999px;font-size:12.5px;border:1px solid var(--line-2);color:var(--ink-soft)}
+.opps button:hover{background:var(--card-sub);color:var(--ink)}
+.opps button[aria-pressed="true"]{background:var(--ink);color:var(--card);border-color:var(--ink)}
+
+.rhead{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.rhead h2{font-family:var(--mn);font-weight:800;font-size:clamp(20px,4vw,27px);margin:0;letter-spacing:.03em}
+.rhead .sub{font-size:12px;color:var(--ink-faint);margin:3px 0 0}
+.rhead .note{margin:11px 0 0;font-size:13.5px;line-height:1.9;color:var(--ink-soft)}
+.nums{display:flex;gap:22px;flex-wrap:wrap;margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--line)}
+.nums div{line-height:1.25}
+.nums b{display:block;font-family:var(--mn);font-weight:700;font-size:22px}
+.nums span{font-size:10.5px;color:var(--ink-faint);letter-spacing:.05em}
+.nums .r b{color:var(--raise)} .nums .c b{color:var(--call)}
+
+.gridbox{padding:14px}
+.rhead-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.modeswitch{display:flex;gap:0;border:1px solid var(--line-2);border-radius:999px;overflow:hidden;flex:0 0 auto}
+.modeswitch button{padding:7px 15px;font-size:12.5px;color:var(--ink-soft);border-radius:0}
+.modeswitch button+button{border-left:1px solid var(--line-2)}
+.modeswitch button[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.quizbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.brushes{display:flex;gap:7px;flex-wrap:wrap}
+.brush{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;
+  border:1px solid var(--line-2);font-size:12.5px;color:var(--ink-soft)}
+.brush i{width:12px;height:12px;border-radius:3px;display:block;border:1px solid var(--line-2)}
+.brush--r i{background:var(--raise)}
+.brush--c i{background:var(--call)}
+.brush--f i{background:var(--fold)}
+.brush[aria-pressed="true"]{background:var(--card-sub);border-color:var(--ink);color:var(--ink);font-weight:700}
+.quizactions{display:flex;gap:8px}
+.quizhint{margin:12px 0 0;font-size:12.5px;line-height:1.9;color:var(--ink-faint)}
+.quizscore{margin:14px 0 0;padding:14px 16px;border-radius:8px;background:var(--card-sub);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.quizscore .big{font-family:var(--mn);font-weight:800;font-size:26px;color:var(--gold)}
+.quizscore .big small{font-family:var(--gt);font-weight:400;font-size:12px;color:var(--ink-faint);margin-left:4px}
+.quizscore .msg{font-size:13px;color:var(--ink-soft);line-height:1.8}
+.cell.quiz-ok{box-shadow:inset 0 0 0 2px #2E9E6B}
+.cell.quiz-ng{box-shadow:inset 0 0 0 2px var(--heart)}
+.cell.quiz-mode{cursor:pointer}
+
+.grid{display:grid;grid-template-columns:1.5em repeat(13,1fr);gap:2px;align-items:stretch}
+.gh{display:grid;place-items:center;font-family:var(--mo);font-weight:700;
+  font-size:clamp(8.5px,2.1vw,13px);color:var(--ink-faint);line-height:1}
+.gh.corner{font-size:0}
+.cell{position:relative;aspect-ratio:1;border-radius:3px;overflow:hidden;background:var(--fold);
+  display:grid;place-items:center;border:0;padding:0}
+.cell .lab{position:relative;z-index:2;font-family:var(--mo);font-weight:700;
+  font-size:clamp(9px,2.45vw,15px);letter-spacing:-.03em;color:var(--ink-soft);line-height:1;
+  display:flex;align-items:baseline}
+.cell .lab i{font-style:normal;font-size:.66em;opacity:.72;margin-left:.04em}
+.cell.act .lab{color:#FFF;text-shadow:0 1px 1px rgba(0,0,0,.45)}
+.cell .fill{position:absolute;inset:0;z-index:1}
+.cell.pair{outline:1px solid var(--line-2);outline-offset:-1px}
+.cell[aria-pressed="true"]{outline:2px solid var(--gold);outline-offset:-2px;z-index:3}
+.readout{margin:14px 0 0;padding:13px 15px;border-radius:8px;background:var(--card-sub);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-height:46px}
+.readout .h{font-family:var(--mn);font-weight:800;font-size:23px}
+.readout .mix{display:flex;gap:12px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-soft)}
+.readout .mix i{font-style:normal;display:inline-flex;align-items:center;gap:5px}
+.readout .mix .sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+.readout .ph{color:var(--ink-faint);font-size:13px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:13px 0 0;font-size:12.5px;color:var(--ink-soft)}
+.legend i{font-style:normal;display:inline-flex;align-items:center;gap:6px}
+.legend .sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--line-2)}
+
+.read{padding:20px}
+.read h3{font-family:var(--mn);font-weight:700;font-size:16px;margin:0 0 10px;letter-spacing:.05em}
+.read p{margin:0 0 12px;font-size:13.5px;line-height:1.95;color:var(--ink-soft)}
+.read p:last-child{margin:0}
+.read code{font-family:var(--mo);font-size:12px;background:var(--card-sub);padding:1px 5px;border-radius:3px}
+.caution{margin-top:14px;padding:14px 16px;border-left:2px solid var(--gold);background:var(--card-sub);
+  border-radius:0 7px 7px 0;font-size:12.5px;line-height:1.95;color:var(--ink-soft)}
+.ad{min-height:100px;display:grid;place-items:center;border-radius:var(--r);margin-top:22px}
+.ad:empty{border:1px dashed rgba(198,162,76,.4);background:rgba(198,162,76,.06)}
+.ad:empty::after{content:"広告";font-family:var(--mo);font-size:10px;letter-spacing:.3em;color:var(--gold)}
+.foot{margin-top:44px;padding-top:20px;border-top:1px solid rgba(244,240,229,.14);
+  color:rgba(244,240,229,.5);font-size:11.5px;line-height:2;text-align:center}
+.foot a{color:var(--gold-lt);text-decoration:none;border-bottom:1px solid rgba(198,162,76,.4)}
+@media (max-width:640px){
+  .wrap{padding:0 10px 44px}
+  .hero{padding:28px 0 18px}
+  .gridbox{padding:8px}
+  .grid{gap:1.5px}
+  .rhead{padding:15px 15px 12px}
+  .nums{gap:16px}
+  .nums b{font-size:19px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="head-in">
+    <a class="logo" href="./"><span class="mk">♠</span><b>ハンドレンジ表</b></a>
+    <a class="nav-link" href="../dictionary/">用語辞典へ</a>
+    <button class="hbtn" id="theme" aria-label="配色を切り替える">◐</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <p class="eyebrow">PREFLOP RANGE CHART</p>
+    <h1>自分の席の、正解を見る</h1>
+    <p>座っている席を押すだけ。そのポジションで<b>どのハンドを、どのくらいの頻度で</b>プレイするのかが13×13の表で出ます。6max・100BB。</p>
+    <div class="modes" role="group" aria-label="場面を選ぶ">
+      <button id="mRfi" aria-pressed="true">自分から開ける</button>
+      <button id="mVs" aria-pressed="false">開けられた側</button>
+    </div>
+  </section>
+
+  <section class="pane sec">
+    <div class="tablebox">
+      <p class="hint" id="hint">自分の席を押してください</p>
+      <svg class="table" viewBox="0 0 480 250" role="group" aria-label="ポジションを選ぶ">
+        <ellipse class="felt" cx="240" cy="120" rx="150" ry="68"></ellipse>
+        <text class="feltxt" x="240" y="124">6 MAX</text>
+        <g id="seats"></g>
+      </svg>
+    </div>
+    <div class="opps" id="opps"></div>
+  </section>
+
+  <section class="pane sec">
+    <div class="rhead">
+      <div class="rhead-top">
+        <div>
+          <h2 id="rName">—</h2>
+          <p class="sub" id="rSub"></p>
+        </div>
+        <div class="modeswitch" role="group" aria-label="表示モード">
+          <button id="mView" aria-pressed="true">見る</button>
+          <button id="mQuiz" aria-pressed="false">塗って覚える</button>
+        </div>
+      </div>
+      <p class="note" id="rNote"></p>
+      <div class="nums" id="numsView">
+        <div><b id="nAll">—</b><span>プレイする割合</span></div>
+        <div class="r"><b id="nR">—</b><span id="lR">レイズ</span></div>
+        <div class="c" id="cWrap"><b id="nC">—</b><span>コール</span></div>
+      </div>
+      <div class="quizbar" id="quizBar" hidden>
+        <div class="brushes" role="group" aria-label="塗る色を選ぶ">
+          <button class="brush brush--r" data-brush="r" aria-pressed="true"><i></i><span id="brushRLabel">レイズ</span></button>
+          <button class="brush brush--c" data-brush="c" id="brushCBtn"><i></i>コール</button>
+          <button class="brush brush--f" data-brush="f"><i></i>消す（フォールド）</button>
+        </div>
+        <div class="quizactions">
+          <button class="mini" id="quizCheck">採点する</button>
+          <button class="mini" id="quizReset">やり直す</button>
+        </div>
+      </div>
+      <p class="quizhint" id="quizHint" hidden>
+        塗らなかったマスは自動的に「フォールド」として採点されます。まずはレイズ／コールするハンドだけ塗ってください。
+      </p>
+      <div class="quizscore" id="quizScore" hidden></div>
+    </div>
+    <div class="gridbox">
+      <div class="grid" id="grid"></div>
+      <div class="readout" id="readout"><span class="ph">マスを押すと、そのハンドの頻度が出ます</span></div>
+      <div class="legend" id="legendView">
+        <i><span class="sw" style="background:var(--raise)"></span><span id="legR">レイズする</span></i>
+        <i><span class="sw" style="background:var(--call)"></span>コールする</i>
+        <i><span class="sw" style="background:var(--fold)"></span>降りる</i>
+        <i>マスの色の高さ＝その割合</i>
+      </div>
+      <div class="legend" id="legendQuiz" hidden>
+        <i><span class="sw" style="background:#2E9E6B;opacity:.55"></span>正解</i>
+        <i><span class="sw" style="background:var(--heart)"></span>不正解（正しい色に修正して表示）</i>
+      </div>
+    </div>
+  </section>
+
+  <section class="pane sec read">
+    <h3>この表の読み方</h3>
+    <p>右上が<b>スーテッド</b>（同じマーク2枚）、左下が<b>オフスート</b>（違うマーク）、斜めの対角線が<b>ポケットペア</b>です。<code>AKs</code> はスペードのAとスペードのKのように、マークが揃ったAK。<code>AKo</code> はマークが違うAKを指します。</p>
+    <p>表の上と左にある文字は、手札2枚のランクです。上の行と左の列が交わるところが、そのハンドのマスになります。マスが途中まで塗られているのは、<b>そのハンドを毎回同じようにプレイしない</b>という意味です。半分だけ赤いなら「2回に1回はレイズ、残りは降りる」。ソルバーは相手に読まれないよう、同じハンドでも行動を混ぜます。実戦では、その割合を目安に「ここは降りておこう」と判断すれば十分です。</p>
+    <p>まずは<b>UTGとBTNを見比べてください</b>。同じAJoでも、UTGでは開けてBTNでも開ける。しかしJ9sはUTGでは降り、BTNでは開ける。ポジションが後ろになるほど広がる、という一点だけでも勝率は変わります。</p>
+    <div class="caution">
+      掲載しているのは、6max・100BB・レーキなしの標準的なソルバー解に基づく<b>基準レンジ</b>です（頻度は25%刻みに丸めています）。実際の最適解はレーキ、オープンサイズ、スタック、相手の傾向で変わります。丸暗記ではなく「どのくらいの広さか」の物差しとして使ってください。
+    </div>
+  </section>
+
+  <!-- 広告枠：解説の下 -->
+  <div class="ad" id="adBottom"></div>
+
+  <footer class="foot">
+    ハンドレンジ表 — <a href="https://juku-cho.com/">塾長</a>　|　<a href="../dictionary/">ポーカー用語辞典</a><br>
+    掲載内容は学習用の解説です。ゲームは各自の責任と余裕資金の範囲でお楽しみください。
+  </footer>
+</div>
+
+<script id="ranges" type="application/json">{"rfi:UTG":{"n":"UTG","sub":"アンダー・ザ・ガン","note":"最初に動く席。全員に後ろから襲われるので、いちばん狭く開ける。","kind":"rfi","pct":17.1,"rp":17.1,"cp":0.0,"h":{"KK":{"r":100},"98s":{"r":100},"TT":{"r":100},"Q9s":{"r":25},"QJs":{"r":100},"T8s":{"r":25},"33":{"r":75},"AKs":{"r":100},"A3s":{"r":100},"A7s":{"r":100},"76s":{"r":75},"ATo":{"r":50},"KQo":{"r":100},"AJs":{"r":100},"J9s":{"r":50},"KJo":{"r":25},"ATs":{"r":100},"A8s":{"r":100},"A4s":{"r":100},"A2s":{"r":100},"A5s":{"r":100},"AQs":{"r":100},"KJs":{"r":100},"KQs":{"r":100},"99":{"r":100},"44":{"r":100},"22":{"r":75},"87s":{"r":75},"AKo":{"r":100},"88":{"r":100},"JTs":{"r":100},"54s":{"r":25},"AQo":{"r":100},"KTs":{"r":100},"JJ":{"r":100},"A9s":{"r":100},"65s":{"r":50},"AA":{"r":100},"A6s":{"r":100},"77":{"r":100},"QTs":{"r":100},"K9s":{"r":50},"QQ":{"r":100},"66":{"r":100},"55":{"r":100},"AJo":{"r":100},"T9s":{"r":100}}},"rfi:HJ":{"n":"HJ","sub":"ハイジャック","note":"UTGが降りた分だけ、少し広げられる。","kind":"rfi","pct":22.2,"rp":22.2,"cp":0.0,"h":{"KK":{"r":100},"98s":{"r":100},"43s":{"r":25},"TT":{"r":100},"Q9s":{"r":100},"QTo":{"r":25},"QJs":{"r":100},"T8s":{"r":100},"33":{"r":100},"J8s":{"r":50},"AKs":{"r":100},"A3s":{"r":100},"A7s":{"r":100},"76s":{"r":100},"Q8s":{"r":50},"ATo":{"r":100},"KQo":{"r":100},"AJs":{"r":100},"J9s":{"r":100},"KJo":{"r":100},"ATs":{"r":100},"A8s":{"r":100},"QJo":{"r":75},"A4s":{"r":100},"A2s":{"r":100},"A9o":{"r":25},"A5s":{"r":100},"AQs":{"r":100},"KJs":{"r":100},"86s":{"r":25},"KQs":{"r":100},"99":{"r":100},"44":{"r":100},"22":{"r":100},"87s":{"r":100},"KTo":{"r":50},"AKo":{"r":100},"88":{"r":100},"JTs":{"r":100},"K8s":{"r":50},"54s":{"r":75},"AQo":{"r":100},"KTs":{"r":100},"JTo":{"r":25},"JJ":{"r":100},"A9s":{"r":100},"65s":{"r":100},"AA":{"r":100},"A6s":{"r":100},"77":{"r":100},"QTs":{"r":100},"K9s":{"r":100},"QQ":{"r":100},"66":{"r":100},"55":{"r":100},"AJo":{"r":100},"97s":{"r":50},"T9s":{"r":100}}},"rfi:CO":{"n":"CO","sub":"カットオフ","note":"BTNを飛び越して主導権を取りにいく席。ここから一気に広がる。","kind":"rfi","pct":29.0,"rp":29.0,"cp":0.0,"h":{"A8o":{"r":100},"KK":{"r":100},"98s":{"r":100},"43s":{"r":25},"TT":{"r":100},"Q9s":{"r":100},"A7o":{"r":25},"QTo":{"r":100},"K4s":{"r":25},"QJs":{"r":100},"J7s":{"r":25},"33":{"r":100},"T8s":{"r":100},"J8s":{"r":100},"AKs":{"r":100},"K9o":{"r":25},"A3s":{"r":100},"A7s":{"r":100},"T7s":{"r":50},"K6s":{"r":100},"76s":{"r":100},"Q8s":{"r":100},"ATo":{"r":100},"KQo":{"r":100},"AJs":{"r":100},"J9s":{"r":100},"KJo":{"r":100},"ATs":{"r":100},"Q7s":{"r":25},"A8s":{"r":100},"QJo":{"r":100},"A4s":{"r":100},"A2s":{"r":100},"A9o":{"r":100},"A5s":{"r":100},"AQs":{"r":100},"KJs":{"r":100},"86s":{"r":100},"KQs":{"r":100},"99":{"r":100},"44":{"r":100},"22":{"r":100},"87s":{"r":100},"KTo":{"r":100},"AKo":{"r":100},"88":{"r":100},"96s":{"r":25},"JTs":{"r":100},"K8s":{"r":100},"54s":{"r":100},"AQo":{"r":100},"KTs":{"r":100},"JTo":{"r":100},"T9o":{"r":25},"JJ":{"r":100},"K5s":{"r":50},"A9s":{"r":100},"J9o":{"r":25},"65s":{"r":100},"AA":{"r":100},"A6s":{"r":100},"K7s":{"r":100},"77":{"r":100},"75s":{"r":50},"QTs":{"r":100},"K9s":{"r":100},"QQ":{"r":100},"66":{"r":100},"55":{"r":100},"AJo":{"r":100},"97s":{"r":100},"T9s":{"r":100}}},"rfi:BTN":{"n":"BTN","sub":"ボタン","note":"全員より後に動ける最強の席。半分近いハンドで開けてよい。","kind":"rfi","pct":45.7,"rp":45.7,"cp":0.0,"h":{"43s":{"r":100},"Q9o":{"r":100},"J4s":{"r":25},"TT":{"r":100},"33":{"r":100},"AKs":{"r":100},"AJs":{"r":100},"84s":{"r":25},"A4s":{"r":100},"Q3s":{"r":50},"76o":{"r":50},"86s":{"r":100},"J6s":{"r":100},"85s":{"r":100},"98o":{"r":100},"AQo":{"r":100},"T9o":{"r":100},"95s":{"r":25},"A6o":{"r":50},"J9o":{"r":100},"QTs":{"r":100},"A8o":{"r":100},"Q9s":{"r":100},"K4s":{"r":100},"K6s":{"r":100},"76s":{"r":100},"Q8s":{"r":100},"32s":{"r":25},"K2s":{"r":100},"KQo":{"r":100},"KJo":{"r":100},"J9s":{"r":100},"J5s":{"r":50},"A2s":{"r":100},"KQs":{"r":100},"22":{"r":100},"AKo":{"r":100},"Q5s":{"r":100},"JTo":{"r":100},"64s":{"r":100},"K3s":{"r":100},"65s":{"r":100},"K7s":{"r":100},"K9s":{"r":100},"75s":{"r":100},"AJo":{"r":100},"98s":{"r":100},"A7o":{"r":50},"QJs":{"r":100},"A3s":{"r":100},"T7s":{"r":100},"A5o":{"r":50},"ATs":{"r":100},"Q7s":{"r":100},"K8o":{"r":100},"QJo":{"r":100},"Q4s":{"r":100},"A5s":{"r":100},"AQs":{"r":100},"KJs":{"r":100},"99":{"r":100},"44":{"r":100},"Q2s":{"r":25},"54s":{"r":100},"K8s":{"r":100},"A4o":{"r":50},"JJ":{"r":100},"A9s":{"r":100},"AA":{"r":100},"K7o":{"r":100},"77":{"r":100},"T8o":{"r":100},"KK":{"r":100},"74s":{"r":100},"QTo":{"r":100},"J7s":{"r":100},"T8s":{"r":100},"53s":{"r":100},"J8s":{"r":100},"K9o":{"r":100},"A7s":{"r":100},"A3o":{"r":50},"65o":{"r":25},"ATo":{"r":100},"A8s":{"r":100},"A9o":{"r":100},"63s":{"r":100},"87s":{"r":100},"T5s":{"r":25},"KTo":{"r":100},"87o":{"r":100},"88":{"r":100},"96s":{"r":100},"JTs":{"r":100},"KTs":{"r":100},"Q6s":{"r":100},"K5s":{"r":100},"42s":{"r":25},"A6s":{"r":100},"QQ":{"r":100},"66":{"r":100},"55":{"r":100},"97s":{"r":100},"T9s":{"r":100},"A2o":{"r":50},"T6s":{"r":100}}},"rfi:SB":{"n":"SB","sub":"スモールブラインド","note":"残りはBB一人。広く開けるが、以降はずっとOOPで戦う。","kind":"rfi","pct":43.9,"rp":43.9,"cp":0.0,"h":{"43s":{"r":100},"Q9o":{"r":100},"TT":{"r":100},"33":{"r":100},"AKs":{"r":100},"AJs":{"r":100},"A4s":{"r":100},"Q3s":{"r":50},"86s":{"r":100},"J6s":{"r":100},"85s":{"r":100},"98o":{"r":75},"AQo":{"r":100},"T9o":{"r":100},"95s":{"r":50},"A6o":{"r":75},"J9o":{"r":100},"QTs":{"r":100},"A8o":{"r":100},"Q9s":{"r":100},"K4s":{"r":100},"K6s":{"r":100},"76s":{"r":100},"Q8s":{"r":100},"KQo":{"r":100},"K2s":{"r":100},"KJo":{"r":100},"J9s":{"r":100},"J5s":{"r":50},"A2s":{"r":100},"KQs":{"r":100},"22":{"r":100},"AKo":{"r":100},"Q5s":{"r":100},"JTo":{"r":100},"64s":{"r":100},"K3s":{"r":100},"65s":{"r":100},"K7s":{"r":100},"K9s":{"r":100},"Q8o":{"r":50},"75s":{"r":100},"AJo":{"r":100},"98s":{"r":100},"A7o":{"r":75},"QJs":{"r":100},"A3s":{"r":100},"T7s":{"r":100},"A5o":{"r":75},"ATs":{"r":100},"Q7s":{"r":100},"K8o":{"r":50},"QJo":{"r":100},"Q4s":{"r":100},"A5s":{"r":100},"AQs":{"r":100},"KJs":{"r":100},"99":{"r":100},"44":{"r":100},"Q2s":{"r":50},"54s":{"r":100},"K8s":{"r":100},"A4o":{"r":75},"JJ":{"r":100},"A9s":{"r":100},"AA":{"r":100},"K7o":{"r":25},"77":{"r":100},"T8o":{"r":50},"KK":{"r":100},"74s":{"r":50},"QTo":{"r":100},"J7s":{"r":100},"T8s":{"r":100},"53s":{"r":100},"J8s":{"r":100},"K9o":{"r":100},"A7s":{"r":100},"A3o":{"r":75},"ATo":{"r":100},"A8s":{"r":100},"A9o":{"r":100},"87s":{"r":100},"KTo":{"r":100},"87o":{"r":50},"88":{"r":100},"96s":{"r":100},"JTs":{"r":100},"KTs":{"r":100},"Q6s":{"r":100},"K5s":{"r":100},"A6s":{"r":100},"QQ":{"r":100},"66":{"r":100},"55":{"r":100},"97s":{"r":100},"T9s":{"r":100},"A2o":{"r":75},"T6s":{"r":100}}},"vs:BB_vs_BTN":{"n":"BB vs BTN","sub":"BTNのオープンにBBで対応","note":"相手が広い＝こちらも降りすぎない。オッズが良いので幅広くコールする。","kind":"vs","pct":56.7,"rp":10.0,"cp":46.8,"h":{"43s":{"c":100},"Q9o":{"c":100},"J4s":{"c":50},"TT":{"r":100},"33":{"c":100},"AKs":{"r":100},"AJs":{"r":75,"c":25},"84s":{"c":100},"A4s":{"r":75,"c":25},"Q3s":{"c":75},"76o":{"c":100},"86s":{"c":100},"J6s":{"c":100},"85s":{"c":100},"98o":{"c":100},"AQo":{"r":100},"T9o":{"c":100},"95s":{"c":100},"A6o":{"c":100},"J9o":{"c":100},"QTs":{"c":100},"A8o":{"c":100},"Q9s":{"c":100},"K4s":{"c":100},"K6s":{"c":100},"76s":{"r":50,"c":50},"KQo":{"r":50,"c":50},"Q8s":{"c":100},"K2s":{"c":100},"32s":{"c":50},"KJo":{"r":25,"c":75},"J9s":{"c":100},"J5s":{"c":100},"A2s":{"r":50,"c":50},"86o":{"c":100},"KQs":{"r":75,"c":25},"22":{"c":100},"AKo":{"r":100},"Q5s":{"c":100},"JTo":{"c":100},"64s":{"c":100},"K3s":{"c":100},"65s":{"r":50,"c":50},"K7s":{"c":100},"K9s":{"c":100},"Q8o":{"c":100},"75s":{"c":100},"AJo":{"r":75,"c":25},"98s":{"r":25,"c":75},"A7o":{"c":100},"QJs":{"r":50,"c":50},"A3s":{"r":75,"c":25},"T7s":{"c":100},"97o":{"c":100},"A5o":{"c":100},"ATs":{"r":50,"c":50},"Q7s":{"c":100},"K8o":{"c":100},"QJo":{"c":100},"Q4s":{"c":100},"A5s":{"r":100},"KJs":{"r":50,"c":50},"AQs":{"r":100},"99":{"r":75,"c":25},"44":{"c":100},"Q2s":{"c":50},"54o":{"c":50},"54s":{"r":25,"c":75},"K8s":{"c":100},"A4o":{"c":100},"JJ":{"r":100},"A9s":{"c":100},"AA":{"r":100},"K7o":{"c":100},"77":{"r":25,"c":75},"Q7o":{"c":50},"T8o":{"c":100},"KK":{"r":100},"74s":{"c":100},"QTo":{"c":100},"J7s":{"c":100},"T8s":{"c":100},"53s":{"c":100},"J8s":{"c":100},"K9o":{"c":100},"A7s":{"c":100},"A3o":{"c":100},"65o":{"c":75},"ATo":{"r":50,"c":50},"A8s":{"c":100},"A9o":{"c":100},"T7o":{"c":25},"63s":{"c":100},"87s":{"r":25,"c":75},"T5s":{"c":100},"KTo":{"c":100},"87o":{"c":100},"88":{"r":50,"c":50},"K6o":{"c":100},"96s":{"c":100},"JTs":{"r":50,"c":50},"KTs":{"r":50,"c":50},"K5o":{"c":50},"Q6s":{"c":100},"K5s":{"c":100},"J7o":{"c":25},"A6s":{"c":100},"QQ":{"r":100},"J8o":{"c":100},"66":{"c":100},"55":{"c":100},"97s":{"c":100},"T9s":{"r":50,"c":50},"A2o":{"c":100},"T6s":{"c":100}}},"vs:BB_vs_CO":{"n":"BB vs CO","sub":"COのオープンにBBで対応","note":"BTN相手よりは締める。コール主体でフロップに進む。","kind":"vs","pct":45.7,"rp":6.3,"cp":39.4,"h":{"43s":{"c":75},"Q9o":{"c":100},"TT":{"r":75,"c":25},"33":{"c":100},"AKs":{"r":100},"AJs":{"r":75,"c":25},"A4s":{"r":50,"c":50},"76o":{"c":50},"86s":{"c":100},"J6s":{"c":50},"85s":{"c":100},"98o":{"c":100},"AQo":{"r":75,"c":25},"T9o":{"c":100},"A6o":{"c":100},"J9o":{"c":100},"QTs":{"c":100},"A8o":{"c":100},"Q9s":{"c":100},"K4s":{"c":100},"K6s":{"c":100},"76s":{"r":25,"c":75},"KQo":{"r":25,"c":75},"Q8s":{"c":100},"KJo":{"c":100},"J9s":{"c":100},"A2s":{"c":100},"KQs":{"r":75,"c":25},"22":{"c":100},"AKo":{"r":100},"Q5s":{"c":50},"JTo":{"c":100},"64s":{"c":100},"K3s":{"c":50},"65s":{"r":25,"c":75},"K7s":{"c":100},"K9s":{"c":100},"Q8o":{"c":50},"75s":{"c":100},"AJo":{"r":25,"c":75},"98s":{"c":100},"A7o":{"c":100},"QJs":{"r":25,"c":75},"A3s":{"r":25,"c":75},"T7s":{"c":100},"A5o":{"c":100},"ATs":{"r":25,"c":75},"Q7s":{"c":100},"K8o":{"c":100},"QJo":{"c":100},"A5s":{"r":75,"c":25},"KJs":{"r":25,"c":75},"AQs":{"r":100},"99":{"r":25,"c":75},"44":{"c":100},"54s":{"c":100},"K8s":{"c":100},"A4o":{"c":100},"JJ":{"r":100},"A9s":{"c":100},"AA":{"r":100},"K7o":{"c":50},"77":{"c":100},"T8o":{"c":100},"KK":{"r":100},"QTo":{"c":100},"J7s":{"c":100},"T8s":{"c":100},"53s":{"c":100},"J8s":{"c":100},"K9o":{"c":100},"A7s":{"c":100},"A3o":{"c":100},"ATo":{"c":100},"A8s":{"c":100},"A9o":{"c":100},"87s":{"c":100},"KTo":{"c":100},"87o":{"c":75},"88":{"c":100},"96s":{"c":100},"JTs":{"r":25,"c":75},"KTs":{"c":100},"Q6s":{"c":100},"K5s":{"c":100},"A6s":{"c":100},"QQ":{"r":100},"J8o":{"c":50},"66":{"c":100},"55":{"c":100},"97s":{"c":100},"T9s":{"r":25,"c":75},"A2o":{"c":100},"T6s":{"c":50}}},"vs:BB_vs_UTG":{"n":"BB vs UTG","sub":"UTGのオープンにBBで対応","note":"相手が最も強いレンジ。降りるのが正解の手が一気に増える。","kind":"vs","pct":34.9,"rp":5.5,"cp":29.4,"h":{"43s":{"c":50},"Q9o":{"c":50},"TT":{"r":50,"c":50},"33":{"c":100},"AKs":{"r":100},"AJs":{"r":50,"c":50},"A4s":{"r":50,"c":50},"86s":{"c":100},"J6s":{"c":25},"85s":{"c":100},"98o":{"c":25},"AQo":{"r":50,"c":50},"T9o":{"c":50},"A6o":{"c":50},"J9o":{"c":50},"QTs":{"c":100},"A8o":{"c":100},"Q9s":{"c":100},"K6s":{"c":100},"76s":{"r":25,"c":75},"Q8s":{"c":100},"KQo":{"c":100},"KJo":{"c":100},"J9s":{"c":100},"A2s":{"c":100},"KQs":{"r":50,"c":50},"22":{"c":100},"AKo":{"r":100},"JTo":{"c":100},"64s":{"c":100},"65s":{"r":25,"c":75},"K7s":{"c":100},"K9s":{"c":100},"75s":{"c":100},"AJo":{"r":25,"c":75},"98s":{"c":100},"A7o":{"c":100},"QJs":{"r":25,"c":75},"A3s":{"r":25,"c":75},"T7s":{"c":100},"A5o":{"c":75},"ATs":{"r":25,"c":75},"Q7s":{"c":100},"QJo":{"c":100},"A5s":{"r":75,"c":25},"KJs":{"r":25,"c":75},"AQs":{"r":100},"99":{"r":25,"c":75},"44":{"c":100},"54s":{"c":100},"K8s":{"c":100},"A4o":{"c":50},"JJ":{"r":75,"c":25},"A9s":{"c":100},"AA":{"r":100},"77":{"c":100},"KK":{"r":100},"74s":{"c":50},"QTo":{"c":100},"J7s":{"c":100},"T8s":{"c":100},"J8s":{"c":100},"K9o":{"c":50},"A7s":{"c":100},"ATo":{"c":100},"A8s":{"c":100},"A9o":{"c":100},"87s":{"c":100},"KTo":{"c":100},"88":{"c":100},"96s":{"c":100},"JTs":{"r":25,"c":75},"KTs":{"c":100},"Q6s":{"c":50},"K5s":{"c":50},"A6s":{"c":100},"QQ":{"r":100},"66":{"c":100},"55":{"c":100},"97s":{"c":100},"T9s":{"r":25,"c":75},"T6s":{"c":100}}},"vs:SB_vs_BTN":{"n":"SB vs BTN","sub":"BTNのオープンにSBで対応","note":"OOP確定なので、コールよりも3ベットで主導権を取る比率が上がる。","kind":"vs","pct":20.0,"rp":10.0,"cp":10.1,"h":{"KK":{"r":100},"98s":{"r":25,"c":75},"TT":{"r":100},"Q9s":{"c":100},"QJs":{"r":50},"T8s":{"c":75},"33":{"c":75},"J8s":{"c":50},"AKs":{"r":100},"A3s":{"r":50},"A7s":{"c":100},"76s":{"r":25,"c":75},"ATo":{"r":25,"c":75},"KQo":{"r":75},"Q8s":{"c":50},"AJs":{"r":100},"KJo":{"r":25,"c":75},"J9s":{"c":100},"ATs":{"r":75},"A8s":{"c":100},"QJo":{"c":50},"A4s":{"r":75,"c":25},"A2s":{"r":50},"A9o":{"c":50},"A5s":{"r":75,"c":25},"KJs":{"r":75},"AQs":{"r":100},"KQs":{"r":100},"99":{"r":75,"c":25},"87s":{"r":25,"c":75},"44":{"c":75},"22":{"c":75},"KTo":{"c":50},"AKo":{"r":100},"88":{"r":50,"c":50},"JTs":{"r":50},"K8s":{"c":75},"54s":{"c":50},"AQo":{"r":100},"KTs":{"r":50,"c":50},"JTo":{"c":25},"JJ":{"r":100},"A9s":{"r":25,"c":75},"65s":{"r":25,"c":75},"AA":{"r":100},"A6s":{"c":100},"K7s":{"c":50},"77":{"r":25,"c":75},"QTs":{"r":25,"c":75},"K9s":{"c":100},"QQ":{"r":100},"66":{"c":75},"55":{"c":75},"AJo":{"r":75},"T9s":{"r":25,"c":75}}},"vs:BTN_vs_CO":{"n":"BTN vs CO","sub":"COのオープンにBTNで対応","note":"ポジションがあるので、コールを厚く持てる数少ないスポット。","kind":"vs","pct":23.5,"rp":8.9,"cp":14.5,"h":{"KK":{"r":100},"98s":{"r":25,"c":75},"TT":{"r":100},"Q9s":{"c":100},"QTo":{"c":50},"QJs":{"r":50,"c":50},"T8s":{"c":100},"33":{"c":100},"J8s":{"c":100},"AKs":{"r":100},"A3s":{"r":50,"c":50},"A7s":{"c":50},"76s":{"r":25,"c":75},"ATo":{"r":25,"c":75},"KQo":{"r":75},"Q8s":{"c":50},"AJs":{"r":75,"c":25},"KJo":{"r":25,"c":75},"J9s":{"c":100},"ATs":{"r":50,"c":50},"A8s":{"c":50},"QJo":{"c":100},"A4s":{"r":75,"c":25},"A2s":{"r":25,"c":50},"A9o":{"c":75},"A5s":{"r":75,"c":25},"KJs":{"r":50,"c":50},"AQs":{"r":100},"86s":{"c":100},"KQs":{"r":75,"c":25},"99":{"r":75,"c":25},"44":{"c":100},"22":{"c":100},"87s":{"c":100},"KTo":{"c":75},"AKo":{"r":100},"88":{"r":50,"c":50},"JTs":{"r":50,"c":50},"K8s":{"c":75},"54s":{"c":75},"AQo":{"r":100},"KTs":{"r":25,"c":75},"JTo":{"c":75},"JJ":{"r":100},"A9s":{"c":50},"65s":{"r":25,"c":75},"AA":{"r":100},"A6s":{"c":50},"K7s":{"c":50},"77":{"c":100},"75s":{"c":100},"QTs":{"c":100},"K9s":{"c":100},"QQ":{"r":100},"66":{"c":100},"55":{"c":100},"AJo":{"r":50},"97s":{"c":100},"T9s":{"r":25,"c":75}}},"vs:BTN_vs_UTG":{"n":"BTN vs UTG","sub":"UTGのオープンにBTNで対応","note":"相手が強いレンジ。3ベットは絞り、コールでポジションを活かす。","kind":"vs","pct":18.4,"rp":4.7,"cp":13.7,"h":{"KK":{"r":100},"98s":{"c":100},"TT":{"r":50,"c":50},"Q9s":{"c":50},"QJs":{"r":25,"c":75},"T8s":{"c":50},"33":{"c":100},"AKs":{"r":100},"A3s":{"c":50},"A7s":{"c":100},"76s":{"r":25,"c":75},"ATo":{"c":75},"KQo":{"c":100},"AJs":{"r":25,"c":75},"J9s":{"c":75},"KJo":{"c":50},"ATs":{"c":100},"A8s":{"c":100},"QJo":{"c":50},"A4s":{"r":25,"c":50},"A2s":{"c":25},"A5s":{"r":50,"c":50},"AQs":{"r":75,"c":25},"KJs":{"c":100},"KQs":{"r":50,"c":50},"99":{"c":100},"44":{"c":100},"22":{"c":100},"87s":{"c":100},"AKo":{"r":100},"88":{"c":100},"JTs":{"r":25,"c":75},"54s":{"c":50},"AQo":{"r":50,"c":50},"KTs":{"c":100},"JJ":{"r":100},"A9s":{"c":100},"65s":{"c":75},"AA":{"r":100},"A6s":{"c":100},"77":{"c":100},"QTs":{"c":100},"K9s":{"c":75},"QQ":{"r":100},"66":{"c":100},"55":{"c":100},"AJo":{"c":100},"T9s":{"r":25,"c":75}}}}</script>
+<script>
+(function(){
+"use strict";
+var RG=JSON.parse(document.getElementById('ranges').textContent);
+var R="AKQJT98765432".split('');
+var SEATS=[
+  {p:'UTG',x:80,y:91},{p:'HJ',x:240,y:35},{p:'CO',x:400,y:91},
+  {p:'BTN',x:370,y:175},{p:'SB',x:240,y:205},{p:'BB',x:110,y:175}
+];
+var VS_OF={BB:['BTN','CO','UTG'],SB:['BTN'],BTN:['CO','UTG']};
+var $=function(i){return document.getElementById(i);};
+var mode='rfi', hero=null, opp=null, sel=null;
+
+/* theme */
+try{
+  var t=localStorage.getItem('pjd:theme');
+  if(t) document.documentElement.dataset.theme=JSON.parse(t);
+  else if(matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.dataset.theme='dark';
+}catch(e){}
+$('theme').onclick=function(){
+  var t=document.documentElement.dataset.theme==='dark'?'light':'dark';
+  document.documentElement.dataset.theme=t;
+  try{localStorage.setItem('pjd:theme',JSON.stringify(t));}catch(e){}
+};
+
+/* table */
+(function(){
+  var g=$('seats'), ns='http://www.w3.org/2000/svg';
+  SEATS.forEach(function(s){
+    var a=document.createElementNS(ns,'g');
+    a.setAttribute('class','seat'); a.dataset.p=s.p;
+    a.setAttribute('tabindex','0'); a.setAttribute('role','button');
+    a.setAttribute('aria-label',s.p+'の席');
+    var c=document.createElementNS(ns,'circle');
+    c.setAttribute('class','disc'); c.setAttribute('cx',s.x); c.setAttribute('cy',s.y); c.setAttribute('r',26);
+    var t=document.createElementNS(ns,'text');
+    t.setAttribute('class','lb'); t.setAttribute('x',s.x); t.setAttribute('y',s.y+5);
+    t.textContent=s.p;
+    a.appendChild(c); a.appendChild(t);
+    a.addEventListener('click',function(){pickSeat(s.p);});
+    a.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pickSeat(s.p);}});
+    g.appendChild(a);
+  });
+})();
+function seatEls(){return document.querySelectorAll('.seat');}
+function paintSeats(){
+  seatEls().forEach(function(el){
+    var p=el.dataset.p, off=false;
+    if(mode==='rfi') off=(p==='BB');
+    else off=!VS_OF[p];
+    el.dataset.off=off?'1':'0';
+    el.removeAttribute('data-on');
+    if(p===hero) el.dataset.on='hero';
+    else if(mode==='vs'&&p===opp) el.dataset.on='opp';
+  });
+}
+function pickSeat(p){
+  if(mode==='rfi'){
+    if(p==='BB'){ $('hint').textContent='BBは最後に動く席なので「開ける」場面がありません。開けられた側を選んでください。'; return; }
+    hero=p; opp=null; show('rfi:'+p);
+  }else{
+    if(!VS_OF[p]){ $('hint').textContent='この席の対応レンジは準備中です。BB・SB・BTNから選んでください。'; return; }
+    hero=p; opp=VS_OF[p][0]; show('vs:'+p+'_vs_'+opp);
+  }
+}
+function paintOpps(){
+  var box=$('opps'); box.innerHTML='';
+  if(mode!=='vs'||!hero||!VS_OF[hero]) return;
+  VS_OF[hero].forEach(function(o){
+    var b=document.createElement('button');
+    b.textContent='vs '+o+' のオープン';
+    b.setAttribute('aria-pressed',String(o===opp));
+    b.onclick=function(){ opp=o; show('vs:'+hero+'_vs_'+o); };
+    box.appendChild(b);
+  });
+}
+
+/* modes */
+$('mRfi').onclick=function(){ setMode('rfi'); };
+$('mVs').onclick=function(){ setMode('vs'); };
+function setMode(m){
+  mode=m;
+  $('mRfi').setAttribute('aria-pressed',String(m==='rfi'));
+  $('mVs').setAttribute('aria-pressed',String(m==='vs'));
+  if(m==='rfi'){ hero='BTN'; opp=null; show('rfi:BTN'); }
+  else { hero='BB'; opp='BTN'; show('vs:BB_vs_BTN'); }
+}
+
+/* grid */
+function hands(){
+  var out=[];
+  for(var i=0;i<13;i++) for(var j=0;j<13;j++){
+    out.push(i===j?R[i]+R[i]:(i<j?R[i]+R[j]+'s':R[j]+R[i]+'o'));
+  }
+  return out;
+}
+var HANDS=hands();
+function combos(h){return h.length===2?6:(h.slice(-1)==='s'?4:12);}
+(function(){
+  var g=$('grid');
+  function head(txt,cls){
+    var d=document.createElement('div');
+    d.className='gh'+(cls?' '+cls:''); d.textContent=txt;
+    d.setAttribute('aria-hidden','true'); return d;
+  }
+  g.appendChild(head('','corner'));
+  R.forEach(function(r){ g.appendChild(head(r)); });
+  for(var i=0;i<13;i++){
+    g.appendChild(head(R[i]));
+    for(var j=0;j<13;j++){
+      var h=HANDS[i*13+j];
+      var b=document.createElement('button');
+      b.className='cell'+(h.length===2?' pair':'');
+      b.dataset.h=h; b.setAttribute('aria-pressed','false');
+      b.setAttribute('aria-label',h);
+      b.innerHTML='<span class="fill"></span><span class="lab">'+h.slice(0,2)+
+        (h.length>2?'<i>'+h[2]+'</i>':'')+'</span>';
+      b.onclick=(function(hh){return function(){
+        if(quizMode){ paintCell(hh); } else { sel=hh; paintReadout(); paintSel(); }
+      };})(h);
+      g.appendChild(b);
+    }
+  }
+})();
+function paintSel(){
+  document.querySelectorAll('.cell').forEach(function(c){
+    c.setAttribute('aria-pressed',String(c.dataset.h===sel));
+  });
+}
+var cur=null;
+
+/* ===== 塗って覚えるゲーム ===== */
+var quizMode=false, brush='r', paint={}, curKey=null; // paint[hand] = 'r' | 'c'（未登録=フォールド扱い）
+function setQuizMode(on){
+  quizMode=on;
+  $('mView').setAttribute('aria-pressed',String(!on));
+  $('mQuiz').setAttribute('aria-pressed',String(on));
+  $('numsView').hidden=on;
+  $('quizBar').hidden=!on;
+  $('quizHint').hidden=!on;
+  $('legendView').hidden=on;
+  $('readout').hidden=on;  // 答えが見える読み上げ欄は、ゲーム中は隠して答えを漏らさない
+  $('legendQuiz').hidden=!on;
+  document.querySelectorAll('.cell').forEach(function(c){ c.classList.toggle('quiz-mode',on); });
+  sel=null; paintSel();  // 直前にビューモードで選んでいたマスの金枠を消す
+  if(on) resetQuiz(); else { $('quizScore').hidden=true; show(curKey); }
+}
+function dominant(hand){
+  var m=(cur&&cur.h[hand])||{}, r=m.r||0, c=m.c||0, f=100-r-c;
+  if(r>=c && r>=f) return 'r';
+  if(c>=f) return 'c';
+  return 'f';
+}
+function paintCell(hand){
+  if(brush==='f') delete paint[hand]; else paint[hand]=brush;
+  var el=document.querySelector('.cell[data-h="'+hand+'"] .fill');
+  if(!el) return;
+  el.style.background = brush==='f' ? 'transparent'
+    : (brush==='r' ? 'var(--raise)' : 'var(--call)');
+}
+function resetQuiz(){
+  paint={};
+  $('quizScore').hidden=true;
+  document.querySelectorAll('.cell').forEach(function(c){
+    c.classList.remove('quiz-ok','quiz-ng');
+    var f=c.querySelector('.fill'); if(f) f.style.background='transparent';
+  });
+}
+function checkQuiz(){
+  if(!cur) return;
+  var ok=0, total=0, missedRaise=0, wrongRaise=0;
+  document.querySelectorAll('.cell').forEach(function(c){
+    var h=c.dataset.h, want=dominant(h), got=paint[h]||'f';
+    total++;
+    var f=c.querySelector('.fill');
+    f.style.background = want==='r' ? 'var(--raise)' : want==='c' ? 'var(--call)' : 'transparent';
+    var hit = got===want;
+    c.classList.toggle('quiz-ok', hit);
+    c.classList.toggle('quiz-ng', !hit);
+    if(hit) ok++;
+    else if(want!=='f' && got==='f') missedRaise++;
+    else if(want==='f' && got!=='f') wrongRaise++;
+  });
+  var pct=Math.round(ok/total*100);
+  var box=$('quizScore'); box.hidden=false;
+  var msg = pct===100 ? 'パーフェクトです。次の席にも挑戦してみてください。'
+    : missedRaise>=wrongRaise ? '塗り足りないマスが多いようです。赤い枠が正解の色に変わっているので見直してください。'
+    : '塗りすぎているマスが多いようです。フォールドすべきハンドを確認してください。';
+  box.innerHTML='<span class="big">'+ok+'<small>／'+total+' マス正解（'+pct+'%）</small></span>'+
+    '<span class="msg">'+msg+'</span>';
+}
+$('mView').onclick=function(){ setQuizMode(false); };
+$('mQuiz').onclick=function(){ setQuizMode(true); };
+document.querySelectorAll('.brush').forEach(function(b){
+  b.onclick=function(){
+    brush=b.dataset.brush;
+    document.querySelectorAll('.brush').forEach(function(x){ x.setAttribute('aria-pressed',String(x===b)); });
+  };
+});
+$('quizCheck').onclick=checkQuiz;
+$('quizReset').onclick=resetQuiz;
+
+function show(key){
+  var d=RG[key]; if(!d) return;
+  cur=d; curKey=key;
+  $('rName').textContent=d.n;
+  $('rSub').textContent=d.sub;
+  $('rNote').textContent=d.note;
+  $('nAll').textContent=d.pct+'%';
+  $('nR').textContent=d.rp+'%';
+  $('nC').textContent=d.cp+'%';
+  var isRfi=d.kind==='rfi';
+  $('lR').textContent=isRfi?'オープンレイズ':'3ベット';
+  $('legR').textContent=isRfi?'オープンする':'3ベットする';
+  $('cWrap').style.display=isRfi?'none':'';
+  $('hint').textContent=isRfi
+    ? hero+'から最初に参加するときのレンジです。別の席も押してみてください。'
+    : hero+'で、'+opp+'のオープンに対応するときのレンジです。';
+  // 塗って覚えるモード用：ラベルとブラシの出し分け
+  $('brushRLabel').textContent = isRfi ? 'オープン' : '3ベット';
+  $('brushCBtn').hidden = isRfi;
+  if(isRfi && brush==='c') brush='r';
+  document.querySelectorAll('.brush').forEach(function(x){
+    x.setAttribute('aria-pressed', String(x.dataset.brush===brush));
+  });
+  if(quizMode){
+    resetQuiz();
+  }else{
+    document.querySelectorAll('.cell').forEach(function(c){
+      var m=d.h[c.dataset.h], f=c.querySelector('.fill');
+      var r=(m&&m.r)||0, cl=(m&&m.c)||0;
+      if(!r&&!cl){ f.style.background='transparent'; c.classList.remove('act'); }
+      else{
+        f.style.background='linear-gradient(to top,'+
+          'var(--raise) 0%,var(--raise) '+r+'%,'+
+          'var(--call) '+r+'%,var(--call) '+(r+cl)+'%,'+
+          'transparent '+(r+cl)+'%,transparent 100%)';
+        c.classList.toggle('act',(r+cl)>=60);
+      }
+    });
+  }
+  paintSeats(); paintOpps(); paintReadout(); paintSel();
+}
+function paintReadout(){
+  var box=$('readout');
+  if(!sel||!cur){ box.innerHTML='<span class="ph">マスを押すと、そのハンドの頻度が出ます</span>'; return; }
+  var m=cur.h[sel]||{}, r=m.r||0, c=m.c||0, f=100-r-c;
+  var isRfi=cur.kind==='rfi';
+  var bits=[];
+  if(r) bits.push('<i><span class="sw" style="background:var(--raise)"></span>'+(isRfi?'オープン':'3ベット')+' '+r+'%</i>');
+  if(c) bits.push('<i><span class="sw" style="background:var(--call)"></span>コール '+c+'%</i>');
+  if(f>0) bits.push('<i><span class="sw" style="background:var(--fold)"></span>降りる '+f+'%</i>');
+  box.innerHTML='<span class="h">'+sel+'</span><span class="mix">'+bits.join('')+
+    '</span><span class="ph">'+combos(sel)+' コンボ</span>';
+}
+
+setMode('rfi');
+})();
+</script>
+</body>
+</html>
