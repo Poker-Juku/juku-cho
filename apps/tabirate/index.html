@@ -52,51 +52,45 @@
   .app{position:relative;z-index:1;width:100%;max-width:440px;height:100dvh;display:flex;flex-direction:column;
     padding:env(safe-area-inset-top) 16px calc(10px + env(safe-area-inset-bottom));overflow:hidden}
 
-  /* ============ header ============ */
-  .hdr{flex:0 0 auto;position:relative;display:flex;align-items:center;gap:10px;
-    height:84px;margin-top:8px;padding:10px 14px;border-radius:20px;
-    background:linear-gradient(155deg,var(--raise),var(--raise-2));border:1px solid var(--hair);
-    overflow:hidden}
-  .hdr::before{content:"";position:absolute;left:-30px;top:-40px;width:160px;height:160px;
-    border-radius:50%;background:radial-gradient(circle,var(--accent-dim),transparent 70%);
-    pointer-events:none;z-index:0}
-  .hdr::after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;
-    background:linear-gradient(90deg,var(--accent),transparent 70%);opacity:.55;pointer-events:none}
-  .brand{position:relative;z-index:1;flex:1;min-width:0;display:flex;align-items:center;gap:12px}
-  .glyph{width:50px;height:50px;flex:0 0 auto;border-radius:15px;position:relative;
-    background:linear-gradient(160deg,var(--raise-2),var(--raise));border:1px solid var(--hair);
-    display:grid;place-items:center;overflow:hidden;box-shadow:0 6px 16px -8px rgba(0,0,0,.4)}
-  .glyph::after{content:"";position:absolute;inset:0;
-    background:radial-gradient(circle at 30% 20%,var(--accent-dim),transparent 65%);pointer-events:none}
-  .glyph svg{width:24px;height:24px;color:var(--accent);position:relative;z-index:1}
-  .glyph-img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1;display:block}
-  .wm{min-width:0}
-  .wm .t{display:flex;align-items:center;gap:8px;font-size:26px;font-weight:800;letter-spacing:.1em;
-    line-height:1;white-space:nowrap}
-  .wm .t .sep{width:15px;height:2px;background:var(--accent);border-radius:1px;flex:0 0 auto;opacity:.9}
-  .wm .s{font-size:10px;font-weight:600;color:var(--ink-3);letter-spacing:.24em;
-    margin-top:6px;white-space:nowrap;text-transform:uppercase}
-  .gear{position:relative;z-index:1;width:40px;height:40px;flex:0 0 auto;border-radius:12px;background:var(--raise);border:1px solid var(--hair);
-    color:var(--ink-2);display:grid;place-items:center;cursor:pointer;transition:.15s}
-  .gear:active{transform:scale(.94);color:var(--ink)}
-  .gear svg{width:18px;height:18px}
+  /* ============ header (image banner) ============ */
+  .hdr{flex:0 0 auto;position:relative;z-index:1;margin-top:8px;border-radius:16px;overflow:hidden;
+    line-height:0}
+  .hdr-img{display:block;width:100%;height:auto}
+  /* 画像に焼き込まれた ?・⚙ アイコンの上に透明なタップ領域を重ねる。
+     切り出し後の画像比率 2103x351 基準。アイコンは右端付近・縦中央。 */
+  .hdr-hit{position:absolute;top:30%;height:44%;border:none;background:transparent;cursor:pointer;
+    border-radius:14px;padding:0;-webkit-tap-highlight-color:transparent}
+  .hdr-hit:active{background:rgba(255,255,255,.10)}
+  .hdr-hit.help{right:12%;width:8.5%}
+  .hdr-hit.gear{right:2.5%;width:8.5%}
 
-  /* ============ segmented tabs ============ */
-  .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:4px;background:var(--raise);border:1px solid var(--hair);
-    border-radius:14px;padding:4px;margin-bottom:16px}
-  .tab{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:6px;height:36px;
-    border:none;background:transparent;border-radius:10px;cursor:pointer;
-    font-size:12px;font-weight:600;color:var(--ink-3);transition:background .15s,color .15s;
-    white-space:nowrap;overflow:hidden}
-  .tab .fl{font-size:15px;line-height:1;flex:0 0 auto}
-  .tab .nm{overflow:hidden;text-overflow:ellipsis}
-  .tab.on{background:var(--raise-2);color:var(--ink)}
-  .tab.top .nm::after{content:"▲";font-size:7px;margin-left:4px;color:var(--ink-3);vertical-align:middle}
-  .tab.bot .nm::after{content:"▼";font-size:7px;margin-left:4px;color:var(--ink-3);vertical-align:middle}
-  .tab{transition:transform .18s cubic-bezier(.32,.72,0,1),background .15s,color .15s}
-  .tabs.dragging .tab{transition:transform .18s cubic-bezier(.32,.72,0,1)}
-  .tab.drag{z-index:10;transition:none;box-shadow:0 8px 24px -6px rgba(0,0,0,.6)!important;
-    opacity:.96;cursor:grabbing}
+  /* ============ neon tabs ============ */
+  .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:8px;padding:0;margin:4px 0 16px;background:transparent;border:none}
+  .tab{flex:1;min-width:0;position:relative;display:flex;align-items:center;justify-content:center;gap:7px;height:46px;
+    border:1.5px solid rgba(90,150,230,.5);background:linear-gradient(180deg,rgba(20,30,55,.65),rgba(10,16,32,.75));
+    border-radius:23px;cursor:pointer;
+    font-size:13px;font-weight:700;color:#cfe0ff;transition:transform .16s cubic-bezier(.32,.72,0,1),opacity .16s,border-color .16s,box-shadow .16s;
+    white-space:nowrap;overflow:hidden;-webkit-user-select:none;user-select:none;
+    -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
+    box-shadow:0 0 8px rgba(60,120,220,.35),inset 0 0 10px rgba(60,120,220,.15)}
+  .tab .fl{font-size:17px;line-height:1;flex:0 0 auto}
+  .tab .nm{overflow:hidden;text-overflow:ellipsis;font-weight:700}
+  .tab .chev{flex:0 0 auto;font-size:11px;opacity:.7;margin-left:1px}
+  /* 選択中(基準=左端 top)は赤ネオン */
+  .tab.on{border-color:rgba(240,70,90,.9);color:#fff;
+    background:linear-gradient(180deg,rgba(70,20,30,.7),rgba(30,8,14,.8));
+    box-shadow:0 0 14px rgba(240,60,80,.6),inset 0 0 14px rgba(240,60,80,.28);
+    transform:scale(.965);opacity:.92}
+  /* 選択中の下段は青を強めて区別 */
+  .tab.sel{border-color:rgba(110,180,255,.95);color:#fff;
+    background:linear-gradient(180deg,rgba(25,45,80,.8),rgba(12,22,44,.85));
+    box-shadow:0 0 14px rgba(80,150,255,.6),inset 0 0 14px rgba(80,150,255,.3);
+    transform:scale(.965);opacity:.94}
+  /* ドラッグ中は色を保持 */
+  .tabs.dragging .tab{color:#cfe0ff}
+  .tabs.dragging .tab.on,.tabs.dragging .tab.sel{color:#fff}
+  .tab.drag{z-index:10;transition:none;opacity:.97;cursor:grabbing;
+    box-shadow:0 10px 26px -6px rgba(0,0,0,.7),0 0 16px rgba(240,60,80,.5)!important}
   .tab.armed{cursor:grab}
 
   /* ============ rate line (hairline, not a card) ============ */
@@ -159,8 +153,9 @@
     background:var(--bg);border-top:1px solid var(--hair);border-radius:20px 20px 0 0;
     padding:12px 16px calc(14px + env(safe-area-inset-bottom));
     box-shadow:0 -12px 40px -8px rgba(0,0,0,.5);
-    transform:translateY(110%);transition:transform .22s cubic-bezier(.32,.72,0,1);display:block}
-  #paneKp.on{transform:translateY(0)}
+    transform:translateY(110%);transition:transform .22s cubic-bezier(.32,.72,0,1);display:block;
+    visibility:hidden;pointer-events:none}
+  #paneKp.on{transform:translateY(0);visibility:visible;pointer-events:auto}
   .kp{display:flex;flex-direction:column;gap:10px}
   .kp-input{padding:2px 2px 10px;border-bottom:1px solid var(--hair);margin-bottom:2px}
   .kpi-head{display:flex;align-items:center;gap:8px}
@@ -306,10 +301,6 @@
   @media (max-height:700px){
     .amt{font-size:34px}
     .row{padding:12px 8px}
-    .hdr{height:64px;padding:8px 12px}
-    .glyph{width:40px;height:40px;border-radius:12px}
-    .wm .t{font-size:21px}
-    .gear{width:36px;height:36px}
   }
 
   /* ============ desktop: fill window, scale up ============ */
@@ -321,14 +312,6 @@
       border:1px solid var(--hair);box-shadow:0 30px 80px -30px rgba(0,0,0,.55);
       padding:20px 26px 18px}
     [data-theme="light"] .app{box-shadow:0 30px 80px -30px rgba(20,22,28,.22)}
-
-    .hdr{height:96px;padding:14px 20px}
-    .glyph{width:60px;height:60px;border-radius:17px}
-    .glyph svg{width:28px;height:28px}
-    .wm .t{font-size:32px}
-    .wm .s{font-size:12px}
-    .gear{width:46px;height:46px}
-    .gear svg{width:21px;height:21px}
 
     .tabs{padding:6px;border-radius:16px;margin-bottom:20px}
     .tab{height:44px;font-size:14px;border-radius:11px}
@@ -387,27 +370,59 @@
   }
   body.force-portrait .app{max-width:none}
 
+  /* ============ opening splash ============ */
+  #splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:26px;
+    background:radial-gradient(120% 80% at 50% 38%,#141f17 0%,#090e09 55%,#050505 100%);
+    max-width:none}
+  #splash .sheen{position:absolute;inset:-20%;z-index:0;pointer-events:none;opacity:0;
+    background:linear-gradient(120deg,transparent 30%,rgba(201,162,75,.14) 46%,rgba(241,220,160,.28) 50%,rgba(201,162,75,.14) 54%,transparent 70%);
+    transform:translateX(-40%)}
+  #splash .logo-container{position:relative;z-index:1;width:200px;height:200px;opacity:0;transform:translateY(18px) scale(.96)}
+  #splash .logo-container img{width:100%;height:100%;object-fit:contain;border-radius:36px;
+    filter:drop-shadow(0 12px 30px rgba(0,0,0,.7)) drop-shadow(0 0 30px rgba(201,162,75,.25))}
+  #splash .glint{position:absolute;left:50%;top:52%;width:120px;height:120px;transform:translate(-50%,-50%);
+    z-index:2;pointer-events:none;opacity:0;
+    background:radial-gradient(circle,rgba(255,255,255,.9) 0%,rgba(241,220,160,.5) 22%,transparent 55%)}
+  #splash .title{position:relative;z-index:1;text-align:center;opacity:0;transform:translateY(10px)}
+  #splash .title .t1{font-family:'Georgia','Times New Roman',serif;font-size:34px;font-weight:700;letter-spacing:.12em;
+    background:linear-gradient(180deg,#FBEFC8,#E3C877 45%,#C9A24B 75%,#8A6C2E);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#C9A24B}
+  #splash .title .t2{font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;font-size:11px;font-weight:600;letter-spacing:.28em;margin-top:6px;
+    background:linear-gradient(180deg,#F1DCA0,#C9A24B 60%,#8A6C2E);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#C9A24B;text-transform:uppercase}
+  #splash.fade{animation:splashOut .5s ease forwards}
+  @keyframes splashOut{to{opacity:0;visibility:hidden}}
+  #splash.play .sheen{animation:sheen 1.0s ease-out .05s forwards}
+  #splash.play .logo-container{animation:logoIn .6s cubic-bezier(.2,.9,.3,1) .25s forwards}
+  #splash.play .glint{animation:glint .5s ease-out .8s forwards}
+  #splash.play .title{animation:titleIn .55s cubic-bezier(.2,.9,.3,1) .85s forwards}
+  @keyframes sheen{0%{opacity:0;transform:translateX(-40%)}30%{opacity:1}100%{opacity:0;transform:translateX(40%)}}
+  @keyframes logoIn{to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes glint{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3)}}
+  @keyframes titleIn{to{opacity:1;transform:translateY(0)}}
+  @media (min-width:760px){ #splash{border-radius:0} }
 </style>
 </head>
 <body>
+<div id="splash">
+  <div class="sheen"></div>
+  <div class="logo-container">
+    <img src="Icon%20512.png" alt="TABI - RATE">
+  </div>
+  <div class="glint"></div>
+  <div class="title">
+    <div class="t1">TABI - RATE</div>
+    <div class="t2">Currency Converter</div>
+  </div>
+</div>
+
 <div class="app">
 
   <header class="hdr">
-    <div class="brand">
-      <div class="glyph">
-        <img src="Icon%20512.png" alt="TABI-RATE" class="glyph-img">
-      </div>
-      <div class="wm">
-        <div class="t">TABI<span class="sep"></span>RATE</div>
-        <div class="s">Currency Converter</div>
-      </div>
-    </div>
-    <button class="gear" id="helpBtn" aria-label="Help">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 1.7-2.4 3.5"/><path d="M12 17h.01"/></svg>
-    </button>
-    <button class="gear" id="myBtn" aria-label="Settings">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
+    <img class="hdr-img" src="header.png" alt="TABI - RATE — Currency Converter">
+    <button class="hdr-hit help" id="helpBtn" aria-label="Help"></button>
+    <button class="hdr-hit gear" id="myBtn" aria-label="Settings"></button>
   </header>
 
   <nav class="tabs" id="tabs"></nav>
@@ -780,42 +795,43 @@
 
   function renderTabs(){var t2=$('tabs');t2.innerHTML='';
     var bC=bottomCode();
-    var RED='#D64545',BLUE='#3B6FE0';
     displayed.forEach(function(code,idx){var c=byCode[code];
       var isTop=(idx===0);var isBot=(!isTop&&code===bC);
-      var on=isTop||isBot;
-      var hue=isTop?RED:BLUE;
-      var el=document.createElement('button');el.className='tab'+(on?' on':'')+(isTop?' top':'')+(isBot?' bot':'');
+      var el=document.createElement('button');
+      el.className='tab'+(isTop?' on top':'')+(isBot?' sel bot':'');
       el.setAttribute('data-code',code);el.setAttribute('data-idx',idx);
-      el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
-      if(on){el.style.boxShadow='inset 3px 0 0 '+hue;el.style.background='color-mix(in srgb,'+hue+' 14%, var(--raise-2))';}
-      else{el.style.boxShadow='inset 3px 0 0 color-mix(in srgb,'+hue+' 45%, transparent)';}
+      el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span><span class="chev">›</span>';
       attachTabHandlers(el,code);
       t2.appendChild(el);});}
 
   // ---- tab long-press drag reorder ----
   var tabDrag=null;
   function attachTabHandlers(el,code){
-    var pressTimer=null,started=false,moved=false;
+    var pressTimer=null,started=false,moved=false,mv=null,up=null;
+    function cleanup(){
+      clearTimeout(pressTimer);
+      if(mv){window.removeEventListener('pointermove',mv);mv=null;}
+      if(up){window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);up=null;}
+    }
     el.addEventListener('pointerdown',function(e){
       if(e.button!==undefined&&e.button!==0)return;
+      cleanup(); // 念のため前回の残りを除去
       moved=false;started=false;
-      var startX=e.clientX;
+      var startX=e.clientX,sx=e.clientX,sy=e.clientY;
       pressTimer=setTimeout(function(){started=true;beginTabDrag(el,code,startX);},450);
-      var sx=e.clientX,sy=e.clientY;
-      el._mv=function(ev){if(Math.abs(ev.clientX-sx)>8||Math.abs(ev.clientY-sy)>8){moved=true;if(!started){clearTimeout(pressTimer);}}};
-      window.addEventListener('pointermove',el._mv);
+      mv=function(ev){if(Math.abs(ev.clientX-sx)>8||Math.abs(ev.clientY-sy)>8){moved=true;if(!started){clearTimeout(pressTimer);}}};
+      up=function(ev){
+        cleanup();
+        if(started){return;} // ドラッグ確定は beginTabDrag 内の up が担当
+        if(!moved){
+          // 左端(上段)以外のタブをタップ → 下段に選択
+          if(code!==displayed[0]){selBottom=code;if(kpOpen){side='top';raw='';replaceNext=false;}saveCfg();renderAll();if(kpOpen)updateKp();}
+        }
+      };
+      window.addEventListener('pointermove',mv);
+      window.addEventListener('pointerup',up);
+      window.addEventListener('pointercancel',up);
     });
-    el.addEventListener('pointerup',function(e){
-      clearTimeout(pressTimer);
-      window.removeEventListener('pointermove',el._mv);
-      if(started){e.preventDefault();return;}
-      if(!moved){
-        // 左端(上段)以外のタブをタップ → 下段に選択
-        if(code!==displayed[0]){selBottom=code;if(kpOpen){side='top';raw='';replaceNext=false;}saveCfg();renderAll();if(kpOpen)updateKp();}
-      }
-    });
-    el.addEventListener('pointercancel',function(){clearTimeout(pressTimer);window.removeEventListener('pointermove',el._mv);});
     el.addEventListener('contextmenu',function(e){e.preventDefault();});
   }
   function beginTabDrag(el,code,startX){
@@ -845,10 +861,12 @@
     var up=function(){
       window.removeEventListener('pointermove',move);
       window.removeEventListener('pointerup',up);
+      window.removeEventListener('pointercancel',up);
       endTabDrag();
     };
     window.addEventListener('pointermove',move);
     window.addEventListener('pointerup',up);
+    window.addEventListener('pointercancel',up);
     // 初期シフト適用
     shiftTabs(fromIdx);
   }
@@ -1028,6 +1046,19 @@
   }
   init();
 })();
+</script>
+<script>
+  // オープニング再生 → 本編表示
+  (function(){
+    var splash=document.getElementById('splash');
+    if(!splash)return;
+    // リフローしてからplay
+    void splash.offsetWidth;
+    splash.classList.add('play');
+    // 1.5秒でフェード開始、2.0秒で完全に除去
+    setTimeout(function(){splash.classList.add('fade');},1500);
+    setTimeout(function(){splash.style.display='none';},2050);
+  })();
 </script>
 <script>
   // オフライン対応: Service Worker を登録
