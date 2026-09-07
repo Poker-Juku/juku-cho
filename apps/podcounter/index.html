@@ -137,7 +137,33 @@
   .note{font-size:12px;color:var(--muted);line-height:1.7;background:var(--chip);border:1px solid var(--line);
     border-radius:12px;padding:10px 12px}
   .note b{color:var(--gold)}
-  @media (orientation:landscape) and (max-height:560px){.app{max-width:900px}.pot{font-size:clamp(44px,10vw,88px)}}
+  .cmd{display:flex;gap:8px}
+  .cmd input{flex:1;background:var(--felt2);border:1px solid var(--line);color:var(--ink);font:inherit;
+    font-size:15px;padding:13px 14px;border-radius:var(--radius);min-width:0}
+  .cmd input:focus{outline:1px solid var(--gold-dim)}
+  .cmd input::placeholder{color:var(--muted)}
+  .cmd button{background:var(--gold);color:#22180a;border:1px solid var(--gold);font:inherit;font-weight:700;
+    font-size:14px;padding:0 18px;border-radius:var(--radius);cursor:pointer;white-space:nowrap}
+  .cmd button:active{transform:scale(.97)}
+  .boxes{display:flex;flex-direction:column;gap:12px}
+  .scrim.center{align-items:center;padding:20px}
+  .dialog{width:100%;max-width:360px;background:var(--felt2);border:1px solid var(--line);border-radius:18px;
+    padding:22px 20px;transform:scale(.95);transition:transform .2s ease}
+  .scrim.center.open .dialog{transform:none}
+  .dtitle{font-size:16px;font-weight:600;text-align:center;margin-bottom:18px;line-height:1.6}
+  .dbtns{display:flex;gap:10px}
+  .dbtns button{flex:1;font:inherit;font-size:15px;font-weight:700;padding:14px;border-radius:12px;cursor:pointer;border:1px solid var(--line)}
+  .dno{background:var(--chip);color:var(--ink)}
+  .dyes{background:var(--gold);color:#22180a;border-color:var(--gold)}
+  @media (orientation:landscape) and (max-height:600px){
+    .app{max-width:980px;padding:10px 16px 18px;gap:10px}
+    .boxes{flex-direction:row;align-items:stretch}
+    .boxes .box{flex:1}
+    .box{padding:12px 16px 14px}
+    .pot{font-size:clamp(48px,8.5vw,100px)}
+    .bet{font-size:clamp(48px,8.5vw,100px)}
+    .streets button{padding:7px 2px}
+  }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -148,6 +174,7 @@
     <button class="gear" id="gear" aria-label="設定">&#9881;</button>
   </header>
 
+  <div class="boxes">
   <section class="box" id="potBox">
     <div class="hand-no" id="handNo">HAND #1</div>
     <div class="label">合計ポット</div>
@@ -159,6 +186,7 @@
     <div class="label">ストリートのベット · <b id="streetTag">プリフロップ</b></div>
     <div class="bet" id="betVal">Check</div>
   </section>
+  </div>
 
   <div class="msg" id="msg"></div>
 
@@ -176,6 +204,11 @@
       <div class="heard" id="heard"></div>
     </div>
   </button>
+
+  <div class="cmd">
+    <input id="cmdInput" type="text" placeholder="例：レイズ100 / コール / フロップ" enterkeyhint="send" autocomplete="off" autocapitalize="off">
+    <button id="cmdSend">実行</button>
+  </div>
 
   <div class="cands" id="cands"></div>
 
@@ -208,6 +241,17 @@
   </div>
 
   <p class="hint" id="hint"></p>
+</div>
+
+<!-- new-hand confirm dialog -->
+<div class="scrim center" id="confirmScrim">
+  <div class="dialog">
+    <div class="dtitle">新しいハンドをスタートしますか？</div>
+    <div class="dbtns">
+      <button class="dno" id="confirmNo">いいえ（継続）</button>
+      <button class="dyes" id="confirmYes">はい</button>
+    </div>
+  </div>
 </div>
 
 <!-- history sheet -->
@@ -375,7 +419,7 @@ function addCandidate(act,amount){
 }
 function handleHeard(text){
   $('heard').textContent='「'+text+'」';
-  if(isNewHandCmd(text)){newHand();msg('新しいハンド開始');return;}
+  if(isNewHandCmd(text)){askNewHand();return;}
   const st=detectStreet(text);
   if(st){S.pendingRaise=false;newStreet(st);return;}
   const act=detectAction(text);let amt=extractAmount(text);
@@ -424,7 +468,7 @@ $('mic').onclick=()=>{
   listening?stopRec():startRec();
 };
 if(!supported){$('mic').classList.add('disabled');$('micText').textContent='この端末は音声非対応';
-  $('heard').textContent=isIOS?'iPhone/iPadは非対応。PC/AndroidのChromeで音声が使えます':'ChromeまたはEdgeで開いてください';}
+  $('heard').textContent=isIOS?'iPhoneは下の入力欄をタップ→キーボードの🎤で話せます':'ChromeまたはEdgeで開いてください';}
 
 /* ---------- keypad ---------- */
 let entry='',selAct='加算';
@@ -447,6 +491,11 @@ document.querySelector('.grid').addEventListener('click',e=>{
   showEntry();
 });
 
+/* ---------- command input (iPhone dictation / manual) ---------- */
+function runCmd(){const el=$('cmdInput');const v=el.value.trim();if(!v)return;handleHeard(v);el.value='';el.focus();}
+$('cmdSend').onclick=runCmd;
+$('cmdInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runCmd();}});
+
 /* ---------- streets buttons ---------- */
 $('streets').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;newStreet(b.dataset.st);});
 
@@ -462,9 +511,13 @@ function newHand(){
   if(start>0)S.history.push({t:'a',act:'ブラインド',delta:start,after:start,potBefore:0,stBefore:0,cbBefore:0,streetBefore:'プリフロップ'});
   $('cands').innerHTML='';render();
 }
+function askNewHand(){$('confirmScrim').classList.add('open');}
+$('confirmYes').onclick=()=>{$('confirmScrim').classList.remove('open');newHand();msg('新しいハンド開始');};
+$('confirmNo').onclick=()=>$('confirmScrim').classList.remove('open');
+$('confirmScrim').addEventListener('click',e=>{if(e.target===$('confirmScrim'))$('confirmScrim').classList.remove('open');});
 $('undoBtn').onclick=()=>{const l=S.history.pop();if(!l)return;
   S.pot=l.potBefore;S.streetTotal=l.stBefore;S.standingBet=l.cbBefore;S.street=l.streetBefore;render();};
-$('resetBtn').onclick=()=>{if(!confirm('新しいハンドを始めますか？'))return;newHand();};
+$('resetBtn').onclick=()=>askNewHand();
 
 /* ---------- settings ---------- */
 $('gear').onclick=()=>$('scrim').classList.add('open');
@@ -478,8 +531,8 @@ document.querySelectorAll('.seg').forEach(seg=>{const key=seg.dataset.seg;
   seg.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S[key]=b.dataset.v;paint();});paint();});
 
 $('hint').textContent=supported
-  ? 'ヒント：「ベット50」「コール」「レイズ」→「100」「フロップ」「スタートします」等と話します。'
-  : 'この端末では音声が使えません。電卓ボタンとストリートボタンで操作してください。';
+  ? 'ヒント：マイクか下の入力欄で「ベット50」「レイズ」→「100」「フロップ」「スタートします」等。'
+  : 'iPhoneは下の入力欄をタップし、キーボードの🎤で「レイズ100」等と話すと反映されます。';
 newHand();
 </script>
 </body>
