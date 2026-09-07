@@ -3,6 +3,7 @@
   "short_name": "TABI-RATE",
   "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0B0D10",
   "theme_color": "#0B0D10",
   "icons": [
