@@ -65,7 +65,10 @@
   .hdr-hit.gear{right:2.5%;width:8.5%}
 
   /* ============ neon tabs ============ */
-  .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:8px;padding:0;margin:4px 0 16px;background:transparent;border:none}
+  .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:8px;padding:0;margin:4px 0 16px;background:transparent;border:none;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  .tabs *,.tab,.tab *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+    -webkit-touch-callout:none}
   .tab{flex:1;min-width:0;position:relative;display:flex;align-items:center;justify-content:center;gap:7px;height:46px;
     border:1.5px solid rgba(90,150,230,.5);background:linear-gradient(180deg,rgba(20,30,55,.65),rgba(10,16,32,.75));
     border-radius:23px;cursor:pointer;
@@ -121,7 +124,7 @@
   .cname{font-size:11px;font-weight:600;color:var(--ink-3)}
   .caret{margin-left:auto;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.12em;opacity:0;transition:.15s}
   .row.on .caret{opacity:1}
-  .row{-webkit-user-select:none;user-select:none;touch-action:manipulation}
+  .row{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
   .row-val{display:flex;align-items:baseline;gap:8px}
   .sym{font-size:20px;font-weight:600;color:var(--ink-3);flex:0 0 auto}
   .amt{flex:1;min-width:0;text-align:right;font-size:40px;font-weight:700;letter-spacing:-.025em;
