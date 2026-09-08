@@ -65,30 +65,34 @@
   .hdr-hit.gear{right:2.5%;width:8.5%}
 
   /* ============ neon tabs ============ */
-  .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:8px;padding:0;margin:4px 0 16px;background:transparent;border:none;
-    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:0;padding:0;margin:4px 0 16px;background:transparent;border:none;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;border-radius:8px;overflow:hidden}
   .tabs *,.tab,.tab *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
     -webkit-touch-callout:none}
-  .tab{flex:1;min-width:0;position:relative;display:flex;align-items:center;justify-content:center;gap:7px;height:46px;
-    border:1.5px solid rgba(90,150,230,.5);background:linear-gradient(180deg,rgba(20,30,55,.65),rgba(10,16,32,.75));
-    border-radius:23px;cursor:pointer;
+  .tab{flex:1 1 0;min-width:0;position:relative;display:flex;align-items:center;justify-content:center;gap:6px;height:48px;
+    border:1.5px solid rgba(90,150,230,.5);border-left-width:.75px;border-right-width:.75px;
+    background:linear-gradient(180deg,rgba(20,30,55,.65),rgba(10,16,32,.75));
+    border-radius:0;cursor:pointer;
     font-size:13px;font-weight:700;color:#cfe0ff;transition:transform .16s cubic-bezier(.32,.72,0,1),opacity .16s,border-color .16s,box-shadow .16s;
     white-space:nowrap;overflow:hidden;-webkit-user-select:none;user-select:none;
     -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
-    box-shadow:0 0 8px rgba(60,120,220,.35),inset 0 0 10px rgba(60,120,220,.15)}
-  .tab .fl{font-size:17px;line-height:1;flex:0 0 auto}
+    box-shadow:inset 0 0 10px rgba(60,120,220,.15)}
+  /* 基準タブ(左端)は1.5倍幅・角を少しだけ残す */
+  .tab.base{flex:1.5 1 0;border-left-width:1.5px;border-top-left-radius:8px;border-bottom-left-radius:8px}
+  .tab:last-child{border-right-width:1.5px;border-top-right-radius:8px;border-bottom-right-radius:8px}
+  .tab .fl{font-size:18px;line-height:1;flex:0 0 auto}
   .tab .nm{overflow:hidden;text-overflow:ellipsis;font-weight:700}
   .tab .chev{flex:0 0 auto;font-size:11px;opacity:.7;margin-left:1px}
   /* 選択中(基準=左端 top)は赤ネオン */
-  .tab.on{border-color:rgba(240,70,90,.9);color:#fff;
+  .tab.on{border-color:rgba(240,70,90,.9);color:#fff;z-index:2;
     background:linear-gradient(180deg,rgba(70,20,30,.7),rgba(30,8,14,.8));
     box-shadow:0 0 14px rgba(240,60,80,.6),inset 0 0 14px rgba(240,60,80,.28);
-    transform:scale(.965);opacity:.92}
+    transform:scale(.97);opacity:.92}
   /* 選択中の下段は青を強めて区別 */
-  .tab.sel{border-color:rgba(110,180,255,.95);color:#fff;
+  .tab.sel{border-color:rgba(110,180,255,.95);color:#fff;z-index:2;
     background:linear-gradient(180deg,rgba(25,45,80,.8),rgba(12,22,44,.85));
     box-shadow:0 0 14px rgba(80,150,255,.6),inset 0 0 14px rgba(80,150,255,.3);
-    transform:scale(.965);opacity:.94}
+    transform:scale(.955);opacity:.94}
   /* ドラッグ中は色を保持 */
   .tabs.dragging .tab{color:#cfe0ff}
   .tabs.dragging .tab.on,.tabs.dragging .tab.sel{color:#fff}
@@ -375,45 +379,57 @@
 
   /* ============ opening splash ============ */
   #splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:26px;
-    background:radial-gradient(120% 80% at 50% 38%,#141f17 0%,#090e09 55%,#050505 100%);
+    align-items:center;justify-content:center;gap:30px;overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 42%,#0a1430 0%,#050a1c 50%,#01030a 100%);
     max-width:none}
-  #splash .sheen{position:absolute;inset:-20%;z-index:0;pointer-events:none;opacity:0;
-    background:linear-gradient(120deg,transparent 30%,rgba(201,162,75,.14) 46%,rgba(241,220,160,.28) 50%,rgba(201,162,75,.14) 54%,transparent 70%);
-    transform:translateX(-40%)}
-  #splash .logo-container{position:relative;z-index:1;width:200px;height:200px;opacity:0;transform:translateY(18px) scale(.96)}
-  #splash .logo-container img{width:100%;height:100%;object-fit:contain;border-radius:36px;
-    filter:drop-shadow(0 12px 30px rgba(0,0,0,.7)) drop-shadow(0 0 30px rgba(201,162,75,.25))}
-  #splash .glint{position:absolute;left:50%;top:52%;width:120px;height:120px;transform:translate(-50%,-50%);
-    z-index:2;pointer-events:none;opacity:0;
-    background:radial-gradient(circle,rgba(255,255,255,.9) 0%,rgba(241,220,160,.5) 22%,transparent 55%)}
-  #splash .title{position:relative;z-index:1;text-align:center;opacity:0;transform:translateY(10px)}
-  #splash .title .t1{font-family:'Georgia','Times New Roman',serif;font-size:34px;font-weight:700;letter-spacing:.12em;
-    background:linear-gradient(180deg,#FBEFC8,#E3C877 45%,#C9A24B 75%,#8A6C2E);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#C9A24B}
-  #splash .title .t2{font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;font-size:11px;font-weight:600;letter-spacing:.28em;margin-top:6px;
-    background:linear-gradient(180deg,#F1DCA0,#C9A24B 60%,#8A6C2E);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#C9A24B;text-transform:uppercase}
-  #splash.fade{animation:splashOut .5s ease forwards}
+  /* 背景で脈打つ青いハロー */
+  #splash .halo{position:absolute;left:50%;top:44%;width:520px;height:520px;transform:translate(-50%,-50%) scale(.2);
+    z-index:0;pointer-events:none;opacity:0;border-radius:50%;
+    background:radial-gradient(circle,rgba(56,150,255,.55) 0%,rgba(41,98,255,.25) 34%,transparent 62%)}
+  #splash .logo-container{position:relative;z-index:2;width:210px;height:210px;opacity:0;
+    transform:scale(.55);will-change:transform,opacity}
+  #splash .logo-container img{width:100%;height:100%;object-fit:contain;
+    filter:drop-shadow(0 14px 40px rgba(0,0,0,.6)) drop-shadow(0 0 30px rgba(56,150,255,.5))}
+  /* 弾ける光のリング */
+  #splash .ring{position:absolute;left:50%;top:50%;width:200px;height:200px;transform:translate(-50%,-50%) scale(.6);
+    border-radius:50%;border:2px solid rgba(120,190,255,.9);opacity:0;pointer-events:none;
+    box-shadow:0 0 24px rgba(80,170,255,.8),inset 0 0 24px rgba(80,170,255,.5)}
+  /* 斜めに走る光 */
+  #splash .sheen{position:absolute;inset:-30%;z-index:3;pointer-events:none;opacity:0;
+    background:linear-gradient(115deg,transparent 38%,rgba(150,210,255,.15) 47%,rgba(220,240,255,.55) 50%,rgba(150,210,255,.15) 53%,transparent 62%);
+    transform:translateX(-45%)}
+  #splash .title{position:relative;z-index:2;text-align:center;opacity:0;transform:translateY(14px)}
+  #splash .title .t1{font-family:'Georgia','Times New Roman',serif;font-size:36px;font-weight:700;letter-spacing:.1em;
+    background:linear-gradient(180deg,#EAF4FF,#8FC4FF 45%,#3E8BFF 78%,#1E5AE0);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#8FC4FF;
+    filter:drop-shadow(0 0 18px rgba(62,139,255,.55))}
+  #splash .title .t2{font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;font-size:11px;font-weight:600;
+    letter-spacing:.3em;margin-top:8px;color:#6f9fd8;text-transform:uppercase}
+  #splash.fade{animation:splashOut .55s ease forwards}
   @keyframes splashOut{to{opacity:0;visibility:hidden}}
-  #splash.play .sheen{animation:sheen 1.0s ease-out .05s forwards}
-  #splash.play .logo-container{animation:logoIn .6s cubic-bezier(.2,.9,.3,1) .25s forwards}
-  #splash.play .glint{animation:glint .5s ease-out .8s forwards}
-  #splash.play .title{animation:titleIn .55s cubic-bezier(.2,.9,.3,1) .85s forwards}
-  @keyframes sheen{0%{opacity:0;transform:translateX(-40%)}30%{opacity:1}100%{opacity:0;transform:translateX(40%)}}
-  @keyframes logoIn{to{opacity:1;transform:translateY(0) scale(1)}}
-  @keyframes glint{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.3)}}
+  #splash.play .halo{animation:haloIn 1.6s ease-out .1s forwards}
+  #splash.play .logo-container{animation:logoZoom 1.0s cubic-bezier(.18,.85,.25,1) .2s forwards}
+  #splash.play .ring{animation:ringBurst .7s cubic-bezier(.2,.7,.3,1) .75s forwards}
+  #splash.play .sheen{animation:sheen 1.0s ease-out .9s forwards}
+  #splash.play .title{animation:titleIn .6s cubic-bezier(.2,.9,.3,1) 1.0s forwards}
+  @keyframes haloIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+    45%{opacity:1}100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}}
+  @keyframes logoZoom{0%{opacity:0;transform:scale(.55)}
+    55%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+  @keyframes ringBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+    30%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+  @keyframes sheen{0%{opacity:0;transform:translateX(-45%)}35%{opacity:1}100%{opacity:0;transform:translateX(45%)}}
   @keyframes titleIn{to{opacity:1;transform:translateY(0)}}
-  @media (min-width:760px){ #splash{border-radius:0} }
 </style>
 </head>
 <body>
 <div id="splash">
-  <div class="sheen"></div>
+  <div class="halo"></div>
   <div class="logo-container">
-    <img src="Icon%20512.png" alt="TABI - RATE">
+    <img src="icon-512.png" alt="TABI - RATE">
+    <span class="ring"></span>
   </div>
-  <div class="glint"></div>
+  <div class="sheen"></div>
   <div class="title">
     <div class="t1">TABI - RATE</div>
     <div class="t2">Currency Converter</div>
@@ -801,9 +817,15 @@
     displayed.forEach(function(code,idx){var c=byCode[code];
       var isTop=(idx===0);var isBot=(!isTop&&code===bC);
       var el=document.createElement('button');
-      el.className='tab'+(isTop?' on top':'')+(isBot?' sel bot':'');
+      el.className='tab'+(isTop?' base on top':'')+(isBot?' sel bot':'');
       el.setAttribute('data-code',code);el.setAttribute('data-idx',idx);
-      el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span><span class="chev">›</span>';
+      if(isTop){
+        // 基準タブ:国旗+国名(1.5倍で余裕あり)
+        el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
+      }else{
+        // 指標タブ:国旗+通貨コードのみ(例 🇺🇸USD)
+        el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+code+'</span>';
+      }
       attachTabHandlers(el,code);
       t2.appendChild(el);});}
 
@@ -1059,8 +1081,8 @@
     void splash.offsetWidth;
     splash.classList.add('play');
     // 1.5秒でフェード開始、2.0秒で完全に除去
-    setTimeout(function(){splash.classList.add('fade');},1500);
-    setTimeout(function(){splash.style.display='none';},2050);
+    setTimeout(function(){splash.classList.add('fade');},2000);
+    setTimeout(function(){splash.style.display='none';},2600);
   })();
 </script>
 <script>
