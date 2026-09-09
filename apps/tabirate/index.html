@@ -57,13 +57,12 @@
     line-height:0}
   .hdr-img{display:block;width:100%;height:auto}
   /* 画像に焼き込まれた ?・⚙ アイコンの上に透明なタップ領域を重ねる。
-     切り出し後の画像比率 2103x351 基準。アイコンは右端付近・縦中央。 */
-  .hdr-hit{position:absolute;top:26%;height:48%;border:none;background:transparent;cursor:pointer;z-index:3;
-    border-radius:14px;padding:0;-webkit-tap-highlight-color:transparent}
-  .hdr-hit:active{background:rgba(255,255,255,.12)}
-  .hdr-hit.help{right:11%;width:9.5%}
-  .hdr-hit.gear{right:1.5%;width:9.5%}
-  .hdr-hit.logo{left:2%;width:15%;top:20%;height:60%}
+     header.png = 2103x351。実測: ⚙ right1.8-4.4%, ? right6.8-10.1% */
+  .hdr-hit{position:absolute;top:28%;height:44%;border:none;background:transparent;cursor:pointer;z-index:6;
+    border-radius:10px;padding:0;-webkit-tap-highlight-color:transparent}
+  .hdr-hit:active{background:rgba(255,255,255,.14)}
+  .hdr-hit.help{right:6%;width:5.5%}
+  .hdr-hit.gear{right:1%;width:5.5%}
 
   /* ============ neon tabs ============ */
   .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:0;padding:0;margin:4px 0 16px;background:transparent;border:none;
@@ -203,8 +202,8 @@
   .sheet{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;background:var(--bg);
     border-top:1px solid var(--hair);border-radius:24px 24px 0 0;z-index:41;
     transform:translateY(100%);transition:transform .24s cubic-bezier(.32,.72,0,1);
-    height:88dvh;display:flex;flex-direction:column}
-  .sheet.show{transform:translateY(0)}
+    height:88dvh;display:flex;flex-direction:column;visibility:hidden}
+  .sheet.show{transform:translateY(0);visibility:visible}
   .grip{width:36px;height:4px;border-radius:2px;background:var(--hair);margin:8px auto 0;flex:0 0 auto}
   .sh{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 8px;flex:0 0 auto}
   .sh h2{font-size:17px;font-weight:700}
@@ -280,6 +279,7 @@
     height:44px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px}
   .setdefault{width:100%;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent);border-radius:12px;
     height:46px;font-size:13px;font-weight:700;cursor:pointer;transition:.12s}
+  .setdefault.alt{background:transparent;margin-top:8px}
   .setdefault:active{transform:scale(.98);opacity:.85}
   .note{font-size:10px;color:var(--ink-3);text-align:center;line-height:1.8;margin-top:24px}
 
@@ -288,8 +288,8 @@
   .dscrim.show{opacity:1;visibility:visible}
   .drum{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;background:var(--bg);
     border-top:1px solid var(--hair);border-radius:24px 24px 0 0;z-index:71;transform:translateY(100%);
-    transition:transform .24s cubic-bezier(.32,.72,0,1);padding-bottom:env(safe-area-inset-bottom)}
-  .drum.show{transform:translateY(0)}
+    transition:transform .24s cubic-bezier(.32,.72,0,1);padding-bottom:env(safe-area-inset-bottom);visibility:hidden}
+  .drum.show{transform:translateY(0);visibility:visible}
   .dh{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--hair)}
   .dh .t{font-size:13px;font-weight:600}
   .dh button{background:none;border:none;font-size:13px;font-weight:600;color:var(--ink-3);cursor:pointer;padding:4px 8px}
@@ -444,7 +444,6 @@
 
   <header class="hdr">
     <img class="hdr-img" src="header.png" alt="TABI - RATE — Currency Converter">
-    <button class="hdr-hit logo" id="logoBtn" aria-label="デフォルト呼び出し"></button>
     <button class="hdr-hit help" id="helpBtn" aria-label="Help"></button>
     <button class="hdr-hit gear" id="myBtn" aria-label="Settings"></button>
   </header>
@@ -549,7 +548,8 @@
 
     <div class="lbl" id="tDefault">デフォルト設定</div>
     <button class="setdefault" id="setDefaultBtn"><span id="tSetDefault">現在のタブ構成をデフォルトに設定</span></button>
-    <div class="hint" id="tDefaultHint">左上のアイコンを長押しすると、ここで保存した構成に戻せます。</div>
+    <button class="setdefault alt" id="applyDefaultBtn"><span id="tApplyDefault">デフォルトを呼び出す</span></button>
+    <div class="hint" id="tDefaultHint">よく使う通貨構成を保存し、いつでも呼び出せます。</div>
 
     <div class="lbl" id="tHistory">レート履歴</div>
     <div class="spk"><b id="sparkTitle">推移</b><svg class="spark" id="spark" viewBox="0 0 300 40" preserveAspectRatio="none"></svg><div class="spk-e" id="sparkEmpty">—</div></div>
@@ -591,7 +591,7 @@
       recPrompt:'メモ(例: 旅行 / 空港レート)',recDone:'のレートを記録しました',records:'件',noRec:'記録なし',
       min1:'最低1か国は必要です',max4:'タブは最大4か国です',wiped:'履歴を削除しました',
       regA:'アジア',regE:'北米・欧州',regO:'オセアニア・その他',
-      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',m1:'上段の一番左のタブ（赤いタブ）が基準の通貨になります。常に表示したい通貨をここに設定します。',m2:'基準の通貨の右側は他の通貨を設定でき、最大で3つまで追加可能です。',m3:'タブを長押ししながら左右にドラッグすると、並び順を変えられます。一番左に置いた通貨が上段になります。',m4:'金額の欄をタップすると電卓が開き、上段・下段どちらからでも入力できます。',m5:'レート横の保存アイコンで、その時のレートを履歴に記録できます。',m6:'国の追加・言語・テーマは設定（歯車）から。為替レートは毎日1回自動取得します。',tapChange:'タップで変更',defaultLabel:'デフォルト設定',setDefault:'現在のタブ構成をデフォルトに設定',defaultHint:'左上のアイコンを長押しすると、ここで保存した構成に戻せます。',defaultSaved:'デフォルトに保存しました',defaultApplied:'デフォルトを呼び出しました',noDefault:'デフォルトが未設定です'},
+      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',m1:'上段の一番左のタブ（赤いタブ）が基準の通貨になります。常に表示したい通貨をここに設定します。',m2:'基準の通貨の右側は他の通貨を設定でき、最大で3つまで追加可能です。',m3:'タブを長押ししながら左右にドラッグすると、並び順を変えられます。一番左に置いた通貨が上段になります。',m4:'金額の欄をタップすると電卓が開き、上段・下段どちらからでも入力できます。',m5:'レート横の保存アイコンで、その時のレートを履歴に記録できます。',m6:'国の追加・言語・テーマは設定（歯車）から。為替レートは毎日1回自動取得します。',tapChange:'タップで変更',defaultLabel:'デフォルト設定',setDefault:'現在のタブ構成をデフォルトに設定',defaultHint:'よく使う通貨構成を保存し、いつでも呼び出せます。',applyDefault:'デフォルトを呼び出す',defaultSaved:'デフォルトに保存しました',defaultApplied:'デフォルトを呼び出しました',noDefault:'デフォルトが未設定です'},
     en:{settings:'Settings',countries:'Countries',quick:'Quick amounts',appearance:'Appearance',language:'Language',history:'Rate history',
       light:'Light',dark:'Dark',system:'System',trend:'Trend',noHist:'No history yet.',
       hintC:'Up to 4. Tabs follow your selection order.',hintQ:'Tap to pick an amount.',
@@ -600,7 +600,7 @@
       recPrompt:'Note (e.g. Trip / Airport rate)',recDone:' rate saved',records:'',noRec:'No records',
       min1:'At least 1 country required',max4:'Up to 4 tabs',wiped:'History deleted',
       regA:'Asia',regE:'North America & Europe',regO:'Oceania & Others',
-      note:'Auto-updates each morning. Rates are indicative.',jpyName:'Japanese Yen',manual:'How to use',m1:'The leftmost tab (highlighted) is your base currency, always shown on top. Set the currency you use most here.',m2:'To the right of the base currency you can add up to 3 other currencies.',m3:'Long-press and drag a tab to reorder. Whatever you place on the far left becomes the top row.',m4:'Tap an amount to open the keypad. You can type into either the top or bottom row.',m5:'Use the save icon next to the rate to log the current rate to your history.',m6:'Add countries, change language and theme from Settings (gear). Rates update once a day automatically.',tapChange:'TAP TO CHANGE',defaultLabel:'Default setup',setDefault:'Save current tabs as default',defaultHint:'Long-press the top-left icon to restore this setup.',defaultSaved:'Saved as default',defaultApplied:'Default restored',noDefault:'No default saved yet'},
+      note:'Auto-updates each morning. Rates are indicative.',jpyName:'Japanese Yen',manual:'How to use',m1:'The leftmost tab (highlighted) is your base currency, always shown on top. Set the currency you use most here.',m2:'To the right of the base currency you can add up to 3 other currencies.',m3:'Long-press and drag a tab to reorder. Whatever you place on the far left becomes the top row.',m4:'Tap an amount to open the keypad. You can type into either the top or bottom row.',m5:'Use the save icon next to the rate to log the current rate to your history.',m6:'Add countries, change language and theme from Settings (gear). Rates update once a day automatically.',tapChange:'TAP TO CHANGE',defaultLabel:'Default setup',setDefault:'Save current tabs as default',defaultHint:'Save your favorite currency setup and recall it anytime.',applyDefault:'Recall default',defaultSaved:'Saved as default',defaultApplied:'Default restored',noDefault:'No default saved yet'},
     zh:{settings:'设置',countries:'显示国家',quick:'快捷金额',appearance:'外观',language:'语言',history:'汇率记录',
       light:'浅色',dark:'深色',system:'跟随系统',trend:'走势',noHist:'暂无记录。',
       hintC:'最多4个国家，按选择顺序排列。',hintQ:'点击可选择金额。',
@@ -609,7 +609,7 @@
       recPrompt:'备注(例: 旅行 / 机场汇率)',recDone:' 汇率已保存',records:'条',noRec:'无记录',
       min1:'至少需要1个国家',max4:'最多4个标签',wiped:'记录已删除',
       regA:'亚洲',regE:'北美・欧洲',regO:'大洋洲・其他',
-      note:'每天早上自动更新。汇率仅供参考。',jpyName:'日元',manual:'使用说明',m1:'最左侧的标签（高亮标签）为基准货币，始终显示在上行。请将最常用的货币设在这里。',m2:'在基准货币右侧可添加其他货币，最多可添加3个。',m3:'长按并拖动标签可调整顺序。放在最左侧的货币会成为上行。',m4:'点击金额栏打开计算器，上下两行均可输入。',m5:'点击汇率旁的保存图标，可将当前汇率记入历史。',m6:'在设置（齿轮）中添加国家、更改语言与主题。汇率每天自动获取一次。',tapChange:'点击可更改',defaultLabel:'默认设置',setDefault:'将当前标签设为默认',defaultHint:'长按左上角图标即可恢复此设置。',defaultSaved:'已保存为默认',defaultApplied:'已恢复默认',noDefault:'尚未设置默认'},
+      note:'每天早上自动更新。汇率仅供参考。',jpyName:'日元',manual:'使用说明',m1:'最左侧的标签（高亮标签）为基准货币，始终显示在上行。请将最常用的货币设在这里。',m2:'在基准货币右侧可添加其他货币，最多可添加3个。',m3:'长按并拖动标签可调整顺序。放在最左侧的货币会成为上行。',m4:'点击金额栏打开计算器，上下两行均可输入。',m5:'点击汇率旁的保存图标，可将当前汇率记入历史。',m6:'在设置（齿轮）中添加国家、更改语言与主题。汇率每天自动获取一次。',tapChange:'点击可更改',defaultLabel:'默认设置',setDefault:'将当前标签设为默认',defaultHint:'保存常用的货币组合，随时可以调用。',applyDefault:'调用默认设置',defaultSaved:'已保存为默认',defaultApplied:'已恢复默认',noDefault:'尚未设置默认'},
     ko:{settings:'설정',countries:'표시 국가',quick:'빠른 입력 금액',appearance:'테마',language:'언어',history:'환율 기록',
       light:'라이트',dark:'다크',system:'시스템',trend:'추이',noHist:'기록이 없습니다.',
       hintC:'최대 4개국. 선택한 순서대로 표시됩니다.',hintQ:'탭하여 금액을 선택하세요.',
@@ -618,7 +618,7 @@
       recPrompt:'메모 (예: 여행 / 공항 환율)',recDone:' 환율을 저장했습니다',records:'건',noRec:'기록 없음',
       min1:'최소 1개국이 필요합니다',max4:'탭은 최대 4개입니다',wiped:'기록을 삭제했습니다',
       regA:'아시아',regE:'북미・유럽',regO:'오세아니아・기타',
-      note:'매일 아침 자동 업데이트. 환율은 참고용입니다.',jpyName:'일본 엔',manual:'사용 방법',m1:'맨 왼쪽 탭(강조된 탭)이 기준 통화이며 항상 윗줄에 표시됩니다. 가장 자주 쓰는 통화를 여기에 설정하세요.',m2:'기준 통화 오른쪽에는 다른 통화를 최대 3개까지 추가할 수 있습니다.',m3:'탭을 길게 눌러 드래그하면 순서를 바꿀 수 있습니다. 맨 왼쪽에 둔 통화가 윗줄이 됩니다.',m4:'금액란을 탭하면 계산기가 열리며, 윗줄·아랫줄 모두 입력할 수 있습니다.',m5:'환율 옆 저장 아이콘으로 현재 환율을 기록에 남길 수 있습니다.',m6:'국가 추가·언어·테마는 설정(톱니바퀴)에서. 환율은 매일 1회 자동 업데이트됩니다.',tapChange:'탭하여 변경',defaultLabel:'기본 설정',setDefault:'현재 탭 구성을 기본값으로 저장',defaultHint:'왼쪽 상단 아이콘을 길게 누르면 이 구성으로 복원됩니다.',defaultSaved:'기본값으로 저장했습니다',defaultApplied:'기본값을 불러왔습니다',noDefault:'기본값이 없습니다'},
+      note:'매일 아침 자동 업데이트. 환율은 참고용입니다.',jpyName:'일본 엔',manual:'사용 방법',m1:'맨 왼쪽 탭(강조된 탭)이 기준 통화이며 항상 윗줄에 표시됩니다. 가장 자주 쓰는 통화를 여기에 설정하세요.',m2:'기준 통화 오른쪽에는 다른 통화를 최대 3개까지 추가할 수 있습니다.',m3:'탭을 길게 눌러 드래그하면 순서를 바꿀 수 있습니다. 맨 왼쪽에 둔 통화가 윗줄이 됩니다.',m4:'금액란을 탭하면 계산기가 열리며, 윗줄·아랫줄 모두 입력할 수 있습니다.',m5:'환율 옆 저장 아이콘으로 현재 환율을 기록에 남길 수 있습니다.',m6:'국가 추가·언어·테마는 설정(톱니바퀴)에서. 환율은 매일 1회 자동 업데이트됩니다.',tapChange:'탭하여 변경',defaultLabel:'기본 설정',setDefault:'현재 탭 구성을 기본값으로 저장',defaultHint:'자주 쓰는 통화 구성을 저장하고 언제든 불러올 수 있습니다.',applyDefault:'기본값 불러오기',defaultSaved:'기본값으로 저장했습니다',defaultApplied:'기본값을 불러왔습니다',noDefault:'기본값이 없습니다'},
     vi:{settings:'Cài đặt',countries:'Quốc gia hiển thị',quick:'Số tiền nhanh',appearance:'Giao diện',language:'Ngôn ngữ',history:'Lịch sử tỷ giá',
       light:'Sáng',dark:'Tối',system:'Hệ thống',trend:'Xu hướng',noHist:'Chưa có lịch sử.',
       hintC:'Tối đa 4 quốc gia, theo thứ tự chọn.',hintQ:'Chạm để chọn số tiền.',
@@ -627,7 +627,7 @@
       recPrompt:'Ghi chú (VD: Du lịch / Tỷ giá sân bay)',recDone:' đã lưu tỷ giá',records:'',noRec:'Chưa có',
       min1:'Cần ít nhất 1 quốc gia',max4:'Tối đa 4 tab',wiped:'Đã xóa lịch sử',
       regA:'Châu Á',regE:'Bắc Mỹ & Châu Âu',regO:'Châu Đại Dương & Khác',
-      note:'Tự động cập nhật mỗi sáng. Tỷ giá chỉ mang tính tham khảo.',jpyName:'Yên Nhật',manual:'Hướng dẫn sử dụng',m1:'Tab ngoài cùng bên trái (được tô sáng) là tiền tệ cơ sở, luôn hiển thị ở trên. Đặt loại tiền bạn dùng nhiều nhất ở đây.',m2:'Bên phải tiền tệ cơ sở, bạn có thể thêm tối đa 3 loại tiền tệ khác.',m3:'Nhấn giữ và kéo tab để sắp xếp lại. Tiền tệ đặt ngoài cùng bên trái sẽ thành hàng trên.',m4:'Chạm vào ô số tiền để mở bàn phím. Bạn có thể nhập ở cả hàng trên và hàng dưới.',m5:'Dùng biểu tượng lưu cạnh tỷ giá để ghi tỷ giá hiện tại vào lịch sử.',m6:'Thêm quốc gia, đổi ngôn ngữ và giao diện trong Cài đặt (bánh răng). Tỷ giá tự cập nhật mỗi ngày một lần.',tapChange:'CHẠM ĐỂ ĐỔI',defaultLabel:'Cài đặt mặc định',setDefault:'Lưu các tab hiện tại làm mặc định',defaultHint:'Nhấn giữ biểu tượng góc trên bên trái để khôi phục cài đặt này.',defaultSaved:'Đã lưu làm mặc định',defaultApplied:'Đã khôi phục mặc định',noDefault:'Chưa có mặc định'},
+      note:'Tự động cập nhật mỗi sáng. Tỷ giá chỉ mang tính tham khảo.',jpyName:'Yên Nhật',manual:'Hướng dẫn sử dụng',m1:'Tab ngoài cùng bên trái (được tô sáng) là tiền tệ cơ sở, luôn hiển thị ở trên. Đặt loại tiền bạn dùng nhiều nhất ở đây.',m2:'Bên phải tiền tệ cơ sở, bạn có thể thêm tối đa 3 loại tiền tệ khác.',m3:'Nhấn giữ và kéo tab để sắp xếp lại. Tiền tệ đặt ngoài cùng bên trái sẽ thành hàng trên.',m4:'Chạm vào ô số tiền để mở bàn phím. Bạn có thể nhập ở cả hàng trên và hàng dưới.',m5:'Dùng biểu tượng lưu cạnh tỷ giá để ghi tỷ giá hiện tại vào lịch sử.',m6:'Thêm quốc gia, đổi ngôn ngữ và giao diện trong Cài đặt (bánh răng). Tỷ giá tự cập nhật mỗi ngày một lần.',tapChange:'CHẠM ĐỂ ĐỔI',defaultLabel:'Cài đặt mặc định',setDefault:'Lưu các tab hiện tại làm mặc định',defaultHint:'Lưu cấu hình tiền tệ yêu thích và gọi lại bất cứ lúc nào.',applyDefault:'Gọi lại mặc định',defaultSaved:'Đã lưu làm mặc định',defaultApplied:'Đã khôi phục mặc định',noDefault:'Chưa có mặc định'},
     th:{settings:'ตั้งค่า',countries:'ประเทศที่แสดง',quick:'จำนวนเงินด่วน',appearance:'ธีม',language:'ภาษา',history:'ประวัติอัตรา',
       light:'สว่าง',dark:'มืด',system:'ตามระบบ',trend:'แนวโน้ม',noHist:'ยังไม่มีประวัติ',
       hintC:'สูงสุด 4 ประเทศ ตามลำดับที่เลือก',hintQ:'แตะเพื่อเลือกจำนวนเงิน',
@@ -636,7 +636,7 @@
       recPrompt:'บันทึก (เช่น ทริป / อัตราสนามบิน)',recDone:' บันทึกอัตราแล้ว',records:'',noRec:'ไม่มีบันทึก',
       min1:'ต้องมีอย่างน้อย 1 ประเทศ',max4:'สูงสุด 4 แท็บ',wiped:'ลบประวัติแล้ว',
       regA:'เอเชีย',regE:'อเมริกาเหนือ & ยุโรป',regO:'โอเชียเนีย & อื่นๆ',
-      note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น',manual:'วิธีใช้',m1:'แท็บซ้ายสุด (ที่ไฮไลต์) คือสกุลเงินหลัก แสดงอยู่แถวบนเสมอ ตั้งสกุลเงินที่ใช้บ่อยที่สุดไว้ตรงนี้',m2:'ทางขวาของสกุลเงินหลัก สามารถเพิ่มสกุลเงินอื่นได้สูงสุด 3 สกุล',m3:'กดแท็บค้างแล้วลากเพื่อจัดเรียงใหม่ สกุลเงินที่วางซ้ายสุดจะกลายเป็นแถวบน',m4:'แตะช่องจำนวนเงินเพื่อเปิดแป้นตัวเลข ป้อนได้ทั้งแถวบนและแถวล่าง',m5:'ใช้ไอคอนบันทึกข้างอัตราเพื่อบันทึกอัตราปัจจุบันลงประวัติ',m6:'เพิ่มประเทศ เปลี่ยนภาษาและธีมได้ที่ตั้งค่า (เฟือง) อัตราอัปเดตอัตโนมัติวันละครั้ง',tapChange:'แตะเพื่อเปลี่ยน',defaultLabel:'ค่าเริ่มต้น',setDefault:'บันทึกแท็บปัจจุบันเป็นค่าเริ่มต้น',defaultHint:'กดค้างที่ไอคอนมุมซ้ายบนเพื่อเรียกคืนการตั้งค่านี้',defaultSaved:'บันทึกเป็นค่าเริ่มต้นแล้ว',defaultApplied:'เรียกคืนค่าเริ่มต้นแล้ว',noDefault:'ยังไม่มีค่าเริ่มต้น'}
+      note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น',manual:'วิธีใช้',m1:'แท็บซ้ายสุด (ที่ไฮไลต์) คือสกุลเงินหลัก แสดงอยู่แถวบนเสมอ ตั้งสกุลเงินที่ใช้บ่อยที่สุดไว้ตรงนี้',m2:'ทางขวาของสกุลเงินหลัก สามารถเพิ่มสกุลเงินอื่นได้สูงสุด 3 สกุล',m3:'กดแท็บค้างแล้วลากเพื่อจัดเรียงใหม่ สกุลเงินที่วางซ้ายสุดจะกลายเป็นแถวบน',m4:'แตะช่องจำนวนเงินเพื่อเปิดแป้นตัวเลข ป้อนได้ทั้งแถวบนและแถวล่าง',m5:'ใช้ไอคอนบันทึกข้างอัตราเพื่อบันทึกอัตราปัจจุบันลงประวัติ',m6:'เพิ่มประเทศ เปลี่ยนภาษาและธีมได้ที่ตั้งค่า (เฟือง) อัตราอัปเดตอัตโนมัติวันละครั้ง',tapChange:'แตะเพื่อเปลี่ยน',defaultLabel:'ค่าเริ่มต้น',setDefault:'บันทึกแท็บปัจจุบันเป็นค่าเริ่มต้น',defaultHint:'บันทึกชุดสกุลเงินที่ใช้บ่อยและเรียกคืนได้ทุกเมื่อ',applyDefault:'เรียกคืนค่าเริ่มต้น',defaultSaved:'บันทึกเป็นค่าเริ่มต้นแล้ว',defaultApplied:'เรียกคืนค่าเริ่มต้นแล้ว',noDefault:'ยังไม่มีค่าเริ่มต้น'}
   };
   var lang='ja';
   function t(k){return (T[lang]&&T[lang][k])||T.ja[k]||k;}
@@ -757,6 +757,7 @@
     if($('tDefault'))$('tDefault').textContent=t('defaultLabel');
     if($('tSetDefault'))$('tSetDefault').textContent=t('setDefault');
     if($('tDefaultHint'))$('tDefaultHint').textContent=t('defaultHint');
+    if($('tApplyDefault'))$('tApplyDefault').textContent=t('applyDefault');
     $('tQuick').textContent=t('quick');
     $('tHintQ').textContent=t('hintQ');
     $('tAppearance').textContent=t('appearance');
@@ -1091,19 +1092,7 @@
     document.querySelectorAll('#themeSeg button').forEach(function(b){b.addEventListener('click',function(){theme=b.getAttribute('data-th');saveCfg();applyTheme();renderSpark();});});
     $('wipeBtn').addEventListener('click',function(){if(!confirm(t('wipeQ')))return;saveHist({});renderHist();renderSpark();toast(t('wiped'));});
     $('setDefaultBtn').addEventListener('click',function(){saveDefault();toast(t('defaultSaved'));});
-    // ロゴ長押しでデフォルト復元
-    (function(){
-      var lb=$('logoBtn'),tmr=null,fired=false;
-      function start(e){if(e.button!==undefined&&e.button!==0)return;fired=false;clearTimeout(tmr);
-        tmr=setTimeout(function(){fired=true;applyDefault();},650);}
-      function cancel(){clearTimeout(tmr);}
-      lb.addEventListener('pointerdown',start);
-      lb.addEventListener('pointerup',cancel);
-      lb.addEventListener('pointerleave',cancel);
-      lb.addEventListener('pointercancel',cancel);
-      lb.addEventListener('click',function(e){if(fired){e.preventDefault();e.stopPropagation();fired=false;}});
-      lb.addEventListener('contextmenu',function(e){e.preventDefault();});
-    })();
+    $('applyDefaultBtn').addEventListener('click',function(){applyDefault();});
     var dl=$('drumList'),raf;dl.addEventListener('scroll',function(){if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(hlDrum);});
     $('drumOk').addEventListener('click',drumOk);
     $('drumCancel').addEventListener('click',closeDrum);
