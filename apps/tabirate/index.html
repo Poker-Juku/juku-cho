@@ -851,45 +851,56 @@
       var el=document.createElement('button');
       el.className='tab'+(isTop?' base on top':'')+(isBot?' sel bot':'');
       el.setAttribute('data-code',code);el.setAttribute('data-idx',idx);
+      el.type='button';
       if(isTop){
-        // 基準タブ:国旗+国名(1.5倍で余裕あり)
         el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+cname(c)+'</span>';
       }else{
-        // 指標タブ:国旗+通貨コードのみ(例 🇺🇸USD)
         el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+code+'</span>';
       }
-      attachTabHandlers(el,code);
+      // タップ = 下段に選択(左端は基準なので選択対象外)
+      el.addEventListener('click',function(){
+        if(tabDragActive)return; // ドラッグ直後のクリックは無視
+        if(code===displayed[0])return; // 左端(基準)は選択しない
+        selBottom=code;
+        if(kpOpen){side='top';raw='';replaceNext=false;}
+        saveCfg();renderAll();if(kpOpen)updateKp();
+      });
+      // 長押し = ドラッグ開始
+      el.addEventListener('pointerdown',function(e){onTabPointerDown(e,el,code);});
+      el.addEventListener('contextmenu',function(e){e.preventDefault();});
       t2.appendChild(el);});}
 
   // ---- tab long-press drag reorder ----
-  var tabDrag=null;
-  function attachTabHandlers(el,code){
-    var pressTimer=null,started=false,moved=false,mv=null,up=null;
-    function cleanup(){
-      clearTimeout(pressTimer);
-      if(mv){window.removeEventListener('pointermove',mv);mv=null;}
-      if(up){window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);up=null;}
+  var tabDrag=null,tabDragActive=false;
+  var lpTimer=null,lpMoved=false,lpEl=null,lpCode=null,lpStartX=0,lpStartY=0;
+
+  function onTabPointerDown(e,el,code){
+    if(e.button!==undefined&&e.button!==0)return;
+    clearTimeout(lpTimer);
+    lpMoved=false;lpEl=el;lpCode=code;lpStartX=e.clientX;lpStartY=e.clientY;
+    document.addEventListener('pointermove',onTabPointerMove);
+    document.addEventListener('pointerup',onTabPointerUp);
+    document.addEventListener('pointercancel',onTabPointerUp);
+    lpTimer=setTimeout(function(){
+      if(!lpMoved&&lpEl){beginTabDrag(lpEl,lpCode,lpStartX);}
+    },420);
+  }
+  function onTabPointerMove(e){
+    if(tabDrag){dragMove(e);return;}
+    if(Math.abs(e.clientX-lpStartX)>8||Math.abs(e.clientY-lpStartY)>8){
+      lpMoved=true;clearTimeout(lpTimer); // 動いたらタップでも長押しでもない → 何もしない(スクロール等)
     }
-    el.addEventListener('pointerdown',function(e){
-      if(e.button!==undefined&&e.button!==0)return;
-      cleanup(); // 念のため前回の残りを除去
-      moved=false;started=false;
-      var startX=e.clientX,sx=e.clientX,sy=e.clientY;
-      pressTimer=setTimeout(function(){started=true;beginTabDrag(el,code,startX);},450);
-      mv=function(ev){if(Math.abs(ev.clientX-sx)>8||Math.abs(ev.clientY-sy)>8){moved=true;if(!started){clearTimeout(pressTimer);}}};
-      up=function(ev){
-        cleanup();
-        if(started){return;} // ドラッグ確定は beginTabDrag 内の up が担当
-        if(!moved){
-          // 左端(上段)以外のタブをタップ → 下段に選択
-          if(code!==displayed[0]){selBottom=code;if(kpOpen){side='top';raw='';replaceNext=false;}saveCfg();renderAll();if(kpOpen)updateKp();}
-        }
-      };
-      window.addEventListener('pointermove',mv);
-      window.addEventListener('pointerup',up);
-      window.addEventListener('pointercancel',up);
-    });
-    el.addEventListener('contextmenu',function(e){e.preventDefault();});
+  }
+  function onTabPointerUp(e){
+    clearTimeout(lpTimer);
+    document.removeEventListener('pointermove',onTabPointerMove);
+    document.removeEventListener('pointerup',onTabPointerUp);
+    document.removeEventListener('pointercancel',onTabPointerUp);
+    if(tabDrag){endTabDrag();
+      // ドラッグ直後のclickを無視するフラグ
+      tabDragActive=true;setTimeout(function(){tabDragActive=false;},50);
+    }
+    lpEl=null;lpCode=null;
   }
   function beginTabDrag(el,code,startX){
     if(navigator.vibrate)navigator.vibrate(12);
@@ -898,38 +909,26 @@
     var rects=els.map(function(n){return n.getBoundingClientRect();});
     var fromIdx=els.indexOf(el);
     var elRect=rects[fromIdx];
-    var baseLeft=elRect.left;
     el.classList.add('drag');
-    tabDrag={el:el,code:code,els:els,rects:rects,fromIdx:fromIdx,curIdx:fromIdx,baseLeft:baseLeft,offsetX:startX-elRect.left};
-    var move=function(ev){
-      var x=ev.clientX;
-      var dx=x-startX;
-      el.style.transform='translateX('+dx+'px)';
-      // 指の中心位置から挿入インデックスを決める
-      var centerX=x - tabDrag.offsetX + elRect.width/2;
-      var newIdx=tabDrag.curIdx;
-      for(var i=0;i<rects.length;i++){
-        var mid=rects[i].left+rects[i].width/2;
-        if(centerX<mid){newIdx=i;break;}
-        newIdx=i;
-      }
-      if(newIdx!==tabDrag.curIdx){shiftTabs(newIdx);tabDrag.curIdx=newIdx;}
-    };
-    var up=function(){
-      window.removeEventListener('pointermove',move);
-      window.removeEventListener('pointerup',up);
-      window.removeEventListener('pointercancel',up);
-      endTabDrag();
-    };
-    window.addEventListener('pointermove',move);
-    window.addEventListener('pointerup',up);
-    window.addEventListener('pointercancel',up);
-    // 初期シフト適用
+    tabDrag={el:el,code:code,els:els,rects:rects,fromIdx:fromIdx,curIdx:fromIdx,startX:startX,offsetX:startX-elRect.left,w:elRect.width};
     shiftTabs(fromIdx);
   }
+  function dragMove(e){
+    var d=tabDrag;if(!d)return;
+    var dx=e.clientX-d.startX;
+    d.el.style.transform='translateX('+dx+'px)';
+    var centerX=e.clientX-d.offsetX+d.w/2;
+    var newIdx=d.curIdx;
+    for(var i=0;i<d.rects.length;i++){
+      var mid=d.rects[i].left+d.rects[i].width/2;
+      if(centerX<mid){newIdx=i;break;}
+      newIdx=i;
+    }
+    if(newIdx!==d.curIdx){shiftTabs(newIdx);d.curIdx=newIdx;}
+  }
   function shiftTabs(targetIdx){
-    // ドラッグ中要素を除いた並びで、他タブを左右へずらす
-    var d=tabDrag;var w=d.rects[0].width;var gap=d.rects.length>1?(d.rects[1].left-d.rects[0].right):0;var step=w+gap;
+    var d=tabDrag;if(!d)return;
+    var w=d.rects[0].width;var gap=d.rects.length>1?(d.rects[1].left-d.rects[0].right):0;var step=w+gap;
     d.els.forEach(function(n,i){
       if(n===d.el)return;
       var shift=0;
@@ -941,16 +940,13 @@
   function endTabDrag(){
     var d=tabDrag;if(!d)return;
     var to=d.curIdx;
-    // displayed 配列を並べ替え
     var arr=displayed.slice();
     var moving=arr.splice(d.fromIdx,1)[0];
     arr.splice(to,0,moving);
     displayed=arr;
     tabDrag=null;
     $('tabs').classList.remove('dragging');
-    // 並べ替えで下段選択が左端(上段)に来てしまった場合は、2番目を下段に
     if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
-    // 入力中の位置が変わる可能性があるのでリセット
     if(kpOpen){side='top';raw='';replaceNext=false;}
     saveCfg();renderAll();if(kpOpen)updateKp();
   }
