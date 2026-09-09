@@ -58,12 +58,12 @@
   .hdr-img{display:block;width:100%;height:auto}
   /* 画像に焼き込まれた ?・⚙ アイコンの上に透明なタップ領域を重ねる。
      切り出し後の画像比率 2103x351 基準。アイコンは右端付近・縦中央。 */
-  .hdr-hit{position:absolute;top:30%;height:44%;border:none;background:transparent;cursor:pointer;
+  .hdr-hit{position:absolute;top:26%;height:48%;border:none;background:transparent;cursor:pointer;z-index:3;
     border-radius:14px;padding:0;-webkit-tap-highlight-color:transparent}
-  .hdr-hit:active{background:rgba(255,255,255,.10)}
-  .hdr-hit.help{right:12%;width:8.5%}
-  .hdr-hit.gear{right:2.5%;width:8.5%}
-  .hdr-hit.logo{left:2.5%;width:16%;top:18%;height:64%}
+  .hdr-hit:active{background:rgba(255,255,255,.12)}
+  .hdr-hit.help{right:11%;width:9.5%}
+  .hdr-hit.gear{right:1.5%;width:9.5%}
+  .hdr-hit.logo{left:2%;width:15%;top:20%;height:60%}
 
   /* ============ neon tabs ============ */
   .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:0;padding:0;margin:4px 0 16px;background:transparent;border:none;
@@ -85,15 +85,15 @@
   .tab .nm{overflow:hidden;text-overflow:ellipsis;font-weight:700}
   .tab .chev{flex:0 0 auto;font-size:11px;opacity:.7;margin-left:1px}
   /* 選択中(基準=左端 top)は赤ネオン */
-  .tab.on{border-color:rgba(240,70,90,.9);color:#fff;z-index:2;
+  .tab.on{border-color:rgba(240,70,90,.95);color:#fff;z-index:3;
     background:linear-gradient(180deg,rgba(70,20,30,.7),rgba(30,8,14,.8));
-    box-shadow:0 0 14px rgba(240,60,80,.6),inset 0 0 14px rgba(240,60,80,.28);
-    transform:scale(.97);opacity:.92}
+    box-shadow:inset 0 0 16px rgba(240,60,80,.35),inset 0 0 2px rgba(240,90,110,.8);
+    opacity:1}
   /* 選択中の下段は青を強めて区別 */
-  .tab.sel{border-color:rgba(110,180,255,.95);color:#fff;z-index:2;
+  .tab.sel{border-color:rgba(110,180,255,.98);color:#fff;z-index:3;
     background:linear-gradient(180deg,rgba(25,45,80,.8),rgba(12,22,44,.85));
-    box-shadow:0 0 14px rgba(80,150,255,.6),inset 0 0 14px rgba(80,150,255,.3);
-    transform:scale(.955);opacity:.94}
+    box-shadow:inset 0 0 16px rgba(80,150,255,.4),inset 0 0 2px rgba(130,190,255,.8);
+    opacity:1}
   /* ドラッグ中は色を保持 */
   .tabs.dragging .tab{color:#cfe0ff}
   .tabs.dragging .tab.on,.tabs.dragging .tab.sel{color:#fff}
