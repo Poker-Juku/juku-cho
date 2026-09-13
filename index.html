@@ -1,289 +1,1199 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0d1322">
-<title>塾 | Juku-Cho — 学べる・使える、実用ツール</title>
-<meta name="description" content="日常で使える実用アプリと、ポーカー・海外旅行の実践知識を無料公開。インストール不要、ブラウザですぐ使えます。">
-<link rel="canonical" href="https://juku-cho.com/">
-<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
-<!-- OGP -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://juku-cho.com/">
-<meta property="og:title" content="塾 | Juku-Cho — 学べる・使える、実用ツール">
-<meta property="og:description" content="日常で使える実用アプリと、ポーカー・海外旅行の実践知識を無料公開。">
-<meta property="og:image" content="https://juku-cho.com/assets/ogp.png">
-<meta property="og:site_name" content="Juku-Cho">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png">
-<!-- ▼ AdSense申請時、所有権確認タグをここに貼ります -->
-<!-- <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0B0D10" id="metaTheme">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>TABI - RATE</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
 <style>
-
-  :root{
-    --ink:#0d1322;--ink-2:#131b2e;--panel:#18223a;--panel-2:#1f2c49;
-    --line:rgba(232,184,75,.14);--gold:#e8b84b;--gold-soft:#f0c969;
-    --teal:#4ec9a8;--coral:#ff6d5c;
-    --text:#eef2fb;--muted:#8a96b4;
+  /* ============ tokens (8px grid, single accent) ============ */
+  [data-theme="dark"]{
+    --bg:#0B0D10;
+    --raise:#14171C;
+    --raise-2:#1B1F26;
+    --ink:#F2F4F7;
+    --ink-2:#9AA3AF;
+    --ink-3:#5C6572;
+    --hair:rgba(255,255,255,.07);
+    --accent:#34D399;
+    --accent-dim:rgba(52,211,153,.12);
+    --accent-ink:#34D399;
+    --r:16px;
   }
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [data-theme="light"]{
+    --bg:#F7F8FA;
+    --raise:#FFFFFF;
+    --raise-2:#F0F2F5;
+    --ink:#0E1116;
+    --ink-2:#5F6875;
+    --ink-3:#98A0AC;
+    --hair:rgba(14,17,22,.08);
+    --accent:#0E9F6E;
+    --accent-dim:rgba(14,159,110,.10);
+    --accent-ink:#0B7D57;
+    --r:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;overflow:hidden;overscroll-behavior:none;position:fixed;width:100%}
   body{
-    font-family:'BIZ UDPGothic',system-ui,sans-serif;
-    background:radial-gradient(130% 55% at 50% -8%, #1c2745 0%, var(--ink) 58%) fixed;
-    color:var(--text);line-height:1.85;
-    display:flex;justify-content:center;padding:0 18px 70px;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
+    background:var(--bg);color:var(--ink);display:flex;justify-content:center;
+    -webkit-font-smoothing:antialiased;touch-action:manipulation;
+    transition:background .2s,color .2s;
   }
-  .wrap{width:100%;max-width:760px}
-  a:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
-  /* hero */
-  header{padding:64px 0 48px;text-align:center}
-  .logo{display:inline-flex;align-items:baseline;gap:10px;margin-bottom:18px}
-  .logo .mark{font-size:40px;font-weight:700;color:var(--gold);border:2px solid var(--gold);border-radius:12px;padding:2px 14px;line-height:1.3}
-  .logo .name{font-size:13px;color:var(--muted);letter-spacing:.24em}
-  h1{font-size:26px;font-weight:700;line-height:1.45;margin-bottom:14px;letter-spacing:.01em}
-  .lead{font-size:15px;color:#c3cbdb;max-width:520px;margin:0 auto}
-  .lead b{color:var(--gold-soft);font-weight:700}
-  /* section */
-  section{margin-top:72px}
-  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
-  .sec-head h2{font-size:19px;font-weight:700;line-height:1.4;white-space:nowrap}
-  .sec-head .bar{flex:1;height:1px;background:var(--line)}
-  .sec-desc{font-size:13px;color:var(--muted);margin-bottom:24px}
-  /* app grid */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
-  .card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;transition:.16s;position:relative;overflow:hidden}
-  .card:hover{background:var(--panel-2);transform:translateY(-2px);border-color:rgba(232,184,75,.3)}
-  .card .accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,var(--gold))}
-  .card .ico{width:40px;height:40px;border-radius:11px;background:var(--c,var(--gold));display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:19px;font-weight:700;color:#14161c}
-  .card h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:6px}
-  .card p{font-size:12px;color:var(--muted);line-height:1.7;flex:1}
-  .card .go{font-size:11px;color:var(--c,var(--gold));font-weight:700;margin-top:14px}
-  /* =========================================================
-     情報塾（トピックカード）
-     カード全体をリンクにすると、中の子リンクが入れ子になり
-     HTMLとして不正になるため、見出しと子リンクを分けています
-     ========================================================= */
-  .topics{display:flex;flex-direction:column;gap:12px}
-  .topic{
-    background:var(--panel);border:1px solid var(--line);border-radius:16px;
-    padding:20px 22px;position:relative;overflow:hidden;transition:.16s;
+  /* ambient light — single subtle glow, not a gradient stack */
+  body::before{content:"";position:fixed;top:-160px;left:50%;transform:translateX(-50%);
+    width:420px;height:340px;border-radius:50%;pointer-events:none;z-index:0;
+    background:radial-gradient(closest-side,var(--accent-dim),transparent 100%);opacity:.9}
+  .app{position:relative;z-index:1;width:100%;max-width:440px;height:100dvh;display:flex;flex-direction:column;
+    padding:env(safe-area-inset-top) 16px calc(10px + env(safe-area-inset-bottom));overflow:hidden}
+
+  /* ============ header (image banner) ============ */
+  .hdr{flex:0 0 auto;position:relative;z-index:1;margin-top:8px;border-radius:16px;overflow:hidden;
+    line-height:0}
+  .hdr-img{display:block;width:100%;height:auto}
+  /* 画像の空白部分〜地球儀にかけてキャッチコピーを1行で重ねる(多言語対応) */
+  .hdr-tagline{position:absolute;top:50%;transform:translateY(-50%);left:52%;width:46%;z-index:4;
+    color:#eef5ff;font-weight:700;line-height:1.3;letter-spacing:0;
+    font-size:clamp(8px,2vw,13px);
+    text-align:left;pointer-events:none;
+    text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 10px rgba(0,0,0,.6);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ============ neon tabs ============ */
+  .tabs{position:relative;z-index:5;flex:0 0 auto;display:flex;gap:0;padding:0;margin:4px 0 16px;background:transparent;border:none;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;border-radius:8px;overflow:hidden}
+  .tabs *,.tab,.tab *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+    -webkit-touch-callout:none}
+  .tab{flex:1 1 0;min-width:0;position:relative;display:flex;align-items:center;justify-content:center;gap:5px;height:48px;
+    border:1.5px solid rgba(90,150,230,.5);border-left-width:.75px;border-right-width:.75px;
+    background:linear-gradient(180deg,rgba(20,30,55,.65),rgba(10,16,32,.75));
+    border-radius:0;cursor:pointer;
+    font-size:13px;font-weight:700;color:#cfe0ff;transition:transform .16s cubic-bezier(.32,.72,0,1),opacity .16s,border-color .16s,box-shadow .16s;
+    white-space:nowrap;overflow:hidden;-webkit-user-select:none;user-select:none;
+    -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
+    box-shadow:inset 0 0 10px rgba(60,120,220,.15)}
+  /* 基準タブ(左端)は1.5倍幅・角を少しだけ残す */
+  .tab.base{flex:2 1 0;border-left-width:1.5px;border-top-left-radius:8px;border-bottom-left-radius:8px}
+  .tab:last-child{border-right-width:1.5px;border-top-right-radius:8px;border-bottom-right-radius:8px}
+  .tab .fl{font-size:18px;line-height:1;flex:0 0 auto}
+  .tab .nm{overflow:hidden;text-overflow:ellipsis;font-weight:700}
+  .tab .chev{flex:0 0 auto;font-size:11px;opacity:.7;margin-left:1px}
+  /* 選択中(基準=左端 top)は赤ネオン */
+  .tab.on{border-color:rgba(240,70,90,.95);color:#fff;z-index:3;
+    background:linear-gradient(180deg,rgba(70,20,30,.7),rgba(30,8,14,.8));
+    box-shadow:inset 0 0 16px rgba(240,60,80,.35),inset 0 0 2px rgba(240,90,110,.8);
+    opacity:1}
+  /* 選択中の下段は青を強めて区別 */
+  .tab.sel{border-color:rgba(110,180,255,.98);color:#fff;z-index:3;
+    background:linear-gradient(180deg,rgba(25,45,80,.8),rgba(12,22,44,.85));
+    box-shadow:inset 0 0 16px rgba(80,150,255,.4),inset 0 0 2px rgba(130,190,255,.8);
+    opacity:1}
+  /* ドラッグ中は色を保持 */
+  .tabs.dragging .tab{color:#cfe0ff}
+  .tabs.dragging .tab.on,.tabs.dragging .tab.sel{color:#fff}
+  .tab.drag{z-index:10;transition:none;opacity:.97;cursor:grabbing;
+    box-shadow:0 10px 26px -6px rgba(0,0,0,.7),0 0 16px rgba(240,60,80,.5)!important}
+  .tab.armed{cursor:grab}
+
+  /* ============ rate line (hairline, not a card) ============ */
+  .rate{position:relative;z-index:1;flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:2px 4px 14px;
+    margin-bottom:8px;flex-wrap:wrap}
+  .rate .pair{font-size:13px;font-weight:700;color:var(--ink-3);letter-spacing:.1em;flex:0 0 auto}
+  .rate .val{font-size:30px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.01em;flex:1 1 auto}
+  .rate .live{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:0 0 auto;
+    box-shadow:0 0 0 0 var(--accent);animation:pulse 2.4s infinite}
+  .rate .live.warn{background:#E0894A;animation:none}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.4)}70%{box-shadow:0 0 0 6px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+  .rate .when{font-size:10px;color:var(--ink-3);margin-left:auto;font-variant-numeric:tabular-nums;
+    flex-basis:100%;order:5;margin-top:2px}
+  .rate .act{width:28px;height:28px;border-radius:8px;border:none;background:transparent;color:var(--ink-3);
+    display:grid;place-items:center;cursor:pointer;transition:.15s;flex:0 0 auto;order:4}
+  .rate .act:active{background:var(--raise-2);color:var(--ink)}
+  .rate .act svg{width:15px;height:15px}
+  .rate .act.spin svg{animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ============ converter — the hero ============ */
+  .conv{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column;justify-content:center}
+  .row{position:relative;padding:22px 8px;cursor:pointer;border-radius:var(--r);transition:background .15s}
+  .row.on{background:var(--raise)}
+  /* タブの色(上段=赤・下段=青)と対応させる案内ライン。右へ行くほど透明にフェード */
+  #rTop::before,#rTop::after{content:"";position:absolute;pointer-events:none}
+  #rTop::before{left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#e0455a,rgba(224,69,90,.15))}
+  #rTop::after{left:0;top:0;height:2px;width:62%;
+    background:linear-gradient(90deg,#e0455a,rgba(224,69,90,0))}
+  #rBottom::before,#rBottom::after{content:"";position:absolute;pointer-events:none}
+  #rBottom::before{left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#3e8bff,rgba(62,139,255,.15))}
+  #rBottom::after{left:0;top:0;height:2px;width:52%;
+    background:linear-gradient(90deg,#3e8bff,rgba(62,139,255,0))}
+  .row-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .fl-big{font-size:30px;line-height:1;flex:0 0 auto}
+  .iso{font-size:20px;font-weight:800;letter-spacing:.06em;color:var(--ink)}
+  .cname{font-size:11px;font-weight:600;color:var(--ink-3)}
+  .caret{margin-left:auto;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.12em;opacity:0;transition:.15s}
+  .row.on .caret{opacity:1}
+  .row{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+  .row-val{display:flex;align-items:baseline;gap:8px}
+  .sym{font-size:26px;font-weight:600;color:var(--ink-3);flex:0 0 auto}
+  .amt{flex:1;min-width:0;text-align:right;font-size:52px;font-weight:700;letter-spacing:-.025em;
+    font-variant-numeric:tabular-nums;line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    transition:color .15s}
+  .amt.zero{color:var(--ink-3)}
+  .row.on .amt{color:var(--accent)}
+  .mid{display:flex;align-items:center;padding:6px 8px}
+
+  /* ============ bottom zone ============ */
+  .zone{flex:0 0 auto;display:flex;flex-direction:column;padding-top:8px}
+  .pane{display:none}
+  .pane#paneQuick.on{display:flex;flex-direction:column}
+
+  /* quick — hairline pills, no cards */
+  .quick{display:flex;gap:8px;padding-bottom:8px}
+  .qg{flex:1 1 0;min-width:0}
+  .qg-h{font-size:9px;font-weight:700;color:var(--ink-3);letter-spacing:.14em;margin:0 0 8px 2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .qg-b{display:flex;gap:6px}
+  .qb{flex:1 1 0;min-width:0;height:36px;border:1px solid var(--hair);background:transparent;border-radius:10px;
+    font-size:11px;font-weight:600;color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums;
+    transition:.12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
+  .qb:active{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+  /* keypad — fixed bottom overlay */
+  #paneKp{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;z-index:30;
+    background:var(--bg);border-top:1px solid var(--hair);border-radius:20px 20px 0 0;
+    padding:12px 16px calc(14px + env(safe-area-inset-bottom));
+    box-shadow:0 -12px 40px -8px rgba(0,0,0,.5);
+    transform:translateY(110%);transition:transform .22s cubic-bezier(.32,.72,0,1);display:block;
+    visibility:hidden;pointer-events:none}
+  #paneKp.on{transform:translateY(0);visibility:visible;pointer-events:auto}
+  .kp{display:flex;flex-direction:column;gap:10px}
+  .kp-input{padding:2px 2px 10px;border-bottom:1px solid var(--hair);margin-bottom:2px}
+  .kpi-head{display:flex;align-items:center;gap:8px}
+  .kpi-flag{font-size:20px;line-height:1;flex:0 0 auto}
+  .kpi-iso{font-size:14px;font-weight:800;letter-spacing:.04em;color:var(--ink)}
+  .kpi-name{font-size:12px;font-weight:600;color:var(--ink-3)}
+  .kpi-head .done{margin-left:auto;border:none;background:transparent;color:var(--accent);font-size:14px;font-weight:700;cursor:pointer;padding:6px 8px}
+  .kpi-val{display:flex;align-items:baseline;gap:8px;margin-top:6px}
+  .kpi-sym{font-size:20px;font-weight:600;color:var(--ink-3);flex:0 0 auto}
+  .kpi-amt{flex:1;min-width:0;text-align:right;font-size:34px;font-weight:700;letter-spacing:-.02em;
+    color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .kp-top{display:none}
+  .kp-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .kp-g button{border:none;border-radius:14px;background:var(--raise);color:var(--ink);height:58px;
+    font-size:22px;font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums;transition:.1s;padding:0}
+  .kp-g button:active{background:var(--raise-2);transform:scale(.96)}
+  .kp-g button.u{color:var(--ink-3);font-size:18px;background:transparent}
+  .kp-g button.u:active{background:var(--raise)}
+  .kp-g button.go{background:var(--accent);color:#04150E;font-size:15px;font-weight:700}
+  .kp-g button.dis{opacity:.25;pointer-events:none}
+  /* dim scrim behind keypad */
+  .kp-scrim{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;visibility:hidden;
+    transition:.2s;z-index:29}
+  .kp-scrim.on{opacity:1;visibility:visible}
+
+  /* ad + footer */
+  .ad{flex:0 0 auto;height:56px;margin-top:8px;border-radius:12px;background:var(--raise);
+    border:1px solid var(--hair);display:grid;place-items:center;overflow:hidden}
+  .ad span{font-size:9px;color:var(--ink-3);letter-spacing:.18em;font-weight:700}
+  .foot{flex:0 0 auto;text-align:center;font-size:9px;color:var(--ink-3);letter-spacing:.14em;
+    font-weight:600;padding:8px 0 0}
+  .foot b{color:var(--ink-2);font-weight:700}
+
+  /* ============ sheet ============ */
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:.2s;z-index:40}
+  .scrim.show{opacity:1;visibility:visible}
+  .sheet{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;background:var(--bg);
+    border-top:1px solid var(--hair);border-radius:24px 24px 0 0;z-index:41;
+    transform:translateY(100%);transition:transform .24s cubic-bezier(.32,.72,0,1);
+    height:88dvh;display:flex;flex-direction:column;visibility:hidden}
+  .sheet.show{transform:translateY(0);visibility:visible}
+  .grip{width:36px;height:4px;border-radius:2px;background:var(--hair);margin:8px auto 0;flex:0 0 auto}
+  .sh{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 8px;flex:0 0 auto}
+  .sh h2{font-size:17px;font-weight:700}
+  .sh .x{width:32px;height:32px;border-radius:50%;border:1px solid var(--hair);background:var(--raise);
+    color:var(--ink-2);font-size:15px;cursor:pointer}
+  .sb{overflow-y:auto;padding:0 16px calc(24px + env(safe-area-inset-bottom));flex:1 1 auto;
+    -webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+  .lbl{font-size:10px;font-weight:700;color:var(--ink-3);letter-spacing:.16em;margin:24px 2px 8px}
+  .lbl:first-child{margin-top:8px}
+  .lbl .c{color:var(--accent);margin-left:8px}
+  .rgh{font-size:11px;font-weight:600;color:var(--ink-2);margin:16px 2px 8px}
+  .rgh-toggle{width:100%;display:flex;align-items:center;gap:8px;background:transparent;border:none;
+    color:var(--ink-2);font-size:12px;font-weight:600;cursor:pointer;padding:12px 2px;margin-top:4px;
+    border-bottom:1px solid var(--hair)}
+  .rgh-toggle .chev{width:13px;height:13px;color:var(--ink-3);transition:transform .2s;flex:0 0 auto}
+  .rgh-toggle.open .chev{transform:rotate(90deg)}
+  .rgh-toggle.open{color:var(--ink)}
+  .rgg-wrap{max-height:0;overflow:hidden;transition:max-height .28s ease}
+  .rgg-wrap.open{max-height:1200px;padding-top:10px}
+  .rgg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+  .ec{position:relative;display:flex;align-items:center;gap:8px;height:44px;padding:0 32px 0 12px;border-radius:12px;
+    border:1px solid var(--hair);background:var(--raise);cursor:pointer;font-size:12px;font-weight:600;
+    color:var(--ink-2);transition:.12s;text-align:left}
+  .ec .f{font-size:16px;flex:0 0 auto}
+  .ec .n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ec.on{border-color:var(--accent);background:var(--accent-dim);color:var(--ink)}
+  .ec .o{position:absolute;right:8px;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#04150E;
+    font-size:10px;display:none;place-items:center;font-weight:800}
+  .ec.on .o{display:grid}
+  .hint{font-size:10px;color:var(--ink-3);margin:8px 2px 0;line-height:1.6}
+  .langs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .langs button{height:44px;border:1px solid var(--hair);background:var(--raise);border-radius:12px;
+    font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:.12s;padding:0 4px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .langs button.on{border-color:var(--accent);background:var(--accent-dim);color:var(--ink)}
+  .seg{display:flex;background:var(--raise);border:1px solid var(--hair);border-radius:12px;padding:4px;gap:4px}
+  .seg button{flex:1;border:none;background:transparent;height:36px;border-radius:9px;font-size:12px;
+    font-weight:600;color:var(--ink-3);cursor:pointer;transition:.15s}
+  .seg button.on{background:var(--raise-2);color:var(--ink)}
+  .qe{background:var(--raise);border:1px solid var(--hair);border-radius:12px;padding:0 12px}
+  .manual{background:var(--raise);border:1px solid var(--hair);border-radius:12px;padding:4px 14px}
+  .mtoggle{width:100%;display:flex;align-items:center;justify-content:flex-start;gap:8px;
+    background:transparent;border:none;color:var(--ink);font-size:13px;font-weight:700;
+    cursor:pointer;padding:16px 2px 8px;margin-top:8px}
+  .mtoggle .chev{width:15px;height:15px;color:var(--ink-2);transition:transform .2s;flex:0 0 auto}
+  .mtoggle.open .chev{transform:rotate(90deg)}
+  .mcollapse{max-height:0;overflow:hidden;padding:0 14px;border:none;background:transparent;
+    transition:max-height .28s ease,padding .28s ease}
+  .mcollapse.open{max-height:600px;padding:4px 14px;background:var(--raise);border:1px solid var(--hair)}
+  .mstep{display:flex;align-items:flex-start;gap:12px;padding:12px 0}
+  .mstep+.mstep{border-top:1px solid var(--hair)}
+  .mstep .num{flex:0 0 auto;width:22px;height:22px;border-radius:50%;background:var(--accent-dim);
+    color:var(--accent);font-size:11px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+  .mstep .txt{font-size:13px;color:var(--ink-2);line-height:1.6;padding-top:1px}
+  .helpsheet{height:auto;max-height:70dvh}
+  .helpsheet .sb{padding-bottom:calc(20px + env(safe-area-inset-bottom))}  .qer{display:flex;align-items:center;gap:8px;padding:12px 0}
+  .qer+.qer{border-top:1px solid var(--hair)}
+  .qer>span{font-size:12px;font-weight:600;color:var(--ink-2);min-width:72px}
+  .qeb{display:flex;gap:8px;flex:1}
+  .qeb button{flex:1;border:1px solid var(--hair);background:transparent;border-radius:8px;height:32px;font-size:12px;
+    font-weight:600;color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+  .qeb button:active{border-color:var(--accent);color:var(--accent)}
+  .spk{background:var(--raise);border:1px solid var(--hair);border-radius:12px;padding:12px;margin-bottom:8px}
+  .spk b{font-size:11px;color:var(--ink-2);font-weight:600}
+  .spark{width:100%;height:40px;display:block;margin-top:8px}
+  .spk-e{font-size:10px;color:var(--ink-3);margin-top:8px}
+  .cc{background:var(--raise);border:1px solid var(--hair);border-radius:12px;margin-bottom:8px;overflow:hidden}
+  .cch{display:flex;align-items:center;gap:12px;padding:12px;cursor:pointer}
+  .cch .f{font-size:20px}.cch .i{flex:1;min-width:0}
+  .cch .i b{font-size:13px;font-weight:600;color:var(--ink)}
+  .cch .i small{display:block;font-size:10px;color:var(--ink-3);margin-top:2px}
+  .cch .lt{font-size:12px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .cch .lt small{display:block;color:var(--ink-3);font-size:10px;margin-top:2px}
+  .ccb{display:none;border-top:1px solid var(--hair);padding:8px 12px 12px}
+  .cc.open .ccb{display:block}
+  .hr{display:flex;align-items:center;gap:8px;padding:8px 0}
+  .hr+.hr{border-top:1px solid var(--hair)}
+  .hr .d{font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:72px}
+  .hr .v{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+  .hr .n{flex:1;font-size:11px;color:var(--accent);background:var(--accent-dim);padding:2px 8px;border-radius:6px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hr .x{margin-left:auto;color:var(--ink-3);font-size:12px;cursor:pointer;background:none;border:none}
+  .he{font-size:11px;color:var(--ink-3);padding:8px 0}
+  .ra{display:flex;gap:8px;margin-top:8px}
+  .ra button{flex:1;border:1px solid var(--hair);border-radius:8px;height:32px;font-size:11px;font-weight:600;cursor:pointer;background:transparent}
+  .ra .r1{color:var(--accent);border-color:var(--accent)}
+  .ra .r2{color:var(--ink-3)}
+  .dg{width:100%;background:transparent;color:#F87171;border:1px solid rgba(248,113,113,.3);border-radius:12px;
+    height:44px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px}
+  .setdefault{width:100%;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent);border-radius:12px;
+    height:46px;font-size:13px;font-weight:700;cursor:pointer;transition:.12s}
+  .setdefault.alt{background:transparent;margin-top:8px}
+  .setdefault:active{transform:scale(.98);opacity:.85}
+  .note{font-size:10px;color:var(--ink-3);text-align:center;line-height:1.8;margin-top:24px}
+
+  /* drum */
+  .dscrim{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:.2s;z-index:70}
+  .dscrim.show{opacity:1;visibility:visible}
+  .drum{position:fixed;left:0;right:0;bottom:0;max-width:440px;margin:0 auto;background:var(--bg);
+    border-top:1px solid var(--hair);border-radius:24px 24px 0 0;z-index:71;transform:translateY(100%);
+    transition:transform .24s cubic-bezier(.32,.72,0,1);padding-bottom:env(safe-area-inset-bottom);visibility:hidden}
+  .drum.show{transform:translateY(0);visibility:visible}
+  .dh{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--hair)}
+  .dh .t{font-size:13px;font-weight:600}
+  .dh button{background:none;border:none;font-size:13px;font-weight:600;color:var(--ink-3);cursor:pointer;padding:4px 8px}
+  .dh button.ok{color:var(--accent);font-weight:700}
+  .dw{position:relative;height:200px;overflow:hidden}
+  .dm{position:absolute;left:16px;right:16px;top:80px;height:40px;border-radius:10px;background:var(--raise);pointer-events:none;z-index:1}
+  .dl{height:200px;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;position:relative;z-index:2;overscroll-behavior:contain}
+  .dl::-webkit-scrollbar{display:none}
+  .di{height:40px;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;
+    font-size:16px;font-weight:600;color:var(--ink-3);font-variant-numeric:tabular-nums;transition:.1s}
+  .di.sel{color:var(--ink);font-size:19px;font-weight:700}
+  .dp{height:80px}
+
+  .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(16px);
+    background:var(--raise-2);border:1px solid var(--hair);color:var(--ink);padding:12px 20px;border-radius:999px;
+    font-size:12px;font-weight:600;opacity:0;transition:.2s;z-index:80;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media (max-height:700px){
+    .amt{font-size:34px}
+    .row{padding:12px 8px}
   }
-  .topic:hover{border-color:rgba(232,184,75,.28)}
-  .topic .accent{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,var(--gold))}
-  .topic-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
-  .topic-head .num{font-size:12px;color:var(--c,var(--gold));font-weight:700;letter-spacing:.1em}
-  .topic-head h3{font-size:16px;font-weight:700;line-height:1.5}
-  .topic-head h3 a{color:inherit;text-decoration:none}
-  .topic-head h3 a:hover{color:var(--gold-soft)}
-  .topic > p{font-size:13px;color:var(--muted);margin-bottom:14px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{
-    display:inline-block;font-size:12px;line-height:1.6;
-    padding:5px 13px;border-radius:999px;text-decoration:none;
-    background:rgba(255,255,255,.04);border:1px solid var(--line);
-    color:var(--text);transition:.14s;
+
+  /* ============ desktop: fill window, scale up ============ */
+  @media (min-width:760px){
+    html,body{position:static;overflow:auto}
+    body{align-items:center;padding:24px;min-height:100vh}
+    body::before{width:640px;height:520px;top:-220px}
+    .app{max-width:500px;height:min(760px,92dvh);min-height:0;border-radius:28px;overflow:hidden;
+      border:1px solid var(--hair);box-shadow:0 30px 80px -30px rgba(0,0,0,.55);
+      padding:20px 26px 18px}
+    [data-theme="light"] .app{box-shadow:0 30px 80px -30px rgba(20,22,28,.22)}
+
+    .tabs{padding:6px;border-radius:16px;margin-bottom:20px}
+    .tab{height:46px;font-size:14px;border-radius:11px}
+    .tab .fl{font-size:19px}
+
+    .rate{padding:4px 6px 18px;margin-bottom:14px}
+    .rate .val{font-size:29px}
+    .rate .pair{font-size:13px}
+    .rate .when{font-size:12px}
+    .rate .act{width:33px;height:33px}
+    .rate .act svg{width:17px;height:17px}
+
+    .row{padding:22px 10px}
+    .fl-big{font-size:37px}
+    .iso{font-size:24px}
+    .cname{font-size:13px}
+    .sym{font-size:25px}
+    .amt{font-size:50px}
+
+    .qg-h{font-size:11px}
+    .qb{height:39px;font-size:13px;border-radius:11px}
+    .quick{gap:10px}
+
+    .kp-g{gap:10px}
+    .kp-g button{border-radius:16px;font-size:24px}
+    .kp-top .l{font-size:12px}
+    .kp-top .done{font-size:15px}
+
+    .ad{height:62px;border-radius:14px;flex:0 0 auto}
+    .foot{font-size:10px;padding-top:8px}
+    #paneKp{max-width:432px}
+    .kp-g button{height:54px}
+
+    .sheet{max-width:460px;height:82vh;border-radius:24px;bottom:auto;top:50%;
+      transform:translate(-50%,-46%) scale(.97);left:50%;right:auto;opacity:0;
+      transition:transform .22s cubic-bezier(.32,.72,0,1),opacity .22s}
+    .sheet.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+    .scrim{cursor:pointer}
+
+    .drum{max-width:420px;left:50%;right:auto;bottom:auto;top:50%;border-radius:20px;
+      transform:translate(-50%,-46%) scale(.97);opacity:0;
+      transition:transform .22s cubic-bezier(.32,.72,0,1),opacity .22s}
+    .drum.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+    .dscrim{cursor:pointer}
   }
-  .chip:hover{background:var(--panel-2);border-color:var(--c,var(--gold));color:var(--gold-soft)}
-  .chip.soon{opacity:.45;pointer-events:none;color:var(--muted)}
-  /* 広告枠 */
-  .ad-unit{margin:56px 0;text-align:center}
-  .ad-label{display:block;font-size:10px;letter-spacing:.14em;color:#5d6780;margin-bottom:8px;text-transform:uppercase}
-  .ad-unit[data-ad="display"]{min-height:100px}
-  .ad-unit[data-ad="inarticle"]{min-height:250px}
-  .ad-ph{border:1px dashed var(--line);border-radius:14px;background:rgba(255,255,255,.02);color:var(--muted);font-size:11px;padding:34px 16px}
-  footer{margin-top:64px;padding-top:26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted)}
-  footer a{color:var(--muted);text-decoration:none;margin-left:16px}
-  footer a:hover{color:var(--gold-soft)}
-  @media (max-width:600px){
-    header{padding:44px 0 36px}
-    h1{font-size:22px}
-    section{margin-top:52px}
-    .grid{grid-template-columns:1fr}
-    .ad-unit{margin:44px 0}
+
+  /* ============ portrait lock (phones only) ============ */
+  /* 回転トリックは廃止(端末や状況によって崩れるリスクが高いため)。
+     代わりに、横向き検出時は「縦向きにしてください」の案内画面を出す(#rotate-overlay)。
+     判定は CSS の (hover:none)+(pointer:coarse) だけで行う=タッチ専用機のみに限定され、
+     PCの横長ウィンドウには絶対に反応しない。JS不要で誤爆の余地がない。 */
+  #rotate-overlay{display:none;position:fixed;inset:0;z-index:100000;
+    background:#01030a;color:#e2ecff;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    text-align:center;padding:24px}
+  #rotate-overlay svg{width:64px;height:64px;color:#3E8BFF;animation:rotateHint 1.8s ease-in-out infinite}
+  #rotate-overlay .rt-msg{font-size:14px;font-weight:600;line-height:1.7;max-width:280px}
+  @keyframes rotateHint{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-90deg)}}
+  @media screen and (orientation:landscape) and (hover:none) and (pointer:coarse){
+    #rotate-overlay{display:flex}
   }
-  @media (prefers-reduced-motion:reduce){
-    .card,.topic,.chip{transition:none}
-    .card:hover{transform:none}
-  }
+
+  /* ============ opening splash ============ */
+  #splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:30px;overflow:hidden;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 42%,#0a1430 0%,#050a1c 50%,#01030a 100%);
+    max-width:none}
+  /* 背景で脈打つ青いハロー */
+  #splash .halo{position:absolute;left:50%;top:44%;width:520px;height:520px;transform:translate(-50%,-50%) scale(.2);
+    z-index:0;pointer-events:none;opacity:0;border-radius:50%;
+    background:radial-gradient(circle,rgba(56,150,255,.55) 0%,rgba(41,98,255,.25) 34%,transparent 62%)}
+  #splash .logo-container{position:relative;z-index:2;width:210px;height:210px;opacity:0;
+    transform:scale(.55);will-change:transform,opacity}
+  #splash .logo-container img{width:100%;height:100%;object-fit:contain;
+    filter:drop-shadow(0 14px 40px rgba(0,0,0,.6)) drop-shadow(0 0 30px rgba(56,150,255,.5))}
+  /* 弾ける光のリング */
+  #splash .ring{position:absolute;left:50%;top:50%;width:200px;height:200px;transform:translate(-50%,-50%) scale(.6);
+    border-radius:50%;border:2px solid rgba(120,190,255,.9);opacity:0;pointer-events:none;
+    box-shadow:0 0 24px rgba(80,170,255,.8),inset 0 0 24px rgba(80,170,255,.5)}
+  #splash .title{position:relative;z-index:2;text-align:center;opacity:0;transform:translateY(14px)}
+  #splash .title .t1{font-family:'Georgia','Times New Roman',serif;font-size:36px;font-weight:700;letter-spacing:.1em;
+    background-image:linear-gradient(115deg,
+      #8FC4FF 0%,#8FC4FF 38%,
+      #FFFFFF 47%,#EAF4FF 50%,#FFFFFF 53%,
+      #3E8BFF 62%,#1E5AE0 100%);
+    background-size:260% 100%;background-position:100% 0;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#8FC4FF;
+    filter:drop-shadow(0 0 18px rgba(62,139,255,.55))}
+  #splash .title .t2{font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;font-size:11px;font-weight:600;
+    letter-spacing:.3em;margin-top:8px;color:#6f9fd8;text-transform:uppercase}
+  #splash.fade{animation:splashOut .55s ease forwards}
+  @keyframes splashOut{to{opacity:0;visibility:hidden}}
+  #splash.play .halo{animation:haloIn 1.6s ease-out .1s forwards}
+  #splash.play .logo-container{animation:logoZoom 1.0s cubic-bezier(.18,.85,.25,1) .2s forwards}
+  #splash.play .ring{animation:ringBurst .7s cubic-bezier(.2,.7,.3,1) .75s forwards}
+  #splash.play .title{animation:titleIn .6s cubic-bezier(.2,.9,.3,1) 1.0s forwards}
+  #splash.play .title .t1{animation:titleIn .6s cubic-bezier(.2,.9,.3,1) 1.0s forwards,
+    textSheen 1.1s ease-out 1.35s forwards}
+  @keyframes textSheen{0%{background-position:100% 0}100%{background-position:0% 0}}
+  @keyframes haloIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+    45%{opacity:1}100%{opacity:.6;transform:translate(-50%,-50%) scale(1)}}
+  @keyframes logoZoom{0%{opacity:0;transform:scale(.55)}
+    55%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+  @keyframes ringBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+    30%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.6)}}
+  @keyframes titleIn{to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="logo">
-      <span class="mark">塾</span>
-      <span class="name">JUKU-CHO</span>
-    </div>
-    <h1>学べる、そして使える。</h1>
-    <p class="lead">
-      日常で使える実用アプリを<b>すべて無料</b>で公開しています。もちろん塾長のハンドメイド。
-    </p>
-  </header>
-  <!-- ===== APPS ===== -->
-  <section>
-    <div class="sec-head"><h2>アプリ塾</h2><span class="bar"></span></div>
-    <p class="sec-desc">「こんなアプリあったらいいな」を形に。インストール不要、すべてブラウザで動きます。</p>
-    <div class="grid">
-      <a class="card" href="apps/discount/" style="--c:var(--coral)">
-        <span class="accent"></span>
-        <div class="ico" style="background:none;padding:0">
-  <img src="assets/discount-icon.png"
-       width="40" height="40"
-       style="border-radius:11px;display:block"
-       alt="割引電卓">
+<div id="rotate-overlay">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="7" y="3" width="10" height="18" rx="2"/>
+    <path d="M11 18h2"/>
+  </svg>
+  <div class="rt-msg" id="rotateMsg">縦向きでご利用ください</div>
 </div>
-        <h3>割引電卓</h3>
-        <p>お店の「30%オフ」がいくらになるか一瞬で。割引率の逆算・計算履歴つき。</p>
-        <div class="go">使ってみる →</div>
-      </a>
-    <a class="card" href="apps/tabirate/" style="--c:var(--teal)">
-  <span class="accent"></span>
-  <div class="ico" style="background:none;padding:0">
-    <img src="assets/tabirate-icon.png"
-         width="40" height="40"
-         style="border-radius:11px;display:block"
-         alt="TABIRATE">
-  </div>
-        <h3>TABIRATE</h3>
-        <p>32通貨・6言語に対応した、旅先のための換算アプリ。オフラインでも使えます。</p>
-        <div class="go">使ってみる →</div>
-      </a>
-      <a class="card" href="apps/grandbook/" style="--c:var(--teal)">
-  <span class="accent"></span>
-  <div class="ico" style="background:none;padding:0">
-    <img src="assets/grandbook-icon.png"
-         width="40" height="40"
-         style="border-radius:11px;display:block"
-         alt="Grand Book">
-  </div>
-        <h3>Grand Book</h3>
-        <p>ポーカーの収支を記録・管理。勝ち負けの推移をグラフで振り返れます。</p>
-        <div class="go">使ってみる →</div>
-      </a>
-      <a class="card" href="apps/oddssniper/" style="--c:var(--coral)">
-  <span class="accent"></span>
-  <div class="ico" style="background:none;padding:0">
-    <img src="assets/oddssniper-icon.png"
-         width="40" height="40"
-         style="border-radius:11px;display:block"
-         alt="oddssniper">
-  </div>
-        <h3>Odds Sniper</h3>
-        <p>ポーカーの勝率・オッズを瞬時に計算。アウツやポットオッズから最適な判断をサポート。</p>
-        <div class="go">使ってみる →</div>
-      </a>
-    <a class="card" href="apps/guitar_tuner/" style="--c:var(--gold)">
-  <span class="accent"></span>
-  <div class="ico" style="background:none;padding:0">
-    <img src="assets/guitar-tuner-icon.png"
-         width="40" height="40"
-         style="border-radius:11px;display:block"
-         alt="ギターチューナー">
-  </div>
-        <h3>ギターチューナー</h3>
-        <p>マイクで音を拾って正確にチューニング。各種チューニングプリセット対応。</p>
-        <div class="go">使ってみる →</div>
-      </a>
-      <a class="card" href="apps/poker_lexicon/" style="--c:var(--gold)">
-  <span class="accent"></span>
-  <div class="ico" style="background:none;padding:0">
-    <img src="assets/poker-lexicon-icon.png"
-         width="40" height="40"
-         style="border-radius:11px;display:block"
-         alt="ポーカー塾 用語辞典">
-  </div>
-  <h3>ポーカー塾 用語辞典</h3>
-  <p>558語のポーカー用語をレベル別に検索・クイズで学習。オフラインでも使えます。</p>
-  <div class="go">使ってみる →</div>
-</a>
 
-          <a class="card" href="apps/podcounter/" style="--c:var(--gold)">
-  <span class="accent"></span>
-  <div class="ico" style="background:none;padding:0">
-    <img src="assets/podcounter.png"
-         width="40" height="40"
-         style="border-radius:11px;display:block"
-         alt="ポッドカウンター">
+<div id="splash">
+  <div class="halo"></div>
+  <div class="logo-container">
+    <img src="icon-512-splash.png" alt="TABI - RATE">
+    <span class="ring"></span>
   </div>
-  <h3>ポッドカウンター</h3>
-  <p>発言したチップを自動で算出するポッドカウンター</p>
-  <div class="go">使ってみる →</div>
-</a>
-      
-      
-    </div>
-  </section>
- <!-- 情報塾のセクション -->
-<section id="joho">
-    <div class="sec-head"><h2>情報塾</h2><span class="bar"></span></div>
-    <p class="sec-desc">知っておくと得をする知識を、これから学ぶ人にもわかるように解説します。</p>
-    <div class="topics">
-      <!-- ポーカー用語 -->
-      <div class="topic" style="--c:var(--coral)">
-        <span class="accent"></span>
-        <div class="topic-head">
-          <span class="num">ポーカー情報部屋</span>
-          <h3><a href="info/poker/">ポーカーの用語やハンドレンジや確率を学んで更なる上を目指しましょう！</a></h3>
-        </div>
-        <p>知ってからテーブルに座った方が勝率は上がる！用語をレベル別で解説（用語・内容・類語・例文など）、ポジション別のレンジ表をサクッと調べられるようまとめました！是非活用ください！</p>
-        <div class="chips">
-          <a class="chip" href="info/poker/beginner/">初級</a>
-          <a class="chip" href="info/poker/intermediate/">中級</a>
-          <a class="chip" href="info/poker/advanced/">上級</a>
-        </div>
-      </div>
-      <!-- 海外旅行の基礎知識 -->
-      <div class="topic" style="--c:var(--teal)">
-        <span class="accent"></span>
-        <div class="topic-head">
-          <span class="num">02</span>
-          <h3><a href="info/travel/">海外旅行の基礎知識部屋</a></h3>
-        </div>
-        <p>両替・カード決済・為替のしくみ。知っているだけで、超お得な情報をまとめました！面倒な為替の計算もツールで楽々計算！</p>
-        <div class="chips">
-          <a class="chip" href="info/travel/ryogae-guide/">両替完全ガイド</a>
-          <a class="chip" href="info/travel/ryogae-guide/">ATM完全ガイド</a>
-          <a class="chip" href="info/travel/ryogae-guide/">為替の仕組み入門</a>
-           <a class="chip" href="info/travel/ryogae-guide/">海外通販ガイド</a>
-          <a class="chip" href="info/travel/ryogae-guide/">通貨別、為替計算のコツ</a>
-          <!-- ▼ AdSense申請前には、この「作成中」を削除してください
-                 未完成の表示は審査でマイナスになります -->
-          
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- ===== 広告：情報塾の下（このページで唯一の広告枠） ===== -->
-  <div class="ad-unit" data-ad="display">
-    <span class="ad-label">スポンサーリンク</span>
-    <div class="ad-ph">広告枠（承認後にここへ表示されます）</div>
+  <div class="title">
+    <div class="t1">TABI - RATE</div>
+    <div class="t2">Currency Converter</div>
   </div>
-  <!-- ===== その他の塾 =====
-       poker/ と anime/ のページを作ったらコメントを外してください
-  <section>
-    <div class="sec-head"><h2>その他の塾</h2><span class="bar"></span></div>
-    <p class="sec-desc">アプリ以外にも、現場のリアルを発信しています。</p>
-    <div class="topics">
-      <div class="topic" style="--c:var(--gold)">
-        <span class="accent"></span>
-        <div class="topic-head">
-          <span class="num">03</span>
-          <h3><a href="anime/">アニメ塾</a></h3>
-        </div>
-        <p>現役プロデューサーが語る、アニメ制作の現場のリアル。</p>
-      </div>
-    </div>
-  </section>
-  ====================== -->
-  <footer>
-    <span>© 2026 Juku-Cho</span>
-    <span>
-      <a href="privacy.html">プライバシーポリシー</a>
-      <a href="contact.html">お問い合わせ</a>
-    </span>
-  </footer>
 </div>
-<script src="assets/ads.js"></script>
+
+<div class="app">
+
+  <header class="hdr">
+    <img class="hdr-img" src="header.png" alt="TABI - RATE — Currency Converter">
+    <div class="hdr-tagline" id="tagline"></div>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <div class="rate">
+    <span class="live" id="dot"></span>
+    <span class="pair" id="pair">JPY / CNY</span>
+    <span class="val" id="rateVal">—</span>
+    <span class="when" id="when">—</span>
+    <button class="act" id="recBtn" aria-label="記録">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+    </button>
+    <button class="act" id="refBtn" aria-label="更新">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+    </button>
+    <button class="act" id="myBtn" aria-label="設定">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+
+  <div class="conv">
+    <div class="row" id="rTop">
+      <div class="row-head">
+        <span class="fl-big" id="topFlag">🇯🇵</span>
+        <span class="iso" id="topIso">JPY</span>
+        <span class="cname" id="topName">日本円</span>
+        <span class="caret" id="caretT"></span>
+      </div>
+      <div class="row-val"><span class="sym" id="topSym">¥</span><div class="amt zero" id="top">0</div></div>
+    </div>
+
+    <div class="mid">
+      <span class="ln"></span>
+    </div>
+
+    <div class="row" id="rBottom">
+      <div class="row-head">
+        <span class="fl-big" id="botFlag">🇨🇳</span>
+        <span class="iso" id="botIso">CNY</span>
+        <span class="cname" id="botName">人民元</span>
+        <span class="caret" id="caretB"></span>
+      </div>
+      <div class="row-val"><span class="sym" id="botSym">元</span><div class="amt zero" id="bottom">0</div></div>
+    </div>
+  </div>
+
+  <div class="zone">
+    <div class="pane on" id="paneQuick">
+      <div class="quick">
+        <div class="qg"><div class="qg-h">JPY</div><div class="qg-b" id="qJpy"></div></div>
+        <div class="qg"><div class="qg-h" id="qForH">CNY</div><div class="qg-b" id="qFor"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad" id="adSlot"><span>ADVERTISEMENT</span></div>
+</div>
+
+<div class="kp-scrim" id="kpScrim"></div>
+<div class="pane" id="paneKp">
+  <div class="kp">
+    <div class="kp-input" id="kpInput">
+      <div class="kpi-head">
+        <span class="kpi-flag" id="kpiFlag">🇯🇵</span>
+        <span class="kpi-iso" id="kpiIso">JPY</span>
+        <span class="kpi-name" id="kpiName">日本円</span>
+        <button class="done" id="kpDone">完了</button>
+      </div>
+      <div class="kpi-val"><span class="kpi-sym" id="kpiSym">¥</span><span class="kpi-amt" id="kpiAmt">0</span></div>
+    </div>
+    <div class="kp-g" id="kpGrid">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button class="u" data-k="BS">⌫</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button class="u" data-k="C">C</button>
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button class="u" id="dotBtn" data-k=".">.</button>
+      <button data-k="000">000</button><button data-k="0">0</button><button data-k="00">00</button><button class="go" data-k="DONE">完了</button>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet">
+  <div class="grip"></div>
+  <div class="sh"><h2 id="tSettings">設定</h2><button class="x" id="closeBtn">✕</button></div>
+  <div class="sb">
+    <div class="lbl" id="tDefault">デフォルト設定</div>
+    <button class="setdefault" id="setDefaultBtn"><span id="tSetDefault">現在のタブ構成をデフォルトに設定</span></button>
+    <button class="setdefault alt" id="applyDefaultBtn"><span id="tApplyDefault">デフォルトを呼び出す</span></button>
+    <div class="hint" id="tDefaultHint">よく使う通貨構成を保存し、いつでも呼び出せます。</div>
+
+    <div class="lbl" id="tLang">言語</div>
+    <div class="langs" id="langSeg"></div>
+
+    <div class="lbl" id="tAppearance">外観</div>
+    <div class="seg" id="themeSeg">
+      <button data-th="light" id="tLight">ライト</button><button data-th="dark" id="tDark">ダーク</button><button data-th="system" id="tSystem">システム</button>
+    </div>
+
+    <button class="mtoggle" id="manualToggle">
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      <span id="tManualLabel">使い方</span>
+    </button>
+    <div class="manual mcollapse" id="manualBox"></div>
+
+    <div class="lbl" id="tQuick">簡単入力の金額</div>
+    <div class="qe">
+      <div class="qer"><span>JPY</span><div class="qeb" id="qeJpy"></div></div>
+      <div class="qer"><span id="qeForLbl">CNY</span><div class="qeb" id="qeFor"></div></div>
+    </div>
+    <div class="hint" id="tHintQ">タップするとドラムで金額を選べます。</div>
+
+    <div class="lbl"><span id="tCountries">表示する国</span><span class="c" id="selCnt"></span></div>
+    <div id="egrid"></div>
+    <div class="hint" id="tHintC">最大4か国まで。</div>
+
+    <div class="lbl" id="tHistory">レート履歴</div>
+    <div class="spk"><b id="sparkTitle">推移</b><svg class="spark" id="spark" viewBox="0 0 300 40" preserveAspectRatio="none"></svg><div class="spk-e" id="sparkEmpty">—</div></div>
+    <div id="histList"></div>
+    <button class="dg" id="wipeBtn">すべての履歴を削除</button>
+    <div class="note">Rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener" style="color:var(--ink-2);text-decoration:underline">ExchangeRate-API</a> / <a href="https://www.frankfurter.app" target="_blank" rel="noopener" style="color:var(--ink-2);text-decoration:underline">Frankfurter</a><br><span id="tNote"></span><br><a href="./privacy.html" style="color:var(--ink-2);text-decoration:underline">プライバシーポリシー</a></div>
+  </div>
+</div>
+
+<div class="dscrim" id="drumScrim"></div>
+<div class="drum" id="drum">
+  <div class="dh"><button id="drumCancel">キャンセル</button><span class="t" id="drumTitle">金額</span><button id="drumOk" class="ok">決定</button></div>
+  <div class="dw"><div class="dm"></div><div class="dl" id="drumList"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var KEY_RATE='tj_fx_v7', KEY_HIST='tj_hist_v7', KEY_CFG='tj_cfg_v7', KEY_DEF='tj_default_v1';
+
+  /* ---------- i18n ---------- */
+  var LANGS=[{c:'ja',n:'日本語'},{c:'en',n:'English'},{c:'zh',n:'中文'},{c:'ko',n:'한국어'},{c:'vi',n:'Tiếng Việt'},{c:'th',n:'ไทย'}];
+  var T={
+    ja:{settings:'設定',countries:'表示する国',quick:'簡単入力の金額',appearance:'外観',language:'言語',history:'レート履歴',
+      light:'ライト',dark:'ダーク',system:'システム',trend:'推移',noHist:'まだ履歴がありません。',
+      hintC:'最大4か国まで。選択した順にタブへ並びます。',hintQ:'タップするとドラムで金額を選べます。',
+      wipe:'すべての履歴を削除',wipeQ:'すべての履歴を削除しますか?',clearQ:'の履歴を削除しますか?',
+      done:'完了',cancel:'キャンセル',ok:'決定',amount:'の金額',rec:'今のレートを記録',clear:'クリア',
+      recPrompt:'メモ(例: 旅行 / 空港レート)',recDone:'のレートを記録しました',records:'件',noRec:'記録なし',
+      min1:'最低1か国は必要です',max4:'タブは最大4か国です',wiped:'履歴を削除しました',
+      regA:'アジア',regE:'北米・欧州',regO:'オセアニア・その他',
+      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',m1:'上段の一番左のタブ（赤いタブ）が基準の通貨になります。常に表示したい通貨をここに設定します。',m2:'基準の通貨の右側は他の通貨を設定でき、最大で3つまで追加可能です。',m3:'タブを長押ししながら左右にドラッグすると、並び順を変えられます。一番左に置いた通貨が基準の通貨となり、常に上段に表示されます。',m4:'金額の欄をタップすると電卓が開き、上段・下段どちらからでも入力できます。',m5:'レート横の保存アイコンで、その時のレートを履歴に記録できます。',m6:'国の追加・言語・テーマは設定（歯車）から。為替レートは毎日1回自動取得します。',tapChange:'タップで変更',defaultLabel:'デフォルト設定',setDefault:'現在のタブ構成をデフォルトに設定',defaultHint:'よく使う通貨構成を保存し、いつでも呼び出せます。',applyDefault:'デフォルトを呼び出す',tagline:'世界の通貨をワンタップで換算',defaultSaved:'デフォルトに保存しました',defaultApplied:'デフォルトを呼び出しました',noDefault:'デフォルトが未設定です',rotateMsg:'縦向きにしてご利用ください'},
+    en:{settings:'Settings',countries:'Countries',quick:'Quick amounts',appearance:'Appearance',language:'Language',history:'Rate history',
+      light:'Light',dark:'Dark',system:'System',trend:'Trend',noHist:'No history yet.',
+      hintC:'Up to 4. Tabs follow your selection order.',hintQ:'Tap to pick an amount.',
+      wipe:'Delete all history',wipeQ:'Delete all history?',clearQ:' — delete history?',
+      done:'Done',cancel:'Cancel',ok:'Set',amount:' amount',rec:'Save current rate',clear:'Clear',
+      recPrompt:'Note (e.g. Trip / Airport rate)',recDone:' rate saved',records:'',noRec:'No records',
+      min1:'At least 1 country required',max4:'Up to 4 tabs',wiped:'History deleted',
+      regA:'Asia',regE:'North America & Europe',regO:'Oceania & Others',
+      note:'Auto-updates each morning. Rates are indicative.',jpyName:'Japanese Yen',manual:'How to use',m1:'The leftmost tab (highlighted) is your base currency, always shown on top. Set the currency you use most here.',m2:'To the right of the base currency you can add up to 3 other currencies.',m3:'Long-press and drag a tab to reorder. The leftmost currency becomes the base and always shows on top.',m4:'Tap an amount to open the keypad. You can type into either the top or bottom row.',m5:'Use the save icon next to the rate to log the current rate to your history.',m6:'Add countries, change language and theme from Settings (gear). Rates update once a day automatically.',tapChange:'TAP TO CHANGE',defaultLabel:'Default setup',setDefault:'Save current tabs as default',defaultHint:'Save your favorite currency setup and recall it anytime.',applyDefault:'Recall default',tagline:'World currencies at a single tap',defaultSaved:'Saved as default',defaultApplied:'Default restored',noDefault:'No default saved yet',rotateMsg:'Please rotate your device to portrait'},
+    zh:{settings:'设置',countries:'显示国家',quick:'快捷金额',appearance:'外观',language:'语言',history:'汇率记录',
+      light:'浅色',dark:'深色',system:'跟随系统',trend:'走势',noHist:'暂无记录。',
+      hintC:'最多4个国家，按选择顺序排列。',hintQ:'点击可选择金额。',
+      wipe:'删除全部记录',wipeQ:'确定删除全部记录吗?',clearQ:' — 删除记录吗?',
+      done:'完成',cancel:'取消',ok:'确定',amount:' 金额',rec:'保存当前汇率',clear:'清除',
+      recPrompt:'备注(例: 旅行 / 机场汇率)',recDone:' 汇率已保存',records:'条',noRec:'无记录',
+      min1:'至少需要1个国家',max4:'最多4个标签',wiped:'记录已删除',
+      regA:'亚洲',regE:'北美・欧洲',regO:'大洋洲・其他',
+      note:'每天早上自动更新。汇率仅供参考。',jpyName:'日元',manual:'使用说明',m1:'最左侧的标签（高亮标签）为基准货币，始终显示在上行。请将最常用的货币设在这里。',m2:'在基准货币右侧可添加其他货币，最多可添加3个。',m3:'长按并拖动标签可调整顺序。放在最左侧的货币成为基准货币，始终显示在上行。',m4:'点击金额栏打开计算器，上下两行均可输入。',m5:'点击汇率旁的保存图标，可将当前汇率记入历史。',m6:'在设置（齿轮）中添加国家、更改语言与主题。汇率每天自动获取一次。',tapChange:'点击可更改',defaultLabel:'默认设置',setDefault:'将当前标签设为默认',defaultHint:'保存常用的货币组合，随时可以调用。',applyDefault:'调用默认设置',tagline:'一键换算全球货币',defaultSaved:'已保存为默认',defaultApplied:'已恢复默认',noDefault:'尚未设置默认',rotateMsg:'请将设备切换为竖屏使用'},
+    ko:{settings:'설정',countries:'표시 국가',quick:'빠른 입력 금액',appearance:'테마',language:'언어',history:'환율 기록',
+      light:'라이트',dark:'다크',system:'시스템',trend:'추이',noHist:'기록이 없습니다.',
+      hintC:'최대 4개국. 선택한 순서대로 표시됩니다.',hintQ:'탭하여 금액을 선택하세요.',
+      wipe:'전체 기록 삭제',wipeQ:'모든 기록을 삭제할까요?',clearQ:' — 기록을 삭제할까요?',
+      done:'완료',cancel:'취소',ok:'확인',amount:' 금액',rec:'현재 환율 저장',clear:'지우기',
+      recPrompt:'메모 (예: 여행 / 공항 환율)',recDone:' 환율을 저장했습니다',records:'건',noRec:'기록 없음',
+      min1:'최소 1개국이 필요합니다',max4:'탭은 최대 4개입니다',wiped:'기록을 삭제했습니다',
+      regA:'아시아',regE:'북미・유럽',regO:'오세아니아・기타',
+      note:'매일 아침 자동 업데이트. 환율은 참고용입니다.',jpyName:'일본 엔',manual:'사용 방법',m1:'맨 왼쪽 탭(강조된 탭)이 기준 통화이며 항상 윗줄에 표시됩니다. 가장 자주 쓰는 통화를 여기에 설정하세요.',m2:'기준 통화 오른쪽에는 다른 통화를 최대 3개까지 추가할 수 있습니다.',m3:'탭을 길게 눌러 드래그하면 순서를 바꿀 수 있습니다. 맨 왼쪽에 둔 통화가 기준 통화가 되어 항상 윗줄에 표시됩니다.',m4:'금액란을 탭하면 계산기가 열리며, 윗줄·아랫줄 모두 입력할 수 있습니다.',m5:'환율 옆 저장 아이콘으로 현재 환율을 기록에 남길 수 있습니다.',m6:'국가 추가·언어·테마는 설정(톱니바퀴)에서. 환율은 매일 1회 자동 업데이트됩니다.',tapChange:'탭하여 변경',defaultLabel:'기본 설정',setDefault:'현재 탭 구성을 기본값으로 저장',defaultHint:'자주 쓰는 통화 구성을 저장하고 언제든 불러올 수 있습니다.',applyDefault:'기본값 불러오기',tagline:'세계 통화를 한 번의 탭으로',defaultSaved:'기본값으로 저장했습니다',defaultApplied:'기본값을 불러왔습니다',noDefault:'기본값이 없습니다',rotateMsg:'세로 방향으로 사용해 주세요'},
+    vi:{settings:'Cài đặt',countries:'Quốc gia hiển thị',quick:'Số tiền nhanh',appearance:'Giao diện',language:'Ngôn ngữ',history:'Lịch sử tỷ giá',
+      light:'Sáng',dark:'Tối',system:'Hệ thống',trend:'Xu hướng',noHist:'Chưa có lịch sử.',
+      hintC:'Tối đa 4 quốc gia, theo thứ tự chọn.',hintQ:'Chạm để chọn số tiền.',
+      wipe:'Xóa toàn bộ lịch sử',wipeQ:'Xóa toàn bộ lịch sử?',clearQ:' — xóa lịch sử?',
+      done:'Xong',cancel:'Hủy',ok:'Chọn',amount:' — số tiền',rec:'Lưu tỷ giá hiện tại',clear:'Xóa',
+      recPrompt:'Ghi chú (VD: Du lịch / Tỷ giá sân bay)',recDone:' đã lưu tỷ giá',records:'',noRec:'Chưa có',
+      min1:'Cần ít nhất 1 quốc gia',max4:'Tối đa 4 tab',wiped:'Đã xóa lịch sử',
+      regA:'Châu Á',regE:'Bắc Mỹ & Châu Âu',regO:'Châu Đại Dương & Khác',
+      note:'Tự động cập nhật mỗi sáng. Tỷ giá chỉ mang tính tham khảo.',jpyName:'Yên Nhật',manual:'Hướng dẫn sử dụng',m1:'Tab ngoài cùng bên trái (được tô sáng) là tiền tệ cơ sở, luôn hiển thị ở trên. Đặt loại tiền bạn dùng nhiều nhất ở đây.',m2:'Bên phải tiền tệ cơ sở, bạn có thể thêm tối đa 3 loại tiền tệ khác.',m3:'Nhấn giữ và kéo tab để sắp xếp lại. Tiền tệ ngoài cùng bên trái trở thành tiền cơ sở và luôn hiển thị ở hàng trên.',m4:'Chạm vào ô số tiền để mở bàn phím. Bạn có thể nhập ở cả hàng trên và hàng dưới.',m5:'Dùng biểu tượng lưu cạnh tỷ giá để ghi tỷ giá hiện tại vào lịch sử.',m6:'Thêm quốc gia, đổi ngôn ngữ và giao diện trong Cài đặt (bánh răng). Tỷ giá tự cập nhật mỗi ngày một lần.',tapChange:'CHẠM ĐỂ ĐỔI',defaultLabel:'Cài đặt mặc định',setDefault:'Lưu các tab hiện tại làm mặc định',defaultHint:'Lưu cấu hình tiền tệ yêu thích và gọi lại bất cứ lúc nào.',applyDefault:'Gọi lại mặc định',tagline:'Quy đổi tiền tệ chỉ với một chạm',defaultSaved:'Đã lưu làm mặc định',defaultApplied:'Đã khôi phục mặc định',noDefault:'Chưa có mặc định',rotateMsg:'Vui lòng xoay thiết bị sang chế độ dọc'},
+    th:{settings:'ตั้งค่า',countries:'ประเทศที่แสดง',quick:'จำนวนเงินด่วน',appearance:'ธีม',language:'ภาษา',history:'ประวัติอัตรา',
+      light:'สว่าง',dark:'มืด',system:'ตามระบบ',trend:'แนวโน้ม',noHist:'ยังไม่มีประวัติ',
+      hintC:'สูงสุด 4 ประเทศ ตามลำดับที่เลือก',hintQ:'แตะเพื่อเลือกจำนวนเงิน',
+      wipe:'ลบประวัติทั้งหมด',wipeQ:'ลบประวัติทั้งหมดหรือไม่?',clearQ:' — ลบประวัติหรือไม่?',
+      done:'เสร็จ',cancel:'ยกเลิก',ok:'ตกลง',amount:' จำนวนเงิน',rec:'บันทึกอัตราปัจจุบัน',clear:'ล้าง',
+      recPrompt:'บันทึก (เช่น ทริป / อัตราสนามบิน)',recDone:' บันทึกอัตราแล้ว',records:'',noRec:'ไม่มีบันทึก',
+      min1:'ต้องมีอย่างน้อย 1 ประเทศ',max4:'สูงสุด 4 แท็บ',wiped:'ลบประวัติแล้ว',
+      regA:'เอเชีย',regE:'อเมริกาเหนือ & ยุโรป',regO:'โอเชียเนีย & อื่นๆ',
+      note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น',manual:'วิธีใช้',m1:'แท็บซ้ายสุด (ที่ไฮไลต์) คือสกุลเงินหลัก แสดงอยู่แถวบนเสมอ ตั้งสกุลเงินที่ใช้บ่อยที่สุดไว้ตรงนี้',m2:'ทางขวาของสกุลเงินหลัก สามารถเพิ่มสกุลเงินอื่นได้สูงสุด 3 สกุล',m3:'กดแท็บค้างแล้วลากเพื่อจัดเรียงใหม่ สกุลเงินซ้ายสุดจะเป็นสกุลเงินหลักและแสดงอยู่แถวบนเสมอ',m4:'แตะช่องจำนวนเงินเพื่อเปิดแป้นตัวเลข ป้อนได้ทั้งแถวบนและแถวล่าง',m5:'ใช้ไอคอนบันทึกข้างอัตราเพื่อบันทึกอัตราปัจจุบันลงประวัติ',m6:'เพิ่มประเทศ เปลี่ยนภาษาและธีมได้ที่ตั้งค่า (เฟือง) อัตราอัปเดตอัตโนมัติวันละครั้ง',tapChange:'แตะเพื่อเปลี่ยน',defaultLabel:'ค่าเริ่มต้น',setDefault:'บันทึกแท็บปัจจุบันเป็นค่าเริ่มต้น',defaultHint:'บันทึกชุดสกุลเงินที่ใช้บ่อยและเรียกคืนได้ทุกเมื่อ',applyDefault:'เรียกคืนค่าเริ่มต้น',tagline:'แปลงสกุลเงินโลกในแตะเดียว',defaultSaved:'บันทึกเป็นค่าเริ่มต้นแล้ว',defaultApplied:'เรียกคืนค่าเริ่มต้นแล้ว',noDefault:'ยังไม่มีค่าเริ่มต้น',rotateMsg:'กรุณาหมุนอุปกรณ์เป็นแนวตั้ง'}
+  };
+  var lang='ja';
+  function t(k){return (T[lang]&&T[lang][k])||T.ja[k]||k;}
+  function cname(c){return (CN[lang]&&CN[lang][c.code])||c.country;}
+
+  /* localized country names */
+  var CN={
+    en:{JPY:'Japan',KRW:'Korea',TWD:'Taiwan',CNY:'China',HKD:'Hong Kong',MOP:'Macau',THB:'Thailand',VND:'Vietnam',SGD:'Singapore',MYR:'Malaysia',PHP:'Philippines',IDR:'Indonesia',KHR:'Cambodia',INR:'India',AED:'Dubai/UAE',USD:'USA',EUR:'Eurozone',GBP:'UK',CAD:'Canada',CHF:'Switzerland',TRY:'Türkiye',CZK:'Czechia',SEK:'Sweden',NOK:'Norway',DKK:'Denmark',PLN:'Poland',HUF:'Hungary',AUD:'Australia',NZD:'New Zealand',MXN:'Mexico',BRL:'Brazil',ZAR:'South Africa',EGP:'Egypt'},
+    zh:{JPY:'日本',KRW:'韩国',TWD:'台湾',CNY:'中国',HKD:'香港',MOP:'澳门',THB:'泰国',VND:'越南',SGD:'新加坡',MYR:'马来西亚',PHP:'菲律宾',IDR:'印度尼西亚',KHR:'柬埔寨',INR:'印度',AED:'迪拜/阿联酋',USD:'美国',EUR:'欧元区',GBP:'英国',CAD:'加拿大',CHF:'瑞士',TRY:'土耳其',CZK:'捷克',SEK:'瑞典',NOK:'挪威',DKK:'丹麦',PLN:'波兰',HUF:'匈牙利',AUD:'澳大利亚',NZD:'新西兰',MXN:'墨西哥',BRL:'巴西',ZAR:'南非',EGP:'埃及'},
+    ko:{JPY:'일본',KRW:'한국',TWD:'대만',CNY:'중국',HKD:'홍콩',MOP:'마카오',THB:'태국',VND:'베트남',SGD:'싱가포르',MYR:'말레이시아',PHP:'필리핀',IDR:'인도네시아',KHR:'캄보디아',INR:'인도',AED:'두바이/UAE',USD:'미국',EUR:'유로존',GBP:'영국',CAD:'캐나다',CHF:'스위스',TRY:'튀르키예',CZK:'체코',SEK:'스웨덴',NOK:'노르웨이',DKK:'덴마크',PLN:'폴란드',HUF:'헝가리',AUD:'호주',NZD:'뉴질랜드',MXN:'멕시코',BRL:'브라질',ZAR:'남아공',EGP:'이집트'},
+    vi:{JPY:'Nhật Bản',KRW:'Hàn Quốc',TWD:'Đài Loan',CNY:'Trung Quốc',HKD:'Hồng Kông',MOP:'Ma Cao',THB:'Thái Lan',VND:'Việt Nam',SGD:'Singapore',MYR:'Malaysia',PHP:'Philippines',IDR:'Indonesia',KHR:'Campuchia',INR:'Ấn Độ',AED:'Dubai/UAE',USD:'Mỹ',EUR:'Khu vực Euro',GBP:'Anh',CAD:'Canada',CHF:'Thụy Sĩ',TRY:'Thổ Nhĩ Kỳ',CZK:'Séc',SEK:'Thụy Điển',NOK:'Na Uy',DKK:'Đan Mạch',PLN:'Ba Lan',HUF:'Hungary',AUD:'Úc',NZD:'New Zealand',MXN:'Mexico',BRL:'Brazil',ZAR:'Nam Phi',EGP:'Ai Cập'},
+    th:{JPY:'ญี่ปุ่น',KRW:'เกาหลี',TWD:'ไต้หวัน',CNY:'จีน',HKD:'ฮ่องกง',MOP:'มาเก๊า',THB:'ไทย',VND:'เวียดนาม',SGD:'สิงคโปร์',MYR:'มาเลเซีย',PHP:'ฟิลิปปินส์',IDR:'อินโดนีเซีย',KHR:'กัมพูชา',INR:'อินเดีย',AED:'ดูไบ/UAE',USD:'สหรัฐฯ',EUR:'ยูโรโซน',GBP:'อังกฤษ',CAD:'แคนาดา',CHF:'สวิส',TRY:'ตุรกี',CZK:'เช็ก',SEK:'สวีเดน',NOK:'นอร์เวย์',DKK:'เดนมาร์ก',PLN:'โปแลนด์',HUF:'ฮังการี',AUD:'ออสเตรเลีย',NZD:'นิวซีแลนด์',MXN:'เม็กซิโก',BRL:'บราซิล',ZAR:'แอฟริกาใต้',EGP:'อียิปต์'}
+  };
+
+  var COUNTRIES=[
+    {code:'JPY',flag:'🇯🇵',name:'日本円',country:'日本',sym:'¥',dec:0,fb:1,rg:'アジア'},
+    {code:'KRW',flag:'🇰🇷',name:'ウォン',country:'韓国',sym:'₩',dec:0,fb:0.116,rg:'アジア'},
+    {code:'TWD',flag:'🇹🇼',name:'台湾ドル',country:'台湾',sym:'NT$',dec:2,fb:5.00,rg:'アジア'},
+    {code:'CNY',flag:'🇨🇳',name:'人民元',country:'中国',sym:'元',dec:2,fb:22.30,rg:'アジア'},
+    {code:'HKD',flag:'🇭🇰',name:'香港ドル',country:'香港',sym:'HK$',dec:2,fb:20.50,rg:'アジア'},
+    {code:'MOP',flag:'🇲🇴',name:'パタカ',country:'マカオ',sym:'MOP',dec:2,fb:19.90,rg:'アジア'},
+    {code:'THB',flag:'🇹🇭',name:'バーツ',country:'タイ',sym:'฿',dec:2,fb:4.44,rg:'アジア'},
+    {code:'VND',flag:'🇻🇳',name:'ドン',country:'ベトナム',sym:'₫',dec:0,fb:0.0063,rg:'アジア'},
+    {code:'SGD',flag:'🇸🇬',name:'Sドル',country:'シンガポール',sym:'S$',dec:2,fb:118.5,rg:'アジア'},
+    {code:'MYR',flag:'🇲🇾',name:'リンギット',country:'マレーシア',sym:'RM',dec:2,fb:34.8,rg:'アジア'},
+    {code:'PHP',flag:'🇵🇭',name:'ペソ',country:'フィリピン',sym:'₱',dec:2,fb:2.81,rg:'アジア'},
+    {code:'IDR',flag:'🇮🇩',name:'ルピア',country:'インドネシア',sym:'Rp',dec:0,fb:0.0098,rg:'アジア'},
+    {code:'KHR',flag:'🇰🇭',name:'リエル',country:'カンボジア',sym:'៛',dec:0,fb:0.039,rg:'アジア'},
+    {code:'INR',flag:'🇮🇳',name:'ルピー',country:'インド',sym:'₹',dec:2,fb:1.87,rg:'アジア'},
+    {code:'AED',flag:'🇦🇪',name:'ディルハム',country:'ドバイ/UAE',sym:'AED',dec:2,fb:43.6,rg:'アジア'},
+    {code:'USD',flag:'🇺🇸',name:'米ドル',country:'アメリカ',sym:'$',dec:2,fb:160.3,rg:'北米・欧州'},
+    {code:'EUR',flag:'🇪🇺',name:'ユーロ',country:'ユーロ圏',sym:'€',dec:2,fb:173.0,rg:'北米・欧州'},
+    {code:'GBP',flag:'🇬🇧',name:'ポンド',country:'イギリス',sym:'£',dec:2,fb:205.0,rg:'北米・欧州'},
+    {code:'CAD',flag:'🇨🇦',name:'加ドル',country:'カナダ',sym:'C$',dec:2,fb:117.0,rg:'北米・欧州'},
+    {code:'CHF',flag:'🇨🇭',name:'フラン',country:'スイス',sym:'CHF',dec:2,fb:180.0,rg:'北米・欧州'},
+    {code:'TRY',flag:'🇹🇷',name:'リラ',country:'トルコ',sym:'₺',dec:2,fb:4.50,rg:'北米・欧州'},
+    {code:'CZK',flag:'🇨🇿',name:'コルナ',country:'チェコ',sym:'Kč',dec:2,fb:7.00,rg:'北米・欧州'},
+    {code:'SEK',flag:'🇸🇪',name:'クローナ',country:'スウェーデン',sym:'kr',dec:2,fb:15.5,rg:'北米・欧州'},
+    {code:'NOK',flag:'🇳🇴',name:'クローネ',country:'ノルウェー',sym:'kr',dec:2,fb:15.0,rg:'北米・欧州'},
+    {code:'DKK',flag:'🇩🇰',name:'クローネ',country:'デンマーク',sym:'kr',dec:2,fb:23.2,rg:'北米・欧州'},
+    {code:'PLN',flag:'🇵🇱',name:'ズウォティ',country:'ポーランド',sym:'zł',dec:2,fb:40.0,rg:'北米・欧州'},
+    {code:'HUF',flag:'🇭🇺',name:'フォリント',country:'ハンガリー',sym:'Ft',dec:0,fb:0.44,rg:'北米・欧州'},
+    {code:'AUD',flag:'🇦🇺',name:'豪ドル',country:'オーストラリア',sym:'A$',dec:2,fb:105.0,rg:'オセアニア・その他'},
+    {code:'NZD',flag:'🇳🇿',name:'NZドル',country:'ニュージーランド',sym:'NZ$',dec:2,fb:96.0,rg:'オセアニア・その他'},
+    {code:'MXN',flag:'🇲🇽',name:'ペソ',country:'メキシコ',sym:'Mex$',dec:2,fb:8.60,rg:'オセアニア・その他'},
+    {code:'BRL',flag:'🇧🇷',name:'レアル',country:'ブラジル',sym:'R$',dec:2,fb:29.0,rg:'オセアニア・その他'},
+    {code:'ZAR',flag:'🇿🇦',name:'ランド',country:'南アフリカ',sym:'R',dec:2,fb:8.80,rg:'オセアニア・その他'},
+    {code:'EGP',flag:'🇪🇬',name:'ポンド',country:'エジプト',sym:'E£',dec:2,fb:3.30,rg:'オセアニア・その他'}
+  ];
+  var byCode={};COUNTRIES.forEach(function(c){byCode[c.code]=c;});
+
+
+  var rates={},dateStr=null,source='cache';
+  var displayed=['JPY','USD','EUR','VND'];  var theme='dark';
+  var selBottom='USD'; // 下段に表示する通貨(2〜4番目のタブから選択)
+  var regOpen={}; // 表示する国:地域ごとの開閉状態
+  var side='top',raw='',replaceNext=false,kpOpen=false;
+  var qJpy=[5000,10000,50000],qFor=[1000,5000,10000];
+  var LADDER=[100,300,500,1000,2000,3000,5000,10000,20000,30000,50000,100000,200000,300000,500000,1000000];
+  var drumTarget=null;
+
+  var $=function(id){return document.getElementById(id);};
+  function todayKey(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+  function fmtDate(d){return ('0'+(d.getMonth()+1)).slice(-2)+'/'+('0'+d.getDate()).slice(-2);}
+  function fmtFull(d){return d.getFullYear()+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+('0'+d.getDate()).slice(-2);}
+  function nf(n,dec){return new Intl.NumberFormat('ja-JP',{minimumFractionDigits:dec,maximumFractionDigits:dec}).format(n);}
+  function getRate(c){return rates[c]||byCode[c].fb;}
+  function rateJPY(code){return code==='JPY'?1:getRate(code);}
+  function infoFor(code){
+    if(code==='JPY')return{code:'JPY',flag:'🇯🇵',name:t('jpyName'),sym:'¥',dec:0};
+    var c=byCode[code];return{code:c.code,flag:c.flag,name:cname(c),sym:c.sym,dec:c.dec};
+  }
+  function topCode(){return displayed[0];}
+  function bottomCode(){
+    // 下段は選択中の通貨。ただし左端(上段)とは別で、表示中のタブに含まれる必要がある
+    if(selBottom&&selBottom!==displayed[0]&&displayed.indexOf(selBottom)>=0)return selBottom;
+    return displayed[1]||displayed[0];
+  }
+  function activeCode(){return bottomCode();} // 履歴/記録/簡単入力の対象は下段通貨
+  function groupInt(s){return s.replace(/\B(?=(\d{3})+(?!\d))/g,',');}
+  function loadHist(){try{return JSON.parse(localStorage.getItem(KEY_HIST)||'{}');}catch(e){return {};}}
+  function saveHist(h){try{localStorage.setItem(KEY_HIST,JSON.stringify(h));}catch(e){}}
+  function saveCfg(){try{localStorage.setItem(KEY_CFG,JSON.stringify({displayed:displayed,theme:theme,qJpy:qJpy,qFor:qFor,lang:lang,selBottom:selBottom}));}catch(e){}}
+  function saveDefault(){
+    try{localStorage.setItem(KEY_DEF,JSON.stringify({displayed:displayed.slice(),selBottom:selBottom}));}catch(e){}
+  }
+  function loadDefault(){
+    try{return JSON.parse(localStorage.getItem(KEY_DEF)||'null');}catch(e){return null;}
+  }
+  function applyDefault(){
+    var d=loadDefault();
+    if(!d||!Array.isArray(d.displayed)||!d.displayed.length){toast(t('noDefault'));return;}
+    // 妥当な通貨コードのみ復元
+    var arr=d.displayed.filter(function(c){return byCode[c];}).slice(0,4);
+    if(!arr.length){toast(t('noDefault'));return;}
+    displayed=arr;
+    selBottom=(d.selBottom&&byCode[d.selBottom])?d.selBottom:(displayed[1]||displayed[0]);
+    if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
+    side='top';raw='';replaceNext=false;closeKp();
+    saveCfg();renderAll();
+    if(navigator.vibrate)navigator.vibrate(15);
+    toast(t('defaultApplied'));
+  }
+  function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
+
+  function renderManual(){
+    var box=$('manualBox');if(!box)return;
+    var steps=[t('m1'),t('m2'),t('m3'),t('m4'),t('m5'),t('m6')];
+    box.innerHTML=steps.map(function(s,i){
+      return '<div class="mstep"><span class="num">'+(i+1)+'</span><span class="txt">'+s+'</span></div>';
+    }).join('');
+  }
+  function applyLang(){
+    document.documentElement.setAttribute('lang',lang);
+    $('tSettings').textContent=t('settings');
+    $('tLang').textContent=t('language');
+    $('tCountries').textContent=t('countries');
+    $('tHintC').textContent=t('hintC');
+    if($('tDefault'))$('tDefault').textContent=t('defaultLabel');
+    if($('tSetDefault'))$('tSetDefault').textContent=t('setDefault');
+    if($('tDefaultHint'))$('tDefaultHint').textContent=t('defaultHint');
+    if($('tApplyDefault'))$('tApplyDefault').textContent=t('applyDefault');
+    if($('tagline'))$('tagline').innerHTML=(t('tagline')||'').replace(/\n/g,'<br>');
+    if($('rotateMsg'))$('rotateMsg').textContent=t('rotateMsg');
+    $('tQuick').textContent=t('quick');
+    $('tHintQ').textContent=t('hintQ');
+    $('tAppearance').textContent=t('appearance');
+    $('tLight').textContent=t('light');
+    $('tDark').textContent=t('dark');
+    $('tSystem').textContent=t('system');
+    $('tHistory').textContent=t('history');
+    $('wipeBtn').textContent=t('wipe');
+    $('tNote').textContent=t('note');
+    $('drumCancel').textContent=t('cancel');
+    $('drumOk').textContent=t('ok');
+    $('kpDone').textContent=t('done');
+    var g=$('kpGrid').querySelector('.go');if(g)g.textContent=t('done');
+    var cl=lang==='ja'?'入力中':lang==='en'?'EDITING':lang==='zh'?'输入中':lang==='ko'?'입력 중':lang==='vi'?'ĐANG NHẬP':'กำลังป้อน';
+    $('caretT').textContent=cl;$('caretB').textContent=cl;
+    $('tManualLabel').textContent=t('manual');
+    renderManual();
+    var seg=$('langSeg');seg.innerHTML='';
+    LANGS.forEach(function(L){var b=document.createElement('button');b.textContent=L.n;
+      b.className=(L.c===lang?'on':'');b.onclick=function(){lang=L.c;saveCfg();applyLang();renderAll();
+        renderEdit();renderQEdit();renderHist();renderSpark();};seg.appendChild(b);});
+  }
+
+  var mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
+  function applyTheme(){
+    var real=theme;if(theme==='system')real=(mq&&mq.matches)?'dark':'light';
+    document.documentElement.setAttribute('data-theme',real);
+    $('metaTheme').setAttribute('content',real==='dark'?'#0B0D10':'#F7F8FA');
+    document.querySelectorAll('#themeSeg button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-th')===theme);});
+  }
+  if(mq&&mq.addEventListener)mq.addEventListener('change',function(){if(theme==='system'){applyTheme();renderSpark();}});
+
+  function decOf(){return infoFor(side==='top'?topCode():bottomCode()).dec;}
+  function curNums(){
+    var tC=topCode(),bC=bottomCode();
+    var sideCode=side==='top'?tC:bC, otherCode=side==='top'?bC:tC;
+    var v=raw===''?0:parseFloat(raw||'0');
+    var vJPY=v*rateJPY(sideCode);
+    var vOther=vJPY/rateJPY(otherCode);
+    return{top:side==='top'?v:vOther, bottom:side==='bottom'?v:vOther};
+  }
+  function seed(n,dec){if(!n||!isFinite(n))return '';return dec>0?String(n.toFixed(dec)).replace(/\.?0+$/,''):String(Math.round(n));}
+  function fmtRaw(s){if(s==='')return '0';var p=s.split('.');var ip=p[0].replace(/^0+(?=\d)/,'');if(ip==='')ip='0';ip=groupInt(ip);
+    if(p.length>1)return ip+'.'+p[1];if(s.slice(-1)==='.')return ip+'.';return ip;}
+  function renderConv(){
+    var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
+    var ts,bs,tz,bz;
+    if(side==='top'){var tN=raw===''?0:parseFloat(raw||'0');ts=raw===''?'0':fmtRaw(raw);tz=(tN===0);
+      var bN=tN*rateJPY(tC)/rateJPY(bC);bs=nf(bN,bInfo.dec);bz=(bN===0);}
+    else{var bN2=raw===''?0:parseFloat(raw||'0');bs=raw===''?'0':fmtRaw(raw);bz=(bN2===0);
+      var tN2=bN2*rateJPY(bC)/rateJPY(tC);ts=nf(tN2,tInfo.dec);tz=(tN2===0);}
+    var te=$('top');te.textContent=ts;te.classList.toggle('zero',tz);
+    var be=$('bottom');be.textContent=bs;be.classList.toggle('zero',bz);
+    $('rTop').classList.toggle('on',kpOpen&&side==='top');
+    $('rBottom').classList.toggle('on',kpOpen&&side==='bottom');
+    if(kpOpen&&$('kpiAmt')){$('kpiAmt').textContent=(side==='top'?ts:bs);}
+  }
+  function appendDigits(cur,d,dec){var p=(cur+d).split('.');
+    p[0]=p[0].replace(/^0+(?=\d)/,'');if(p[0]==='')p[0]='0';
+    if(p[1]!==undefined&&p[1].length>dec)return cur;
+    if(p[0].replace(/^0/,'').length>12)return cur;
+    return p.join('.');}
+  function press(k){var dec=decOf();
+    if(k==='C'){raw='';replaceNext=false;}
+    else if(k==='BS'){replaceNext=false;raw=raw.slice(0,-1);}
+    else if(k==='.'){if(dec>0&&raw.indexOf('.')<0){if(replaceNext){raw='';replaceNext=false;}if(raw==='')raw='0';raw+='.';}}
+    else if(k==='DONE'){closeKp();return;}
+    else{if(replaceNext){raw='';replaceNext=false;}raw=appendDigits(raw,k,dec);}
+    renderConv();}
+  function focusSide(w){var n=curNums();
+    if(w==='top'){side='top';raw=seed(n.top,infoFor(topCode()).dec);}else{side='bottom';raw=seed(n.bottom,infoFor(bottomCode()).dec);}
+    replaceNext=true;openKp();renderConv();}
+  function openKp(){kpOpen=true;$('paneKp').classList.add('on');$('kpScrim').classList.add('on');updateKp();renderConv();}
+  function closeKp(){kpOpen=false;$('paneKp').classList.remove('on');$('kpScrim').classList.remove('on');renderConv();}
+  function updateKp(){
+    var code=side==='top'?topCode():bottomCode();var info=infoFor(code);
+    $('kpiFlag').textContent=info.flag;$('kpiIso').textContent=info.code;$('kpiName').textContent='';$('kpiSym').textContent=info.sym;
+    $('dotBtn').classList.toggle('dis',decOf()===0);
+    syncKpAmt();
+  }
+  function syncKpAmt(){
+    if(!kpOpen)return;
+    // 入力ヘッダーには、いま入力中の通貨の値を表示
+    var el=$(side==='top'?'top':'bottom');
+    if(el)$('kpiAmt').textContent=el.textContent;
+  }
+
+  function renderTabs(){var t2=$('tabs');t2.innerHTML='';
+    var bC=bottomCode();
+    displayed.forEach(function(code,idx){var c=byCode[code];
+      var isTop=(idx===0);var isBot=(!isTop&&code===bC);
+      var el=document.createElement('button');
+      el.className='tab'+(isTop?' base on top':'')+(isBot?' sel bot':'');
+      el.setAttribute('data-code',code);el.setAttribute('data-idx',idx);
+      el.type='button';
+      el.innerHTML='<span class="fl">'+c.flag+'</span><span class="nm">'+code+'</span>';
+      // タップ = 下段に選択(左端は基準なので選択対象外)
+      el.addEventListener('click',function(){
+        if(tabDragActive)return; // ドラッグ直後のクリックは無視
+        if(code===displayed[0])return; // 左端(基準)は選択しない
+        selBottom=code;
+        if(kpOpen){side='top';raw='';replaceNext=false;}
+        saveCfg();renderAll();if(kpOpen)updateKp();
+      });
+      // 長押し = ドラッグ開始
+      el.addEventListener('pointerdown',function(e){onTabPointerDown(e,el,code);});
+      el.addEventListener('contextmenu',function(e){e.preventDefault();});
+      t2.appendChild(el);});}
+
+  // ---- tab long-press drag reorder ----
+  var tabDrag=null,tabDragActive=false;
+  var lpTimer=null,lpMoved=false,lpEl=null,lpCode=null,lpStartX=0,lpStartY=0;
+
+  function onTabPointerDown(e,el,code){
+    if(e.button!==undefined&&e.button!==0)return;
+    clearTimeout(lpTimer);
+    lpMoved=false;lpEl=el;lpCode=code;lpStartX=e.clientX;lpStartY=e.clientY;
+    document.addEventListener('pointermove',onTabPointerMove);
+    document.addEventListener('pointerup',onTabPointerUp);
+    document.addEventListener('pointercancel',onTabPointerUp);
+    lpTimer=setTimeout(function(){
+      if(!lpMoved&&lpEl){beginTabDrag(lpEl,lpCode,lpStartX);}
+    },420);
+  }
+  function onTabPointerMove(e){
+    if(tabDrag){dragMove(e);return;}
+    if(Math.abs(e.clientX-lpStartX)>8||Math.abs(e.clientY-lpStartY)>8){
+      lpMoved=true;clearTimeout(lpTimer); // 動いたらタップでも長押しでもない → 何もしない(スクロール等)
+    }
+  }
+  function onTabPointerUp(e){
+    clearTimeout(lpTimer);
+    document.removeEventListener('pointermove',onTabPointerMove);
+    document.removeEventListener('pointerup',onTabPointerUp);
+    document.removeEventListener('pointercancel',onTabPointerUp);
+    if(tabDrag){endTabDrag();
+      // ドラッグ直後のclickを無視するフラグ
+      tabDragActive=true;setTimeout(function(){tabDragActive=false;},50);
+    }
+    lpEl=null;lpCode=null;
+  }
+  function beginTabDrag(el,code,startX){
+    if(navigator.vibrate)navigator.vibrate(12);
+    var tabs=$('tabs');tabs.classList.add('dragging');
+    var els=Array.prototype.slice.call(tabs.querySelectorAll('.tab'));
+    var rects=els.map(function(n){return n.getBoundingClientRect();});
+    var fromIdx=els.indexOf(el);
+    var elRect=rects[fromIdx];
+    el.classList.add('drag');
+    tabDrag={el:el,code:code,els:els,rects:rects,fromIdx:fromIdx,curIdx:fromIdx,startX:startX,offsetX:startX-elRect.left,w:elRect.width};
+    shiftTabs(fromIdx);
+  }
+  function dragMove(e){
+    var d=tabDrag;if(!d)return;
+    var dx=e.clientX-d.startX;
+    d.el.style.transform='translateX('+dx+'px)';
+    var centerX=e.clientX-d.offsetX+d.w/2;
+    var newIdx=d.curIdx;
+    for(var i=0;i<d.rects.length;i++){
+      var mid=d.rects[i].left+d.rects[i].width/2;
+      if(centerX<mid){newIdx=i;break;}
+      newIdx=i;
+    }
+    if(newIdx!==d.curIdx){shiftTabs(newIdx);d.curIdx=newIdx;}
+  }
+  function shiftTabs(targetIdx){
+    var d=tabDrag;if(!d)return;
+    var w=d.rects[0].width;var gap=d.rects.length>1?(d.rects[1].left-d.rects[0].right):0;var step=w+gap;
+    d.els.forEach(function(n,i){
+      if(n===d.el)return;
+      var shift=0;
+      if(d.fromIdx<targetIdx){ if(i>d.fromIdx&&i<=targetIdx)shift=-step; }
+      else if(d.fromIdx>targetIdx){ if(i>=targetIdx&&i<d.fromIdx)shift=step; }
+      n.style.transform=shift?('translateX('+shift+'px)'):'translateX(0)';
+    });
+  }
+  function endTabDrag(){
+    var d=tabDrag;if(!d)return;
+    var to=d.curIdx;
+    var arr=displayed.slice();
+    var moving=arr.splice(d.fromIdx,1)[0];
+    arr.splice(to,0,moving);
+    displayed=arr;
+    tabDrag=null;
+    $('tabs').classList.remove('dragging');
+    if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
+    if(kpOpen){side='top';raw='';replaceNext=false;}
+    saveCfg();renderAll();if(kpOpen)updateKp();
+  }
+  function renderRate(){
+    var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
+    // 外貨(JPY以外)を基準に「$1 = ¥○○」で表示。両方がJPY以外なら下段基準。
+    var foreignCode = (tC==='JPY') ? bC : tC;
+    var fInfo=infoFor(foreignCode);
+    var perYen = rateJPY(foreignCode); // 1外貨あたりの円
+    $('pair').textContent = fInfo.code + ' | JPY';
+    $('rateVal').textContent = fInfo.sym + '1 = ¥' + nf(perYen, perYen>=1?2:4);
+    $('dot').classList.toggle('warn',source==='warn');
+    $('when').textContent=dateStr||'—';}
+  function renderRows(){
+    var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
+    $('topFlag').textContent=tInfo.flag;$('topIso').textContent=tInfo.code;$('topName').textContent='';$('topSym').textContent=tInfo.sym;
+    $('botFlag').textContent=bInfo.flag;$('botIso').textContent=bInfo.code;$('botName').textContent='';$('botSym').textContent=bInfo.sym;
+  }
+  function renderQuick(){var bC=bottomCode(),bInfo=infoFor(bC);$('qForH').textContent=bInfo.code;
+    var a=$('qJpy');a.innerHTML='';qJpy.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='top';raw=String(v);replaceNext=false;renderConv();};a.appendChild(b);});
+    var d=$('qFor');d.innerHTML='';qFor.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='bottom';raw=String(v);replaceNext=false;renderConv();};d.appendChild(b);});}
+  function renderSpark(){var ac=activeCode();var c=byCode[ac],h=(loadHist()[ac]||[]),svg=$('spark'),e=$('sparkEmpty');
+    $('sparkTitle').textContent=cname(c)+' · '+c.code;
+    e.textContent=t('noHist');
+    if(h.length<2){svg.innerHTML='';e.style.display='block';return;}
+    e.style.display='none';
+    var v=h.map(function(x){return x.r;}),mn=Math.min.apply(null,v),mx=Math.max.apply(null,v),rg=(mx-mn)||1;
+    var W=300,H=40,p=3,n=v.length,col=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    var pts=v.map(function(x,i){var X=n===1?W/2:p+i*(W-2*p)/(n-1);var Y=H-p-((x-mn)/rg)*(H-2*p);return X.toFixed(1)+','+Y.toFixed(1);});
+    var l=pts[pts.length-1].split(',');
+    svg.innerHTML='<polyline fill="none" stroke="'+col+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" points="'+pts.join(' ')+'"/><circle cx="'+l[0]+'" cy="'+l[1]+'" r="2.5" fill="'+col+'"/>';}
+  function renderAll(){renderTabs();renderRate();renderRows();renderQuick();renderConv();if($('sheet').classList.contains('show'))renderSpark();}
+
+
+  function logAuto(){var h=loadHist(),d=dateStr||fmtDate(new Date());
+    COUNTRIES.forEach(function(c){var a=h[c.code]||[],r=getRate(c.code),last=a[a.length-1];
+      if(last&&last.d===d){last.r=r;}else{a.push({d:d,r:r,n:''});}
+      if(a.length>90)a=a.slice(a.length-90);h[c.code]=a;});
+    saveHist(h);}
+  function recordNote(code){var c=byCode[code];var note=prompt(t('recPrompt'),'');if(note===null)return;
+    var h=loadHist(),a=h[code]||[];a.push({d:fmtDate(new Date()),r:getRate(code),n:note});
+    if(a.length>90)a=a.slice(a.length-90);h[code]=a;saveHist(h);
+    if($('sheet').classList.contains('show')){renderHist();renderSpark();}
+    toast(cname(c)+t('recDone'));}
+
+  function renderEdit(){var g=$('egrid');g.innerHTML='';$('selCnt').textContent=displayed.length+'/4';
+    var RM={'アジア':'regA','北米・欧州':'regE','オセアニア・その他':'regO'};
+    var rs=[];COUNTRIES.forEach(function(c){if(rs.indexOf(c.rg)<0)rs.push(c.rg);});
+    rs.forEach(function(rg){
+      var open=!!regOpen[rg];
+      var h=document.createElement('button');h.className='rgh-toggle'+(open?' open':'');
+      h.innerHTML='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg><span>'+t(RM[rg]||rg)+'</span>';
+      h.onclick=function(){regOpen[rg]=!regOpen[rg];renderEdit();};
+      g.appendChild(h);
+      var wrap=document.createElement('div');wrap.className='rgg-wrap'+(open?' open':'');
+      var gr=document.createElement('div');gr.className='rgg';
+      COUNTRIES.filter(function(c){return c.rg===rg;}).forEach(function(c){
+        var o=displayed.indexOf(c.code)+1;
+        var el=document.createElement('button');el.className='ec'+(o>0?' on':'');
+        el.innerHTML='<span class="f">'+c.flag+'</span><span class="n">'+cname(c)+'</span><span class="o">'+o+'</span>';
+        el.onclick=function(){toggleCountry(c.code);};gr.appendChild(el);});
+      wrap.appendChild(gr);g.appendChild(wrap);});}
+  function toggleCountry(code){var i=displayed.indexOf(code);
+    if(i>=0){if(displayed.length<=1){toast(t('min1'));return;}displayed.splice(i,1);side='top';raw='';}
+    else{if(displayed.length>=4){toast(t('max4'));return;}displayed.push(code);}
+    if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
+    saveCfg();renderEdit();renderQEdit();renderAll();renderSpark();}
+  function renderQEdit(){var c=byCode[activeCode()];$('qeForLbl').textContent=c.code;
+    var a=$('qeJpy');a.innerHTML='';qJpy.forEach(function(v,i){var b=document.createElement('button');b.textContent=nf(v,0);b.onclick=function(){openDrum('jpy',i,v);};a.appendChild(b);});
+    var d=$('qeFor');d.innerHTML='';qFor.forEach(function(v,i){var b=document.createElement('button');b.textContent=nf(v,0);b.onclick=function(){openDrum('for',i,v);};d.appendChild(b);});}
+  function renderHist(){var h=loadHist(),box=$('histList');box.innerHTML='';
+    COUNTRIES.forEach(function(c){var a=(h[c.code]||[]).slice().reverse(),lt=a[0];
+      var card=document.createElement('div');card.className='cc'+(c.code===activeCode()?' open':'');
+      var hd=document.createElement('div');hd.className='cch';
+      hd.innerHTML='<span class="f">'+c.flag+'</span><div class="i"><b>'+cname(c)+'</b><small>'+c.name+' · '+c.code+'</small></div><div class="lt">'+(lt?(nf(lt.r,lt.r>=1?2:4)+'¥'):'—')+'<small>'+(a.length?(a.length+t('records')):t('noRec'))+'</small></div>';
+      hd.onclick=function(){card.classList.toggle('open');};
+      var bd=document.createElement('div');bd.className='ccb';var rows='';
+      if(!a.length){rows='<div class="he">'+t('noHist')+'</div>';}
+      else{a.forEach(function(e,i){var ri=(h[c.code].length-1)-i;
+        rows+='<div class="hr"><span class="d">'+e.d+'</span><span class="v">'+nf(e.r,e.r>=1?2:4)+'¥</span>'+(e.n?('<span class="n">'+e.n.replace(/</g,'&lt;')+'</span>'):'<span style="flex:1"></span>')+'<button class="x" data-c="'+c.code+'" data-i="'+ri+'">✕</button></div>';});}
+      bd.innerHTML=rows+'<div class="ra"><button class="r1" data-rec="'+c.code+'">'+t('rec')+'</button><button class="r2" data-clr="'+c.code+'">'+t('clear')+'</button></div>';
+      card.appendChild(hd);card.appendChild(bd);box.appendChild(card);});
+    box.querySelectorAll('.hr .x').forEach(function(b){b.onclick=function(e){e.stopPropagation();var c=b.getAttribute('data-c'),i=+b.getAttribute('data-i');var h2=loadHist();h2[c].splice(i,1);saveHist(h2);renderHist();renderSpark();};});
+    box.querySelectorAll('[data-rec]').forEach(function(b){b.onclick=function(){recordNote(b.getAttribute('data-rec'));};});
+    box.querySelectorAll('[data-clr]').forEach(function(b){b.onclick=function(){var c=b.getAttribute('data-clr');if(!confirm(cname(byCode[c])+t('clearQ')))return;var h2=loadHist();h2[c]=[];saveHist(h2);renderHist();renderSpark();};});}
+  function openSheet(){closeKp();renderEdit();renderQEdit();renderHist();renderSpark();applyTheme();$('scrim').classList.add('show');$('sheet').classList.add('show');}
+  function closeSheet(){$('scrim').classList.remove('show');$('sheet').classList.remove('show');}
+  function toggleManual(){
+    var box=$('manualBox'),tg=$('manualToggle');
+    var open=box.classList.toggle('open');
+    tg.classList.toggle('open',open);
+    if(open)renderManual();
+  }
+
+  function openDrum(g,i,cur){drumTarget={g:g,i:i};var l=$('drumList');
+    l.innerHTML='<div class="dp"></div>'+LADDER.map(function(v){return '<div class="di">'+nf(v,0)+'</div>';}).join('')+'<div class="dp"></div>';
+    $('drumTitle').textContent=(g==='jpy'?'JPY':byCode[activeCode()].code)+t('amount');
+    var ci=LADDER.indexOf(cur);if(ci<0)ci=0;
+    $('drumScrim').classList.add('show');$('drum').classList.add('show');
+    setTimeout(function(){l.scrollTop=ci*40;hlDrum();},40);}
+  function hlDrum(){var l=$('drumList'),idx=Math.round(l.scrollTop/40);
+    l.querySelectorAll('.di').forEach(function(it,i){it.classList.toggle('sel',i===idx);});}
+  function drumVal(){var l=$('drumList'),i=Math.max(0,Math.min(LADDER.length-1,Math.round(l.scrollTop/40)));return LADDER[i];}
+  function closeDrum(){$('drumScrim').classList.remove('show');$('drum').classList.remove('show');drumTarget=null;}
+  function drumOk(){if(!drumTarget)return;var v=drumVal();
+    if(drumTarget.g==='jpy')qJpy[drumTarget.i]=v;else qFor[drumTarget.i]=v;
+    saveCfg();renderQuick();renderQEdit();closeDrum();}
+
+  function save(){try{localStorage.setItem(KEY_RATE,JSON.stringify({day:todayKey(),rates:rates,dateStr:dateStr,source:source}));}catch(e){}}
+  async function fetchRates(){var b=$('refBtn');b.classList.add('spin');var ok=false;
+    try{var r=await fetch('https://open.er-api.com/v6/latest/JPY',{cache:'no-store'});var d=await r.json();
+      if(d&&d.rates){COUNTRIES.forEach(function(c){if(d.rates[c.code])rates[c.code]=1/d.rates[c.code];});
+        dateStr=d.time_last_update_utc?fmtDate(new Date(d.time_last_update_utc)):fmtDate(new Date());source='auto';ok=true;}}catch(e){}
+    if(!ok){try{var cs=COUNTRIES.map(function(c){return c.code;}).join(',');
+      var r2=await fetch('https://api.frankfurter.app/latest?from=JPY&to='+cs,{cache:'no-store'});var d2=await r2.json();
+      if(d2&&d2.rates){COUNTRIES.forEach(function(c){if(d2.rates[c.code])rates[c.code]=1/d2.rates[c.code];});
+        dateStr=d2.date?d2.date.slice(5).replace('-','/'):fmtDate(new Date());source='auto';ok=true;}}catch(e){}}
+    if(ok){save();logAuto();}else{source='warn';}
+    b.classList.remove('spin');renderRate();renderConv();return ok;}
+
+  function init(){
+    var cfg=null;try{cfg=JSON.parse(localStorage.getItem(KEY_CFG)||'null');}catch(e){}
+    if(cfg){if(Array.isArray(cfg.displayed)&&cfg.displayed.length)displayed=cfg.displayed.filter(function(c){return byCode[c];}).slice(0,4);
+      if(cfg.theme)theme=cfg.theme;
+      if(Array.isArray(cfg.qJpy)&&cfg.qJpy.length===3)qJpy=cfg.qJpy;
+      if(Array.isArray(cfg.qFor)&&cfg.qFor.length===3)qFor=cfg.qFor;
+      if(cfg.lang&&T[cfg.lang])lang=cfg.lang;
+      if(cfg.selBottom)selBottom=cfg.selBottom;}
+    else{var nl=(navigator.language||'ja').slice(0,2);if(T[nl])lang=nl;}
+    // selBottom の妥当性確認(左端と別・表示中である)
+    if(selBottom===displayed[0]||displayed.indexOf(selBottom)<0)selBottom=displayed[1]||displayed[0];
+    applyTheme();applyLang();
+    var cached=null;try{cached=JSON.parse(localStorage.getItem(KEY_RATE)||'null');}catch(e){}
+    if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';}
+    renderAll();
+    if(!cached||cached.day!==todayKey())fetchRates();
+
+    $('rTop').addEventListener('click',function(){focusSide('top');});
+    $('rBottom').addEventListener('click',function(){focusSide('bottom');});
+    $('kpGrid').addEventListener('click',function(e){var b=e.target.closest('button');if(b)press(b.getAttribute('data-k'));});
+    // 物理キーボード・テンキーからの数字入力に対応(電卓が開いているときのみ)
+    document.addEventListener('keydown',function(e){
+      if(!kpOpen)return;
+      var k=e.key;
+      if(k>='0'&&k<='9'){e.preventDefault();press(k);return;}
+      if(k==='.'||k===','){e.preventDefault();press('.');return;}
+      if(k==='Backspace'){e.preventDefault();press('BS');return;}
+      if(k==='Delete'||k==='Escape'){e.preventDefault();press('C');return;}
+      if(k==='Enter'){e.preventDefault();press('DONE');return;}
+    });
+    $('kpDone').addEventListener('click',closeKp);
+    $('kpScrim').addEventListener('click',closeKp);
+    $('refBtn').addEventListener('click',fetchRates);
+    $('recBtn').addEventListener('click',function(){recordNote(activeCode());});
+    $('myBtn').addEventListener('click',openSheet);
+    $('closeBtn').addEventListener('click',closeSheet);
+    $('scrim').addEventListener('click',closeSheet);
+    $('manualToggle').addEventListener('click',toggleManual);
+    document.querySelectorAll('#themeSeg button').forEach(function(b){b.addEventListener('click',function(){theme=b.getAttribute('data-th');saveCfg();applyTheme();renderSpark();});});
+    $('wipeBtn').addEventListener('click',function(){if(!confirm(t('wipeQ')))return;saveHist({});renderHist();renderSpark();toast(t('wiped'));});
+    $('setDefaultBtn').addEventListener('click',function(){saveDefault();toast(t('defaultSaved'));});
+    $('applyDefaultBtn').addEventListener('click',function(){applyDefault();});
+    var dl=$('drumList'),raf;dl.addEventListener('scroll',function(){if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(hlDrum);});
+    $('drumOk').addEventListener('click',drumOk);
+    $('drumCancel').addEventListener('click',closeDrum);
+    $('drumScrim').addEventListener('click',closeDrum);
+    document.addEventListener('touchmove',function(e){
+      if(e.target.closest('.sb')||e.target.closest('.dl'))return;e.preventDefault();},{passive:false});
+  }
+  init();
+})();
+</script>
+<script>
+  // オープニング再生 → 本編表示(3時間に1回だけ再生 / ?splash=1 で強制再生)
+  (function(){
+    var splash=document.getElementById('splash');
+    if(!splash)return;
+    function killSplash(){ if(splash&&splash.parentNode){splash.parentNode.removeChild(splash);} }
+    function playSplash(){
+      void splash.offsetWidth;
+      splash.classList.add('play');
+      setTimeout(function(){splash.classList.add('fade');},2000);
+      setTimeout(killSplash,2650);
+    }
+    var KEY='tabirate_splash_last';
+    var THREE_H=3*60*60*1000;
+    // URLに ?splash=1 があれば必ず再生(スロットル無視・記録もしない)
+    var force=/[?&]splash=1\b/.test(location.search);
+    if(force){ playSplash(); return; }
+    var last=0;try{last=parseInt(localStorage.getItem(KEY)||'0',10);}catch(e){}
+    var now=Date.now();
+    if(now-last < THREE_H){
+      killSplash();
+      return;
+    }
+    try{localStorage.setItem(KEY,String(now));}catch(e){}
+    playSplash();
+  })();
+</script>
+<script>
+  // オフライン対応: Service Worker を登録
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function (err) {
+        console.warn('[sw] registration failed:', err);
+      });
+    });
+  }
+  // 縦向き固定: フルスクリーン/インストール済みPWA環境で対応ブラウザのみ有効
+  // (通常のブラウザタブでは仕様上ロックできないため、横向き時はCSSで案内画面を表示する)
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('portrait').catch(function () {});
+  }
+</script>
 </body>
 </html>
