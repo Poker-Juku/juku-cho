@@ -1,7 +1,7 @@
 // TABI-RATE — Service Worker
 // キャッシュ名を変えるとアップデートが全端末に配布されます。
 // index.html や manifest.json、アイコンを更新した際は必ず数字を1つ上げてください。
-const CACHE_NAME = 'tabirate-v44';
+const CACHE_NAME = 'tabirate-v46';
 
 // tabirate/ 直下からの相対パス。ファイル名にスペースがある場合はそのまま書けばOK
 // (Cache API はエンコード前のパスで保存されるため、HTML側の %20 と混在しても動作します)
@@ -11,12 +11,11 @@ const APP_SHELL = [
   './privacy.html',
   './manifest.json',
   './header.png',
-  './Fabicon.png',
-  './Apple touch Icon.png',
-  './Icon 192.png',
-  './Icon 512.png',
-  './Icon 512 maskable.png',
+  './favicon.png',
+  './apple-touch-icon.png',
+  './icon-192.png',
   './icon-512.png',
+  './icon-512-maskable.png',
   './icon-512-splash.png'
 ];
 
