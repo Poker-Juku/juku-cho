@@ -243,6 +243,15 @@
   .doc ol{margin:4px 0;padding-left:20px} .doc li{margin-bottom:5px}
   .doc a{color:var(--gold)}
   .doc .k{color:var(--ink);font-weight:700}
+  .cform{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+  .cf-in{width:100%;background:var(--surface);border:1px solid var(--hair);border-radius:9px;padding:10px 11px;color:var(--ink);font-size:13px;font-family:inherit}
+  .cf-in::placeholder{color:var(--ink-faint)}
+  .cf-in:focus{outline:none;border-color:var(--gold)}
+  .cf-ta{resize:vertical;min-height:84px;line-height:1.6}
+  .cf-btn{appearance:none;border:none;background:var(--gold);color:#1a1206;font-weight:800;font-size:13px;letter-spacing:.04em;border-radius:9px;padding:11px;cursor:pointer}
+  .cf-btn:active{transform:scale(.98)} .cf-btn:disabled{opacity:.6;cursor:default}
+  .cf-status{font-size:12px;min-height:16px;line-height:1.5}
+  .cf-status.ok{color:var(--win)} .cf-status.err{color:var(--lose)}
   .clear-all{font-size:10.5px;color:var(--ink-faint);background:none;border:1px solid var(--hair);border-radius:7px;padding:4px 9px;cursor:pointer;font-weight:600;letter-spacing:.02em}
   .clear-all:hover{color:var(--lose);border-color:var(--lose)}
 
@@ -614,14 +623,35 @@ const DOCS={
     履歴・テーマ・表示設定は、端末のローカルストレージにのみ保存されます。履歴は設定メニューの「すべて削除」でいつでも消去できます。
     <h4>広告・解析について</h4>
     将来的に広告（Google AdSense 等）やアクセス解析を導入する場合は、取得する情報を本ポリシーに明記し、必要に応じて同意を取得します。
-    <h4>お問い合わせ・詳細</h4>
-    詳細は <a href="https://juku-cho.com/" target="_blank" rel="noopener">juku-cho.com</a> のプライバシーポリシーをご確認ください。
+    <h4>お問い合わせ</h4>
+    ご質問・ご要望は下記フォームからお送りください。入力いただいたお名前・メールアドレス・内容は、お問い合わせ対応の目的でフォーム送信サービスを通じて送信されます。
+    <form class="cform" id="contactForm" action="https://formspree.io/f/XXXXXXXX" method="POST">
+      <input class="cf-in" type="text" name="name" placeholder="お名前（任意）" autocomplete="name">
+      <input class="cf-in" type="email" name="email" placeholder="メールアドレス" required autocomplete="email">
+      <textarea class="cf-in cf-ta" name="message" rows="4" placeholder="お問い合わせ内容" required></textarea>
+      <button class="cf-btn" type="submit">送信する</button>
+      <div class="cf-status" id="cfStatus"></div>
+    </form>
+    <div style="margin-top:10px">詳細は <a href="https://juku-cho.com/" target="_blank" rel="noopener">juku-cho.com</a> のプライバシーポリシーをご確認ください。</div>
   </div>`
 };
 let openDoc=null;
+async function onContactSubmit(e){
+  e.preventDefault();
+  const form=e.currentTarget,status=form.querySelector('.cf-status'),btn=form.querySelector('.cf-btn');
+  if(form.getAttribute('action').includes('XXXX')){status.className='cf-status err';status.textContent='送信先フォームが未設定です（フォームIDを設定してください）。';return;}
+  btn.disabled=true;status.className='cf-status';status.textContent='送信中…';
+  try{
+    const r=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{Accept:'application/json'}});
+    if(r.ok){form.reset();status.className='cf-status ok';status.textContent='送信しました。お問い合わせありがとうございます。';}
+    else{status.className='cf-status err';status.textContent='送信に失敗しました。時間をおいて再度お試しください。';}
+  }catch(_){status.className='cf-status err';status.textContent='送信に失敗しました。ネットワークをご確認ください。';}
+  finally{btn.disabled=false;}
+}
 function toggleDoc(k){openDoc=openDoc===k?null:k;
   document.getElementById('docView').innerHTML=openDoc?`<div style="margin-top:12px">${DOCS[openDoc]}</div>`:'';
   document.querySelectorAll('.link-btn').forEach(b=>b.style.borderColor=(b.dataset.doc===openDoc)?'var(--gold)':'');
+  if(openDoc==='privacy'){const cf=document.getElementById('contactForm');if(cf)cf.addEventListener('submit',onContactSubmit);}
 }
 
 /* ---- ドロワー開閉 ---- */
