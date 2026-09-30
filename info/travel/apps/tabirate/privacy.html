@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B0D10">
+<title>プライバシーポリシー — TABI-RATE</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  :root{
+    --bg:#0B0D10; --raise:#14171C; --raise-2:#1B1F26; --ink:#F2F4F7;
+    --ink-2:#9AA3AF; --ink-3:#5C6572; --hair:rgba(255,255,255,.08);
+    --accent:#34D399; --accent-dim:rgba(52,211,153,.12);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#F7F8FA; --raise:#FFFFFF; --raise-2:#F0F2F5; --ink:#0E1116;
+      --ink-2:#5F6875; --ink-3:#98A0AC; --hair:rgba(14,17,22,.08);
+      --accent:#0E9F6E; --accent-dim:rgba(14,159,110,.10);
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.8;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;
+    font-size:13px;font-weight:600;margin-bottom:28px}
+  .back:hover{color:var(--accent)}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .glyph{width:32px;height:32px;border-radius:9px;background:var(--raise-2);border:1px solid var(--hair);
+    display:grid;place-items:center;overflow:hidden;flex:0 0 auto}
+  .glyph img{width:100%;height:100%;object-fit:cover}
+  .brand b{font-size:15px;font-weight:800;letter-spacing:.08em}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.01em;margin:20px 0 6px}
+  .updated{font-size:12px;color:var(--ink-3);margin-bottom:36px}
+  h2{font-size:16px;font-weight:700;margin:36px 0 12px;padding-top:20px;border-top:1px solid var(--hair)}
+  h2:first-of-type{border-top:none;padding-top:0;margin-top:8px}
+  p,li{font-size:14.5px;color:var(--ink-2)}
+  ul{padding-left:20px;margin:10px 0}
+  li{margin-bottom:6px}
+  strong{color:var(--ink);font-weight:700}
+  a{color:var(--accent)}
+  .box{background:var(--raise);border:1px solid var(--hair);border-radius:14px;padding:16px 18px;margin:14px 0}
+  .box p{margin:0;font-size:13.5px}
+  .foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--hair);font-size:11px;
+    color:var(--ink-3);letter-spacing:.08em;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="./index.html">← TABI-RATEに戻る</a>
+
+  <div class="brand">
+    <div class="glyph"><img src="icon-512.png" alt=""></div>
+    <b>TABI-RATE</b>
+  </div>
+  <h1>プライバシーポリシー</h1>
+  <div class="updated">最終更新日: 2026年7月22日</div>
+
+  <p>本ポリシーは、Juku-Cho(以下「当方」)が提供するアプリ「TABI-RATE」(以下「本アプリ」)における、利用者情報の取り扱いについて定めるものです。</p>
+
+  <h2>1. 収集する情報について</h2>
+  <p>本アプリは、<strong>氏名・メールアドレス・電話番号などの個人を特定できる情報を一切収集しません。</strong>会員登録やログインの機能もありません。</p>
+  <div class="box">
+    <p>本アプリが端末に保存する情報は、以下の<strong>設定・利用データのみ</strong>で、すべてお使いの端末内(ブラウザのlocalStorage)に留まり、当方のサーバーに送信されることはありません。</p>
+  </div>
+  <ul>
+    <li>表示する国・タブの並び順などの設定</li>
+    <li>簡単入力ボタンに設定した金額</li>
+    <li>ライト/ダーク/システムのテーマ設定</li>
+    <li>選択中の言語</li>
+    <li>直近取得した為替レートのキャッシュ(オフライン利用のため)</li>
+    <li>利用者が「記録」機能で任意に保存した為替レートの履歴・メモ</li>
+  </ul>
+  <p>これらのデータはアプリ内の「設定 → すべての履歴を削除」、またはブラウザの設定からサイトデータを削除することで、いつでも消去できます。</p>
+
+  <h2>2. 外部サービス(為替レートの取得)</h2>
+  <p>本アプリは、最新の為替レートを取得するために以下の外部APIを利用しています。取得時に送信される情報は通信元のIPアドレス程度で、個人を特定する情報は送信されません。</p>
+  <ul>
+    <li><a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a>(open.er-api.com)</li>
+    <li><a href="https://www.frankfurter.app" target="_blank" rel="noopener">Frankfurter</a>(frankfurter.app / 欧州中央銀行のデータを提供)</li>
+  </ul>
+  <p>各サービスのデータの取り扱いについては、それぞれのプライバシーポリシーをご参照ください。</p>
+
+  <h2>3. 広告について</h2>
+  <p><strong>現在、本アプリは広告を配信していません。</strong>将来的に広告(Google AdSense等)を導入する場合は、本ポリシーを事前に更新し、Cookieや広告IDを用いた情報の取り扱いについて明記いたします。導入後は、Googleの広告に関する設定ページから、パーソナライズ広告の無効化が可能になる予定です。</p>
+
+  <h2>4. アクセス解析について</h2>
+  <p>現在、本アプリはアクセス解析ツールを導入していません。導入する場合も、個人を特定する情報は取得しない範囲で運用し、本ポリシーに明記します。</p>
+
+  <h2>5. 未成年の利用について</h2>
+  <p>本アプリは特定の年齢層を対象としたものではなく、年齢確認は行っていません。本アプリは個人情報を収集しないため、未成年の方も安心してご利用いただけます。</p>
+
+  <h2>6. 本ポリシーの変更</h2>
+  <p>本ポリシーの内容は、法令の変更や本アプリの機能追加(広告導入等)に応じて、予告なく変更されることがあります。重要な変更がある場合は、本ページの「最終更新日」を更新してお知らせします。</p>
+
+  <h2>7. お問い合わせ</h2>
+  <p>本ポリシーや本アプリに関するお問い合わせは、以下のフォームよりお願いいたします。<br><a href="https://formspree.io/f/xjgnrdpy" target="_blank" rel="noopener">お問い合わせフォーム</a></p>
+
+  <div class="foot">JUKU-CHO — TABI-RATE PRIVACY POLICY</div>
+</div>
+<script>
+/* The app passes its selected language in ?lang=. Japanese remains the canonical text above. */
+(function(){
+  var lang=new URLSearchParams(location.search).get('lang')||'ja';if(lang==='ja')return;
+  var D={
+    en:['← Back to TABI-RATE','Privacy Policy','Last updated: July 22, 2026','This policy explains how Juku-Cho handles user information in TABI-RATE.','Information we collect','TABI-RATE does not collect names, email addresses, phone numbers, or other personally identifiable information. No account or login is required. Settings, selected currencies, saved amounts, theme, language, cached exchange rates, and any rate notes are stored only in your browser on your device.','External services','To retrieve exchange rates, the app uses ExchangeRate-API and Frankfurter. These services may receive your IP address as part of a normal network request; we do not send information that identifies you.','Advertising and analytics','The app currently serves no advertising and uses no analytics tool. If either is introduced, this policy will be updated before use.','Children','We do not collect personal information, and the app is not designed to collect information from children.','Changes','This policy may change when laws or app functions change. Material changes will be shown by updating this page’s date.','Contact','For questions about this policy or the app, please use the contact form.'],
+    zh:['← 返回 TABI-RATE','隐私政策','最后更新：2026年7月22日','本政策说明 Juku-Cho 在 TABI-RATE 中如何处理用户信息。','收集的信息','TABI-RATE 不收集姓名、电子邮箱、电话号码或其他可识别个人身份的信息，也不需要注册或登录。设置、显示货币、快捷金额、主题、语言、汇率缓存以及用户保存的汇率记录仅保存在您设备的浏览器中。','外部服务','本应用使用 ExchangeRate-API 和 Frankfurter 获取汇率。正常网络请求中这些服务可能收到您的 IP 地址；我们不会发送可识别您身份的信息。','广告和分析','目前本应用不投放广告，也不使用访问分析工具。若未来引入，将在使用前更新本政策。','未成年人','本应用不收集个人信息，也不以收集未成年人信息为目的。','政策变更','法规或应用功能变更时，本政策可能更新。重要变更会通过更新本页日期告知。','联系我们','如对本政策或应用有疑问，请使用联系表单。'],
+    ko:['← TABI-RATE로 돌아가기','개인정보 처리방침','최종 업데이트: 2026년 7월 22일','본 방침은 Juku-Cho가 TABI-RATE에서 이용자 정보를 처리하는 방법을 설명합니다.','수집하는 정보','TABI-RATE는 이름, 이메일 주소, 전화번호 등 개인을 식별할 수 있는 정보를 수집하지 않으며 회원가입이나 로그인이 필요하지 않습니다. 설정, 표시 통화, 빠른 금액, 테마, 언어, 환율 캐시와 저장한 기록은 이용자 기기의 브라우저에만 저장됩니다.','외부 서비스','환율을 가져오기 위해 ExchangeRate-API와 Frankfurter를 사용합니다. 일반적인 통신 과정에서 IP 주소가 전달될 수 있으나 개인을 식별하는 정보는 보내지 않습니다.','광고 및 분석','현재 광고를 제공하거나 분석 도구를 사용하지 않습니다. 도입할 경우 사용 전에 본 방침을 업데이트합니다.','미성년자','개인정보를 수집하지 않으며, 미성년자 정보를 수집하기 위한 서비스가 아닙니다.','변경','법령이나 앱 기능 변경에 따라 방침이 변경될 수 있습니다. 중요한 변경은 이 페이지의 날짜를 갱신하여 알립니다.','문의','방침 또는 앱에 관한 문의는 문의 양식을 이용해 주세요.'],
+    vi:['← Quay lại TABI-RATE','Chính sách quyền riêng tư','Cập nhật lần cuối: 22/07/2026','Chính sách này giải thích cách Juku-Cho xử lý thông tin người dùng trong TABI-RATE.','Thông tin chúng tôi thu thập','TABI-RATE không thu thập tên, email, số điện thoại hoặc thông tin nhận dạng cá nhân khác và không yêu cầu đăng ký hay đăng nhập. Cài đặt, tiền tệ hiển thị, số tiền nhanh, giao diện, ngôn ngữ, tỷ giá đã lưu và ghi chú chỉ được lưu trong trình duyệt trên thiết bị của bạn.','Dịch vụ bên ngoài','Ứng dụng dùng ExchangeRate-API và Frankfurter để lấy tỷ giá. Trong yêu cầu mạng thông thường, các dịch vụ này có thể nhận địa chỉ IP; chúng tôi không gửi thông tin nhận dạng cá nhân.','Quảng cáo và phân tích','Hiện tại ứng dụng không phân phối quảng cáo và không dùng công cụ phân tích. Chính sách sẽ được cập nhật trước khi có thay đổi.','Trẻ em','Chúng tôi không thu thập thông tin cá nhân và ứng dụng không nhằm thu thập thông tin của trẻ em.','Thay đổi','Chính sách có thể thay đổi theo pháp luật hoặc chức năng ứng dụng. Thay đổi quan trọng sẽ được thông báo bằng ngày cập nhật trên trang này.','Liên hệ','Nếu có câu hỏi về chính sách hoặc ứng dụng, vui lòng dùng biểu mẫu liên hệ.'],
+    th:['← กลับไปที่ TABI-RATE','นโยบายความเป็นส่วนตัว','อัปเดตล่าสุด: 22 กรกฎาคม 2026','นโยบายนี้อธิบายวิธีที่ Juku-Cho จัดการข้อมูลผู้ใช้ใน TABI-RATE','ข้อมูลที่เราเก็บรวบรวม','TABI-RATE ไม่เก็บชื่อ อีเมล หมายเลขโทรศัพท์ หรือข้อมูลที่ระบุตัวบุคคล และไม่ต้องสมัครสมาชิกหรือเข้าสู่ระบบ การตั้งค่า สกุลเงินที่แสดง จำนวนเงินด่วน ธีม ภาษา อัตราแลกเปลี่ยนที่บันทึก และบันทึกย่อจะเก็บไว้ในเบราว์เซอร์บนอุปกรณ์ของคุณเท่านั้น','บริการภายนอก','แอปใช้ ExchangeRate-API และ Frankfurter เพื่อรับอัตราแลกเปลี่ยน ในการเชื่อมต่อตามปกติ บริการเหล่านี้อาจได้รับ IP address ของคุณ แต่เราไม่ส่งข้อมูลที่ระบุตัวบุคคล','โฆษณาและการวิเคราะห์','ปัจจุบันแอปไม่มีโฆษณาและไม่ใช้เครื่องมือวิเคราะห์ หากมีการเปลี่ยนแปลง จะอัปเดตนโยบายก่อนใช้งาน','ผู้เยาว์','เราไม่เก็บข้อมูลส่วนบุคคล และแอปไม่ได้มีวัตถุประสงค์เพื่อเก็บข้อมูลของผู้เยาว์','การเปลี่ยนแปลง','นโยบายอาจเปลี่ยนตามกฎหมายหรือฟังก์ชันของแอป การเปลี่ยนแปลงสำคัญจะแจ้งด้วยวันที่อัปเดตในหน้านี้','ติดต่อ','หากมีคำถามเกี่ยวกับนโยบายหรือแอป โปรดใช้แบบฟอร์มติดต่อ']
+  },v=D[lang];if(!v)return;
+  document.documentElement.lang=lang;document.title=v[1]+' — TABI-RATE';
+  document.querySelector('.wrap').innerHTML='<a class="back" href="./index.html">'+v[0]+'</a><div class="brand"><div class="glyph"><img src="icon-512.png" alt=""></div><b>TABI-RATE</b></div><h1>'+v[1]+'</h1><div class="updated">'+v[2]+'</div><p>'+v[3]+'</p><h2>1. '+v[4]+'</h2><p>'+v[5]+'</p><h2>2. '+v[6]+'</h2><p>'+v[7]+'</p><h2>3. '+v[8]+'</h2><p>'+v[9]+'</p><h2>4. '+v[10]+'</h2><p>'+v[11]+'</p><h2>5. '+v[12]+'</h2><p>'+v[13]+'</p><h2>6. '+v[14]+'</h2><p>'+v[15]+'</p><div class="foot">JUKU-CHO — TABI-RATE PRIVACY POLICY</div>';
+})();
+</script>
+</body>
+</html>
