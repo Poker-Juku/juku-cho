@@ -459,6 +459,12 @@
   .rate .live.loading{background:var(--ink-3);animation:rate-thinking .82s ease-in-out infinite}
   .rate .live.warn{background:#a66731;animation:none}
   .rate .when{display:none}
+  .rate{position:relative}
+  .rate-tip{position:absolute;left:0;bottom:calc(100% + 5px);z-index:12;max-width:calc(100vw - 40px);padding:7px 10px;border:1px solid rgba(52,211,153,.4);border-radius:8px;background:rgba(14,29,25,.97);color:#c8f7df;font-size:10px;font-weight:700;letter-spacing:.01em;line-height:1.25;white-space:nowrap;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .16s,transform .16s}
+  .rate-tip:after{content:"";position:absolute;left:7px;top:100%;border:4px solid transparent;border-top-color:rgba(52,211,153,.4)}
+  .rate-tip.show{opacity:1;transform:translateY(0)}
+  .rate-tip.quiet{border-color:rgba(166,103,49,.48);background:rgba(62,42,29,.97);color:#c18d62}
+  .rate-tip.quiet:after{border-top-color:rgba(166,103,49,.48)}
   .rate .act#recBtn,.rate .act#myBtn{color:#edf2f8}
   .rate .act#recBtn:hover,.rate .act#myBtn:hover{color:#fff;border-color:var(--ink-3);background:var(--raise-3)}
   .toast.quiet{color:#c18d62;background:rgba(62,42,29,.94);border-color:rgba(166,103,49,.45);opacity:.82}
@@ -623,6 +629,7 @@
 
   <div class="rate">
     <button class="live" id="dot" aria-label="為替レートを更新" title="為替レートを更新"></button>
+    <div class="rate-tip" id="rateTip" role="status" aria-live="polite"></div>
     <span class="pair" id="pair">JPY / CNY</span>
     <span class="val" id="rateVal">—</span>
     <span class="when" id="when" aria-hidden="true">—</span>
@@ -919,6 +926,9 @@
     toast(t('defaultApplied'));
   }
   function toast(m,quiet){var t=$('toast');t.textContent=m;t.classList.toggle('quiet',!!quiet);t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
+  function rateStatusMessage(){var fresh=source!=='warn'&&rateCacheDay===todayKey();var last=rateCacheDay?rateCacheDay.replace(/-/g,'/'):dateStr||'不明';return fresh?'本日のレートを取得済み（'+last+'）':'最終取得：'+last;}
+  function showRateTip(m,quiet,stay){var tip=$('rateTip');tip.textContent=m;tip.classList.toggle('quiet',!!quiet);tip.classList.add('show');clearTimeout(tip._t);if(!stay)tip._t=setTimeout(function(){tip.classList.remove('show');},2400);}
+  function hideRateTip(){var tip=$('rateTip');clearTimeout(tip._t);tip.classList.remove('show');}
 
   function renderManual(){
     var box=$('manualBox');if(!box)return;
@@ -1256,7 +1266,7 @@
         dateStr=d2.date?d2.date.slice(5).replace('-','/'):fmtDate(new Date());source='auto';ok=true;}}catch(e){}}
     if(ok){rateCacheDay=todayKey();save();logAuto();}else{source='warn';}
     b.classList.remove('loading');b.removeAttribute('aria-busy');renderRate();renderConv();
-    if(showFeedback){if(ok){toast('本日のレートを取得しました（'+fmtFull(new Date())+'）')}else{var lastFetched=rateCacheDay?rateCacheDay.replace(/-/g,'/'):dateStr||'不明';toast('最終取得：'+lastFetched+'（更新できませんでした）',true)}}
+    if(showFeedback){if(ok){showRateTip('本日のレートを取得しました（'+fmtFull(new Date())+'）')}else{var lastFetched=rateCacheDay?rateCacheDay.replace(/-/g,'/'):dateStr||'不明';showRateTip('最終取得：'+lastFetched+'（更新できませんでした）',true)}}
     return ok;}
 
   function init(){
@@ -1299,7 +1309,11 @@
     });
     $('kpDone').addEventListener('click',closeKp);
     $('kpScrim').addEventListener('click',closeKp);
-    $('dot').addEventListener('click',function(){fetchRates(true)});
+    $('dot').addEventListener('mouseenter',function(){showRateTip(rateStatusMessage(),source==='warn',true)});
+    $('dot').addEventListener('mouseleave',hideRateTip);
+    $('dot').addEventListener('focus',function(){showRateTip(rateStatusMessage(),source==='warn',true)});
+    $('dot').addEventListener('blur',hideRateTip);
+    $('dot').addEventListener('click',function(){showRateTip('レートを更新しています…',false,true);fetchRates(true)});
     $('recBtn').addEventListener('click',function(){recordNote(activeCode());});
     $('myBtn').addEventListener('click',openSheet);
     $('closeBtn').addEventListener('click',closeSheet);
