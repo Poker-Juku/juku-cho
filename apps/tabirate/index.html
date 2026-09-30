@@ -564,6 +564,31 @@
   .history-panel{display:none;padding-top:12px}.history-panel.open{display:block}
   @media (max-width:700px){.tab.base{flex:1.5 1 0}.tab{font-size:12px}.tab .fl{font-size:16px}.row{padding-top:21px}.fl-big{font-size:27px}.iso{font-size:18px}}
   @media (min-width:441px){body{padding:20px}.app{border-radius:28px;box-shadow:0 26px 90px -38px #000;max-height:860px}}
+
+  /* Short viewports: keep both currency rows and the quick buttons wholly visible. */
+  @media (max-height:620px){
+    .app{padding-top:6px;padding-bottom:6px}
+    .hdr{margin-top:2px;border-radius:14px}
+    .tabs{margin:7px 0 8px;gap:4px}
+    .tab{min-height:36px;height:36px;font-size:10px;border-radius:9px!important}
+    .tab .fl{font-size:14px}.tab .chev{font-size:9px}
+    .rate{padding:5px 3px 7px;margin-bottom:3px}.rate .pair{font-size:8px}.rate .val{font-size:17px}.rate .act{width:27px;height:27px}
+    .conv{justify-content:flex-start}
+    .row{flex:0 0 auto;min-height:74px;padding:13px 12px 8px}
+    .row-head{gap:7px;margin-bottom:4px}.row-head:after{font-size:8px}
+    .fl-big{font-size:21px}.iso{font-size:15px}.sym{font-size:17px}.amt{font-size:30px}
+    .corner-guide{height:calc(100% - 7px)}
+    .mid{height:19px}.swap{right:5px;width:16px;height:16px}.swap svg{width:12px;height:12px}
+    .zone{padding-top:2px}.quick{gap:6px;padding-bottom:4px}.qg-h{font-size:8px;margin:0 0 3px 1px}.qg-b{gap:4px}.qb{height:30px;font-size:9px;border-radius:8px}
+    .ad{height:34px;margin-top:2px}.ad span{font-size:7px}.foot{display:none}
+  }
+  @media (max-height:500px){
+    .app{padding:4px 12px}
+    .hdr{margin-top:0}.tabs{margin:5px 0 5px}.tab{min-height:32px;height:32px;font-size:9px}.tab .fl{font-size:12px}
+    .rate{padding:3px 2px 5px}.rate .val{font-size:15px}.rate .act{width:24px;height:24px}.rate .act svg{width:13px;height:13px}
+    .row{min-height:65px;padding:10px 9px 6px}.fl-big{font-size:18px}.iso{font-size:13px}.sym{font-size:15px}.amt{font-size:26px}
+    .mid{height:14px}.quick{padding-bottom:3px}.qb{height:27px;font-size:8px}.ad{height:30px}
+  }
 </style>
 </head>
 <body>
