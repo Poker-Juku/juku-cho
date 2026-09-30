@@ -102,6 +102,9 @@ section{padding:52px 0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;
   transition:.18s;display:block;position:relative}
 .card:hover{border-color:var(--accent-line);transform:translateY(-2px);background:var(--surface2)}
+.card-soon{opacity:.5;cursor:default}
+.card-soon:hover{border-color:var(--line);transform:none;background:var(--surface)}
+.card-soon:hover .arrow{color:var(--faint)}
 .card .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .card .ci{width:40px;height:40px;border-radius:11px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
 .tag{font-size:10px;letter-spacing:.08em;padding:4px 9px;border-radius:999px;font-weight:700}
@@ -166,7 +169,7 @@ footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
         <div class="n">2</div>
         <h4>コードを覚える</h4>
         <p>押さえやすいオープンコードから。数個覚えるだけで、弾ける曲が一気に増えます。</p>
-        <a class="more" href="/info/guitar/chords/">コードの押さえ方 →</a>
+        <span class="more" style="color:var(--faint)">コードの押さえ方（準備中）</span>
       </div>
       <div class="step">
         <div class="n">3</div>
@@ -195,13 +198,13 @@ footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
       <a class="card" href="/info/guitar/tab/">
         <div class="top">
           <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 10h18M3 14h18M3 18h18"/><circle cx="8" cy="10" r="1.4" fill="currentColor" stroke="none"/><circle cx="15" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg></div>
-          <span class="tag soon">準備中</span>
+          <span class="tag live">公開中</span>
         </div>
         <h4>タブ譜の読み方</h4>
         <p>6本の線と数字の意味から。譜面が読めなくても、曲を弾けるようになります。</p>
-        <div class="arrow">近日公開 →</div>
+        <div class="arrow">読み方を見る →</div>
       </a>
-      <a class="card" href="/info/guitar/chords/">
+      <div class="card card-soon">
         <div class="top">
           <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v18M12 3v18M18 3v18M3 8h18M3 14h18"/></svg></div>
           <span class="tag soon">準備中</span>
@@ -209,8 +212,8 @@ footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
         <h4>コードの押さえ方</h4>
         <p>ダイアグラムの読み方と、定番コードの押さえ方をひとつずつ。Fコードの壁も。</p>
         <div class="arrow">近日公開 →</div>
-      </a>
-      <a class="card" href="/info/guitar/beginner/">
+      </div>
+      <div class="card card-soon">
         <div class="top">
           <div class="ci"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20" opacity=".35"/><path d="M5 12a7 7 0 0 1 14 0"/><circle cx="12" cy="12" r="2.4"/></svg></div>
           <span class="tag soon">準備中</span>
@@ -218,7 +221,7 @@ footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
         <h4>初心者ロードマップ</h4>
         <p>最初の1ヶ月で何をやればいい？ 挫折しないための練習の順番をまとめます。</p>
         <div class="arrow">近日公開 →</div>
-      </a>
+      </div>
     </div>
   </section>
 
@@ -230,9 +233,7 @@ footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
     <nav>
       <a href="/info/guitar/terms/">音楽用語辞典</a>
       <a href="/info/guitar/tab/">タブ譜の読み方</a>
-      <a href="/info/guitar/chords/">コードの押さえ方</a>
-      <a href="/info/guitar/beginner/">初心者ロードマップ</a>
-      <a href="/apps/tuner/">ギターチューナー</a>
+      <a href="/apps/guitar_tuner/">ギターチューナー</a>
     </nav>
     <div>© Juku-Cho ギター塾 — やさしく、丁寧に。</div>
   </div>
@@ -244,7 +245,8 @@ function setTheme(t,btn){
   document.querySelectorAll(".themebar button").forEach(b=>b.classList.remove("on"));
   btn.classList.add("on");
 }
-function goTuner(src){location.href="/apps/tuner/?from="+encodeURIComponent(src);}
+function goTuner(src){location.href="/apps/guitar_tuner/?from="+encodeURIComponent(src);}
 </script>
+<script src="/assets/nav.js" defer></script>
 </body>
 </html>

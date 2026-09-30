@@ -319,8 +319,7 @@ footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
     <nav>
       <a href="/info/guitar/">教則トップ</a>
       <a href="/info/guitar/terms/">音楽用語辞典</a>
-      <a href="/info/guitar/chords/">コードの押さえ方</a>
-      <a href="/apps/tuner/">ギターチューナー</a>
+      <a href="/apps/guitar_tuner/">ギターチューナー</a>
     </nav>
     <div>© Juku-Cho ギター塾 — やさしく、丁寧に。</div>
   </div>
@@ -332,7 +331,8 @@ function setTheme(t,btn){
   document.querySelectorAll(".themebar button").forEach(b=>b.classList.remove("on"));
   btn.classList.add("on");
 }
-function goTuner(src){location.href="/apps/tuner/?from="+encodeURIComponent(src);}
+function goTuner(src){location.href="/apps/guitar_tuner/?from="+encodeURIComponent(src);}
 </script>
+<script src="/assets/nav.js" defer></script>
 </body>
 </html>

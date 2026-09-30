@@ -235,9 +235,7 @@ footer nav a{color:var(--muted)}footer nav a:hover{color:var(--accent)}
     <nav>
       <a href="/info/guitar/">教則トップ</a>
       <a href="/info/guitar/tab/">タブ譜の読み方</a>
-      <a href="/info/guitar/chords/">コードの押さえ方</a>
-      <a href="/info/guitar/beginner/">初心者ロードマップ</a>
-      <a href="/apps/tuner/">ギターチューナー</a>
+      <a href="/apps/guitar_tuner/">ギターチューナー</a>
     </nav>
     <div>© Juku-Cho ギター塾 — 用語は随時追加しています。</div>
   </div>
@@ -419,8 +417,8 @@ function closeSheet(){
   history.replaceState(null,"",location.pathname);
 }
 function goTuner(src){
-  // 実運用では /apps/tuner/ へ遷移（計測用パラメータ付き）
-  location.href="/apps/tuner/?from="+encodeURIComponent(src);
+  // 実運用では /apps/guitar_tuner/ へ遷移（計測用パラメータ付き）
+  location.href="/apps/guitar_tuner/?from="+encodeURIComponent(src);
 }
 function setTheme(t,btn){
   document.documentElement.setAttribute("data-theme",t);
@@ -434,5 +432,6 @@ function checkHash(){const m=location.hash.match(/t=(\d+)/);if(m)openSheet(+m[1]
 render();
 checkHash();
 </script>
+<script src="/assets/nav.js" defer></script>
 </body>
 </html>
