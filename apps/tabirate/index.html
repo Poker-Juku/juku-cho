@@ -455,6 +455,14 @@
   .rate{padding:7px 4px 12px;margin-bottom:8px;border-radius:12px;background:color-mix(in srgb,var(--raise) 65%,transparent);border-bottom:0}
   .rate .pair{font-size:10px}.rate .val{font-size:20px}.rate .when{margin-left:0;flex-basis:auto;order:0;margin-top:0}
   .rate .act{width:32px;height:32px;background:var(--raise-2);border:1px solid var(--hair)}
+  .rate .live{appearance:none;border:0;padding:0;cursor:pointer;flex:0 0 auto}
+  .rate .live.loading{background:var(--ink-3);animation:rate-thinking .82s ease-in-out infinite}
+  .rate .live.warn{background:#a66731;animation:none}
+  .rate .when{display:none}
+  .rate .act#recBtn,.rate .act#myBtn{color:#edf2f8}
+  .rate .act#recBtn:hover,.rate .act#myBtn:hover{color:#fff;border-color:var(--ink-3);background:var(--raise-3)}
+  .toast.quiet{color:#c18d62;background:rgba(62,42,29,.94);border-color:rgba(166,103,49,.45);opacity:.82}
+  @keyframes rate-thinking{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.65);opacity:1}}
   .row{padding:18px 14px;border:1px solid transparent}
   .row.on{border-color:var(--accent);background:linear-gradient(135deg,var(--accent-dim),var(--raise));box-shadow:0 12px 28px -22px rgba(0,0,0,.9)}
   .row-head:after{content:'TAP TO EDIT';font-size:9px;font-weight:800;letter-spacing:.1em;color:var(--ink-3);margin-left:auto}
@@ -534,6 +542,23 @@
   .swap{left:auto;right:8px;width:20px;height:20px;border:0;border-radius:0;background:transparent;box-shadow:none;color:var(--ink-3);transform:translateY(-50%)}
   .swap svg{width:14px;height:14px;stroke-width:2.2}
   .swap:active{background:transparent;transform:translateY(-50%) scale(.88)}
+
+  /* SVG paths share the exact same corner coordinate: no detached join. */
+  .row:before,.row:after{display:none}
+  .corner-guide{position:absolute;left:0;top:0;width:62%;height:calc(100% - 12px);z-index:2;overflow:visible;pointer-events:none}
+  .corner-guide path{fill:none;stroke-width:4;vector-effect:non-scaling-stroke;stroke-linecap:butt;stroke-linejoin:round}
+  .corner-guide .guide-vertical{stroke:var(--line-tone)}
+  .corner-guide .guide-start{stop-color:var(--line-tone);stop-opacity:1}
+  .corner-guide .guide-fade{stop-color:var(--line-tone);stop-opacity:0}
+
+  /* Only the SVG guide may draw the edge; it is intentionally half-transparent. */
+  .row:before,.row:after{content:none!important;display:none!important;background:none!important;border:0!important}
+  .corner-guide{opacity:.5}
+  .corner-guide path{stroke-width:3}
+
+  /* The third reference tab receives a quiet yellow emphasis. */
+  .tab.ref-2{background:rgba(234,179,8,.08);border-color:rgba(234,179,8,.52)!important;color:#EEC95A}
+  [data-theme="light"] .tab.ref-2{color:#7A5A00}
   .history-toggle{width:100%;display:flex;align-items:center;gap:9px;background:transparent;border:0;border-bottom:1px solid var(--hair);color:var(--ink-2);font-size:15px;font-weight:700;padding:14px 2px;cursor:pointer;text-align:left}
   .history-toggle .chev{width:16px;height:16px;color:var(--ink-3);transition:transform .2s}.history-toggle.open .chev{transform:rotate(90deg)}
   .history-panel{display:none;padding-top:12px}.history-panel.open{display:block}
@@ -572,23 +597,21 @@
   <nav class="tabs" id="tabs"></nav>
 
   <div class="rate">
-    <span class="live" id="dot"></span>
+    <button class="live" id="dot" aria-label="為替レートを更新" title="為替レートを更新"></button>
     <span class="pair" id="pair">JPY / CNY</span>
     <span class="val" id="rateVal">—</span>
-    <span class="when" id="when">—</span>
-    <button class="act" id="recBtn" aria-label="記録">
+    <span class="when" id="when" aria-hidden="true">—</span>
+    <button class="act" id="recBtn" aria-label="現在のレートを記録" title="現在のレートを記録">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
     </button>
-    <button class="act" id="refBtn" aria-label="更新">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
-    </button>
-    <button class="act" id="myBtn" aria-label="設定">
+    <button class="act" id="myBtn" aria-label="設定" title="設定">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
   </div>
 
   <div class="conv">
     <div class="row" id="rTop">
+      <svg class="corner-guide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="topGuideGradient" x1="0" y1="0" x2="1" y2="0"><stop class="guide-start" offset="0"/><stop class="guide-fade" offset="1"/></linearGradient></defs><path class="guide-vertical" d="M2 100 V2"/><path class="guide-horizontal" d="M2 2 H100" stroke="url(#topGuideGradient)"/></svg>
       <div class="row-head">
         <span class="fl-big" id="topFlag">🇯🇵</span>
         <span class="iso" id="topIso">JPY</span>
@@ -604,6 +627,7 @@
     </div>
 
     <div class="row" id="rBottom">
+      <svg class="corner-guide" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="bottomGuideGradient" x1="0" y1="0" x2="1" y2="0"><stop class="guide-start" offset="0"/><stop class="guide-fade" offset="1"/></linearGradient></defs><path class="guide-vertical" d="M2 100 V2"/><path class="guide-horizontal" d="M2 2 H100" stroke="url(#bottomGuideGradient)"/></svg>
       <div class="row-head">
         <span class="fl-big" id="botFlag">🇨🇳</span>
         <span class="iso" id="botIso">CNY</span>
@@ -622,8 +646,6 @@
       </div>
     </div>
   </div>
-
-  <a class="guide-link" href="./guides/krw/" id="krGuide"><span id="krGuideTitle">🇰🇷 韓国旅行のお金ガイド</span><small id="krGuideSub">物価・支払い・両替　→</small></a>
 
   <div class="ad" id="adSlot"><span>ADVERTISEMENT</span></div>
 </div>
@@ -820,7 +842,7 @@
   var byCode={};COUNTRIES.forEach(function(c){byCode[c.code]=c;});
 
 
-  var rates={},dateStr=null,source='cache';
+  var rates={},dateStr=null,source='cache',rateCacheDay=null;
   var displayed=['JPY','USD','EUR','VND'];  var theme='dark';
   var selBottom='USD'; // 下段に表示する通貨(2〜4番目のタブから選択)
   var regOpen={}; // 表示する国:地域ごとの開閉状態
@@ -871,7 +893,7 @@
     if(navigator.vibrate)navigator.vibrate(15);
     toast(t('defaultApplied'));
   }
-  function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},1600);}
+  function toast(m,quiet){var t=$('toast');t.textContent=m;t.classList.toggle('quiet',!!quiet);t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
 
   function renderManual(){
     var box=$('manualBox');if(!box)return;
@@ -900,7 +922,6 @@
     $('tSystem').textContent=t('system');
     $('tHistory').textContent=t('history');
     var gc=GUIDE_COPY[lang]||GUIDE_COPY.ja;
-    $('krGuideTitle').textContent=gc[0];$('krGuideSub').textContent=gc[1];
     $('privacyLink').textContent=gc[2];$('privacyLink').href='./privacy.html?lang='+encodeURIComponent(lang);
     $('wipeBtn').textContent=t('wipe');
     $('tNote').textContent=t('note');
@@ -1099,7 +1120,7 @@
     var perYen = rateJPY(foreignCode); // 1外貨あたりの円
     $('pair').textContent = fInfo.code + ' | JPY';
     $('rateVal').textContent = fInfo.sym + '1 = ¥' + nf(perYen, perYen>=1?2:4);
-    $('dot').classList.toggle('warn',source==='warn');
+    $('dot').classList.toggle('warn',source==='warn'||rateCacheDay!==todayKey());
     $('when').textContent=dateStr||'—';}
   function renderRows(){
     var tC=topCode(),bC=bottomCode(),tInfo=infoFor(tC),bInfo=infoFor(bC);
@@ -1107,7 +1128,6 @@
     $('rBottom').className='row line-'+Math.max(0,displayed.indexOf(bC));
     $('topFlag').textContent=tInfo.flag;$('topIso').textContent=tInfo.code;$('topName').textContent='';$('topSym').textContent=tInfo.sym;
     $('botFlag').textContent=bInfo.flag;$('botIso').textContent=bInfo.code;$('botName').textContent='';$('botSym').textContent=bInfo.sym;
-    $('krGuide').hidden=displayed.indexOf('KRW')<0;
   }
   function renderQuick(){var tC=topCode(),bC=bottomCode(),bInfo=infoFor(bC);$('qTopH').textContent=tC;$('qForH').textContent=bInfo.code;
     var a=$('qJpy');a.innerHTML='';qJpy.forEach(function(v){var b=document.createElement('button');b.className='qb';b.textContent=nf(v,0);b.onclick=function(){side='top';raw=String(v);replaceNext=false;renderConv();};a.appendChild(b);});
@@ -1200,8 +1220,8 @@
     if(drumTarget.g==='jpy')qJpy[drumTarget.i]=v;else qFor[drumTarget.i]=v;
     saveCfg();renderQuick();renderQEdit();closeDrum();}
 
-  function save(){try{localStorage.setItem(KEY_RATE,JSON.stringify({day:todayKey(),rates:rates,dateStr:dateStr,source:source}));}catch(e){}}
-  async function fetchRates(){var b=$('refBtn');b.classList.add('spin');var ok=false;
+  function save(){try{localStorage.setItem(KEY_RATE,JSON.stringify({day:rateCacheDay||todayKey(),rates:rates,dateStr:dateStr,source:source}));}catch(e){}}
+  async function fetchRates(showFeedback){var b=$('dot');b.classList.add('loading');b.setAttribute('aria-busy','true');var ok=false;
     try{var r=await fetch('https://open.er-api.com/v6/latest/JPY',{cache:'no-store'});var d=await r.json();
       if(d&&d.rates){COUNTRIES.forEach(function(c){if(d.rates[c.code])rates[c.code]=1/d.rates[c.code];});
         dateStr=d.time_last_update_utc?fmtDate(new Date(d.time_last_update_utc)):fmtDate(new Date());source='auto';ok=true;}}catch(e){}
@@ -1209,8 +1229,10 @@
       var r2=await fetch('https://api.frankfurter.app/latest?from=JPY&to='+cs,{cache:'no-store'});var d2=await r2.json();
       if(d2&&d2.rates){COUNTRIES.forEach(function(c){if(d2.rates[c.code])rates[c.code]=1/d2.rates[c.code];});
         dateStr=d2.date?d2.date.slice(5).replace('-','/'):fmtDate(new Date());source='auto';ok=true;}}catch(e){}}
-    if(ok){save();logAuto();}else{source='warn';}
-    b.classList.remove('spin');renderRate();renderConv();return ok;}
+    if(ok){rateCacheDay=todayKey();save();logAuto();}else{source='warn';}
+    b.classList.remove('loading');b.removeAttribute('aria-busy');renderRate();renderConv();
+    if(showFeedback){if(ok){toast('本日のレートを取得しました（'+fmtFull(new Date())+'）')}else{var lastFetched=rateCacheDay?rateCacheDay.replace(/-/g,'/'):dateStr||'不明';toast('最終取得：'+lastFetched+'（更新できませんでした）',true)}}
+    return ok;}
 
   function init(){
     var cfg=null;try{cfg=JSON.parse(localStorage.getItem(KEY_CFG)||'null');}catch(e){}
@@ -1232,7 +1254,7 @@
     if(qAmount!==null&&/^\d+(\.\d+)?$/.test(qAmount)){side='top';raw=qAmount;replaceNext=false;}
     applyTheme();applyLang();
     var cached=null;try{cached=JSON.parse(localStorage.getItem(KEY_RATE)||'null');}catch(e){}
-    if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';}
+    if(cached&&cached.rates){rates=cached.rates;dateStr=cached.dateStr||null;source=cached.source||'cache';rateCacheDay=cached.day||null;}
     renderAll();
     if(!cached||cached.day!==todayKey())fetchRates();
 
@@ -1252,7 +1274,7 @@
     });
     $('kpDone').addEventListener('click',closeKp);
     $('kpScrim').addEventListener('click',closeKp);
-    $('refBtn').addEventListener('click',fetchRates);
+    $('dot').addEventListener('click',function(){fetchRates(true)});
     $('recBtn').addEventListener('click',function(){recordNote(activeCode());});
     $('myBtn').addEventListener('click',openSheet);
     $('closeBtn').addEventListener('click',closeSheet);
