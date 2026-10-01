@@ -521,6 +521,15 @@
   .hdr{height:auto}
   .hdr-img{width:100%;max-width:100%;height:auto;margin-left:0}
 
+  /* Taller artwork header: the source image is cropped, never stretched. */
+  .hdr{aspect-ratio:3.45 / 1;border-radius:20px}
+  .hdr-img{width:100%;height:100%;object-fit:cover;object-position:center}
+  .hdr-tagline{display:none}
+
+  /* Currency content must retain its own height; never crop the figures. */
+  .conv{justify-content:flex-start}
+  .row{flex:0 0 auto;min-height:112px}
+
   /* Make the base tab dominant; leave the third and fourth tabs neutral. */
   .tab.base{flex:1.8 1 0}
   .tab.ref-2,.tab.ref-3{border-color:rgba(90,150,230,.5)!important;background:var(--raise);color:var(--ink-2);box-shadow:none!important}
@@ -571,16 +580,16 @@
   .history-toggle .chev{width:16px;height:16px;color:var(--ink-3);transition:transform .2s}.history-toggle.open .chev{transform:rotate(90deg)}
   .history-panel{display:none;padding-top:12px}.history-panel.open{display:block}
   @media (max-width:700px){.tab.base{flex:1.5 1 0}.tab{font-size:12px}.tab .fl{font-size:16px}.row{padding-top:21px}.fl-big{font-size:27px}.iso{font-size:18px}}
-  @media (min-width:441px){body{padding:20px}.app{border-radius:28px;box-shadow:0 26px 90px -38px #000;max-height:860px}}
+  @media (min-width:441px){body{padding:20px}.app{padding-top:8px;border-radius:28px;box-shadow:0 26px 90px -38px #000;max-height:860px}.hdr{margin-top:0}}
   @media (min-width:760px){
-    .app{width:auto;height:min(860px,calc(100dvh - 48px));aspect-ratio:3 / 5;max-width:540px;padding-left:12px;padding-right:12px}
+    .app{width:auto;height:min(775px,calc(100dvh - 48px));aspect-ratio:4 / 5;max-width:620px;padding-left:12px;padding-right:12px}
     .hdr{margin-left:-12px;margin-right:-12px}
   }
 
   /* Short viewports: keep both currency rows and the quick buttons wholly visible. */
   @media (max-height:620px){
     .app{padding-top:6px;padding-bottom:6px}
-    .hdr{margin-top:2px;border-radius:14px}
+    .hdr{margin-top:2px;border-radius:14px;aspect-ratio:4.4 / 1}
     .tabs{margin:7px 0 8px;gap:4px}
     .tab{min-height:36px;height:36px;font-size:10px;border-radius:9px!important}
     .tab .fl{font-size:14px}.tab .chev{font-size:9px}
@@ -594,9 +603,15 @@
     .zone{padding-top:2px}.quick{gap:6px;padding-bottom:4px}.qg-h{font-size:8px;margin:0 0 3px 1px}.qg-b{gap:4px}.qb{height:30px;font-size:9px;border-radius:8px}
     .ad{height:34px;margin-top:2px}.ad span{font-size:7px}.foot{display:none}
   }
+  @media (min-width:441px) and (max-width:759px) and (min-height:621px) and (max-height:720px){
+    .hdr{aspect-ratio:4.1 / 1}
+    .row{min-height:100px;padding-top:18px;padding-bottom:10px}
+    .fl-big{font-size:25px}.iso{font-size:17px}.amt{font-size:38px}
+    .mid{height:22px}.quick{padding-bottom:5px}.qb{height:34px}.ad{height:40px}
+  }
   @media (max-height:500px){
     .app{padding:4px 12px}
-    .hdr{margin-top:0}.tabs{margin:5px 0 5px}.tab{min-height:32px;height:32px;font-size:9px}.tab .fl{font-size:12px}
+    .hdr{margin-top:0;aspect-ratio:5 / 1}.tabs{margin:5px 0 5px}.tab{min-height:32px;height:32px;font-size:9px}.tab .fl{font-size:12px}
     .rate{padding:3px 2px 5px}.rate .val{font-size:15px}.rate .act{width:24px;height:24px}.rate .act svg{width:13px;height:13px}
     .row{min-height:65px;padding:10px 9px 6px}.fl-big{font-size:18px}.iso{font-size:13px}.sym{font-size:15px}.amt{font-size:26px}
     .mid{height:14px}.quick{padding-bottom:3px}.qb{height:27px;font-size:8px}.ad{height:30px}
@@ -627,7 +642,7 @@
 <div class="app">
 
   <header class="hdr">
-    <img class="hdr-img" src="header.png" alt="TABI - RATE — Currency Converter">
+    <img class="hdr-img" src="header-wide.png" alt="TABI - RATE — Currency Converter">
     <div class="hdr-tagline" id="tagline"></div>
   </header>
 
