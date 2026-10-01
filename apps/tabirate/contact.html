@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080c10">
+<title>お問い合わせ — TABI-RATE</title>
+<style>
+  :root{--bg:#080c10;--raise:#111820;--ink:#f4f7fb;--ink2:#a6b1c0;--line:rgba(255,255,255,.12);--accent:#34d399}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.6}
+  .wrap{width:min(100% - 32px,560px);margin:0 auto;padding:28px 0 calc(44px + env(safe-area-inset-bottom))}.back{display:inline-block;color:var(--accent);font-size:14px;text-decoration:none;margin-bottom:28px}.brand{font-weight:800;letter-spacing:.08em;font-size:14px;color:var(--accent)}h1{font-size:28px;letter-spacing:-.03em;margin:8px 0}.lead{color:var(--ink2);font-size:14px;margin:0 0 24px}
+  form{padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--raise)}label{display:block;font-size:13px;font-weight:750;margin:0 0 7px}input,textarea{width:100%;border:1px solid var(--line);border-radius:11px;background:#0a1016;color:var(--ink);font:inherit;font-size:16px;padding:12px;margin:0 0 18px}textarea{min-height:150px;resize:vertical}input:focus,textarea:focus{outline:2px solid rgba(52,211,153,.45);border-color:var(--accent)}button{width:100%;border:0;border-radius:11px;padding:14px;background:var(--accent);color:#062518;font:inherit;font-weight:800;font-size:16px;cursor:pointer}.note{font-size:12px;color:var(--ink2);margin:16px 2px 0}.error{display:none;margin:0 0 14px;padding:10px 12px;border-radius:10px;background:rgba(248,113,113,.12);color:#fecaca;font-size:13px}.error.show{display:block}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="./index.html">← TABI-RATEに戻る</a>
+  <div class="brand">TABI-RATE</div>
+  <h1 id="title">お問い合わせ</h1>
+  <p class="lead" id="lead">ご意見・不具合のご報告・掲載に関するお問い合わせはこちらからお送りください。</p>
+  <form action="https://formspree.io/f/xjgnrdpy" method="POST">
+    <input type="hidden" name="_subject" value="TABI-RATE お問い合わせ">
+    <div class="error" id="error">入力内容をご確認ください。</div>
+    <label for="name" id="nameLabel">お名前（任意）</label>
+    <input id="name" type="text" name="name" autocomplete="name">
+    <label for="email" id="emailLabel">メールアドレス</label>
+    <input id="email" type="email" name="email" autocomplete="email" required>
+    <label for="message" id="messageLabel">お問い合わせ内容</label>
+    <textarea id="message" name="message" required></textarea>
+    <button type="submit" id="send">送信する</button>
+  </form>
+  <p class="note" id="note">送信後は Formspree の送信完了画面が表示されます。</p>
+</main>
+<script>
+(function(){
+  var lang=new URLSearchParams(location.search).get('lang')||'ja';
+  var copy={en:['← Back to TABI-RATE','Contact','Send feedback, report an issue, or contact us about listings.','Name (optional)','Email address','Message','Send','Please check the required fields.','After sending, Formspree will show a confirmation page.'],zh:['← 返回 TABI-RATE','联系我们','欢迎发送意见、问题反馈或合作咨询。','姓名（选填）','电子邮箱','留言','发送','请检查必填内容。','发送后将显示 Formspree 的确认页面。'],ko:['← TABI-RATE로 돌아가기','문의','의견, 오류 신고 또는 게재 관련 문의를 보내주세요.','이름（선택）','이메일 주소','문의 내용','보내기','필수 항목을 확인해 주세요.','전송 후 Formspree의 완료 페이지가 표시됩니다.'],vi:['← Quay lại TABI-RATE','Liên hệ','Gửi góp ý, báo lỗi hoặc yêu cầu liên quan đến nội dung.','Tên (không bắt buộc)','Email','Nội dung','Gửi','Vui lòng kiểm tra các mục bắt buộc.','Sau khi gửi, Formspree sẽ hiển thị trang xác nhận.'],th:['← กลับไปที่ TABI-RATE','ติดต่อเรา','ส่งความคิดเห็น รายงานปัญหา หรือสอบถามเกี่ยวกับเนื้อหาได้ที่นี่','ชื่อ (ไม่บังคับ)','อีเมล','ข้อความ','ส่ง','โปรดตรวจสอบช่องที่ต้องกรอก','หลังส่งแล้ว Formspree จะแสดงหน้ายืนยัน']};
+  var c=copy[lang];if(!c)return;document.documentElement.lang=lang;document.querySelector('.back').textContent=c[0];document.title=c[1]+' — TABI-RATE';document.getElementById('title').textContent=c[1];document.getElementById('lead').textContent=c[2];document.getElementById('nameLabel').textContent=c[3];document.getElementById('emailLabel').textContent=c[4];document.getElementById('messageLabel').textContent=c[5];document.getElementById('send').textContent=c[6];document.getElementById('error').textContent=c[7];document.getElementById('note').textContent=c[8];
+})();
+</script>
+</body>
+</html>
