@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0B0D10" id="metaTheme">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>TABI - RATE</title>
+<meta name="description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="世界の通貨をかんたん｜TABI-RATE">
+<meta property="og:description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
+<meta property="og:image" content="https://juku-cho.com/apps/tabirate/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="世界の通貨をかんたん｜TABI-RATE">
+<meta name="twitter:description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
+<title>世界の通貨をかんたん｜TABI-RATE</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.json">
@@ -396,7 +404,7 @@
     background:#01030a;color:#e2ecff;flex-direction:column;align-items:center;justify-content:center;gap:18px;
     text-align:center;padding:24px}
   #rotate-overlay svg{width:64px;height:64px;color:#3E8BFF;animation:rotateHint 1.8s ease-in-out infinite}
-  #rotate-overlay .rt-msg{font-size:14px;font-weight:600;line-height:1.7;max-width:280px}
+  #rotate-overlay .rt-msg{font-size:14px;font-weight:600;line-height:1.7;max-width:280px;white-space:pre-line}
   @keyframes rotateHint{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-90deg)}}
   @media screen and (orientation:landscape) and (hover:none) and (pointer:coarse){
     #rotate-overlay{display:flex}
@@ -630,7 +638,7 @@
     <rect x="7" y="3" width="10" height="18" rx="2"/>
     <path d="M11 18h2"/>
   </svg>
-  <div class="rt-msg" id="rotateMsg">縦向きでご利用ください</div>
+  <div class="rt-msg" id="rotateMsg">世界の通貨をかんたん<br>各国の通貨をタブで簡単に切り替えて確認できるアプリです。</div>
 </div>
 
 <div id="splash">
@@ -648,7 +656,7 @@
 <div class="app">
 
   <header class="hdr">
-    <img class="hdr-img" src="header-wide.png" alt="TABI - RATE — Currency Converter">
+    <img class="hdr-img" src="header-wide.png" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png';">
     <div class="hdr-tagline" id="tagline"></div>
   </header>
 
@@ -796,7 +804,7 @@
       recPrompt:'メモ(例: 旅行 / 空港レート)',recDone:'のレートを記録しました',records:'件',noRec:'記録なし',
       min1:'最低1か国は必要です',max4:'タブは最大4か国です',wiped:'履歴を削除しました',
       regA:'アジア',regE:'北米・欧州',regO:'オセアニア・その他',
-      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',m1:'上段の一番左のタブ（赤いタブ）が基準の通貨になります。常に表示したい通貨をここに設定します。',m2:'基準の通貨の右側は他の通貨を設定でき、最大で3つまで追加可能です。',m3:'タブを長押ししながら左右にドラッグすると、並び順を変えられます。一番左に置いた通貨が基準の通貨となり、常に上段に表示されます。',m4:'金額の欄をタップすると電卓が開き、上段・下段どちらからでも入力できます。',m5:'レート横の保存アイコンで、その時のレートを履歴に記録できます。',m6:'国の追加・言語・テーマは設定（歯車）から。為替レートは毎日1回自動取得します。',tapChange:'タップで変更',defaultLabel:'デフォルト設定',setDefault:'現在のタブ構成をデフォルトに設定',defaultHint:'よく使う通貨構成を保存し、いつでも呼び出せます。',applyDefault:'デフォルトを呼び出す',tagline:'世界の通貨を\nかんたんに',defaultSaved:'デフォルトに保存しました',defaultApplied:'デフォルトを呼び出しました',noDefault:'デフォルトが未設定です',rotateMsg:'縦向きにしてご利用ください'},
+      note:'毎朝アプリを開くと自動更新。表示は参考値です。',jpyName:'日本円',manual:'使い方',m1:'上段の一番左のタブ（赤いタブ）が基準の通貨になります。常に表示したい通貨をここに設定します。',m2:'基準の通貨の右側は他の通貨を設定でき、最大で3つまで追加可能です。',m3:'タブを長押ししながら左右にドラッグすると、並び順を変えられます。一番左に置いた通貨が基準の通貨となり、常に上段に表示されます。',m4:'金額の欄をタップすると電卓が開き、上段・下段どちらからでも入力できます。',m5:'レート横の保存アイコンで、その時のレートを履歴に記録できます。',m6:'国の追加・言語・テーマは設定（歯車）から。為替レートは毎日1回自動取得します。',tapChange:'タップで変更',defaultLabel:'デフォルト設定',setDefault:'現在のタブ構成をデフォルトに設定',defaultHint:'よく使う通貨構成を保存し、いつでも呼び出せます。',applyDefault:'デフォルトを呼び出す',tagline:'世界の通貨を\nかんたんに',defaultSaved:'デフォルトに保存しました',defaultApplied:'デフォルトを呼び出しました',noDefault:'デフォルトが未設定です',rotateMsg:'世界の通貨をかんたん\n各国の通貨をタブで簡単に切り替えて確認できるアプリです。'},
     en:{settings:'Settings',countries:'Countries',quick:'Quick amounts',appearance:'Appearance',language:'Language',history:'Rate history',
       light:'Light',dark:'Dark',system:'System',trend:'Trend',noHist:'No history yet.',
       hintC:'Up to 4. Tabs follow your selection order.',hintQ:'Tap to pick an amount.',
