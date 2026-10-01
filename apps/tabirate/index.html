@@ -538,7 +538,7 @@
 
   /* Taller artwork header: the source image is cropped, never stretched. */
   .hdr{aspect-ratio:3.45 / 1;border-radius:20px}
-  .hdr-img{width:100%;height:100%;object-fit:cover;object-position:center}
+  .hdr-img{width:100%!important;max-width:100%!important;height:100%;margin-left:0!important;object-fit:cover;object-position:35% center;transform:none!important}
   .hdr-tagline{display:none}
 
   /* Currency content must retain its own height; never crop the figures. */
@@ -630,6 +630,10 @@
     .rate{padding:3px 2px 5px}.rate .val{font-size:15px}.rate .act{width:24px;height:24px}.rate .act svg{width:13px;height:13px}
     .row{min-height:65px;padding:10px 9px 6px}.fl-big{font-size:18px}.iso{font-size:13px}.sym{font-size:15px}.amt{font-size:26px}
     .mid{height:14px}.quick{padding-bottom:3px}.qb{height:27px;font-size:8px}.ad{height:30px}
+  }
+  @media (max-width:700px){
+    .hdr{aspect-ratio:3.7 / 1}
+    .hdr-img{object-position:30% center}
   }
 </style>
 </head>
