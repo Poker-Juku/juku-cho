@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0B0D10" id="metaTheme">
-<meta name="app-version" content="4">
+<meta name="app-version" content="5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
 <meta property="og:type" content="website">
@@ -638,6 +638,12 @@
   /* Keep the whole supplied banner visible at every viewport.  No cover/cropping. */
   .hdr{height:auto!important;aspect-ratio:auto!important}
   .hdr-img{width:100%!important;max-width:100%!important;height:auto!important;margin-left:0!important;object-fit:contain!important;object-position:center!important;transform:none!important}
+  /* 広告を導入するまで枠だけ非表示。HTMLは残しているため再開時はこの1行を外すだけです。 */
+  .ad{display:none!important}
+  /* 左端の基準通貨タブだけ、固定であることが分かる明確な赤枠にする。 */
+  .tab.base,.tab.base.on{border:2px solid #ff4560!important;box-shadow:0 0 0 1px rgba(255,69,96,.42),inset 0 0 15px rgba(240,60,80,.3)!important}
+  /* スマホでは横幅を保ったまま、ヘッダーを約半分の高さへ。文字は中央帯に残る。 */
+  @media (max-width:700px){.hdr{height:clamp(58px,16.5vw,76px)!important;aspect-ratio:auto!important}.hdr-img{height:100%!important;object-fit:cover!important;object-position:center center!important}}
 </style>
 </head>
 <body>
@@ -664,7 +670,7 @@
 <div class="app">
 
   <header class="hdr">
-    <img class="hdr-img" src="header-wide.png?v=4" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png?v=4';">
+    <img class="hdr-img" src="header-wide.png?v=5" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png?v=5';">
     <div class="hdr-tagline" id="tagline"></div>
   </header>
 
@@ -1409,7 +1415,7 @@
   // オフライン対応: Service Worker を登録
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      // 共有URLの ?v=4 と同じ番号を使い、更新時はここを 5、6… と上げる。
+      // 共有URLの ?v=5 と同じ番号を使い、更新時はここを 6、7… と上げる。
       var appVersion=(document.querySelector('meta[name="app-version"]')||{}).content||'1';
       navigator.serviceWorker.register('./sw.js?v='+encodeURIComponent(appVersion),{updateViaCache:'none'}).catch(function (err) {
         console.warn('[sw] registration failed:', err);
