@@ -1,36 +1,36 @@
-// TABI-RATE — サービス業従事者
-// キャッシュ名を変更するとアップデートが全端末に配布されます。
-//index.htmlやmanifest.json、アイコンを更新した際は必ず数字を1つ上げてください。
-const CACHE_NAME = 'tabirate-preview-v71';
+// TABI-RATE — Service Worker
+// キャッシュ名を変えるとアップデートが全端末に配布されます。
+// index.html や manifest.json、アイコンを更新した際は必ず数字を1つ上げてください。
+const CACHE_NAME = 'tabirate-preview-v72';
 
 // tabirate/ 直下からの相対パス。ファイル名にスペースがある場合はそのまま書けばOK
-// (キャッシュ API はエンコード前のパスで保存されるため、HTML 側の %20 と長くても動作します)
+// (Cache API はエンコード前のパスで保存されるため、HTML側の %20 と混在しても動作します)
 const APP_SHELL = [
-  './'、
-  './index.html'、
-  './privacy.html'、
-  './contact.html'、
-  './manifest.json'、
-  './header.png'、
-  './header-wide.png'、
-  './favicon.png'、
-  './apple-touch-icon.png'、
-  './icon-192.png'、
-  './icon-512.png'、
-  './icon-512-maskable.png'、
+  './',
+  './index.html',
+  './privacy.html',
+  './contact.html',
+  './manifest.json',
+  './header.png',
+  './header-wide.png',
+  './favicon.png',
+  './apple-touch-icon.png',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-512-maskable.png',
   './icon-512-splash.png'
 ];
 
-// インストール時:アプリ本体一式をキャッシュに保存
+// インストール時: アプリ本体一式をキャッシュに保存
 self.addEventListener('install', function (event) {
   self.skipWaiting();
-  イベントを待機(
+  event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      Promise.all を返します(
+      return Promise.all(
         APP_SHELL.map(function (url) {
           return cache.add(url).catch(function (err) {
             // 1ファイル失敗しても全体を止めない(ファイル名違い等の事故防止)
-            console.warn('[sw] キャッシュ失敗:', url, err);
+            console.warn('[sw] cache failed:', url, err);
           });
         })
       );
@@ -40,10 +40,10 @@ self.addEventListener('install', function (event) {
 
 // 有効化時: 古いバージョンのキャッシュを削除
 self.addEventListener('activate', function (event) {
-  イベントを待機(
+  event.waitUntil(
     caches.keys().then(function (keys) {
-      Promise.all を返します(
-        キー
+      return Promise.all(
+        keys
           .filter(function (k) { return k !== CACHE_NAME; })
           .map(function (k) { return caches.delete(k); })
       );
@@ -58,7 +58,7 @@ self.addEventListener('activate', function (event) {
 self.addEventListener('fetch', function (event) {
   if (event.request.method !== 'GET') return;
 
-  イベント.respondWith(
+  event.respondWith(
     caches.match(event.request).then(function (cached) {
       const fetchPromise = fetch(event.request)
         .then(function (networkResponse) {
@@ -72,11 +72,11 @@ self.addEventListener('fetch', function (event) {
         })
         .catch(function () {
           // オフラインでキャッシュも無いケース(初回未訪問ページ等)
-          キャッシュされたデータを返す。
+          return cached;
         });
 
-      // キャッシュがあればすぐに戻ります。無ければネットワークの結果を待ちます
-      キャッシュされたデータを返す || fetchPromise;
+      // キャッシュがあれば即返す。無ければネットワークの結果を待つ
+      return cached || fetchPromise;
     })
   );
 });
