@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0B0D10" id="metaTheme">
-<meta name="app-version" content="2">
+<meta name="app-version" content="4">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
 <meta property="og:type" content="website">
@@ -475,7 +475,7 @@
   .rate .live.warn:after{background:#a66731;box-shadow:none;animation:none}
   .rate .when{display:none}
   .rate{position:relative;z-index:10}
-  .rate-tip{position:absolute;left:0;top:calc(100% + 7px);z-index:30;max-width:calc(100vw - 40px);padding:11px 15px;border:1px solid #48d9a2;border-radius:10px;background:#0f3b2a;box-shadow:0 8px 22px rgba(0,0,0,.5);color:#f2fff8;font-size:20px;font-weight:800;letter-spacing:.01em;line-height:1.25;white-space:nowrap;opacity:0;transform:translateY(-2px);pointer-events:none;transition:opacity .05s,transform .05s}
+  .rate-tip{position:absolute;left:0;top:calc(100% + 7px);z-index:30;max-width:calc(100vw - 40px);padding:8px 11px;border:1px solid #48d9a2;border-radius:10px;background:#0f3b2a;box-shadow:0 8px 22px rgba(0,0,0,.5);color:#f2fff8;font-size:10px;font-weight:800;letter-spacing:.01em;line-height:1.25;white-space:nowrap;opacity:0;transform:translateY(-2px);pointer-events:none;transition:opacity .05s,transform .05s}
   .rate-tip:after{content:"";position:absolute;left:7px;bottom:100%;border:4px solid transparent;border-bottom-color:#48d9a2}
   .rate-tip.show{opacity:1;transform:translateY(0)}
   .rate-tip.quiet{border-color:rgba(166,103,49,.48);background:rgba(62,42,29,.97);color:#c18d62}
@@ -608,7 +608,7 @@
     .tabs{margin:7px 0 8px;gap:4px}
     .tab{min-height:36px;height:36px;font-size:10px;border-radius:9px!important}
     .tab .fl{font-size:14px}.tab .chev{font-size:9px}
-    .rate{padding:5px 3px 7px;margin-bottom:3px}.rate-tip{padding:8px 10px;font-size:16px}.rate .pair{font-size:8px}.rate .val{font-size:17px}.rate .act{width:27px;height:27px}
+    .rate{padding:5px 3px 7px;margin-bottom:3px}.rate-tip{padding:7px 9px;font-size:10px}.rate .pair{font-size:8px}.rate .val{font-size:17px}.rate .act{width:27px;height:27px}
     .conv{justify-content:flex-start}
     .row{flex:0 0 auto;min-height:74px;padding:13px 12px 8px}
     .row-head{gap:7px;margin-bottom:4px}.row-head:after{font-size:8px}
@@ -635,6 +635,9 @@
     .hdr{aspect-ratio:3.7 / 1}
     .hdr-img{object-position:30% center}
   }
+  /* Keep the whole supplied banner visible at every viewport.  No cover/cropping. */
+  .hdr{height:auto!important;aspect-ratio:auto!important}
+  .hdr-img{width:100%!important;max-width:100%!important;height:auto!important;margin-left:0!important;object-fit:contain!important;object-position:center!important;transform:none!important}
 </style>
 </head>
 <body>
@@ -661,7 +664,7 @@
 <div class="app">
 
   <header class="hdr">
-    <img class="hdr-img" src="header-wide.png" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png';">
+    <img class="hdr-img" src="header-wide.png?v=4" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png?v=4';">
     <div class="hdr-tagline" id="tagline"></div>
   </header>
 
@@ -1406,7 +1409,7 @@
   // オフライン対応: Service Worker を登録
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      // 共有URLの ?v=2 と同じ番号を使い、更新時はここを 3、4… と上げる。
+      // 共有URLの ?v=4 と同じ番号を使い、更新時はここを 5、6… と上げる。
       var appVersion=(document.querySelector('meta[name="app-version"]')||{}).content||'1';
       navigator.serviceWorker.register('./sw.js?v='+encodeURIComponent(appVersion),{updateViaCache:'none'}).catch(function (err) {
         console.warn('[sw] registration failed:', err);
