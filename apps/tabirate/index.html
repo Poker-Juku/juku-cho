@@ -460,13 +460,15 @@
   .rate .live.warn{background:#a66731;animation:none}
   .rate .when{display:none}
   .rate{position:relative}
-  .rate-tip{position:absolute;left:0;bottom:calc(100% + 5px);z-index:12;max-width:calc(100vw - 40px);padding:7px 10px;border:1px solid rgba(52,211,153,.4);border-radius:8px;background:rgba(14,29,25,.97);color:#c8f7df;font-size:10px;font-weight:700;letter-spacing:.01em;line-height:1.25;white-space:nowrap;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .16s,transform .16s}
+  .rate-tip{position:absolute;left:0;bottom:calc(100% + 7px);z-index:30;max-width:calc(100vw - 40px);padding:10px 14px;border:1px solid #48d9a2;border-radius:10px;background:#0a2119;box-shadow:0 8px 22px rgba(0,0,0,.42);color:#edfff6;font-size:14px;font-weight:800;letter-spacing:.01em;line-height:1.3;white-space:nowrap;opacity:0;transform:translateY(4px);pointer-events:none;transition:opacity .16s,transform .16s}
   .rate-tip:after{content:"";position:absolute;left:7px;top:100%;border:4px solid transparent;border-top-color:rgba(52,211,153,.4)}
   .rate-tip.show{opacity:1;transform:translateY(0)}
   .rate-tip.quiet{border-color:rgba(166,103,49,.48);background:rgba(62,42,29,.97);color:#c18d62}
   .rate-tip.quiet:after{border-top-color:rgba(166,103,49,.48)}
   .rate .act#recBtn,.rate .act#myBtn{color:#edf2f8}
   .rate .act#recBtn:hover,.rate .act#myBtn:hover{color:#fff;border-color:var(--ink-3);background:var(--raise-3)}
+  [data-theme="light"] .rate .act#recBtn,[data-theme="light"] .rate .act#myBtn{color:#263242;background:#edf1f5;border-color:#cfd6df}
+  [data-theme="light"] .rate .act#recBtn:hover,[data-theme="light"] .rate .act#myBtn:hover{color:#0b1119;background:#e0e6ed;border-color:#8e9aaa}
   .toast.quiet{color:#c18d62;background:rgba(62,42,29,.94);border-color:rgba(166,103,49,.45);opacity:.82}
   @keyframes rate-thinking{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.65);opacity:1}}
   .row{padding:18px 14px;border:1px solid transparent}
@@ -570,6 +572,10 @@
   .history-panel{display:none;padding-top:12px}.history-panel.open{display:block}
   @media (max-width:700px){.tab.base{flex:1.5 1 0}.tab{font-size:12px}.tab .fl{font-size:16px}.row{padding-top:21px}.fl-big{font-size:27px}.iso{font-size:18px}}
   @media (min-width:441px){body{padding:20px}.app{border-radius:28px;box-shadow:0 26px 90px -38px #000;max-height:860px}}
+  @media (min-width:760px){
+    .app{width:auto;height:min(860px,calc(100dvh - 48px));aspect-ratio:9 / 16;max-width:500px;padding-left:12px;padding-right:12px}
+    .hdr{margin-left:-12px;margin-right:-12px}
+  }
 
   /* Short viewports: keep both currency rows and the quick buttons wholly visible. */
   @media (max-height:620px){
@@ -578,7 +584,7 @@
     .tabs{margin:7px 0 8px;gap:4px}
     .tab{min-height:36px;height:36px;font-size:10px;border-radius:9px!important}
     .tab .fl{font-size:14px}.tab .chev{font-size:9px}
-    .rate{padding:5px 3px 7px;margin-bottom:3px}.rate .pair{font-size:8px}.rate .val{font-size:17px}.rate .act{width:27px;height:27px}
+    .rate{padding:5px 3px 7px;margin-bottom:3px}.rate-tip{padding:7px 9px;font-size:11px}.rate .pair{font-size:8px}.rate .val{font-size:17px}.rate .act{width:27px;height:27px}
     .conv{justify-content:flex-start}
     .row{flex:0 0 auto;min-height:74px;padding:13px 12px 8px}
     .row-head{gap:7px;margin-bottom:4px}.row-head:after{font-size:8px}
@@ -628,7 +634,7 @@
   <nav class="tabs" id="tabs"></nav>
 
   <div class="rate">
-    <button class="live" id="dot" aria-label="為替レートを更新" title="為替レートを更新"></button>
+    <button class="live" id="dot" aria-label="為替レートを更新"></button>
     <div class="rate-tip" id="rateTip" role="status" aria-live="polite"></div>
     <span class="pair" id="pair">JPY / CNY</span>
     <span class="val" id="rateVal">—</span>
@@ -927,7 +933,7 @@
   }
   function toast(m,quiet){var t=$('toast');t.textContent=m;t.classList.toggle('quiet',!!quiet);t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
   function rateStatusMessage(){var fresh=source!=='warn'&&rateCacheDay===todayKey();var last=rateCacheDay?rateCacheDay.replace(/-/g,'/'):dateStr||'不明';return fresh?'本日のレートを取得済み（'+last+'）':'最終取得：'+last;}
-  function showRateTip(m,quiet,stay){var tip=$('rateTip');tip.textContent=m;tip.classList.toggle('quiet',!!quiet);tip.classList.add('show');clearTimeout(tip._t);if(!stay)tip._t=setTimeout(function(){tip.classList.remove('show');},2400);}
+  function showRateTip(m,quiet,stay){var tip=$('rateTip');tip.textContent=m;tip.classList.toggle('quiet',!!quiet);tip.classList.add('show');clearTimeout(tip._t);if(!stay)tip._t=setTimeout(function(){hideRateTip();},2400);}
   function hideRateTip(){var tip=$('rateTip');clearTimeout(tip._t);tip.classList.remove('show');}
 
   function renderManual(){
