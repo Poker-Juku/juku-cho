@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0B0D10" id="metaTheme">
+<meta name="app-version" content="2">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
 <meta property="og:type" content="website">
@@ -1401,7 +1402,9 @@
   // オフライン対応: Service Worker を登録
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('./sw.js').catch(function (err) {
+      // 共有URLの ?v=2 と同じ番号を使い、更新時はここを 3、4… と上げる。
+      var appVersion=(document.querySelector('meta[name="app-version"]')||{}).content||'1';
+      navigator.serviceWorker.register('./sw.js?v='+encodeURIComponent(appVersion),{updateViaCache:'none'}).catch(function (err) {
         console.warn('[sw] registration failed:', err);
       });
     });
