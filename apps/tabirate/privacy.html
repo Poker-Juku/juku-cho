@@ -25,7 +25,11 @@
     font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
     -webkit-font-smoothing:antialiased;line-height:1.8;
   }
-  .wrap{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+  .site-head{height:60px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;padding:0 max(20px,calc((100% - 1040px)/2));background:var(--raise)}
+  .site-name{color:var(--ink);text-decoration:none;font-size:15px;font-weight:800;letter-spacing:.06em}.site-name i{font-style:normal;color:var(--accent)}
+  .site-nav{display:flex;gap:18px}.site-nav a{color:var(--ink-2);font-size:13px;text-decoration:none;font-weight:650}.site-nav a:hover{color:var(--accent)}
+  .crumb{max-width:1040px;margin:0 auto;padding:15px 20px 0;color:var(--ink-3);font-size:12px}.crumb a{color:var(--ink-2);text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px}
   .back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;
     font-size:13px;font-weight:600;margin-bottom:28px}
   .back:hover{color:var(--accent)}
@@ -45,12 +49,16 @@
   a{color:var(--accent)}
   .box{background:var(--raise);border:1px solid var(--hair);border-radius:14px;padding:16px 18px;margin:14px 0}
   .box p{margin:0;font-size:13.5px}
-  .foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--hair);font-size:11px;
-    color:var(--ink-3);letter-spacing:.08em;text-align:center}
+  .foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--hair);font-size:12px;
+    color:var(--ink-3);letter-spacing:.03em;text-align:center}
+  .legal-footer{border-top:1px solid var(--hair);padding:22px 20px 34px;color:var(--ink-3);font-size:11px;text-align:center}.legal-footer a{color:var(--ink-3);text-decoration:none}.legal-footer a:hover{color:var(--accent)}
+  @media (max-width:560px){.site-head{padding:0 16px}.site-nav{gap:12px}.crumb{padding-left:16px}.wrap{padding:22px 16px 52px}h1{font-size:24px}}
 </style>
 </head>
 <body>
-<div class="wrap">
+<header class="site-head"><a class="site-name" href="./index.html">TABI<i>—</i>RATE</a><nav class="site-nav"><a href="./index.html">トップ</a><a href="./contact.html">お問い合わせ</a></nav></header>
+<div class="crumb"><a href="./index.html">トップ</a> ＞ プライバシーポリシー</div>
+<main class="wrap">
 
   <a class="back" href="./index.html">← TABI-RATEに戻る</a>
 
@@ -64,7 +72,8 @@
   <p>本ポリシーは、Juku-Cho(以下「当方」)が提供するアプリ「TABI-RATE」(以下「本アプリ」)における、利用者情報の取り扱いについて定めるものです。</p>
 
   <h2>1. 収集する情報について</h2>
-  <p>本アプリは、<strong>氏名・メールアドレス・電話番号などの個人を特定できる情報を一切収集しません。</strong>会員登録やログインの機能もありません。</p>
+  <p>本アプリは、通常の利用において<strong>氏名・メールアドレス・電話番号などの個人を特定できる情報を収集しません。</strong>会員登録やログインの機能もありません。</p>
+  <p>お問い合わせフォームを利用する場合に限り、メールアドレス（必須）、お問い合わせ内容（必須）、お名前（任意）を取得します。これらはお問い合わせへの回答・対応の目的にのみ利用し、対応完了後、合理的な期間内に削除します。ご本人の同意なく第三者へ提供することはありません（法令に基づく場合を除きます）。</p>
   <div class="box">
     <p>本アプリが端末に保存する情報は、以下の<strong>設定・利用データのみ</strong>で、すべてお使いの端末内(ブラウザのlocalStorage)に留まり、当方のサーバーに送信されることはありません。</p>
   </div>
@@ -99,10 +108,11 @@
   <p>本ポリシーの内容は、法令の変更や本アプリの機能追加(広告導入等)に応じて、予告なく変更されることがあります。重要な変更がある場合は、本ページの「最終更新日」を更新してお知らせします。</p>
 
   <h2>7. お問い合わせ</h2>
-  <p>本ポリシーや本アプリに関するお問い合わせは、以下のフォームよりお願いいたします。<br><a href="https://formspree.io/f/xjgnrdpy" target="_blank" rel="noopener">お問い合わせフォーム</a></p>
+  <p>本ポリシーや本アプリに関するお問い合わせは、以下のフォームよりお願いいたします。<br><a href="./contact.html">お問い合わせフォーム</a></p>
 
-  <div class="foot">JUKU-CHO — TABI-RATE PRIVACY POLICY</div>
-</div>
+  <div class="foot">運営：アプリ塾（Juku-Cho）<br>制定日：2026年7月22日</div>
+</main>
+<footer class="legal-footer">完全ブラウザ内計算・登録不要 ／ <a href="./privacy.html">プライバシーポリシー</a> ／ <a href="./contact.html">お問い合わせ</a> ／ © アプリ塾｜TABI-RATE</footer>
 <script>
 /* The app passes its selected language in ?lang=. Japanese remains the canonical text above. */
 (function(){
@@ -115,7 +125,7 @@
     th:['← กลับไปที่ TABI-RATE','นโยบายความเป็นส่วนตัว','อัปเดตล่าสุด: 22 กรกฎาคม 2026','นโยบายนี้อธิบายวิธีที่ Juku-Cho จัดการข้อมูลผู้ใช้ใน TABI-RATE','ข้อมูลที่เราเก็บรวบรวม','TABI-RATE ไม่เก็บชื่อ อีเมล หมายเลขโทรศัพท์ หรือข้อมูลที่ระบุตัวบุคคล และไม่ต้องสมัครสมาชิกหรือเข้าสู่ระบบ การตั้งค่า สกุลเงินที่แสดง จำนวนเงินด่วน ธีม ภาษา อัตราแลกเปลี่ยนที่บันทึก และบันทึกย่อจะเก็บไว้ในเบราว์เซอร์บนอุปกรณ์ของคุณเท่านั้น','บริการภายนอก','แอปใช้ ExchangeRate-API และ Frankfurter เพื่อรับอัตราแลกเปลี่ยน ในการเชื่อมต่อตามปกติ บริการเหล่านี้อาจได้รับ IP address ของคุณ แต่เราไม่ส่งข้อมูลที่ระบุตัวบุคคล','โฆษณาและการวิเคราะห์','ปัจจุบันแอปไม่มีโฆษณาและไม่ใช้เครื่องมือวิเคราะห์ หากมีการเปลี่ยนแปลง จะอัปเดตนโยบายก่อนใช้งาน','ผู้เยาว์','เราไม่เก็บข้อมูลส่วนบุคคล และแอปไม่ได้มีวัตถุประสงค์เพื่อเก็บข้อมูลของผู้เยาว์','การเปลี่ยนแปลง','นโยบายอาจเปลี่ยนตามกฎหมายหรือฟังก์ชันของแอป การเปลี่ยนแปลงสำคัญจะแจ้งด้วยวันที่อัปเดตในหน้านี้','ติดต่อ','หากมีคำถามเกี่ยวกับนโยบายหรือแอป โปรดใช้แบบฟอร์มติดต่อ']
   },v=D[lang];if(!v)return;
   document.documentElement.lang=lang;document.title=v[1]+' — TABI-RATE';
-  document.querySelector('.wrap').innerHTML='<a class="back" href="./index.html">'+v[0]+'</a><div class="brand"><div class="glyph"><img src="icon-512.png" alt=""></div><b>TABI-RATE</b></div><h1>'+v[1]+'</h1><div class="updated">'+v[2]+'</div><p>'+v[3]+'</p><h2>1. '+v[4]+'</h2><p>'+v[5]+'</p><h2>2. '+v[6]+'</h2><p>'+v[7]+'</p><h2>3. '+v[8]+'</h2><p>'+v[9]+'</p><h2>4. '+v[10]+'</h2><p>'+v[11]+'</p><h2>5. '+v[12]+'</h2><p>'+v[13]+'</p><h2>6. '+v[14]+'</h2><p>'+v[15]+'</p><div class="foot">JUKU-CHO — TABI-RATE PRIVACY POLICY</div>';
+  document.querySelector('.wrap').innerHTML='<a class="back" href="./index.html">'+v[0]+'</a><div class="brand"><div class="glyph"><img src="icon-512.png" alt=""></div><b>TABI-RATE</b></div><h1>'+v[1]+'</h1><div class="updated">'+v[2]+'</div><p>'+v[3]+'</p><h2>1. '+v[4]+'</h2><p>'+v[5]+'</p><h2>2. '+v[6]+'</h2><p>'+v[7]+'</p><h2>3. '+v[8]+'</h2><p>'+v[9]+'</p><h2>4. '+v[10]+'</h2><p>'+v[11]+'</p><h2>5. '+v[12]+'</h2><p>'+v[13]+'</p><h2>6. '+v[14]+'</h2><p><a href="./contact.html?lang='+encodeURIComponent(lang)+'">'+v[15]+'</a></p><div class="foot">JUKU-CHO — TABI-RATE PRIVACY POLICY</div>';
 })();
 </script>
 </body>
