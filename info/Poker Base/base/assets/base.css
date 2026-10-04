@@ -1,0 +1,441 @@
+/* ==========================================================================
+   POKER BASE — 共通デザインシステム
+   juku-cho.com/poker/base/ 配下、全ページ共通の土台。
+   「テーブル上で何が起きているかを図解する」ための部品（テーブル図・
+   YOU主体アクションシーン・チップ・役カード・ポジション図・ルートカード）
+   を、今後100ページ規模に拡張する前提で共通化している。
+   このファイルを更新すると、参照している全ページに反映される。
+   ========================================================================== */
+
+:root{
+  --navy:#081a31;--navy2:#12345c;--ink:#182333;--muted:#687586;--bg:#f4f6f8;--white:#fff;
+  --line:#dfe4ea;--green:#126f4b;--felt:#165b40;--wood:#7d5736;--gold:#c39a43;--red:#b42c3d;
+  --purple:#6742a6;--purple2:#3a2361;--shadow:0 10px 28px rgba(20,32,50,.07);
+  --utility-bg:#050f1e;
+  /* YOU中心アクションカード（ダークテーマ）専用トークン */
+  --card-bg:#0a1526;--card-bg2:#0d1c33;--ink-dark:#e8edf5;--muted-dark:#8ba0bc;
+  --av2-green:#1fae6f;--av2-felt:#0f4530;
+  /* フォント（差し替えはここだけでOK。h1〜h3は--font-display、
+     見出しバッジ・数字・タグ類は--font-label、本文は--font-body、
+     トランプのランク表記は--font-cardsを使用） */
+  --font-body:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",sans-serif;
+  --font-display:"Fraunces","Noto Serif JP",serif;
+  --font-label:"Big Shoulders Display","Noto Sans JP",sans-serif;
+  --font-cards:Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);line-height:1.75}
+a{text-decoration:none;color:inherit}
+.container{width:min(1120px,calc(100% - 32px));margin:auto}
+
+/* ---------- ユーティリティバー（サイト横断ナビ：juku-cho.com本体・辞典・レンジ表・勝率計算） ---------- */
+.utility-bar{background:var(--utility-bg);color:#9fb0c4;font-size:11px}
+.utility-row{display:flex;align-items:center;justify-content:space-between;height:34px}
+.utility-home{font-weight:800;color:#d7e0ec;letter-spacing:.04em}
+.utility-tools{display:flex;gap:16px;font-weight:700}
+.utility-tools a{color:#9fb0c4}
+.utility-tools a:hover{color:#fff}
+.utility-tools a.current{color:var(--gold)}
+
+/* ---------- メインヘッダー ---------- */
+header{position:sticky;top:34px;z-index:50;background:rgba(8,26,49,.97);color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+.header{height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-family:var(--font-display);font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.logo small{display:block;font-size:9px;font-weight:500;color:#b9c8da;letter-spacing:.02em}
+
+/* シリーズナビ：01〜07 の現在地表示。今後ページが増えても同じ帯に追加していく */
+.series-nav{display:flex;gap:6px;font-size:11px;font-weight:800;overflow-x:auto;scrollbar-width:none}
+.series-nav::-webkit-scrollbar{display:none}
+.series-nav a{display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:999px;color:#c3cedd;white-space:nowrap;border:1px solid transparent}
+.series-nav a .num{font-family:var(--font-label);opacity:.6;font-weight:700}
+.series-nav a.current{background:rgba(195,154,67,.16);border-color:rgba(195,154,67,.5);color:#fff}
+.series-nav a.current .num{opacity:1;color:var(--gold)}
+.series-nav a:hover{color:#fff}
+/* ディーラー編：navではプレイヤー編との境目に区切り線＋紫アクセントを付ける */
+.series-nav a.dealer{border-left:1px solid rgba(255,255,255,.18);margin-left:6px;padding-left:12px}
+.series-nav a.dealer .num{color:#b593e0}
+.series-nav a.dealer.current{background:rgba(103,66,166,.22);border-color:rgba(103,66,166,.55)}
+.series-nav a.dealer.current .num{opacity:1;color:#d9c9f5}
+
+/* ---------- ヒーロー ---------- */
+.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:70px 0 60px}
+/* ディーラー編ページ：<body class="track-dealer">で紫系配色に切り替え、プレイヤー編と一目で区別する */
+body.track-dealer .hero{background:linear-gradient(135deg,#1c1330,var(--purple2))}
+body.track-dealer .eyebrow{color:#d9c9f5}
+body.track-dealer .quote{background:#1c1330}
+.hero-grid{display:grid;grid-template-columns:.88fr 1.12fr;gap:42px;align-items:center}
+.eyebrow{font-family:var(--font-label);font-size:13px;letter-spacing:.14em;font-weight:600;color:#bdcce0}
+h1{font-family:var(--font-display);font-weight:600;font-size:clamp(42px,6vw,68px);line-height:1.08;margin:10px 0 18px;letter-spacing:-.01em}
+.hero p{font-size:18px;color:#dce6f1;max-width:530px}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.btn{padding:11px 18px;border-radius:10px;font-weight:800}
+.white{background:#fff;color:var(--navy)}
+.line{border:1px solid #7890ad;color:#fff}
+.outline{border:1px solid #c3cbd6;color:var(--navy);background:#fff}
+
+/* ---------- テーブル図（トップのメイン卓） ---------- */
+.main-table{background:#0b2038;border:1px solid #49617a;border-radius:22px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.22)}
+.table{position:relative;aspect-ratio:1.8;background:var(--felt);border:10px solid var(--wood);border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.13);min-height:320px}
+.seat{position:absolute;background:#101c2b;color:#fff;border:1px solid #6c7e92;border-radius:9px;padding:6px 11px;font-family:var(--font-label);font-size:12px;font-weight:600;letter-spacing:.03em;transform:translate(-50%,-50%)}
+.co{left:18%;top:12%}.btnp{left:50%;top:4%}.sb{left:82%;top:12%}.hj{left:11%;top:52%}.bb{left:89%;top:52%}.utg{left:50%;top:96%}
+.dealer{position:absolute;left:50%;top:19%;transform:translateX(-50%);width:29px;height:29px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-family:var(--font-label);font-weight:700}
+.community{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;gap:6px}
+.playing{width:38px;height:54px;background:#fff;border-radius:6px;display:grid;place-items:center;font:900 18px var(--font-cards)}
+.red{color:var(--red)}
+
+main{padding:58px 0 90px}
+section{margin-bottom:72px}
+h2{font-family:var(--font-display);font-weight:600;font-size:30px;line-height:1.3;margin:0 0 18px}
+.intro{max-width:820px;color:#4e5b6c}
+.box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow)}
+
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.flow div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;font-weight:900}
+.flow small{display:block;color:var(--muted);font-weight:500;margin-top:4px}
+
+/* ---------- アクション（YOU主体シーン） ---------- */
+.action-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.action{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.action-title{padding:18px 20px 10px}
+.action-title strong{font-size:23px}
+.action-title span{display:block;font-size:12px;color:var(--muted);font-weight:700}
+.scene{height:205px;background:#eef1f3;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.zoom-table{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);width:88%;height:145px;background:var(--felt);border:8px solid var(--wood);border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.12)}
+.you{position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);width:60px;height:52px;border-radius:30px 30px 7px 7px;background:#122338;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:900;z-index:5}
+.you::before{content:"";position:absolute;top:-19px;width:30px;height:30px;border-radius:50%;background:#e6b994;border:3px solid #122338}
+.speech{position:absolute;left:50%;bottom:23px;transform:translateX(-50%);background:#fff;border:1px solid #cfd6de;border-radius:8px;padding:3px 8px;font-size:11px;font-weight:900;z-index:8;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.finger{position:absolute;left:50%;top:32%;transform:translateX(-50%);font-size:27px;z-index:7}
+.knock{position:absolute;left:50%;top:21%;transform:translateX(-50%);font-weight:900;font-size:11px;color:#fff;letter-spacing:.1em}
+.knock::before,.knock::after{content:"";display:inline-block;width:22px;height:22px;border:2px solid rgba(255,255,255,.75);border-radius:50%;margin:0 3px;vertical-align:middle}
+.stack{position:absolute;display:flex;gap:3px;z-index:6}
+.chip{width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--gold);box-shadow:0 2px 3px rgba(0,0,0,.25)}
+.chip:nth-child(2){transform:translateY(-4px)}.chip:nth-child(3){transform:translateY(-8px)}.chip:nth-child(4){transform:translateY(-12px)}
+.bet-stack{left:50%;top:48%;transform:translateX(-50%)}
+.call-stack{left:58%;top:47%}
+.raise-stack{left:57%;top:45%}
+.allin-stack{left:55%;top:42%;gap:4px}
+.allin-stack .chip{width:20px;height:20px}
+.move{position:absolute;left:50%;top:58%;transform:translateX(-50%);font-size:27px;color:#fff;z-index:4}
+.fold-cards{position:absolute;left:50%;top:35%;transform:translateX(-50%) rotate(-8deg);display:flex;z-index:7}
+.backcard{width:30px;height:44px;background:#182b45;border:2px solid #fff;border-radius:5px;margin-left:-7px;box-shadow:0 2px 4px rgba(0,0,0,.25)}
+.fold-target{position:absolute;left:50%;top:23%;transform:translateX(-50%);font-size:10px;color:#fff;font-weight:800;background:rgba(0,0,0,.25);padding:3px 7px;border-radius:5px;white-space:nowrap}
+.action-body{padding:18px 20px 20px}
+.action-body p{margin:0;font-size:14px;color:#4e5b6c}
+.action-body strong{color:var(--ink)}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* ---------- 役 ---------- */
+.ranks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.rank{background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px;text-align:center;font-weight:900}
+.rank b{display:block;font:900 27px var(--font-cards)}
+.rank small{display:block;color:var(--muted);font-weight:500}
+
+/* ---------- ポジション図 ---------- */
+.position-panel{background:#0b2038;border-radius:22px;padding:26px;color:#fff}
+.position-table{position:relative;max-width:760px;height:350px;margin:auto;border:11px solid var(--wood);background:var(--felt);border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.12)}
+.pos{position:absolute;transform:translate(-50%,-50%);background:#101c2b;color:#fff;border:1px solid #6c7e92;border-radius:9px;padding:7px 12px;font-size:12px;font-weight:900}
+.pco{left:20%;top:17%}.pbtn{left:50%;top:7%}.psb{left:80%;top:17%}.phj{left:11%;top:54%}.pbb{left:89%;top:54%}.putg{left:50%;top:94%}
+.pd{position:absolute;left:50%;top:22%;transform:translateX(-50%);width:29px;height:29px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-weight:900}
+.position-note{max-width:760px;margin:18px auto 0;color:#cbd7e4;font-size:13px}
+
+/* ---------- ルート（プレイヤー／ディーラー） ---------- */
+.routes{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.route{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px}
+.player{border-top:5px solid var(--green)}
+.dealer-route{border-top:5px solid var(--purple)}
+.label{font-size:11px;letter-spacing:.16em;color:var(--muted);font-weight:900}
+.route h3{font-size:26px;margin:4px 0 10px}
+.route ul{padding-left:20px}
+.route .btn{display:inline-block;margin-top:14px}
+
+.quote{background:var(--navy);color:#fff;border-radius:18px;padding:32px}
+.quote p{color:#dce6f1}
+
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.next a{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px;font-weight:800;position:relative}
+.next a.soon{color:var(--muted)}
+.next a.soon::after{content:"準備中";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:900;color:var(--gold);border:1px solid var(--gold);border-radius:999px;padding:2px 8px}
+
+/* ---------- ストリート進行図（配牌の流れ：Preflop→Flop→Turn→River） ---------- */
+.street-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.street-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+.street-card h4{margin:0 0 4px;font-size:15px}
+.street-card small{display:block;color:var(--muted);font-weight:500;margin-bottom:10px}
+.mini-table{position:relative;background:var(--felt);border:6px solid var(--wood);border-radius:50%;aspect-ratio:1.7;box-shadow:inset 0 0 0 2px rgba(255,255,255,.12);margin-bottom:10px}
+.mini-cards{position:absolute;inset:0;display:flex;gap:3px;align-items:center;justify-content:center}
+.mini-card{width:19px;height:27px;background:#fff;border-radius:3px;display:grid;place-items:center;font:900 10px var(--font-cards);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.mini-card.red{color:var(--red)}
+.mini-hole{display:flex;gap:3px;justify-content:center}
+.mini-hole .mini-card{width:16px;height:23px;font-size:9px;background:#182b45;color:#fff;border:1px solid #fff}
+.mini-hole .mini-card.show{background:#fff;color:var(--ink)}
+.mini-hole .mini-card.show.red{color:var(--red)}
+.street-label{display:inline-block;margin-top:8px;font-size:10px;font-weight:900;letter-spacing:.08em;color:var(--muted)}
+
+/* ---------- ブラインド図（SB/BBがポットへチップを出す） ---------- */
+.blind-table{position:relative;aspect-ratio:1.9;background:var(--felt);border:9px solid var(--wood);border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.13);min-height:260px}
+.blind-table .seat.active{border-color:var(--gold);box-shadow:0 0 0 2px rgba(195,154,67,.5)}
+.blind-chip{position:absolute;display:flex;gap:3px}
+.blind-chip .chip{width:16px;height:16px;border-width:3px}
+.bc-sb{left:71%;top:28%}
+.bc-bb{left:76%;top:42%}
+.blind-tag{position:absolute;font-size:10px;font-weight:900;color:#fff;background:rgba(195,154,67,.4);border:1px solid var(--gold);border-radius:999px;padding:3px 9px;white-space:nowrap}
+.bt-sb{left:88%;top:4%}
+.bt-bb{left:88%;top:65%}
+
+/* ---------- YOU中心アクションカード（ダークテーマ／av2） ----------
+   Check/Bet/Callで検証済みの「YOUのアクションはYOUの手前に描く」形式。
+   av2-scene 内の要素はすべて重なりチェック済みの座標配置ルールに従うこと。 */
+.av2{max-width:760px;margin:0 auto;background:linear-gradient(180deg,var(--card-bg2),var(--card-bg));border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(5,12,25,.35);color:var(--ink-dark)}
+.av2-head{display:flex;justify-content:space-between;gap:20px;padding:28px 30px 24px;flex-wrap:wrap}
+.av2-title{flex:1;min-width:220px}
+.av2-tag{display:inline-block;font-family:var(--font-label);font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--av2-green);margin-bottom:8px}
+.av2-title h3{font-family:var(--font-display);margin:0 0 8px;font-size:42px;font-weight:600;letter-spacing:-.01em;line-height:1}
+.av2-title h3 small{font-size:22px;font-weight:700;color:#c9d4e2;margin-left:6px}
+.av2-title>p{margin:0;color:#aebbcd;font-size:15px}
+.av2-info{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px 18px;max-width:280px;font-size:13px;color:#b7c3d4;line-height:1.7}
+.av2-info-title{display:flex;align-items:center;gap:8px;font-weight:900;color:#fff;font-size:14px;margin-bottom:8px}
+.av2-info-title .ic{width:20px;height:20px;border-radius:50%;background:var(--av2-green);color:#06110c;display:grid;place-items:center;font-size:12px;font-weight:900}
+
+.av2-scene{position:relative;height:340px;margin:0 30px;border-radius:20px;overflow:hidden;
+  background:radial-gradient(120% 100% at 50% 0%,#22344f 0%,#0c1729 55%,#060d1a 100%);}
+.av2-pattern{position:absolute;left:16px;top:14px;z-index:5;background:rgba(31,174,111,.16);border:1px solid var(--av2-green);color:#8bf0c4;font-size:11px;font-weight:900;padding:5px 12px;border-radius:999px}
+
+.av2-table{position:absolute;left:50%;top:50%;transform:translate(-50%,-46%);width:88%;aspect-ratio:2.05;
+  background:radial-gradient(120% 140% at 50% 20%,#1f7a52 0%,var(--av2-felt) 60%,#0a2c1e 100%);
+  border-radius:50%;border:10px solid #6b4a2c;
+  box-shadow:0 18px 40px rgba(0,0,0,.5), inset 0 0 0 2px rgba(255,255,255,.08), inset 0 0 0 12px rgba(0,0,0,.12);}
+
+.opp{position:absolute;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:4}
+.opp .avatar{width:38px;height:38px;border-radius:50%;background:#1c2a3d;border:2px solid #3a4c65;display:grid;place-items:center}
+.opp .avatar svg{width:20px;height:20px;fill:#7186a1}
+.opp .cardback{display:flex;gap:3px}
+.oc-l{left:14%;top:-2%}
+.oc-c{left:50%;top:-14%;transform:translateX(-50%)}
+.oc-r{right:14%;top:-2%}
+
+.c{width:22px;height:31px;border-radius:4px;background:
+  repeating-linear-gradient(45deg,#7a2233,#7a2233 3px,#8f2b3f 3px,#8f2b3f 6px);
+  border:2px solid #fff;box-shadow:0 3px 6px rgba(0,0,0,.4)}
+.cardback .c:nth-child(2){margin-left:-10px}
+
+.you-wrap{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center}
+.you-tag{background:#0c1524;border:1px solid #33445c;color:#fff;font-size:11px;font-weight:900;letter-spacing:.06em;padding:5px 16px;border-radius:999px;margin-top:6px}
+.you-cards{display:flex;gap:3px}
+
+.hand-emoji{position:absolute;left:50%;bottom:15%;transform:translateX(-50%);font-size:40px;z-index:8;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}
+.tap-ring{position:absolute;left:50%;bottom:15%;transform:translateX(-50%);width:24px;height:24px;border:2px solid rgba(255,196,0,.7);border-radius:50%;z-index:7;animation:tap 1.6s ease-out infinite}
+.tap-ring.r2{animation-delay:.5s}
+@keyframes tap{0%{transform:translateX(-50%) scale(.4);opacity:1}100%{transform:translateX(-50%) scale(1.8);opacity:0}}
+
+.chipstack{position:absolute;display:flex;z-index:6}
+.chipstack .cp{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--gold);box-shadow:0 2px 4px rgba(0,0,0,.35);margin-left:-9px}
+.chipstack .cp:first-child{margin-left:0}
+.cs-bet{left:50%;bottom:15%;transform:translateX(-50%)}
+.cs-call{left:50%;bottom:15%;transform:translateX(-50%)}
+
+.bubble{position:absolute;z-index:9;background:#fff;color:#0a1526;border-radius:12px;padding:7px 14px;font-size:13px;font-weight:900;box-shadow:0 6px 16px rgba(0,0,0,.35);white-space:nowrap}
+.bubble small{display:block;font-size:10px;font-weight:700;color:#5b6b80}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);border:7px solid transparent;border-top-color:#fff}
+.bub-check{bottom:15%;left:66%}
+.bub-bet{bottom:30%;left:50%;transform:translateX(-50%)}
+.bub-call{bottom:30%;left:50%;transform:translateX(-50%)}
+.bubble.up::after{top:-7px;bottom:auto;border-top-color:transparent;border-bottom-color:#fff}
+
+.turn-arrow{position:absolute;inset:0;z-index:3;pointer-events:none}
+.turn-label{position:absolute;left:2%;top:46%;z-index:5;color:#9fe3c2;font-size:11px;font-weight:900;letter-spacing:.02em;max-width:90px;line-height:1.5;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+
+.fold-cards-you{position:absolute;left:50%;bottom:26%;transform:translateX(-50%) rotate(-8deg);display:flex;z-index:7}
+.fold-cards-you .c{width:26px;height:37px}
+.fold-cards-you .c:nth-child(2){margin-left:-11px}
+.allin-stack{left:50%;bottom:15%;transform:translateX(-50%);flex-wrap:wrap;width:74px}
+.allin-stack .cp{margin-top:-11px}
+.allin-stack .cp:nth-child(4n+1){margin-left:0}
+
+.av2-body{padding:26px 30px 30px}
+.av2-body p{margin:0 0 10px;color:#c7d1e0;font-size:15px;line-height:1.85}
+.av2-points{margin-top:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px 20px}
+.av2-points-title{display:flex;align-items:center;gap:8px;font-family:var(--font-label);font-weight:600;color:var(--gold);font-size:14px;letter-spacing:.05em;margin-bottom:10px}
+.av2-points ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.av2-points li{display:flex;gap:9px;font-size:13.5px;color:#d3dbe8;align-items:flex-start}
+.av2-points li::before{content:"✓";flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:var(--av2-green);color:#06170f;font-size:11px;font-weight:900;display:grid;place-items:center;margin-top:1px}
+
+@media(max-width:640px){
+  .av2-title h3{font-size:32px}
+  .av2-info{max-width:none}
+  .av2-scene{height:300px;margin:0 16px}
+  .av2-head{padding:22px 20px}
+  .av2-body{padding:20px}
+}
+
+/* ---------- 役カード（実際のカードで見せる図鑑） ---------- */
+.hand-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hand-card{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}
+.hand-rank{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--font-label);font-weight:700;font-size:15px;display:grid;place-items:center}
+.hand-card.top .hand-rank{background:var(--gold);color:#332405}
+.hand-main{flex:1;min-width:0}
+.hand-main .name{font-weight:900;font-size:16px;margin-bottom:2px}
+.hand-main .desc{font-size:12px;color:var(--muted)}
+.hcards{display:flex;flex:0 0 auto}
+.hc{width:26px;height:37px;background:#fff;border:1px solid #d8dee6;border-radius:4px;display:grid;place-items:center;font:900 11px var(--font-cards);box-shadow:0 2px 4px rgba(0,0,0,.12);margin-left:-9px}
+.hc:first-child{margin-left:0}
+.hc.red{color:var(--red)}
+
+/* ---------- ベットサイズ・バー ---------- */
+.size-bars{display:flex;flex-direction:column;gap:12px}
+.size-row{display:grid;grid-template-columns:110px 1fr 70px;align-items:center;gap:12px;font-size:13px}
+.size-row .label{font-weight:900}
+.size-row .bar-track{background:#eef1f4;border-radius:999px;height:14px;overflow:hidden}
+.size-row .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e0b85e);border-radius:999px}
+.size-row .val{text-align:right;color:var(--muted);font-weight:700}
+
+/* ---------- ポジション帯（早い／中間／遅い） ---------- */
+.pos-band-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pos-band{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.pos-band .band-tag{font-family:var(--font-label);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;display:block}
+.pos-band h4{margin:0 0 8px;font-size:18px}
+.pos-band p{margin:0;font-size:13px;color:#4e5b6c}
+
+/* ---------- ポット成長の比較行 ---------- */
+.pot-track{display:grid;grid-template-columns:90px repeat(4,1fr);gap:8px;align-items:center;margin-bottom:10px}
+.pot-track .pt-label{font-size:12px;font-weight:900;color:var(--muted)}
+.pot-track .pt-cell{background:#eef1f4;border-radius:10px;padding:10px 6px;text-align:center;font-weight:900;font-size:13px;color:var(--ink)}
+.pot-track.grow .pt-cell{background:rgba(195,154,67,.14);color:#7a5a1e}
+.pot-track.flat .pt-cell{background:rgba(18,111,75,.1);color:#0d5236}
+
+/* ---------- 準備中ページ用プレースホルダー ---------- */
+.stub{background:#fff;border:1px dashed var(--line);border-radius:18px;padding:60px 28px;text-align:center;color:var(--muted)}
+.stub strong{display:block;color:var(--ink);font-size:20px;margin-bottom:8px}
+
+footer{background:#071a31;color:#cbd7e4;padding:40px 0}
+footer strong{color:#fff;font-size:20px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:24px;margin-top:24px}
+.footer-col h4{color:#fff;font-size:12px;letter-spacing:.1em;margin:0 0 10px}
+.footer-col a{display:block;color:#9fb0c4;font-size:13px;margin-bottom:7px}
+.footer-col a:hover{color:#fff}
+.footer-bottom{margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:#6f83a0}
+
+/* ---------- 汎用カードグリッド（応用編ページで使い回す） ---------- */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.info-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.info-card .icon{font-size:26px;display:block;margin-bottom:10px}
+.info-card h4{margin:0 0 6px;font-size:16px}
+.info-card p{font-size:13.5px;color:var(--muted);line-height:1.7;margin:0}
+.info-card .tag{display:inline-block;margin-top:12px;font-size:11px;font-weight:900;letter-spacing:.02em;padding:4px 12px;border-radius:999px;background:#e9f7ef;color:#237a4d}
+.info-card .tag.weak{background:#fbe9e9;color:#a5342f}
+.info-card .tag.neutral{background:#eef1f4;color:var(--muted)}
+
+/* ---------- 汎用データテーブル（数値の一覧など） ---------- */
+.data-table-wrap{overflow-x:auto}
+.data-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.data-table th,.data-table td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.data-table th{font-size:11px;letter-spacing:.05em;color:var(--muted);font-weight:900}
+.data-table td strong{color:var(--ink)}
+.data-table tr:last-child td{border-bottom:none}
+
+/* ---------- テルカード（相手の仕草を観察する図鑑） ---------- */
+.tell-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.tell-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.tell-card .icon{font-size:26px;display:block;margin-bottom:10px}
+.tell-card h4{margin:0 0 6px;font-size:16px}
+.tell-card p{font-size:13.5px;color:var(--muted);line-height:1.7;margin:0}
+.tell-card .signal{display:inline-block;margin-top:12px;font-size:11px;font-weight:900;letter-spacing:.02em;padding:4px 12px;border-radius:999px;background:#e9f7ef;color:#237a4d}
+.tell-card .signal.weak{background:#fbe9e9;color:#a5342f}
+.tell-card .signal.neutral{background:#eef1f4;color:var(--muted)}
+
+/* ---------- タイミングテル一覧 ---------- */
+.timing-list{display:flex;flex-direction:column;gap:0}
+.timing-row{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.timing-row:last-child{border-bottom:none}
+.timing-row .t-label{font-weight:900;font-size:14px;display:flex;align-items:center;gap:8px}
+.timing-row .t-desc{font-size:13.5px;color:var(--muted);line-height:1.8}
+.timing-row .t-desc strong{color:var(--ink)}
+
+/* ---------- av2：相手フォーカス（テル観察）バリエーション ---------- */
+.opp.spot .avatar{box-shadow:0 0 0 3px rgba(255,196,0,.55),0 0 18px 4px rgba(255,196,0,.45);animation:spotpulse 1.8s ease-in-out infinite}
+@keyframes spotpulse{0%,100%{box-shadow:0 0 0 3px rgba(255,196,0,.55),0 0 18px 4px rgba(255,196,0,.45)}50%{box-shadow:0 0 0 3px rgba(255,196,0,.85),0 0 24px 7px rgba(255,196,0,.65)}}
+.opp-note{margin-top:4px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#ffe6b0;font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.you-note{background:#0c1524;border:1px solid #33445c;color:#9fe3c2;font-size:11px;font-weight:800;letter-spacing:.03em;padding:5px 14px;border-radius:999px;margin-top:6px}
+
+@media(max-width:900px){
+  .header nav.series-nav{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .action-grid{grid-template-columns:1fr 1fr}
+  .flow{grid-template-columns:1fr 1fr}
+  .ranks{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .utility-tools{gap:10px}
+  .tell-grid{grid-template-columns:1fr 1fr}
+  .card-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:620px){
+  .container{width:calc(100% - 22px)}
+  .action-grid,.routes,.next{grid-template-columns:1fr}
+  .hero{padding:44px 0}
+  .table{min-height:250px}
+  .playing{width:30px;height:43px;font-size:14px}
+  .scene{height:195px}
+  .position-table{height:270px}
+  .footer-grid{grid-template-columns:1fr}
+  .utility-row{height:auto;flex-direction:column;align-items:flex-start;gap:4px;padding:6px 0}
+  .tell-grid{grid-template-columns:1fr}
+  .card-grid{grid-template-columns:1fr}
+  .timing-row{grid-template-columns:1fr;gap:4px}
+}
+
+/* ==========================================================================
+   増補版ページ用の共通部品（2026-09 追加）
+   目次・実戦例・FAQ・判断チェックリスト。08以降の文章中心ページと
+   増補する既存ページで共通して使う。
+   ========================================================================== */
+
+/* ---------- 目次（ページ冒頭に置く） ---------- */
+.toc{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 28px;box-shadow:var(--shadow)}
+.toc-title{font-family:var(--font-label);font-size:13px;letter-spacing:.12em;font-weight:600;color:var(--muted);margin-bottom:12px}
+.toc-list{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;margin:0;padding:0;list-style:none}
+.toc-list a{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line);font-weight:700;font-size:14.5px}
+.toc-list a:hover{color:var(--green)}
+.toc-list .n{font-family:var(--font-label);font-weight:700;font-size:13px;color:var(--gold);flex:0 0 auto}
+
+/* ---------- 実戦例（1ハンドをプリフロップからリバーまで追う） ---------- */
+.hand-ex{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.hand-ex-head{display:flex;flex-wrap:wrap;gap:10px 30px;padding:18px 26px;border-bottom:1px solid var(--line);background:#fbfcfd}
+.hand-ex-head div{font-size:12px;color:var(--muted)}
+.hand-ex-head strong{display:block;font-family:var(--font-label);font-size:14px;color:var(--ink);font-weight:700;letter-spacing:.03em;margin-top:1px}
+.street{display:grid;grid-template-columns:172px 1fr;border-bottom:1px solid var(--line)}
+.street:last-child{border-bottom:none}
+.street-rail{background:var(--felt);color:#fff;padding:20px 18px;display:flex;flex-direction:column;justify-content:center;gap:9px}
+.street-rail b{font-family:var(--font-label);font-size:15px;letter-spacing:.09em;font-weight:700}
+.street-rail .pot{font-size:11px;color:#b6dcc8;font-weight:700}
+.street-cards{display:flex;gap:4px;flex-wrap:wrap}
+.street-cards .playing{width:31px;height:44px;font-size:14px;border-radius:4px}
+.street-body{padding:20px 24px}
+.street-body p{margin:0 0 9px;font-size:14px}
+.street-body p:last-child{margin-bottom:0}
+.act{display:inline-block;font-family:var(--font-label);font-size:12px;font-weight:700;letter-spacing:.05em;padding:2px 11px;border-radius:999px;background:#e9f7ef;color:#237a4d;margin-right:9px}
+.act.think{background:#eef1f4;color:var(--muted)}
+
+/* ---------- よくある質問 ---------- */
+.faq{display:flex;flex-direction:column;gap:12px}
+.faq-item{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 24px;box-shadow:var(--shadow)}
+.faq-q{display:flex;gap:12px;align-items:baseline;font-weight:800;font-size:15.5px;margin-bottom:11px}
+.faq-a{display:flex;gap:12px;align-items:baseline;font-size:14px;color:#4e5b6c;line-height:1.8}
+.faq-badge{flex:0 0 auto;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-label);font-size:13px;font-weight:700;transform:translateY(3px)}
+.faq-q .faq-badge{background:var(--navy);color:#fff}
+.faq-a .faq-badge{background:#eef1f4;color:var(--muted)}
+.faq-a a{color:var(--green);font-weight:700}
+
+/* ---------- 判断チェックリスト ---------- */
+.check-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.check-list li{display:flex;gap:13px;align-items:flex-start;font-size:14.5px;font-weight:700}
+.check-list li::before{content:"\2713";flex:0 0 auto;width:23px;height:23px;border-radius:7px;background:#f5eeda;color:#9a7420;display:grid;place-items:center;font-size:13px;font-weight:900;margin-top:2px}
+.check-list small{display:block;font-weight:500;color:var(--muted);font-size:13px;margin-top:3px;line-height:1.7}
+
+/* ---------- 小見出し（h2の下位。増補で階層が深くなったページ用） ---------- */
+.sub-h{font-family:var(--font-display);font-weight:600;font-size:21px;line-height:1.4;margin:34px 0 14px}
+
+@media(max-width:760px){
+  .toc-list{grid-template-columns:1fr}
+  .street{grid-template-columns:1fr}
+  .street-rail{flex-direction:row;align-items:center;gap:14px;padding:13px 18px}
+}

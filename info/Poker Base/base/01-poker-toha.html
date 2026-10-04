@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ポーカーとは？｜初心者のためのポーカー基礎 | POKER BASE</title>
+<meta name="description" content="ポーカー初心者のための基礎ガイド。テキサスホールデムの流れ、Check・Bet・Call・Raise・Fold・All-inの実際のアクション、役、ポジション、プレイヤーとディーラーの基礎を図解します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Serif+JP:wght@500;600&family=Big+Shoulders+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/poker-toha-editorial.css">
+</head>
+<body class="editorial-home">
+<header>
+<div class="utility-bar"><div class="container utility-row">
+  <a class="utility-home" href="../../">♠ JUKU-CHO</a>
+  <div class="utility-tools"><a href="../dictionary/">用語辞典</a><a href="../range/">レンジ表</a><a href="../equity/">勝率計算</a></div>
+</div></div>
+<div class="container header">
+  <a class="logo" href="01-poker-toha.html">♠ POKER BASE<small>PLAY SMARTER, START HERE.</small></a>
+  <nav class="site-nav" aria-label="ページ内ナビゲーション"><a href="#basic">はじめる</a><a href="#actions">アクション</a><a href="#position">ポジション</a><a href="#route">学び方を選ぶ</a></nav>
+  <nav class="series-nav"><a class="current" href="01-poker-toha.html"><span class="num">01</span>とは？</a><a href="02-texas-holdem-rules.html"><span class="num">02</span>ルール</a><a href="03-hand-ranking.html"><span class="num">03</span>役</a><a href="04-position.html"><span class="num">04</span>ポジション</a><a href="05-bet-raise.html"><span class="num">05</span>ベット/レイズ</a><a href="06-pot-control.html"><span class="num">06</span>ポットコントロール</a><a href="07-tells.html"><span class="num">07</span>テル</a><a href="08-starting-hands.html"><span class="num">08</span>ハンド選び</a><a href="09-pot-odds.html"><span class="num">09</span>ポットオッズ</a><a href="10-bluffing.html"><span class="num">10</span>ブラフ</a><a href="11-bankroll.html"><span class="num">11</span>バンクロール</a><a href="12-range-charts.html"><span class="num">12</span>レンジ表</a><a href="13-tournament-basics.html"><span class="num">13</span>トーナメント</a><a href="14-online-vs-live.html"><span class="num">14</span>オンライン/ライブ</a><a href="15-etiquette.html"><span class="num">15</span>マナー</a><a href="16-mental-game.html"><span class="num">16</span>メンタル</a><a href="17-stats.html"><span class="num">17</span>スタッツ</a><a href="18-3bet-4bet.html"><span class="num">18</span>3ベット</a><a href="19-house-rules-rake.html"><span class="num">19</span>ハウスルール</a><a class="dealer" href="50-dealer-role.html"><span class="num">50</span>ディーラー基礎</a></nav>
+</div>
+</header>
+
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <div class="eyebrow">POKER BASICS <span>／</span> LESSON 01</div>
+    <h1>ポーカーとは？</h1>
+    <p>ただカードが強いだけでは勝てない。<br>状況を読み、自分で判断するゲームの入口です。</p>
+    <div class="hero-meta"><span>BEGINNER</span><span>READING TIME 3 MIN</span><span>UPDATED 2026.09</span></div>
+    <div class="buttons"><a class="btn white" href="#basic">基本を知る <i>↓</i></a><a class="btn line" href="#route">学び方を選ぶ <i>→</i></a></div>
+  </div>
+  <div class="main-table hero-art" role="img" aria-label="暗いフェルトのポーカーテーブルを上から見たイメージ">
+    <div class="art-kicker">MAKE YOUR MOVE</div>
+    <div class="table">
+      <div class="seat co">CO</div><div class="seat btnp">BTN</div><div class="seat sb">SB</div><div class="seat hj">HJ</div><div class="seat bb">BB</div><div class="seat utg">UTG</div>
+      <div class="dealer">D</div>
+      <div class="community"><div class="playing">A♠</div><div class="playing red">K♥</div><div class="playing">8♣</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="lesson-overview"><div class="container overview-grid">
+  <p class="overview-title"><span>ON THIS PAGE</span>まずは、<br>ポーカーの全体像をつかむ。</p>
+  <div class="overview-item"><b>01</b><div><strong>ゲームの本質</strong><small>カードだけでは決まらない理由</small></div></div>
+  <div class="overview-item"><b>02</b><div><strong>進行とアクション</strong><small>テーブルで起こることを知る</small></div></div>
+  <div class="overview-item"><b>03</b><div><strong>自分に合う入口</strong><small>プレイヤーか、ディーラーか</small></div></div>
+</div></section>
+
+<main class="container">
+<section id="basic"><h2>ポーカーとは？</h2><p class="intro">ポーカーは、カードの強さだけでなく、ベット、ポジション、相手の行動、そして自分の判断を組み合わせて勝負するカードゲームです。</p>
+<div class="box"><div class="flow">
+<div>カード<small>何を持っている？</small></div><div>状況<small>今はどんな場面？</small></div><div>ベット<small>いくら動かす？</small></div><div>駆け引き<small>相手は何をしている？</small></div><div>判断<small>自分はどうする？</small></div>
+</div></div></section>
+
+<section><h2>テキサスホールデムの基本的な流れ</h2><div class="box"><div class="flow">
+<div>Preflop<small>各プレイヤーに2枚</small></div><div>Flop<small>共有カード3枚</small></div><div>Turn<small>共有カード1枚</small></div><div>River<small>共有カード1枚</small></div><div>Showdown<small>勝者を決める</small></div>
+</div><p style="margin-bottom:0">自分のホールカード2枚と共有カード5枚を使い、最も強い5枚の組み合わせを作ります。</p></div></section>
+
+<section id="actions"><h2>ポーカーでは、実際に何をする？</h2><p class="intro">アクションは「言葉」だけではありません。ライブポーカーでは、発声やジェスチャー、チップやカードの動かし方によって意思を明確に伝えます。すべて「YOU（自分）」を主役にした図解で見ていきましょう。</p>
+
+<div style="display:flex;flex-direction:column;gap:24px">
+
+<article class="av2">
+  <div class="av2-head">
+    <div class="av2-title">
+      <span class="av2-tag">ACTION 01</span>
+      <h3>Check<small>（チェック）</small></h3>
+      <p>チップをかけずに、アクションを次に進めます。</p>
+    </div>
+    <div class="av2-info">
+      <div class="av2-info-title"><span class="ic">✓</span>Checkとは？</div>
+      ベット（賭け）やレイズ（上乗せ）はせず、チップを出さないアクションです。そのまま次のプレイヤーに、アクションの順番が移ります。
+    </div>
+  </div>
+  <div class="av2-scene">
+    <span class="av2-pattern">パターン 1</span>
+    <div class="av2-table">
+      <svg class="turn-arrow" viewBox="0 0 205 100">
+        <path d="M96,88 C76,88 60,83 56,72" stroke="#3fd38a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M56,72 L64,75 M56,72 L52,81" stroke="#3fd38a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="turn-label" style="bottom:2%;left:1%;top:auto;max-width:74px">次のプレイヤーへ<br>（時計回り）</div>
+      <div class="opp oc-l"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-c"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-r"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+    </div>
+    <div class="tap-ring"></div><div class="tap-ring r2"></div>
+    <div class="hand-emoji">👆</div>
+    <div class="bubble bub-check">Check.<small>コンコン</small></div>
+    <div class="you-wrap"><div class="you-cards"><div class="c" style="width:26px;height:37px"></div><div class="c" style="width:26px;height:37px;margin-left:-11px"></div></div><div class="you-tag">YOU</div></div>
+  </div>
+  <div class="av2-body">
+    <p>強いハンドでも、状況によっては Check が最適な選択になります。相手のアクションを見て、状況をコントロールしましょう。</p>
+    <div class="av2-points">
+      <div class="av2-points-title">💡 POINT</div>
+      <ul>
+        <li>ベットせずに次のプレイヤーへ順番を渡すアクション</li>
+        <li>相手の強さやレンジを探るのに有効</li>
+        <li>強いハンドでも、ブラフやポジションの活用として使える</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="av2">
+  <div class="av2-head">
+    <div class="av2-title">
+      <span class="av2-tag">ACTION 02</span>
+      <h3>Bet<small>（ベット）</small></h3>
+      <p>どのくらいのベットをするか発言し、ベット額をテーブルに出します。</p>
+    </div>
+    <div class="av2-info">
+      <div class="av2-info-title"><span class="ic">✓</span>Betとは？</div>
+      それまで誰もチップを出していない場面で、自分から最初にチップを出すアクションです。金額を明確に発言してから出します。
+    </div>
+  </div>
+  <div class="av2-scene">
+    <span class="av2-pattern">パターン 1</span>
+    <div class="av2-table">
+      <div class="opp oc-l"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-c"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-r"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+    </div>
+    <div class="chipstack cs-bet"><div class="cp"></div><div class="cp"></div><div class="cp"></div></div>
+    <div class="bubble bub-bet">Bet. 500<small>ベット額を宣言</small></div>
+    <div class="you-wrap"><div class="you-cards"><div class="c" style="width:26px;height:37px"></div><div class="c" style="width:26px;height:37px;margin-left:-11px"></div></div><div class="you-tag">YOU</div></div>
+  </div>
+  <div class="av2-body">
+    <p>ベット額は「チップを前に出す」動作とセットで伝わります。金額を言い忘れると、ディーラーやプレイヤーから確認されることがあります。</p>
+    <div class="av2-points">
+      <div class="av2-points-title">💡 POINT</div>
+      <ul>
+        <li>そのストリートで最初にチップを出すアクション</li>
+        <li>「Bet」＋金額をはっきり発言してから出す</li>
+        <li>金額は自分の前からテーブル中央方向へまとめて出す</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="av2">
+  <div class="av2-head">
+    <div class="av2-title">
+      <span class="av2-tag">ACTION 03</span>
+      <h3>Call<small>（コール）</small></h3>
+      <p>相手のベットに対して、同じ額のチップを前に出します。</p>
+    </div>
+    <div class="av2-info">
+      <div class="av2-info-title"><span class="ic">✓</span>Callとは？</div>
+      すでに出ているベット額に、自分も合わせるアクションです。「Call」と発言してから、同額のチップを前に出します。
+    </div>
+  </div>
+  <div class="av2-scene">
+    <span class="av2-pattern">パターン 2</span>
+    <div class="av2-table">
+      <div class="opp oc-l"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-c"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div>
+        <div class="chipstack" style="position:relative;left:0;top:6px;transform:none;justify-content:center"><div class="cp" style="width:16px;height:16px"></div><div class="cp" style="width:16px;height:16px"></div></div>
+      </div>
+      <div class="opp oc-r"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+    </div>
+    <div class="chipstack cs-call"><div class="cp"></div><div class="cp"></div></div>
+    <div class="bubble bub-call">Call.<small>同額を前に出す</small></div>
+    <div class="you-wrap"><div class="you-cards"><div class="c" style="width:26px;height:37px"></div><div class="c" style="width:26px;height:37px;margin-left:-11px"></div></div><div class="you-tag">YOU</div></div>
+  </div>
+  <div class="av2-body">
+    <p>相手（中央の席）がすでにベットしている状態です。YOUはその金額に「合わせる」だけなので、追加でレイズはしません。</p>
+    <div class="av2-points">
+      <div class="av2-points-title">💡 POINT</div>
+      <ul>
+        <li>相手のベット額と同じ金額を前に出すアクション</li>
+        <li>「Call」と発言してからチップを出す</li>
+        <li>合わせるだけなので、それ以上の額は出さない</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="av2">
+  <div class="av2-head">
+    <div class="av2-title">
+      <span class="av2-tag">ACTION 04</span>
+      <h3>Raise<small>（レイズ）</small></h3>
+      <p>「Raise」と発言し、適切なレイズ額を前に出します。</p>
+    </div>
+    <div class="av2-info">
+      <div class="av2-info-title"><span class="ic">✓</span>Raiseとは？</div>
+      すでに出ているベット額を上回る金額を出すアクションです。「Call（合わせる）」ではなく「上乗せする」のが特徴です。
+    </div>
+  </div>
+  <div class="av2-scene">
+    <span class="av2-pattern">相手10 → YOU 30</span>
+    <div class="av2-table">
+      <div class="opp oc-l"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-c">
+        <div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div>
+        <div class="cardback"><div class="c"></div><div class="c"></div></div>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:4px">
+          <div class="chipstack" style="position:relative;left:0;top:0"><div class="cp" style="width:14px;height:14px"></div><div class="cp" style="width:14px;height:14px"></div></div>
+          <span style="font-size:10px;font-weight:900;color:#ffd98a">Bet 10</span>
+        </div>
+      </div>
+      <div class="opp oc-r"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+    </div>
+    <div class="chipstack" style="left:50%;bottom:15%;transform:translateX(-50%)"><div class="cp"></div><div class="cp"></div><div class="cp"></div><div class="cp"></div><div class="cp"></div></div>
+    <div class="bubble" style="bottom:30%;left:50%;transform:translateX(-50%)">Raise. 30<small>相手の10に追加して提示</small></div>
+    <div class="you-wrap"><div class="you-cards"><div class="c" style="width:26px;height:37px"></div><div class="c" style="width:26px;height:37px;margin-left:-11px"></div></div><div class="you-tag">YOU</div></div>
+  </div>
+  <div class="av2-body">
+    <p>相手のBet 10に対し、YOUは同額の10を出す（Call）のではなく、それを上回る30を出しています。差額の20が「上乗せ分」にあたります。</p>
+    <div class="av2-points">
+      <div class="av2-points-title">💡 POINT</div>
+      <ul>
+        <li>相手のベット額を上回る金額を出すアクション</li>
+        <li>「Raise」と発言してから、レイズ後の合計額を前に出す</li>
+        <li>最低レイズ額などはゲーム形式・ハウスルールによって異なる</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="av2">
+  <div class="av2-head">
+    <div class="av2-title">
+      <span class="av2-tag">ACTION 05</span>
+      <h3>Fold<small>（フォールド）</small></h3>
+      <p>「Fold」と発言し、ハンドを放棄します。</p>
+    </div>
+    <div class="av2-info">
+      <div class="av2-info-title"><span class="ic">✓</span>Foldとは？</div>
+      そのハンドから降りるアクションです。ホールカードは相手から見えないよう裏向きのまま、ディーラーが回収できる位置に戻します。
+    </div>
+  </div>
+  <div class="av2-scene">
+    <span class="av2-pattern">パターン 1</span>
+    <svg class="turn-arrow" viewBox="0 0 205 100">
+      <path d="M104,80 C90,66 78,58 68,48" stroke="#8ba0bc" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M68,48 L78,52 M68,48 L70,58" stroke="#8ba0bc" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="turn-label" style="left:auto;right:2%;top:30%;color:#c3cedd;max-width:110px;text-align:right;white-space:nowrap">ディーラーへ<br>（裏向きのまま）</div>
+    <div class="av2-table">
+      <div class="opp oc-l"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-c"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-r"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="fold-cards-you"><div class="c"></div><div class="c"></div></div>
+    </div>
+    <div class="bubble" style="bottom:15%;left:66%">Fold.<small>ハンドを放棄</small></div>
+    <div class="you-wrap"><div class="you-cards"></div><div class="you-tag">YOU</div></div>
+  </div>
+  <div class="av2-body">
+    <p>YOUの手元にはもうカードがありません。裏向きのまま前へ出し、ディーラーが回収できる位置に置きます。マークや数字が相手に見えないようにするのがポイントです。</p>
+    <div class="av2-points">
+      <div class="av2-points-title">💡 POINT</div>
+      <ul>
+        <li>そのハンドから降りて、次のプレイヤーにアクションを渡す</li>
+        <li>カードは必ず裏向きのまま扱う</li>
+        <li>置き場所・回収方法はテーブルのルールとディーラーの指示に従う</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+<article class="av2">
+  <div class="av2-head">
+    <div class="av2-title">
+      <span class="av2-tag">ACTION 06</span>
+      <h3>All-in<small>（オールイン）</small></h3>
+      <p>「All-in」と発言し、残りのチップをすべて賭けます。</p>
+    </div>
+    <div class="av2-info">
+      <div class="av2-info-title"><span class="ic">✓</span>All-inとは？</div>
+      自分がその時点で持っている残りのチップを、すべて前に出すアクションです。これ以上は何も出せません。
+    </div>
+  </div>
+  <div class="av2-scene">
+    <span class="av2-pattern">パターン 1</span>
+    <div class="av2-table">
+      <div class="opp oc-l"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-c"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+      <div class="opp oc-r"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 22c0-6 4-9 10-9s10 3 10 9"/></svg></div><div class="cardback"><div class="c"></div><div class="c"></div></div></div>
+    </div>
+    <div class="chipstack allin-stack">
+      <div class="cp"></div><div class="cp"></div><div class="cp"></div><div class="cp"></div>
+      <div class="cp"></div><div class="cp"></div><div class="cp"></div><div class="cp"></div>
+    </div>
+    <div class="bubble" style="bottom:34%;left:66%">All-in!<small>残り全部を前に</small></div>
+    <div class="you-wrap"><div class="you-cards"><div class="c" style="width:26px;height:37px"></div><div class="c" style="width:26px;height:37px;margin-left:-11px"></div></div><div class="you-tag">YOU</div></div>
+  </div>
+  <div class="av2-body">
+    <p>Bet・Raiseと動作は同じですが、出す量が「残り全部」という点が異なります。これ以降、YOUがチップを追加することはこのハンドではありません。</p>
+    <div class="av2-points">
+      <div class="av2-points-title">💡 POINT</div>
+      <ul>
+        <li>持っている残りのチップをすべて前に出すアクション</li>
+        <li>「All-in」と発言してから、まとめて前に出す</li>
+        <li>相手のスタックの方が少ない場合、サイドポットが生まれることがある</li>
+      </ul>
+    </div>
+  </div>
+</article>
+
+</div>
+</section>
+
+<section id="hands"><h2>ポーカーの役を覚えよう</h2><p class="intro">テキサスホールデムでは、最終的に作れる最も強い5枚の組み合わせを使って勝敗を比べます。</p>
+<div class="ranks">
+<div class="rank"><b>♛</b>ロイヤルフラッシュ<small>最上位</small></div><div class="rank"><b>♠</b>ストレートフラッシュ</div><div class="rank"><b>4</b>フォーカード</div><div class="rank"><b>FH</b>フルハウス</div><div class="rank"><b>♦</b>フラッシュ</div><div class="rank"><b>↗</b>ストレート</div><div class="rank"><b>3</b>スリーカード</div><div class="rank"><b>22</b>ツーペア</div><div class="rank"><b>2</b>ワンペア</div><div class="rank"><b>A</b>ハイカード<small>最下位</small></div>
+</div></section>
+
+<section id="position"><h2>ポジションとは？</h2><p class="intro">ポジションとは、テーブル上で自分がどの順番でアクションする位置にいるかを表す考え方です。ここでは、6人卓をイメージして基本位置を見てみましょう。</p>
+<div class="position-panel">
+<div class="position-table">
+<div class="pos pco">CO</div><div class="pos pbtn">BTN</div><div class="pos psb">SB</div><div class="pos phj">HJ</div><div class="pos pbb">BB</div><div class="pos putg">UTG</div><div class="pd">D</div>
+</div>
+<p class="position-note">参考画像の「上から見たテーブル＋席名」という考え方を参考にしつつ、サイト用に独自の配置・配色・図形で作成しています。実際の人数によってポジション名や配置は変わります。</p>
+</div></section>
+
+<section id="route"><h2>あなたは、どちらから学びますか？</h2><div class="routes">
+<div class="route player"><div class="label">PLAYER</div><h3>プレイヤーの基礎</h3><p>プレイしてみたい人はこちら。ルール、役、ポジション、ベット、レイズ、ポットコントロール、テル、実戦へ進みます。</p><ul><li>ゲームのルール</li><li>役と確率</li><li>ポジション</li><li>ベット・レイズ</li><li>テルと相手の見方</li></ul><a class="btn outline" href="02-texas-holdem-rules.html">プレイヤー編を見る →</a></div>
+<div class="route dealer-route"><div class="label">DEALER</div><h3>ディーラーの基礎</h3><p>ゲームを進行する側を知りたい人はこちら。テーブル構造、チップ・デック管理、配牌、アクション管理、ポット、ショーダウン、トラブル対応へ進みます。</p><ul><li>ディーラーの役割とテーブル構造</li><li>チップ・カードの扱い</li><li>シャッフルと配牌</li><li>アクション・ポット管理</li><li>ショーダウンとトラブル対応</li></ul><a class="btn outline" href="50-dealer-role.html">ディーラー編を見る →</a></div>
+</div></section>
+
+<section><div class="quote"><h2 style="margin-top:0">ポーカーは、知ればもっと面白くなる。</h2><p>カードを知る。ルールを知る。相手を見る。テーブルを見る。そして、自分で判断する。</p><p style="margin-bottom:0"><strong>このサイトが、ポーカーを知る最初の場所になることを目指します。</strong></p></div></section>
+
+<section><h2>次に学ぶ</h2><div class="next">
+<a href="02-texas-holdem-rules.html">テキサスホールデムのルール →</a><a href="03-hand-ranking.html">ポーカーの役・ハンドランキング →</a><a href="04-position.html">ポーカーのポジション →</a><a href="05-bet-raise.html">ポーカーのベット・レイズ額 →</a><a href="06-pot-control.html">ポットコントロール →</a><a href="07-tells.html" class="soon">ポーカーのテル →</a>
+</div></section>
+</main>
+<footer><div class="container">
+  <strong>♠ POKER BASE</strong>
+  <p>ポーカーの基礎は、このサイトで。</p>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>POKER BASICS シリーズ</h4>
+      <a href="01-poker-toha.html">01｜ポーカーとは？</a>
+      <a href="02-texas-holdem-rules.html">02｜テキサスホールデムのルール</a>
+      <a href="03-hand-ranking.html">03｜ポーカーの役・ハンドランキング</a>
+      <a href="04-position.html">04｜ポーカーのポジション</a>
+      <a href="05-bet-raise.html">05｜ポーカーのベット・レイズ額</a>
+      <a href="06-pot-control.html">06｜ポットコントロール</a>
+      <a href="07-tells.html">07｜ポーカーのテル</a>
+      <a href="08-starting-hands.html">08｜スターティングハンドの選び方</a>
+      <a href="09-pot-odds.html">09｜ポットオッズとアウツの基本</a>
+      <a href="10-bluffing.html">10｜ブラフの基本</a>
+      <a href="11-bankroll.html">11｜バンクロールマネジメント</a>
+      <a href="12-range-charts.html">12｜ハンドレンジ表の読み方</a>
+      <a href="13-tournament-basics.html">13｜トーナメント戦略の基本</a>
+      <a href="14-online-vs-live.html">14｜オンラインとライブの違い</a>
+      <a href="15-etiquette.html">15｜マナー・エチケット</a>
+      <a href="16-mental-game.html">16｜メンタルゲーム・ティルト対策</a>
+      <a href="17-stats.html">17｜スタッツの読み方</a>
+      <a href="18-3bet-4bet.html">18｜3ベット・4ベットの基本</a>
+      <a href="19-house-rules-rake.html">19｜ハウスルール・レークの基礎</a>
+      <a href="50-dealer-role.html">50｜ディーラーの基礎</a>
+    </div>
+    <div class="footer-col">
+      <h4>ツールで学ぶ</h4>
+      <a href="../dictionary/">用語辞典</a>
+      <a href="../range/">レンジ表</a>
+      <a href="../equity/">勝率計算</a>
+    </div>
+    <div class="footer-col">
+      <h4>もっと見る</h4>
+      <a href="https://juku-cho.com/">JUKU-CHO ホーム</a>
+      <a href="#">note（ポーカー塾）</a>
+      <a href="#">YouTube（ポーカー塾）</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; JUKU-CHO / POKER BASE</div>
+</div></footer>
+</body></html>

@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>テキサスホールデムのルール｜初心者のためのポーカー基礎 | POKER BASE</title>
+<meta name="description" content="テキサスホールデムの基本ルールを図解。配られるカードの枚数、Preflop・Flop・Turn・River・Showdownの流れ、ブラインドの仕組み、ベッティングラウンドの順番、アクションの種類、実際の1ハンドの進み方まで初心者向けに丁寧に解説します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Serif+JP:wght@500;600&family=Big+Shoulders+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+</head>
+<body>
+<header>
+<div class="utility-bar"><div class="container utility-row">
+  <a class="utility-home" href="../../">♠ JUKU-CHO</a>
+  <div class="utility-tools"><a href="../dictionary/">用語辞典</a><a href="../range/">レンジ表</a><a href="../equity/">勝率計算</a></div>
+</div></div>
+<div class="container header">
+  <a class="logo" href="01-poker-toha.html">♠ POKER BASE<small>ポーカーの基礎は、このサイトで。</small></a>
+  <nav class="series-nav"><a href="01-poker-toha.html"><span class="num">01</span>とは？</a><a class="current" href="02-texas-holdem-rules.html"><span class="num">02</span>ルール</a><a href="03-hand-ranking.html"><span class="num">03</span>役</a><a href="04-position.html"><span class="num">04</span>ポジション</a><a href="05-bet-raise.html"><span class="num">05</span>ベット/レイズ</a><a href="06-pot-control.html"><span class="num">06</span>ポットコントロール</a><a href="07-tells.html"><span class="num">07</span>テル</a><a href="08-starting-hands.html"><span class="num">08</span>ハンド選び</a><a href="09-pot-odds.html"><span class="num">09</span>ポットオッズ</a><a href="10-bluffing.html"><span class="num">10</span>ブラフ</a><a href="11-bankroll.html"><span class="num">11</span>バンクロール</a><a href="12-range-charts.html"><span class="num">12</span>レンジ表</a><a href="13-tournament-basics.html"><span class="num">13</span>トーナメント</a><a href="14-online-vs-live.html"><span class="num">14</span>オンライン/ライブ</a><a href="15-etiquette.html"><span class="num">15</span>マナー</a><a href="16-mental-game.html"><span class="num">16</span>メンタル</a><a href="17-stats.html"><span class="num">17</span>スタッツ</a><a href="18-3bet-4bet.html"><span class="num">18</span>3ベット</a><a href="19-house-rules-rake.html"><span class="num">19</span>ハウスルール</a><a class="dealer" href="50-dealer-role.html"><span class="num">50</span>ディーラー基礎</a></nav>
+</div>
+</header>
+
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <div class="eyebrow">POKER BASICS · 02</div>
+    <h1>テキサスホールデムの<br>ルール</h1>
+    <p>配られるカードの枚数、ゲームが進む順番、ブラインドの仕組み。「何をすればいいか分からない」をなくすための、テキサスホールデムの基本ルールです。</p>
+    <div class="buttons"><a class="btn white" href="#flow">流れを見る →</a><a class="btn line" href="#example">実戦例を見る</a></div>
+  </div>
+  <div class="main-table">
+    <div class="table">
+      <div class="seat co">CO</div><div class="seat btnp">BTN</div><div class="seat sb">SB</div><div class="seat hj">HJ</div><div class="seat bb">BB</div><div class="seat utg">UTG</div>
+      <div class="dealer">D</div>
+      <div class="community"></div>
+    </div>
+  </div>
+</div></section>
+
+<main class="container">
+
+<section>
+<div class="toc">
+  <div class="toc-title">このページの内容</div>
+  <ul class="toc-list">
+    <li><a href="#basics"><span class="n">01</span>テキサスホールデムとは？</a></li>
+    <li><a href="#actions"><span class="n">06</span>アクションの5種類（早見表）</a></li>
+    <li><a href="#flow"><span class="n">02</span>ゲームの流れ（ストリート）</a></li>
+    <li><a href="#showdown"><span class="n">07</span>ショーダウンと勝者の決定</a></li>
+    <li><a href="#blinds"><span class="n">03</span>ブラインドとは？</a></li>
+    <li><a href="#example"><span class="n">08</span>実戦例：1ハンドを最後まで追う</a></li>
+    <li><a href="#bb"><span class="n">04</span>金額の数え方「1BB」とは？</a></li>
+    <li><a href="#terms"><span class="n">09</span>最初に覚えたい用語</a></li>
+    <li><a href="#betting"><span class="n">05</span>ベッティングラウンドの順番</a></li>
+    <li><a href="#faq"><span class="n">10</span>よくある質問</a></li>
+  </ul>
+</div>
+</section>
+
+<section id="basics"><h2>テキサスホールデムとは？</h2><p class="intro">世界で最も遊ばれているポーカーの種目です。自分だけに配られる2枚の「ホールカード」と、全員で共有する5枚の「コミュニティカード」を組み合わせ、最も強い5枚の組み合わせを作った人がポットを獲得します。</p>
+<div class="box"><div class="flow">
+<div>2枚<small>自分だけのカード（ホールカード）</small></div><div>5枚<small>全員で共有するカード（コミュニティカード）</small></div><div>7枚<small>合計7枚から</small></div><div>5枚<small>最も強い5枚を選ぶ</small></div><div>勝敗<small>役の強さで比較</small></div>
+</div></div>
+<h3 class="sub-h">なぜテキサスホールデムが主流なのか</h3>
+<div class="box">
+<p><strong>覚えるルールが少なく、それでいて奥が深いからです。</strong>配られるカードはたった2枚。5枚が全員共通なので、テーブル全員が同じ情報を見ながら進められます。「何が起きているか」を追いやすいぶん、初めての人でも数ハンドで流れをつかめます。</p>
+<p style="margin-bottom:0">一方で、共有カードが1枚ずつ増えるたびに全員の手の強さが変わっていくため、判断の余地は非常に大きくなります。世界の主要な大会のメイン種目がテキサスホールデムなのは、この「入りやすく、極めにくい」バランスによるものです。オマハや7カードスタッドなど他の種目も、まずテキサスホールデムを理解してから触れると格段に分かりやすくなります。</p>
+</div>
+<p style="margin-bottom:0"><strong>勝ち方は2通りあります。</strong>①ショーダウン（カードの見せ合い）で一番強い役を作る、②途中で全員を降ろす。②の場合は自分のカードを見せる必要すらありません。「強いカードが配られた人が勝つゲーム」ではない、という点がポーカーの入口です。</p>
+</section>
+
+<section id="flow"><h2>ゲームの流れ（ストリート）</h2><p class="intro">1ハンドは4つの「ストリート」に分かれ、ストリートが進むごとにコミュニティカードが増えていきます。各ストリートの終わりに、必ずベッティングラウンド（アクションの番）があります。</p>
+<div class="street-grid">
+
+<div class="street-card"><h4>Preflop</h4><small>各プレイヤーに2枚配られる</small>
+<div class="mini-table"><div class="mini-cards"></div></div>
+<div class="mini-hole"><div class="mini-card show">A</div><div class="mini-card show red">K</div></div>
+<span class="street-label">YOUR HOLE CARDS</span></div>
+
+<div class="street-card"><h4>Flop</h4><small>コミュニティカード3枚が開く</small>
+<div class="mini-table"><div class="mini-cards"><div class="mini-card">A</div><div class="mini-card red">7</div><div class="mini-card">2</div></div></div>
+<div class="mini-hole"><div class="mini-card">＊</div><div class="mini-card">＊</div></div>
+<span class="street-label">COMMUNITY × 3</span></div>
+
+<div class="street-card"><h4>Turn</h4><small>4枚目が開く</small>
+<div class="mini-table"><div class="mini-cards"><div class="mini-card">A</div><div class="mini-card red">7</div><div class="mini-card">2</div><div class="mini-card red">Q</div></div></div>
+<div class="mini-hole"><div class="mini-card">＊</div><div class="mini-card">＊</div></div>
+<span class="street-label">COMMUNITY × 4</span></div>
+
+<div class="street-card"><h4>River</h4><small>5枚目、最後の1枚が開く</small>
+<div class="mini-table"><div class="mini-cards"><div class="mini-card">A</div><div class="mini-card red">7</div><div class="mini-card">2</div><div class="mini-card red">Q</div><div class="mini-card">9</div></div></div>
+<div class="mini-hole"><div class="mini-card">＊</div><div class="mini-card">＊</div></div>
+<span class="street-label">COMMUNITY × 5</span></div>
+
+</div>
+<p style="margin:18px 0 0">river（5枚目）まで開いたら<strong>Showdown</strong>です。手元の2枚とテーブル上の5枚、合計7枚から最も強い5枚を選び、勝敗を決めます。</p>
+<h3 class="sub-h">途中で全員が降りたら、そこで終わり</h3>
+<div class="box">
+<p><strong>4つのストリートを必ず最後まで進むわけではありません。</strong>どこかの時点で自分以外の全員がフォールドすれば、その瞬間にハンドは終了し、残った1人がポットを獲得します。カードを見せる必要もありません。</p>
+<p style="margin-bottom:0">実際のポーカーでは、<strong>リバーまで進むハンドのほうが少数派です</strong>。多くのハンドはプリフロップかフロップで決着します。「最後まで見ないと勝てない」わけではない、と知っておくと気が楽になります。</p>
+</div>
+<h3 class="sub-h">バーンカード：カードを開く前に1枚捨てる</h3>
+<div class="box">
+<p style="margin-bottom:0">ディーラーはフロップ・ターン・リバーそれぞれの前に、山札の一番上の1枚を裏向きのまま捨てます。これを<strong>バーンカード</strong>と呼びます。万が一カードの裏に傷や印がついていた場合に、次に出るカードを言い当てられてしまうのを防ぐための手続きです。捨てられたカードは誰も見ないので、ゲームには影響しません。ディーラー側の詳しい手順は<a href="50-dealer-role.html">50｜ディーラーの基礎</a>で扱います。</p>
+</div>
+</section>
+
+<section id="blinds"><h2>ブラインドとは？</h2><p class="intro">テキサスホールデムには「アンティ」の代わりに、毎ハンド特定の2人が強制的にベットする<strong>ブラインド</strong>という仕組みがあります。カードが配られる前に、ポットに最初のチップを入れておくためのルールです。</p>
+<div class="position-panel">
+<div class="blind-table">
+<div class="seat co">CO</div><div class="seat btnp">BTN</div><div class="seat sb active">SB</div><div class="seat hj">HJ</div><div class="seat bb active">BB</div><div class="seat utg">UTG</div>
+<div class="dealer">D</div>
+<div class="blind-tag bt-sb">SB＝スモールブラインド</div>
+<div class="blind-tag bt-bb">BB＝ビッグブラインド</div>
+<div class="blind-chip bc-sb"><i class="chip"></i></div>
+<div class="blind-chip bc-bb"><i class="chip"></i><i class="chip"></i></div>
+</div>
+<p class="position-note">ディーラーボタン（D）の左隣がSB（小さい額）、その次がBB（SBの2倍が目安）。この2人がカードを配られる前にチップを出します。BBの額がそのハンドの「最低ベット額」の基準になります。</p>
+</div>
+<h3 class="sub-h">なぜ強制的にチップを出させるのか</h3>
+<div class="box">
+<p><strong>ポットに何もチップが入っていないと、誰も勝負しなくなるからです。</strong>もしブラインドがなければ、全員がずっと「いいカードが来るまで降り続ける」のが正解になり、ゲームが動きません。毎ハンド少しずつチップが場に出ることで、「取りにいく価値のあるポット」が生まれます。</p>
+<p style="margin-bottom:0"><strong>ブラインドは1ハンドごとに時計回りに移動します。</strong>ディーラーボタンが1つ隣に動き、それに合わせてSB・BBも動きます。つまり全員が順番に同じ回数だけ負担する仕組みで、特定の人だけが損をすることはありません。</p>
+</div>
+<div class="box data-table-wrap" style="margin-top:16px">
+<table class="data-table">
+<tr><th>用語</th><th>意味</th><th>BBでの表し方</th></tr>
+<tr><td><strong>SB（スモールブラインド）</strong></td><td>ボタンの左隣が出す少額の強制ベット</td><td>0.5BB</td></tr>
+<tr><td><strong>BB（ビッグブラインド）</strong></td><td>SBの左隣が出す強制ベット。SBの2倍が基本</td><td>1BB</td></tr>
+<tr><td><strong>最低レイズ額</strong></td><td>BBの額が基準になる</td><td>最初のレイズは2BB以上</td></tr>
+<tr><td><strong>アンティ</strong></td><td>全員が出す少額の参加費。トーナメント中盤以降で追加されることが多い</td><td>0.1BB程度</td></tr>
+</table>
+</div>
+<p style="margin-bottom:0">表の右列にある「BB」は、ポーカーで金額を数えるときの共通の単位です。次の節で詳しく説明します。</p>
+</section>
+
+<section id="bb"><h2>金額の数え方「1BB」とは？</h2><p class="intro">ポーカーでは、金額を「円」ではなく<strong>BB（ビービー）</strong>という単位で数えます。BBとは、そのテーブルのビッグブラインドの額のことです。この数え方に慣れておくと、どのテーブルに座っても同じ感覚で判断できるようになります。</p>
+<div class="box">
+<p><strong>1BB＝そのテーブルのビッグブラインドの額。</strong><br>ビッグブラインドが200円のテーブルなら、1BB＝200円、3BB＝600円です。スモールブラインドはビッグブラインドの半分が基本なので、0.5BBと表します。</p>
+<p style="margin-bottom:0"><strong>同じ「3BBのレイズ」でも、テーブルによって実際の金額は変わります。</strong>ビッグブラインドが200円の卓なら600円、2,000円の卓なら6,000円。金額は10倍違いますが、<strong>「3BBのレイズ」という判断の中身はまったく同じ</strong>です。これがBBで数える一番の理由です。</p>
+</div>
+
+<h3 class="sub-h">なぜBBで数えるのか</h3>
+<div class="card-grid">
+  <div class="info-card">
+    <span class="icon">🔁</span>
+    <h4>レートが変わっても話が通じる</h4>
+    <p>「3BBにレイズ」は、どのテーブルでもそのまま通用します。円で覚えてしまうと、レートが変わるたびに考え直すことになります。</p>
+    <span class="tag">最大の利点</span>
+  </div>
+  <div class="info-card">
+    <span class="icon">📊</span>
+    <h4>自分の余裕がひと目で分かる</h4>
+    <p>「手元に100BBある」＝ビッグブラインド100回分の余裕がある、ということ。金額そのものより、この比率のほうが判断に直結します。</p>
+    <span class="tag neutral">判断の基準</span>
+  </div>
+  <div class="info-card">
+    <span class="icon">📈</span>
+    <h4>戦略も成績もBB基準</h4>
+    <p>世界中の戦略解説やハンドレンジ表は、すべてBBで書かれています。成績も「100ハンドあたり何BB勝てたか」で測るのが一般的です。</p>
+    <span class="tag neutral">世界共通</span>
+  </div>
+</div>
+
+<h3 class="sub-h">レート（テーブルの大きさ）の呼び方</h3>
+<p class="intro">テーブルの大きさは「SBの額 / BBの額」という形で呼びます。「1/2の卓」「2/5の卓」といった言い方は、この表記のことです。</p>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>呼び方</th><th>SB</th><th>BB</th><th>1BBの大きさ</th><th>位置づけ</th></tr>
+<tr><td><strong>1/2</strong></td><td>1</td><td>2</td><td>2</td><td>最も一般的な入門レート</td></tr>
+<tr><td><strong>1/3</strong></td><td>1</td><td>3</td><td>3</td><td>1/2より少し大きい</td></tr>
+<tr><td><strong>2/5</strong></td><td>2</td><td>5</td><td>5</td><td>中位のレート</td></tr>
+<tr><td><strong>5/10</strong></td><td>5</td><td>10</td><td>10</td><td>高めのレート（ハイレート）</td></tr>
+</table>
+</div>
+<p><strong>注意点が2つあります。</strong>1つ目は、<strong>SBがBBのちょうど半分とは限らない</strong>こと。表のとおり「1/3」や「2/5」ではSBは半分になっていません。それでも基準になるのは常にBBの額なので、2/5の卓なら1BB＝5です。</p>
+<p style="margin-bottom:0">2つ目は、<strong>単位は会場によって違う</strong>ことです。円・ドル・ポイントなど表記はさまざまで、国内のアミューズメント形式の店舗ではポイントで表示されることも多くあります。どの単位であっても「BBの何個分か」で考える点は変わりません。</p>
+
+<h3 class="sub-h">スタック（手元のチップ）もBBで数える</h3>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>スタック</th><th>呼び方</th><th>状態</th></tr>
+<tr><td><strong>100BB以上</strong></td><td>ディープスタック</td><td>余裕がある。キャッシュゲームの標準的な持ち込み量</td></tr>
+<tr><td><strong>40〜100BB</strong></td><td>ミドルスタック</td><td>標準的。多くの判断がしやすい</td></tr>
+<tr><td><strong>20BB以下</strong></td><td>ショートスタック</td><td>選択肢が限られ、オールインかフォールドかの判断が中心になる</td></tr>
+</table>
+</div>
+<p style="margin-bottom:0">キャッシュゲームでは足りなくなったチップを買い足せますが、トーナメントではブラインドの額が時間とともに上がっていくため、<strong>何もしなくても自分のスタックのBB数は減っていきます</strong>。このBB数の管理がトーナメントの中心的な考え方になります。詳しくは<a href="13-tournament-basics.html">13｜トーナメント戦略の基本</a>を参照してください。</p>
+</section>
+
+<section id="betting"><h2>ベッティングラウンドの順番</h2><p class="intro">各ストリートでは、全員が「Check・Bet・Call・Raise・Fold」のいずれかを選ぶまでアクションが回ります（アクションの内容は<a href="01-poker-toha.html#actions">01｜ポーカーとは？</a>で図解しています）。</p>
+<div class="box">
+<div class="flow">
+<div>Preflop<small>UTG（BBの左隣）から時計回り</small></div><div>Flop<small>SBから時計回り</small></div><div>Turn<small>SBから時計回り</small></div><div>River<small>SBから時計回り</small></div><div>Showdown<small>最後にベットした人から公開</small></div>
+</div>
+<p style="margin-bottom:0">Preflopだけ「BBの左隣（UTG）」からスタートし、Flop以降は「SB（生きていれば）」からスタートするのがポイントです。全員がCheckまたはCallで揃うと、次のストリートに進みます。</p>
+</div>
+<h3 class="sub-h">なぜプリフロップだけ順番が違うのか</h3>
+<div class="box">
+<p style="margin-bottom:0">プリフロップの時点では、SBとBBがすでにチップを出しているためです。すでに払っている2人を先に話させると不公平になるので、<strong>まだ何も払っていない人（BBの左隣＝UTG）から</strong>アクションが始まります。フロップ以降は全員の支払い状況が揃うので、以降はボタンの左隣（SB）から順番に話す形に戻ります。この順番の違いが、ポジションの有利・不利を生みます。詳しくは<a href="04-position.html">04｜ポーカーのポジション</a>で解説しています。</p>
+</div>
+</section>
+
+<section id="actions"><h2>アクションの5種類（早見表）</h2><p class="intro">自分の番で選べる行動は、状況によって決まります。「まだ誰もベットしていないか」「すでに誰かがベットしているか」で、選べる選択肢が変わります。</p>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>アクション</th><th>意味</th><th>選べる状況</th></tr>
+<tr><td><strong>チェック（Check）</strong></td><td>チップを出さずに次の人へ回す</td><td>まだ誰もベットしていないとき</td></tr>
+<tr><td><strong>ベット（Bet）</strong></td><td>最初にチップを出す</td><td>まだ誰もベットしていないとき</td></tr>
+<tr><td><strong>コール（Call）</strong></td><td>相手と同じ額を出して勝負を続ける</td><td>誰かがベットしているとき</td></tr>
+<tr><td><strong>レイズ（Raise）</strong></td><td>相手のベットを上回る額を出す</td><td>誰かがベットしているとき</td></tr>
+<tr><td><strong>フォールド（Fold）</strong></td><td>そのハンドから降りる</td><td>いつでも（ベットに直面しているとき）</td></tr>
+</table>
+</div>
+<p style="margin-bottom:0">なお、手持ちのチップをすべて出す<strong>オールイン</strong>は独立したアクションではなく、ベット・コール・レイズの「金額が全額になった形」です。実際のテーブルでの動作（発声、チップの出し方、カードの伏せ方）は<a href="01-poker-toha.html#actions">01｜ポーカーとは？</a>で図解しています。</p></section>
+
+<section id="showdown"><h2>ショーダウンと勝者の決定</h2><p class="intro">Riverのベッティングラウンドが終わると、残っているプレイヤー同士でカードを公開して勝敗を決めます。</p>
+<div class="box">
+<p><strong>誰かがオールインしていない限り、最後にベット・レイズした人から先に公開</strong>するのが一般的です。全員Checkで進んだ場合は、ディーラーの左隣（アクション順で最初の人）から公開します。</p>
+<p style="margin-bottom:0">なお、途中で自分以外の全員がFoldした場合はShowdownを行わず、残った1人がそのままポットを獲得します。</p>
+</div>
+<h3 class="sub-h">負けを認めて伏せる「マック」</h3>
+<div class="box">
+<p style="margin-bottom:0">相手のカードを見て自分が負けていると分かった場合、自分のカードを見せずに伏せて捨てることができます。これを<strong>マック</strong>と呼びます。手の内を相手に知られずに済むため、実戦ではよく使われます。ただし<strong>マックしたカードは、たとえ本当は勝っていたとしても勝者になれません</strong>。慣れないうちは、迷ったら伏せずにディーラーに見せてしまうのが安全です。役の判定はディーラーが行ってくれます。</p>
+</div>
+<p style="margin-bottom:0">役の強さと、同じ役同士の勝敗の決め方は<a href="03-hand-ranking.html">03｜ポーカーの役・ハンドランキング</a>で詳しく解説しています。</p>
+</section>
+
+<section id="example"><h2>実戦例：1ハンドを最後まで追う</h2><p class="intro">ここまでのルールが実際にどう動くのか、1ハンドを通して見てみましょう。6人卓のキャッシュゲームで、金額はすべてBBで表します。1BBが200円のテーブルなら「3BB＝600円」と読み替えてください。</p>
+<div class="hand-ex">
+  <div class="hand-ex-head">
+    <div>形式<strong>6人卓・キャッシュゲーム</strong></div>
+    <div>ブラインド<strong>SB 0.5BB / BB 1BB</strong></div>
+    <div>注目する人<strong>CO（カットオフ）</strong></div>
+    <div>COの手札<strong>A♠ K♦</strong></div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>PREFLOP</b>
+      <div class="street-cards"><div class="playing">A♠</div><div class="playing red">K♦</div></div>
+      <span class="pot">ポット 6.5BB</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">配る前</span>ディーラーがSBに0.5BB、BBに1BBを出させます。この時点でポットは1.5BB。その後、全員に2枚ずつカードが配られます。</p>
+      <p><span class="act think">順番</span>BBの左隣のUTGから時計回りにアクション。UTG・HJがフォールドし、COの番が回ってきました。</p>
+      <p style="margin-bottom:0"><span class="act">アクション</span>COが3BBにレイズ。BTNとSBはフォールド、BBがコール（すでに出している1BBに2BBを追加）。<strong>ポットは 0.5（降りたSBの分）＋3＋3 ＝ 6.5BB</strong>になりました。</p>
+    </div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>FLOP</b>
+      <div class="street-cards"><div class="playing">K♠</div><div class="playing red">9♦</div><div class="playing">4♣</div></div>
+      <span class="pot">ポット 6.5BB</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">手続き</span>ディーラーが1枚を裏向きで捨て（バーンカード）、続けて3枚を同時に開きます。</p>
+      <p>COは手札のK♦がボードのK♠とペアになり、Kのワンペアができました。ここからは<strong>SB側から順に話す</strong>ため、生き残っているBBが先手です。</p>
+      <p style="margin-bottom:0"><span class="act">アクション</span>BBがチェック。COがポットの半分ほどにあたる3.5BBをベットし、BBがコール。<strong>ポットは13.5BB</strong>。</p>
+    </div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>TURN</b>
+      <div class="street-cards"><div class="playing">K♠</div><div class="playing red">9♦</div><div class="playing">4♣</div><div class="playing red">2♥</div></div>
+      <span class="pot">ポット 13.5BB</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">手続き</span>再びバーンカードを1枚捨て、4枚目を開きます。</p>
+      <p>2♥。フラッシュにもストレートにも近づかないカードで、COのKのペアは依然として有力です。</p>
+      <p style="margin-bottom:0"><span class="act">アクション</span>BBがチェック、COがポットの半分ほどにあたる7.5BBをベット、BBがコール。<strong>ポットは28.5BB</strong>。</p>
+    </div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>RIVER</b>
+      <div class="street-cards"><div class="playing">K♠</div><div class="playing red">9♦</div><div class="playing">4♣</div><div class="playing red">2♥</div><div class="playing">7♠</div></div>
+      <span class="pot">ポット 28.5BB</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">手続き</span>3回目のバーンカードのあと、最後の5枚目を開きます。これで共有カードが出そろいました。</p>
+      <p style="margin-bottom:0"><span class="act">アクション</span>BBがチェック、COがポットの半分弱にあたる12.5BBをベット、BBがコール。<strong>ポットは53.5BB</strong>。これでベッティングラウンドは終了、ショーダウンに進みます。</p>
+    </div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>SHOWDOWN</b>
+      <div class="street-cards"><div class="playing">A♠</div><div class="playing red">K♦</div></div>
+      <span class="pot">COの勝ち</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">公開順</span>最後にベットしたのはCOなので、COから先に公開します。</p>
+      <p><strong>CO：A♠K♦</strong> → ボードのK♠と合わせてKのワンペア、キッカーはA。<br><strong>BB：K♥Q♣</strong> → 同じくKのワンペアですが、キッカーはQ。</p>
+      <p><span class="act">結果</span>役はどちらも「Kのワンペア」で同じ。<strong>キッカーのA対Qで、COがポット53.5BBを獲得</strong>します。同じ役でも残りのカードで決着がつくという、ポーカーで最も頻繁に起きる決まり方です。キッカーの考え方は<a href="03-hand-ranking.html#kicker">03｜ポーカーの役</a>で詳しく解説しています。</p>
+      <p style="margin-bottom:0"><span class="act think">BBで見る意味</span>この53.5BBという数字は、1BBが200円の卓なら10,700円、2,000円の卓なら107,000円になります。<strong>金額は10倍違っても「53.5BBのポットを取った」という事実は同じ</strong>です。だからポーカーでは、金額ではなくBBで記録し、BBで振り返ります。</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="terms"><h2>最初に覚えたい用語</h2><p class="intro">テーブルで飛び交う言葉のうち、最初の数回で必ず出てくるものだけをまとめました。すべて覚える必要はなく、この10個で困らなくなります。</p>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>用語</th><th>意味</th></tr>
+<tr><td><strong>ホールカード</strong></td><td>自分だけに配られる2枚のカード</td></tr>
+<tr><td><strong>コミュニティカード</strong></td><td>全員が共有して使える5枚のカード（ボードとも呼ぶ）</td></tr>
+<tr><td><strong>ポット</strong></td><td>場に集まったチップの合計。勝った人が受け取る</td></tr>
+<tr><td><strong>ストリート</strong></td><td>プリフロップ・フロップ・ターン・リバーの各段階</td></tr>
+<tr><td><strong>ショーダウン</strong></td><td>リバー終了後にカードを見せ合い、勝敗を決める場面</td></tr>
+<tr><td><strong>バーンカード</strong></td><td>カードを開く前に裏向きで捨てる1枚</td></tr>
+<tr><td><strong>マック</strong></td><td>負けを認め、カードを見せずに伏せて捨てること</td></tr>
+<tr><td><strong>スタック</strong></td><td>自分の手元にあるチップの総量</td></tr>
+<tr><td><strong>バイイン</strong></td><td>そのゲームに参加するために出す金額</td></tr>
+<tr><td><strong>キッカー</strong></td><td>役に使わなかった残りのカード。同じ役同士の決着に使う</td></tr>
+</table>
+</div>
+<p style="margin-bottom:0">これ以外の用語は、出てきたときに<a href="../dictionary/">用語辞典</a>で調べれば十分です。619語を収録しているので、テーブルで聞き慣れない言葉があっても後から確認できます。</p></section>
+
+<section id="mistakes"><h2>初めてのテーブルで戸惑いやすい3つのこと</h2>
+<div class="card-grid">
+  <div class="info-card">
+    <span class="icon">🙋</span>
+    <h4>自分の番が分からない</h4>
+    <p>ディーラーが「あなたの番です」と促してくれるので、慌てる必要はありません。分からなければ「順番ですか？」と聞いて構いません。先走ってアクションするほうがマナー違反になります。</p>
+    <span class="tag">聞いてOK</span>
+  </div>
+  <div class="info-card">
+    <span class="icon">💬</span>
+    <h4>いくらベットすればいいか分からない</h4>
+    <p>金額を言えばディーラーが確認してくれます。最初は「ポットと同じくらい」「ポットの半分くらい」で十分です。目安は<a href="05-bet-raise.html">05｜ベット・レイズ額</a>にまとめています。</p>
+    <span class="tag neutral">目安がある</span>
+  </div>
+  <div class="info-card">
+    <span class="icon">🃏</span>
+    <h4>役ができているか自信がない</h4>
+    <p>ショーダウンではディーラーが役を読み上げて勝者を決めます。自分で判定できなくても大丈夫です。カードは伏せずにそのまま見せましょう。</p>
+    <span class="tag">ディーラーが判定</span>
+  </div>
+</div></section>
+
+<section id="faq"><h2>よくある質問</h2>
+<div class="faq">
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>1ハンドはどのくらいの時間がかかりますか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>ライブポーカーの場合、1ハンドはおおよそ2分前後です。1時間あたり25〜35ハンド進むのが一般的で、オンラインではその2倍以上の速さになります。詳しくは<a href="14-online-vs-live.html">14｜オンラインとライブの違い</a>を参照してください。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>途中で席を立ってもいいですか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>ハンドに参加していないタイミングであれば問題ありません。長く離れると、順番が来たときに自動的にフォールド扱いになる会場が多いです。席の外し方は<a href="15-etiquette.html">15｜マナー・エチケット</a>で解説しています。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>チップが足りなくなったらどうなりますか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>手持ちのチップ全額を出す「オールイン」ができます。足りないぶんを借りる必要はなく、自分が出した金額の範囲まではポットを争えます（超過分は他のプレイヤー同士のサイドポットになります）。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>フォールドしたら、そのハンドはもう何もできませんか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>その通りです。一度フォールドすると、そのハンドには戻れません。すでにポットに出したチップも返ってきません。次のハンドが始まるまで待つことになります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>ルールは会場によって違いますか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>基本ルールは共通ですが、最低・最高バイインやタイムバンクなど、細かい運用は会場ごとに異なります。これを「ハウスルール」と呼びます。詳しくは<a href="19-house-rules-rake.html">19｜ハウスルール・レークの基礎</a>を参照してください。</div>
+  </div>
+</div></section>
+
+<section id="checklist"><h2>初めて座る前のチェックリスト</h2>
+<div class="box">
+<ul class="check-list">
+  <li>ホールカード2枚＋コミュニティカード5枚から、最強の5枚を作る<small>手札を必ず使う必要はない</small></li>
+  <li>ストリートはプリフロップ→フロップ→ターン→リバーの4つ<small>各ストリートの終わりにベッティングラウンドがある</small></li>
+  <li>プリフロップはUTGから、フロップ以降はSBから話す<small>順番が分からなければディーラーが教えてくれる</small></li>
+  <li>選べるのはチェック・ベット・コール・レイズ・フォールドの5つ<small>状況によって選べるものが決まる</small></li>
+  <li>勝ち方は「一番強い役を作る」か「全員を降ろす」の2通り<small>カードを見せずに勝つこともできる</small></li>
+</ul>
+</div></section>
+
+<section><div class="quote"><h2 style="margin-top:0">流れが分かれば、迷わなくなる。</h2><p>「今どのストリートか」「誰から話すのか」が分かれば、テーブルに座ったときの不安はぐっと減ります。分からないことはディーラーに聞いて構いません。それは初心者に限らず、経験者もやっていることです。</p><p style="margin-bottom:0"><strong>次は、勝敗を決める「役」を覚えましょう。</strong></p></div></section>
+
+<section><h2>このページのつづき</h2><div class="buttons">
+<a class="btn outline" href="01-poker-toha.html">← 01｜ポーカーとは？</a>
+<a class="btn white" href="03-hand-ranking.html">03｜ポーカーの役・ハンドランキング →</a>
+</div></section>
+
+</main>
+<footer><div class="container">
+  <strong>♠ POKER BASE</strong>
+  <p>ポーカーの基礎は、このサイトで。</p>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>POKER BASICS シリーズ</h4>
+      <a href="01-poker-toha.html">01｜ポーカーとは？</a>
+      <a href="02-texas-holdem-rules.html">02｜テキサスホールデムのルール</a>
+      <a href="03-hand-ranking.html">03｜ポーカーの役・ハンドランキング</a>
+      <a href="04-position.html">04｜ポーカーのポジション</a>
+      <a href="05-bet-raise.html">05｜ポーカーのベット・レイズ額</a>
+      <a href="06-pot-control.html">06｜ポットコントロール</a>
+      <a href="07-tells.html">07｜ポーカーのテル</a>
+      <a href="08-starting-hands.html">08｜スターティングハンドの選び方</a>
+      <a href="09-pot-odds.html">09｜ポットオッズとアウツの基本</a>
+      <a href="10-bluffing.html">10｜ブラフの基本</a>
+      <a href="11-bankroll.html">11｜バンクロールマネジメント</a>
+      <a href="12-range-charts.html">12｜ハンドレンジ表の読み方</a>
+      <a href="13-tournament-basics.html">13｜トーナメント戦略の基本</a>
+      <a href="14-online-vs-live.html">14｜オンラインとライブの違い</a>
+      <a href="15-etiquette.html">15｜マナー・エチケット</a>
+      <a href="16-mental-game.html">16｜メンタルゲーム・ティルト対策</a>
+      <a href="17-stats.html">17｜スタッツの読み方</a>
+      <a href="18-3bet-4bet.html">18｜3ベット・4ベットの基本</a>
+      <a href="19-house-rules-rake.html">19｜ハウスルール・レークの基礎</a>
+      <a href="50-dealer-role.html">50｜ディーラーの基礎</a>
+    </div>
+    <div class="footer-col">
+      <h4>ツールで学ぶ</h4>
+      <a href="../dictionary/">用語辞典</a>
+      <a href="../range/">レンジ表</a>
+      <a href="../equity/">勝率計算</a>
+    </div>
+    <div class="footer-col">
+      <h4>もっと見る</h4>
+      <a href="https://juku-cho.com/">JUKU-CHO ホーム</a>
+      <a href="#">note（ポーカー塾）</a>
+      <a href="#">YouTube（ポーカー塾）</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; JUKU-CHO / POKER BASE</div>
+</div></footer>
+</body></html>

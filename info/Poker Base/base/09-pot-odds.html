@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ポットオッズとアウツの基本｜ポーカー応用編 | POKER BASE</title>
+<meta name="description" content="ポーカーのポットオッズとアウツの考え方を、難しい確率計算なしで解説。4と2のルールで残りカードの当たる確率を概算し、コールすべきかどうかを判断する基本の考え方を初心者向けに説明します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Serif+JP:wght@500;600&family=Big+Shoulders+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+</head>
+<body>
+<header>
+<div class="utility-bar"><div class="container utility-row">
+  <a class="utility-home" href="../../">♠ JUKU-CHO</a>
+  <div class="utility-tools"><a href="../dictionary/">用語辞典</a><a href="../range/">レンジ表</a><a href="../equity/">勝率計算</a></div>
+</div></div>
+<div class="container header">
+  <a class="logo" href="01-poker-toha.html">♠ POKER BASE<small>ポーカーの基礎は、このサイトで。</small></a>
+  <nav class="series-nav"><a href="01-poker-toha.html"><span class="num">01</span>とは？</a><a href="02-texas-holdem-rules.html"><span class="num">02</span>ルール</a><a href="03-hand-ranking.html"><span class="num">03</span>役</a><a href="04-position.html"><span class="num">04</span>ポジション</a><a href="05-bet-raise.html"><span class="num">05</span>ベット/レイズ</a><a href="06-pot-control.html"><span class="num">06</span>ポットコントロール</a><a href="07-tells.html"><span class="num">07</span>テル</a><a href="08-starting-hands.html"><span class="num">08</span>ハンド選び</a><a class="current" href="09-pot-odds.html"><span class="num">09</span>ポットオッズ</a><a href="10-bluffing.html"><span class="num">10</span>ブラフ</a><a href="11-bankroll.html"><span class="num">11</span>バンクロール</a><a href="12-range-charts.html"><span class="num">12</span>レンジ表</a><a href="13-tournament-basics.html"><span class="num">13</span>トーナメント</a><a href="14-online-vs-live.html"><span class="num">14</span>オンライン/ライブ</a><a href="15-etiquette.html"><span class="num">15</span>マナー</a><a href="16-mental-game.html"><span class="num">16</span>メンタル</a><a href="17-stats.html"><span class="num">17</span>スタッツ</a><a href="18-3bet-4bet.html"><span class="num">18</span>3ベット</a><a href="19-house-rules-rake.html"><span class="num">19</span>ハウスルール</a><a class="dealer" href="50-dealer-role.html"><span class="num">50</span>ディーラー基礎</a></nav>
+</div>
+</header>
+
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <div class="eyebrow">POKER BASICS · 09（応用編）</div>
+    <h1>ポットオッズと<br>アウツの基本</h1>
+    <p>「コールすべきか」を感覚ではなく数字で考える最初の一歩です。難しい確率計算は使わず、簡単な目安の出し方だけを覚えましょう。</p>
+    <div class="buttons"><a class="btn white" href="#outs">アウツから見る →</a><a class="btn line" href="#decision">判断のしかた</a></div>
+  </div>
+  <div class="main-table">
+    <div class="table">
+      <div class="seat co">CO</div><div class="seat btnp">BTN</div><div class="seat sb">SB</div><div class="seat hj">HJ</div><div class="seat bb">BB</div><div class="seat utg">UTG</div>
+      <div class="dealer">D</div>
+      <div class="community"><div class="playing">A♠</div><div class="playing red">K♥</div><div class="playing">8♣</div></div>
+    </div>
+  </div>
+</div></section>
+
+<main class="container">
+
+<section id="outs"><h2>アウツとは？</h2><p class="intro">「アウツ」とは、まだ見えていない残りのカードのうち、自分のハンドを強くしてくれる枚数のことです。</p>
+<div class="box">
+<p>たとえば、同じスートのカードがあと1枚出れば「フラッシュ」が完成する状態（フラッシュドロー）だとします。1組のスートは13枚あり、自分がすでに4枚（ホールカード2枚＋共有カード2枚）を持っている場合、残りの同スートは <strong>13−4＝9枚</strong>。この「9」がアウツの数です。</p>
+<p style="margin-bottom:0">アウツが多いほど、次のカードで自分のハンドが完成する可能性が高くなります。</p>
+</div></section>
+
+<section id="rule"><h2>4と2のルール：確率をざっくり見積もる</h2><p class="intro">正確な確率計算をしなくても、アウツの数から「だいたい何%くらいで当たるか」を素早く見積もる方法があります。</p>
+<div class="box">
+<p><strong>フロップの時点（残り2枚を見る）：アウツ × 4 ≒ 完成する確率(%)</strong><br>
+<strong>ターンの時点（残り1枚を見る）：アウツ × 2 ≒ 完成する確率(%)</strong></p>
+<p style="margin-bottom:0">たとえばフラッシュドロー（アウツ9枚）なら、フロップ時点ではおよそ「9×4＝36%」。これくらいの確率で完成する、という目安になります。</p>
+</div>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>ドローの種類</th><th>アウツ数</th><th>フロップ時点（概算）</th><th>ターン時点（概算）</th></tr>
+<tr><td>ガットショット（歯抜けストレート）</td><td>4枚</td><td>約16%</td><td>約8%</td></tr>
+<tr><td>オープンエンド（両端ストレート）</td><td>8枚</td><td>約32%</td><td>約16%</td></tr>
+<tr><td>フラッシュドロー</td><td>9枚</td><td>約36%</td><td>約18%</td></tr>
+<tr><td>ストレート＋フラッシュの複合ドロー</td><td>15枚</td><td>約60%</td><td>約30%</td></tr>
+</table>
+</div></section>
+
+<section id="decision"><h2>ポットオッズと比較して判断する</h2><p class="intro">「アウツから出した完成確率」と「コールに必要な勝率」を比べることで、そのコールが割に合うかどうかを判断できます。</p>
+<div class="box">
+<p><strong>必要な勝率 ＝ コール額 ÷（ポット＋相手のベット＋コール額）</strong></p>
+<p style="margin-bottom:0">たとえばポットが300で、相手が100ベットしてきた場合。コールするには100が必要で、コール後のポットは300＋100＋100＝500。必要な勝率は「100÷500＝20%」です。フラッシュドロー（約36%）を持っているなら、必要な20%を上回っているため、数字の上ではコールする価値があると考えられます。</p>
+</div>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>相手のベット（ポット比）</th><th>コールに必要な勝率（概算）</th></tr>
+<tr><td>33%</td><td>約20%</td></tr>
+<tr><td>50%</td><td>約25%</td></tr>
+<tr><td>75%</td><td>約30%</td></tr>
+<tr><td>100%（ポットベット）</td><td>約33%</td></tr>
+<tr><td>150%（オーバーベット）</td><td>約37%</td></tr>
+</table>
+</div>
+<p>この表とアウツの確率表を見比べるだけでも、「このコールは数字の上で割に合っているか」がざっくり判断できるようになります。</p></section>
+
+<section id="caution"><h2>あくまで目安として使う</h2>
+<div class="box">
+<p><strong>① 4と2のルールは概算</strong><br>正確な確率とは若干のズレがありますが、実戦で素早く判断するには十分な精度です。まずはこの概算に慣れましょう。</p>
+<p><strong>② アウツが「本当に勝てる」とは限らない</strong><br>フラッシュが完成しても、相手がさらに強いハンドを作っている可能性はあります。アウツはあくまで「ハンドが完成する確率」であることを忘れないでください。</p>
+<p style="margin-bottom:0"><strong>③ この先に「インプライドオッズ」という考え方もある</strong><br>完成した後にさらに相手から引き出せるチップも考慮する、より発展的な考え方です。まずは基本のポットオッズに慣れてから、少しずつ触れていくとよいでしょう。</p>
+</div></section>
+
+<section><div class="quote"><h2 style="margin-top:0">感覚を、数字で裏付ける。</h2><p>「なんとなくコール」から「これくらいの確率だからコール」に変わるだけで、判断の質がぐっと安定します。</p><p style="margin-bottom:0"><strong>次は、数字だけでは語れない「ブラフ」の考え方です。</strong></p></div></section>
+
+<section><h2>このページのつづき</h2><div class="buttons">
+<a class="btn outline" href="08-starting-hands.html">← 08｜スターティングハンドの選び方</a>
+<a class="btn white" href="10-bluffing.html">10｜ブラフの基本 →</a>
+</div></section>
+
+</main>
+<footer><div class="container">
+  <strong>♠ POKER BASE</strong>
+  <p>ポーカーの基礎は、このサイトで。</p>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>POKER BASICS シリーズ</h4>
+      <a href="01-poker-toha.html">01｜ポーカーとは？</a>
+      <a href="02-texas-holdem-rules.html">02｜テキサスホールデムのルール</a>
+      <a href="03-hand-ranking.html">03｜ポーカーの役・ハンドランキング</a>
+      <a href="04-position.html">04｜ポーカーのポジション</a>
+      <a href="05-bet-raise.html">05｜ポーカーのベット・レイズ額</a>
+      <a href="06-pot-control.html">06｜ポットコントロール</a>
+      <a href="07-tells.html">07｜ポーカーのテル</a>
+      <a href="08-starting-hands.html">08｜スターティングハンドの選び方</a>
+      <a href="09-pot-odds.html">09｜ポットオッズとアウツの基本</a>
+      <a href="10-bluffing.html">10｜ブラフの基本</a>
+      <a href="11-bankroll.html">11｜バンクロールマネジメント</a>
+      <a href="12-range-charts.html">12｜ハンドレンジ表の読み方</a>
+      <a href="13-tournament-basics.html">13｜トーナメント戦略の基本</a>
+      <a href="14-online-vs-live.html">14｜オンラインとライブの違い</a>
+      <a href="15-etiquette.html">15｜マナー・エチケット</a>
+      <a href="16-mental-game.html">16｜メンタルゲーム・ティルト対策</a>
+      <a href="17-stats.html">17｜スタッツの読み方</a>
+      <a href="18-3bet-4bet.html">18｜3ベット・4ベットの基本</a>
+      <a href="19-house-rules-rake.html">19｜ハウスルール・レークの基礎</a>
+      <a href="50-dealer-role.html">50｜ディーラーの基礎</a>
+    </div>
+    <div class="footer-col">
+      <h4>ツールで学ぶ</h4>
+      <a href="../dictionary/">用語辞典</a>
+      <a href="../range/">レンジ表</a>
+      <a href="../equity/">勝率計算</a>
+    </div>
+    <div class="footer-col">
+      <h4>もっと見る</h4>
+      <a href="https://juku-cho.com/">JUKU-CHO ホーム</a>
+      <a href="#">note（ポーカー塾）</a>
+      <a href="#">YouTube（ポーカー塾）</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; JUKU-CHO / POKER BASE</div>
+</div></footer>
+</body></html>

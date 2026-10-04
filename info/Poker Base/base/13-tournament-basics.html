@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>トーナメント戦略の基本｜ポーカー応用編 | POKER BASE</title>
+<meta name="description" content="ポーカートーナメントの基本戦略を解説。キャッシュゲームとの違い、チップの価値の考え方、ICMの基本、序盤・中盤・バブル・終盤ごとの立ち回りを初心者向けに丁寧に説明します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Serif+JP:wght@500;600&family=Big+Shoulders+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+</head>
+<body>
+<header>
+<div class="utility-bar"><div class="container utility-row">
+  <a class="utility-home" href="../../">♠ JUKU-CHO</a>
+  <div class="utility-tools"><a href="../dictionary/">用語辞典</a><a href="../range/">レンジ表</a><a href="../equity/">勝率計算</a></div>
+</div></div>
+<div class="container header">
+  <a class="logo" href="01-poker-toha.html">♠ POKER BASE<small>ポーカーの基礎は、このサイトで。</small></a>
+  <nav class="series-nav"><a href="01-poker-toha.html"><span class="num">01</span>とは？</a><a href="02-texas-holdem-rules.html"><span class="num">02</span>ルール</a><a href="03-hand-ranking.html"><span class="num">03</span>役</a><a href="04-position.html"><span class="num">04</span>ポジション</a><a href="05-bet-raise.html"><span class="num">05</span>ベット/レイズ</a><a href="06-pot-control.html"><span class="num">06</span>ポットコントロール</a><a href="07-tells.html"><span class="num">07</span>テル</a><a href="08-starting-hands.html"><span class="num">08</span>ハンド選び</a><a href="09-pot-odds.html"><span class="num">09</span>ポットオッズ</a><a href="10-bluffing.html"><span class="num">10</span>ブラフ</a><a href="11-bankroll.html"><span class="num">11</span>バンクロール</a><a href="12-range-charts.html"><span class="num">12</span>レンジ表</a><a class="current" href="13-tournament-basics.html"><span class="num">13</span>トーナメント</a><a href="14-online-vs-live.html"><span class="num">14</span>オンライン/ライブ</a><a href="15-etiquette.html"><span class="num">15</span>マナー</a><a href="16-mental-game.html"><span class="num">16</span>メンタル</a><a href="17-stats.html"><span class="num">17</span>スタッツ</a><a href="18-3bet-4bet.html"><span class="num">18</span>3ベット</a><a href="19-house-rules-rake.html"><span class="num">19</span>ハウスルール</a><a class="dealer" href="50-dealer-role.html"><span class="num">50</span>ディーラー基礎</a></nav>
+</div>
+</header>
+
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <div class="eyebrow">POKER BASICS · 13（応用編）</div>
+    <h1>トーナメント<br>戦略の基本</h1>
+    <p>チップがそのままお金ではないトーナメントには、キャッシュゲームとは違う考え方が必要です。基本の型を押さえましょう。</p>
+    <div class="buttons"><a class="btn white" href="#difference">キャッシュとの違い →</a><a class="btn line" href="#stages">段階別の立ち回り</a></div>
+  </div>
+  <div class="main-table">
+    <div class="table">
+      <div class="seat co">CO</div><div class="seat btnp">BTN</div><div class="seat sb">SB</div><div class="seat hj">HJ</div><div class="seat bb">BB</div><div class="seat utg">UTG</div>
+      <div class="dealer">D</div>
+      <div class="community"><div class="playing">A♠</div><div class="playing red">K♥</div><div class="playing">8♣</div></div>
+    </div>
+  </div>
+</div></section>
+
+<main class="container">
+
+<section id="difference"><h2>キャッシュゲームとの違い</h2><p class="intro">これまでのPOKER BASICSは主にキャッシュゲームを想定した内容でした。トーナメントには、それとは違う前提がいくつかあります。</p>
+<div class="box"><div class="flow">
+<div>チップ<small>そのまま現金ではない</small></div><div>ブラインド<small>時間とともに上昇</small></div><div>敗退<small>チップ0で終了・再購入不可が基本</small></div><div>賞金<small>上位に入らないと0円もある</small></div><div>目的<small>生き残りながら積み上げる</small></div>
+</div></div></section>
+
+<section id="icm"><h2>ICM：「生き残る価値」という考え方</h2><p class="intro">トーナメントには「ICM（Independent Chip Model）」という考え方があります。難しく聞こえますが、要点はシンプルです。</p>
+<div class="box">
+<p>トーナメントのチップは、賞金と一直線には対応していません。たとえば残り3人で賞金がもらえる状況なら、そこで敗退して0円になるリスクは、キャッシュゲームでチップを失うリスクよりも重く扱うべきです。</p>
+<p style="margin-bottom:0">そのため、チップの枚数だけで見れば得なコール・レイズでも、「負けたときに全てを失うリスク」を考えると見送った方がよい場面があります。これがICMの基本的な考え方です。</p>
+</div></section>
+
+<section id="stages"><h2>段階別の立ち回り</h2><p class="intro">トーナメントは進行段階によって、意識すべきポイントが変わります。</p>
+<div class="card-grid">
+  <div class="info-card">
+    <span class="icon">🌱</span>
+    <h4>序盤</h4>
+    <p>ブラインドがまだ小さく、チップにも余裕があります。無理にリスクを取らず、じっくり相手の傾向を観察する時間に使えます。</p>
+  </div>
+  <div class="info-card">
+    <span class="icon">⚙️</span>
+    <h4>中盤</h4>
+    <p>ブラインドが上昇し、スタックとの比率がタイトになってきます。参加するハンドの選び方がより重要になってきます。</p>
+  </div>
+  <div class="info-card">
+    <span class="icon">🫧</span>
+    <h4>バブル</h4>
+    <p>あと少しで賞金圏（入賞ライン）という局面。ICMの影響が最も大きくなる段階で、無理な勝負を避ける判断が特に重要です。</p>
+  </div>
+  <div class="info-card">
+    <span class="icon">🏁</span>
+    <h4>終盤・ファイナルテーブル</h4>
+    <p>人数が絞られ、順位による賞金差も大きくなります。スタックの差を踏まえた戦い方が求められます。</p>
+  </div>
+</div></section>
+
+<section id="shortstack"><h2>ショートスタックの基本：プッシュ・フォールド</h2><p class="intro">ブラインドに対してスタックが少なくなってきたら（目安として自分のスタックがブラインド合計の15〜20倍を切るあたりから）、シンプルな戦略に切り替えるのが基本です。</p>
+<div class="box">
+<p style="margin-bottom:0"><strong>プッシュ・フォールド</strong>とは、「オールインするか、フォールドするか」の二択だけで判断する戦略です。中途半端なサイズでベットすると、コールされたときに身動きが取れなくなるため、スタックが少ない場面ではこの単純な型に頼るのが基本とされています。</p>
+</div></section>
+
+<section><div class="quote"><h2 style="margin-top:0">同じチップでも、価値は場面で変わる。</h2><p>トーナメントは「今のチップの枚数」だけでなく「その先の賞金」まで見て判断するゲームです。段階に応じた立ち回りを覚えていきましょう。</p><p style="margin-bottom:0"><strong>次は、オンラインとライブでの違いを整理します。</strong></p></div></section>
+
+<section><h2>このページのつづき</h2><div class="buttons">
+<a class="btn outline" href="12-range-charts.html">← 12｜ハンドレンジ表の読み方</a>
+<a class="btn white" href="14-online-vs-live.html">14｜オンラインとライブの違い →</a>
+</div></section>
+
+</main>
+<footer><div class="container">
+  <strong>♠ POKER BASE</strong>
+  <p>ポーカーの基礎は、このサイトで。</p>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>POKER BASICS シリーズ</h4>
+      <a href="01-poker-toha.html">01｜ポーカーとは？</a>
+      <a href="02-texas-holdem-rules.html">02｜テキサスホールデムのルール</a>
+      <a href="03-hand-ranking.html">03｜ポーカーの役・ハンドランキング</a>
+      <a href="04-position.html">04｜ポーカーのポジション</a>
+      <a href="05-bet-raise.html">05｜ポーカーのベット・レイズ額</a>
+      <a href="06-pot-control.html">06｜ポットコントロール</a>
+      <a href="07-tells.html">07｜ポーカーのテル</a>
+      <a href="08-starting-hands.html">08｜スターティングハンドの選び方</a>
+      <a href="09-pot-odds.html">09｜ポットオッズとアウツの基本</a>
+      <a href="10-bluffing.html">10｜ブラフの基本</a>
+      <a href="11-bankroll.html">11｜バンクロールマネジメント</a>
+      <a href="12-range-charts.html">12｜ハンドレンジ表の読み方</a>
+      <a href="13-tournament-basics.html">13｜トーナメント戦略の基本</a>
+      <a href="14-online-vs-live.html">14｜オンラインとライブの違い</a>
+      <a href="15-etiquette.html">15｜マナー・エチケット</a>
+      <a href="16-mental-game.html">16｜メンタルゲーム・ティルト対策</a>
+      <a href="17-stats.html">17｜スタッツの読み方</a>
+      <a href="18-3bet-4bet.html">18｜3ベット・4ベットの基本</a>
+      <a href="19-house-rules-rake.html">19｜ハウスルール・レークの基礎</a>
+      <a href="50-dealer-role.html">50｜ディーラーの基礎</a>
+    </div>
+    <div class="footer-col">
+      <h4>ツールで学ぶ</h4>
+      <a href="../dictionary/">用語辞典</a>
+      <a href="../range/">レンジ表</a>
+      <a href="../equity/">勝率計算</a>
+    </div>
+    <div class="footer-col">
+      <h4>もっと見る</h4>
+      <a href="https://juku-cho.com/">JUKU-CHO ホーム</a>
+      <a href="#">note（ポーカー塾）</a>
+      <a href="#">YouTube（ポーカー塾）</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; JUKU-CHO / POKER BASE</div>
+</div></footer>
+</body></html>

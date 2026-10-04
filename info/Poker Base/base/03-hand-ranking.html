@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ポーカーの役・ハンドランキング｜初心者のためのポーカー基礎 | POKER BASE</title>
+<meta name="description" content="ポーカーの役（ハンド）を強い順に図解。ロイヤルフラッシュからハイカードまで10種類を実際のカードで確認し、役ができる確率、同じ役同士の勝敗の決め方、キッカー、ボードだけで役ができる場合まで初心者向けに丁寧に解説します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Noto+Serif+JP:wght@500;600&family=Big+Shoulders+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="assets/base.css">
+</head>
+<body>
+<header>
+<div class="utility-bar"><div class="container utility-row">
+  <a class="utility-home" href="../../">♠ JUKU-CHO</a>
+  <div class="utility-tools"><a href="../dictionary/">用語辞典</a><a href="../range/">レンジ表</a><a href="../equity/">勝率計算</a></div>
+</div></div>
+<div class="container header">
+  <a class="logo" href="01-poker-toha.html">♠ POKER BASE<small>ポーカーの基礎は、このサイトで。</small></a>
+  <nav class="series-nav"><a href="01-poker-toha.html"><span class="num">01</span>とは？</a><a href="02-texas-holdem-rules.html"><span class="num">02</span>ルール</a><a class="current" href="03-hand-ranking.html"><span class="num">03</span>役</a><a href="04-position.html"><span class="num">04</span>ポジション</a><a href="05-bet-raise.html"><span class="num">05</span>ベット/レイズ</a><a href="06-pot-control.html"><span class="num">06</span>ポットコントロール</a><a href="07-tells.html"><span class="num">07</span>テル</a><a href="08-starting-hands.html"><span class="num">08</span>ハンド選び</a><a href="09-pot-odds.html"><span class="num">09</span>ポットオッズ</a><a href="10-bluffing.html"><span class="num">10</span>ブラフ</a><a href="11-bankroll.html"><span class="num">11</span>バンクロール</a><a href="12-range-charts.html"><span class="num">12</span>レンジ表</a><a href="13-tournament-basics.html"><span class="num">13</span>トーナメント</a><a href="14-online-vs-live.html"><span class="num">14</span>オンライン/ライブ</a><a href="15-etiquette.html"><span class="num">15</span>マナー</a><a href="16-mental-game.html"><span class="num">16</span>メンタル</a><a href="17-stats.html"><span class="num">17</span>スタッツ</a><a href="18-3bet-4bet.html"><span class="num">18</span>3ベット</a><a href="19-house-rules-rake.html"><span class="num">19</span>ハウスルール</a><a class="dealer" href="50-dealer-role.html"><span class="num">50</span>ディーラー基礎</a></nav>
+</div>
+</header>
+
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <div class="eyebrow">POKER BASICS · 03</div>
+    <h1>ポーカーの役<br>（ハンドランキング）</h1>
+    <p>強さの順番さえ覚えれば、勝敗はすぐ判断できます。10種類の役を実際のカードで確認し、同じ役同士の決着のつけ方まで押さえましょう。</p>
+    <div class="buttons"><a class="btn white" href="#ranks">役を見る →</a><a class="btn line" href="#kicker">キッカーとは</a></div>
+  </div>
+  <div class="main-table">
+    <div class="table">
+      <div class="seat co">CO</div><div class="seat btnp">BTN</div><div class="seat sb">SB</div><div class="seat hj">HJ</div><div class="seat bb">BB</div><div class="seat utg">UTG</div>
+      <div class="dealer">D</div>
+      <div class="community"><div class="playing">A♠</div><div class="playing">K♠</div><div class="playing">Q♠</div><div class="playing">J♠</div><div class="playing red">10♥</div></div>
+    </div>
+  </div>
+</div></section>
+
+<main class="container">
+
+<section>
+<div class="toc">
+  <div class="toc-title">このページの内容</div>
+  <ul class="toc-list">
+    <li><a href="#ranks"><span class="n">01</span>役の一覧（強い順）</a></li>
+    <li><a href="#kicker"><span class="n">05</span>キッカーとは？</a></li>
+    <li><a href="#probability"><span class="n">02</span>役ができる確率</a></li>
+    <li><a href="#board"><span class="n">06</span>ボードだけで役ができるとき</a></li>
+    <li><a href="#detail"><span class="n">03</span>役ごとの細かいルール</a></li>
+    <li><a href="#example"><span class="n">07</span>実戦例：ショーダウンで役を読む</a></li>
+    <li><a href="#tiebreak"><span class="n">04</span>同じ役同士の勝敗の決め方</a></li>
+    <li><a href="#faq"><span class="n">08</span>よくある勘違いと質問</a></li>
+  </ul>
+</div>
+</section>
+
+<section id="ranks"><h2>役の一覧（強い順）</h2><p class="intro">テキサスホールデムでは、手元2枚＋共有5枚の合計7枚から最も強い5枚を選びます。役は全部で10種類、上にあるほど強い役です。数字が小さいほど強いと覚えてください。</p>
+<div class="hand-grid">
+
+<div class="hand-card top"><div class="hand-rank">1</div><div class="hcards"><div class="hc">A</div><div class="hc">K</div><div class="hc">Q</div><div class="hc">J</div><div class="hc">10</div></div><div class="hand-main"><div class="name">ロイヤルフラッシュ</div><div class="desc">同じスートのA-K-Q-J-10。最強の役</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">2</div><div class="hcards"><div class="hc red">9</div><div class="hc red">8</div><div class="hc red">7</div><div class="hc red">6</div><div class="hc red">5</div></div><div class="hand-main"><div class="name">ストレートフラッシュ</div><div class="desc">同じスートの数字が5枚連続</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">3</div><div class="hcards"><div class="hc">K</div><div class="hc red">K</div><div class="hc">K</div><div class="hc">K</div><div class="hc">4</div></div><div class="hand-main"><div class="name">フォーカード</div><div class="desc">同じ数字が4枚</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">4</div><div class="hcards"><div class="hc">J</div><div class="hc red">J</div><div class="hc red">J</div><div class="hc">8</div><div class="hc">8</div></div><div class="hand-main"><div class="name">フルハウス</div><div class="desc">3枚組＋2枚組の組み合わせ</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">5</div><div class="hcards"><div class="hc red">A</div><div class="hc red">J</div><div class="hc red">8</div><div class="hc red">6</div><div class="hc red">3</div></div><div class="hand-main"><div class="name">フラッシュ</div><div class="desc">同じスートが5枚（連続でなくてよい）</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">6</div><div class="hcards"><div class="hc">10</div><div class="hc">9</div><div class="hc red">8</div><div class="hc red">7</div><div class="hc">6</div></div><div class="hand-main"><div class="name">ストレート</div><div class="desc">数字が5枚連続（スートは不問）</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">7</div><div class="hcards"><div class="hc">7</div><div class="hc red">7</div><div class="hc red">7</div><div class="hc">K</div><div class="hc">2</div></div><div class="hand-main"><div class="name">スリーカード</div><div class="desc">同じ数字が3枚</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">8</div><div class="hcards"><div class="hc">A</div><div class="hc red">A</div><div class="hc">9</div><div class="hc red">9</div><div class="hc">4</div></div><div class="hand-main"><div class="name">ツーペア</div><div class="desc">2枚組が2つ</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">9</div><div class="hcards"><div class="hc">Q</div><div class="hc red">Q</div><div class="hc red">8</div><div class="hc">5</div><div class="hc red">2</div></div><div class="hand-main"><div class="name">ワンペア</div><div class="desc">同じ数字が2枚</div></div></div>
+
+<div class="hand-card"><div class="hand-rank">10</div><div class="hcards"><div class="hc">A</div><div class="hc">J</div><div class="hc red">8</div><div class="hc red">6</div><div class="hc">3</div></div><div class="hand-main"><div class="name">ハイカード</div><div class="desc">役が何も成立していない状態</div></div></div>
+
+</div>
+<p style="margin-top:20px"><strong>スート（マーク）に強弱はありません。</strong>♠が♥より強い、といったルールはテキサスホールデムには存在しません。同じ役になった場合は、あくまで数字で比べます。数字まで完全に並んだ場合は、ポットを山分け（チョップ）します。</p>
+</section>
+
+<section id="probability"><h2>役ができる確率</h2><p class="intro">「フルハウスってどのくらい珍しいの？」を数字で知っておくと、テーブルでの判断が落ち着きます。以下は、リバーまで進んで7枚すべてを見た時点で、その役が最終的にできている確率です。</p>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>役</th><th>できる確率（7枚時点）</th><th>おおよその頻度</th></tr>
+<tr><td><strong>ロイヤルフラッシュ</strong></td><td>0.0032%</td><td>約31,000回に1回</td></tr>
+<tr><td><strong>ストレートフラッシュ</strong></td><td>0.028%</td><td>約3,600回に1回</td></tr>
+<tr><td><strong>フォーカード</strong></td><td>0.17%</td><td>約595回に1回</td></tr>
+<tr><td><strong>フルハウス</strong></td><td>2.6%</td><td>約38回に1回</td></tr>
+<tr><td><strong>フラッシュ</strong></td><td>3.0%</td><td>約33回に1回</td></tr>
+<tr><td><strong>ストレート</strong></td><td>4.6%</td><td>約22回に1回</td></tr>
+<tr><td><strong>スリーカード</strong></td><td>4.8%</td><td>約21回に1回</td></tr>
+<tr><td><strong>ツーペア</strong></td><td>23.5%</td><td>約4回に1回</td></tr>
+<tr><td><strong>ワンペア</strong></td><td>43.8%</td><td>約2回に1回</td></tr>
+<tr><td><strong>ハイカード</strong></td><td>17.4%</td><td>約6回に1回</td></tr>
+</table>
+</div>
+<p><strong>実際のポーカーは、ワンペアとツーペアで決着することがほとんどです。</strong>この2つを合計すると67%を超えます。フルハウスやフラッシュを待っていては、ほとんどのハンドで何もできないまま終わってしまいます。「たいていの勝負はワンペアで決まる」と知っておくだけで、強い役を待ちすぎるクセを避けられます。</p>
+<div class="box">
+<p style="margin-bottom:0"><strong>豆知識：ストレートよりスリーカードのほうが、少しだけ出やすい。</strong>上の表を見ると、スリーカード（4.8%）はストレート（4.6%）より出やすいのに、役としてはストレートのほうが強いことに気づきます。これは役の強さの順番が「5枚だけで作るポーカー」の確率をもとに決められているためです。7枚を使えるテキサスホールデムでは、この2つの頻度がほぼ並びます。順番はそのまま覚えて問題ありません。</p>
+</div></section>
+
+<section id="detail"><h2>役ごとの細かいルール</h2><p class="intro">一覧だけでは判断できない場面がいくつかあります。実際のテーブルで迷いやすいポイントを、役ごとに整理します。</p>
+<div class="card-grid">
+  <div class="info-card">
+    <span class="icon">🅰️</span>
+    <h4>ストレートのAは上でも下でも使える</h4>
+    <p>10-J-Q-K-A（最強のストレート）と、A-2-3-4-5（最弱のストレート）の両方が成立します。ただしQ-K-A-2-3のように、一周をまたいで繋げることはできません。</p>
+    <span class="tag neutral">迷いやすい</span>
+  </div>
+  <div class="info-card">
+    <span class="icon">♦️</span>
+    <h4>フラッシュは5枚とも同じスート</h4>
+    <p>4枚では成立しません。ボードに同じスートが3枚あり、自分の手札に同じスートが2枚あれば完成します。ボードに4枚あるなら、手札1枚でも成立します。</p>
+    <span class="tag">よく出る</span>
+  </div>
+  <div class="info-card">
+    <span class="icon">🏠</span>
+    <h4>フルハウスは3枚組で強さが決まる</h4>
+    <p>KKK-22 と 222-KK なら、3枚組がKであるKKK-22の勝ちです。2枚組を比べる前に、たいていは決着がついています。</p>
+    <span class="tag neutral">比較の順番に注意</span>
+  </div>
+  <div class="info-card">
+    <span class="icon">🔢</span>
+    <h4>ペアは数字だけで比べる</h4>
+    <p>Aのペアが最強、2のペアが最弱です。ペアを作っているカードのスートは、勝敗に一切関係しません。</p>
+    <span class="tag">基本</span>
+  </div>
+</div></section>
+
+<section id="tiebreak"><h2>同じ役同士の勝敗の決め方</h2><p class="intro">ショーダウンで一番多いのが「お互い同じ役だった」という場面です。役ごとに、何から順番に比べるかが決まっています。</p>
+<div class="box data-table-wrap">
+<table class="data-table">
+<tr><th>役</th><th>比べる順番</th><th>例</th></tr>
+<tr><td><strong>ストレート</strong></td><td>一番上の数字</td><td>9-10-J-Q-K が 5-6-7-8-9 に勝つ</td></tr>
+<tr><td><strong>フラッシュ</strong></td><td>高いカードから順に5枚まで</td><td>A高フラッシュが K高フラッシュに勝つ</td></tr>
+<tr><td><strong>フルハウス</strong></td><td>3枚組 → 2枚組</td><td>KKK-22 が QQQ-AA に勝つ</td></tr>
+<tr><td><strong>フォーカード</strong></td><td>4枚組の数字 → キッカー</td><td>AAAA-2 が KKKK-A に勝つ</td></tr>
+<tr><td><strong>スリーカード</strong></td><td>3枚組の数字 → キッカー2枚</td><td>999-A-2 が 888-A-K に勝つ</td></tr>
+<tr><td><strong>ツーペア</strong></td><td>高いペア → 低いペア → キッカー</td><td>KK-22 が QQ-JJ に勝つ</td></tr>
+<tr><td><strong>ワンペア</strong></td><td>ペアの数字 → キッカー3枚</td><td>AA-K-8-3 が AA-Q-9-4 に勝つ</td></tr>
+<tr><td><strong>ハイカード</strong></td><td>高いカードから順に5枚まで</td><td>A-J-8-6-3 が A-10-9-7-5 に勝つ</td></tr>
+</table>
+</div>
+<p style="margin-bottom:0">共通しているのは<strong>「まず役を作っているカードで比べ、それが同じなら残りのカード（キッカー）で比べる」</strong>という順番です。5枚すべてが完全に同じなら引き分けとなり、ポットを分け合います。</p></section>
+
+<section id="kicker"><h2>キッカーとは？</h2><p class="intro">同じ役同士が並んだとき、役に使わなかった残りのカード（キッカー）の強さで勝敗を決めます。初心者が一番損をしやすいのが、このキッカーの弱さです。</p>
+<div class="box">
+<p><strong>例：どちらも「Aのワンペア」の場合</strong></p>
+<div class="flow">
+<div>YOU<small>A A / K 8 3</small></div><div>相手<small>A A / Q 9 4</small></div><div>比較<small>ペア以外の一番強いカード</small></div><div>結果<small>Kを持つYOUの勝ち</small></div><div>ポイント<small>役が同じでもキッカーで差がつく</small></div>
+</div>
+<p style="margin:14px 0 0;margin-bottom:0">ペアの強さ（A同士）が並んだ場合、次に強いカード＝キッカー（この例ではKとQ）を比較します。Kを持つ方が勝ちです。</p>
+</div>
+<h3 class="sub-h">キッカー負けは、初心者が一番よくやる負け方</h3>
+<div class="box">
+<p>たとえば手札が<strong>A♠7♦</strong>で、ボードにAが出たとします。「Aのペアができた」と喜んでベットを重ねたくなりますが、相手が<strong>A♣K♥</strong>を持っていれば、同じAのペアでもキッカーのK対7で負けます。しかも自分は「ペアができた」と思い込んでいるぶん、大きな金額を失いやすい形です。</p>
+<p style="margin-bottom:0">つまり<strong>Aを持っているだけでは安心できません。</strong>「Aと一緒に何を持っているか」が重要になります。参加してよいハンドの選び方は<a href="08-starting-hands.html">08｜スターティングハンドの選び方</a>で詳しく解説しています。</p>
+</div></section>
+
+<section id="board"><h2>ボードだけで役ができるとき</h2><p class="intro">テキサスホールデムは「7枚から最も強い5枚を選ぶ」ゲームです。つまり、手札を1枚しか使わない、あるいは1枚も使わないこともあります。ここは初心者が最も混乱しやすいポイントです。</p>
+<div class="box">
+<p><strong>手札を必ず使う必要はありません。</strong>共有カード5枚だけで作った役が自分の最強の5枚になるなら、それがそのまま自分の役になります。これを「プレイ・ザ・ボード」と呼びます。</p>
+<p><strong>例：</strong>ボードが 10♠ J♠ Q♠ K♠ A♠（スペードのロイヤルフラッシュ）だった場合、残っている全員がロイヤルフラッシュです。手札は関係なくなるため、誰も勝てず、全員でポットを山分けします。</p>
+<p style="margin-bottom:0">オマハなど他の種目には「手札を必ず2枚使う」というルールがありますが、<strong>テキサスホールデムにその制限はありません</strong>。この違いを知らないまま他の種目に移ると間違えやすいので、頭の片隅に置いておくと安心です。</p>
+</div></section>
+
+<section id="example"><h2>実戦例：ショーダウンで役を読む</h2><p class="intro">実際のショーダウンでは、7枚から最強の5枚を選び直して比べます。1つの例で手順を追ってみましょう。</p>
+<div class="hand-ex">
+  <div class="hand-ex-head">
+    <div>形式<strong>6人卓・キャッシュゲーム</strong></div>
+    <div>場面<strong>リバー終了・ショーダウン</strong></div>
+    <div>残り<strong>2人</strong></div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>BOARD</b>
+      <div class="street-cards"><div class="playing">K♣</div><div class="playing">8♠</div><div class="playing red">8♦</div><div class="playing red">5♥</div><div class="playing">2♠</div></div>
+      <span class="pot">共有カード5枚</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">まず確認</span>ボードには<strong>8のペア</strong>ができています。この8は残っている全員が使えるカードです。</p>
+      <p style="margin-bottom:0">スートはバラバラなのでフラッシュはなし、数字も並んでいないのでストレートもありません。つまり勝負は「誰が一番いいペアを作れているか」で決まります。</p>
+    </div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>YOU</b>
+      <div class="street-cards"><div class="playing">A♠</div><div class="playing red">K♥</div></div>
+      <span class="pot">ツーペア（K・8）</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">使える7枚</span>A♠ K♥ ＋ K♣ 8♠ 8♦ 5♥ 2♠</p>
+      <p>手札のK♥がボードのK♣とペアになりました。ボードの8のペアと合わせて<strong>ツーペア（KとK、8と8）</strong>。5枚目に残る一番強いカードはA♠です。</p>
+      <p style="margin-bottom:0"><span class="act">最強の5枚</span>K♥ K♣ 8♠ 8♦ A♠ ＝ ツーペア（K・8）Aキッカー</p>
+    </div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>相手</b>
+      <div class="street-cards"><div class="playing">Q♣</div><div class="playing red">Q♦</div></div>
+      <span class="pot">ツーペア（Q・8）</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">使える7枚</span>Q♣ Q♦ ＋ K♣ 8♠ 8♦ 5♥ 2♠</p>
+      <p>手札がQのペアです。ボードの8のペアと合わせて<strong>ツーペア（QとQ、8と8）</strong>。5枚目に残る一番強いカードはK♣です。</p>
+      <p style="margin-bottom:0"><span class="act">最強の5枚</span>Q♣ Q♦ 8♠ 8♦ K♣ ＝ ツーペア（Q・8）Kキッカー</p>
+    </div>
+  </div>
+
+  <div class="street">
+    <div class="street-rail"><b>結果</b>
+      <div class="street-cards"><div class="playing red">K♥</div><div class="playing">K♣</div></div>
+      <span class="pot">YOUの勝ち</span>
+    </div>
+    <div class="street-body">
+      <p><span class="act think">比較</span>お互いツーペアなので、<strong>まず高いほうのペアを比べます</strong>。YOUはK、相手はQ。この時点でYOUの勝ちが決まるため、低いペア（どちらも8）やキッカーを比べる必要はありません。</p>
+      <p style="margin-bottom:0">相手のQ♣Q♦は配られた時点では非常に強いハンドでしたが、<strong>ボードにKが出た瞬間に立場が入れ替わりました</strong>。「配られたときの強さ」と「ボードが開いた後の強さ」は別物だという、ポーカーの本質がよく分かる場面です。</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="faq"><h2>よくある勘違いと質問</h2>
+<div class="faq">
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>スートに強さの順番はありますか？（♠が一番強い、など）</div>
+    <div class="faq-a"><span class="faq-badge">A</span>ありません。テキサスホールデムではスートによる優劣は一切なく、役も数字も同じなら引き分けです。ブリッジなど他のカードゲームにはスートの強弱があるため混同されがちですが、ポーカーには存在しません。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>A-2-3-4-5 は最強のストレートですか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>逆で、<strong>最弱のストレート</strong>です。Aを1として扱った形で「ホイール」とも呼ばれます。最強のストレートは10-J-Q-K-Aです。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>手札の2枚は必ず使わないといけませんか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>使わなくて構いません。7枚から最強の5枚を選ぶだけなので、手札を1枚だけ使うことも、ボードの5枚だけを使うこともあります。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>役はどうやって覚えればいいですか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>「フラッシュ＝スートが5枚」「ストレート＝数字が5枚連続」の2つを軸にすると、ストレートフラッシュ（両方を満たす）やロイヤルフラッシュ（その最上位）が自然に繋がります。あとはペアの数（1組＝ワンペア、2組＝ツーペア、3枚＝スリーカード、4枚＝フォーカード）を数えるだけです。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q"><span class="faq-badge">Q</span>まったく同じ役だった場合はどうなりますか？</div>
+    <div class="faq-a"><span class="faq-badge">A</span>キッカーまで含めた5枚が完全に同じなら引き分けで、ポットを人数で山分けします（チョップ）。割り切れない端数の扱いは会場ごとのルールによります。詳しくは<a href="19-house-rules-rake.html">19｜ハウスルール・レークの基礎</a>を参照してください。</div>
+  </div>
+</div></section>
+
+<section id="checklist"><h2>ショーダウンで迷ったときの確認手順</h2><p class="intro">実際にカードを見せ合う場面では、この順番で確認すれば読み間違えません。</p>
+<div class="box">
+<ul class="check-list">
+  <li>ボードだけで何ができているか確認する<small>ボードのペア・同じスート3枚以上・数字の並びを先に見る</small></li>
+  <li>自分の7枚から最強の5枚を選ぶ<small>手札を使わない選び方もありうる</small></li>
+  <li>役の名前を確定させる<small>一覧の10種類のどれか</small></li>
+  <li>相手と同じ役なら、比べる順番を思い出す<small>役を作るカード → キッカーの順</small></li>
+  <li>判断に迷ったらディーラーに確認する<small>勝敗の最終判定はディーラーが行う</small></li>
+</ul>
+</div>
+<p style="margin-bottom:0">なお、実際のテーブルでは<strong>ディーラーが役を読み上げて勝者を決めてくれます</strong>。自分で完璧に判定できなくても問題ありません。用語の意味は<a href="../dictionary/">用語辞典</a>でも確認できます。</p></section>
+
+<section><div class="quote"><h2 style="margin-top:0">覚え方のコツ</h2><p>「フラッシュ＝スートが5枚」「ストレート＝数字が5枚連続」。この2つを軸に覚えると、ストレートフラッシュ（両方を満たす役）も自然に理解できます。そして実戦では、勝負の3分の2以上がワンペアかツーペアで決着します。</p><p style="margin-bottom:0"><strong>迷ったら、このページに戻って一覧で確認してください。</strong></p></div></section>
+
+<section><h2>このページのつづき</h2><div class="buttons">
+<a class="btn outline" href="02-texas-holdem-rules.html">← 02｜テキサスホールデムのルール</a>
+<a class="btn white" href="04-position.html">04｜ポーカーのポジション →</a>
+</div></section>
+
+</main>
+<footer><div class="container">
+  <strong>♠ POKER BASE</strong>
+  <p>ポーカーの基礎は、このサイトで。</p>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>POKER BASICS シリーズ</h4>
+      <a href="01-poker-toha.html">01｜ポーカーとは？</a>
+      <a href="02-texas-holdem-rules.html">02｜テキサスホールデムのルール</a>
+      <a href="03-hand-ranking.html">03｜ポーカーの役・ハンドランキング</a>
+      <a href="04-position.html">04｜ポーカーのポジション</a>
+      <a href="05-bet-raise.html">05｜ポーカーのベット・レイズ額</a>
+      <a href="06-pot-control.html">06｜ポットコントロール</a>
+      <a href="07-tells.html">07｜ポーカーのテル</a>
+      <a href="08-starting-hands.html">08｜スターティングハンドの選び方</a>
+      <a href="09-pot-odds.html">09｜ポットオッズとアウツの基本</a>
+      <a href="10-bluffing.html">10｜ブラフの基本</a>
+      <a href="11-bankroll.html">11｜バンクロールマネジメント</a>
+      <a href="12-range-charts.html">12｜ハンドレンジ表の読み方</a>
+      <a href="13-tournament-basics.html">13｜トーナメント戦略の基本</a>
+      <a href="14-online-vs-live.html">14｜オンラインとライブの違い</a>
+      <a href="15-etiquette.html">15｜マナー・エチケット</a>
+      <a href="16-mental-game.html">16｜メンタルゲーム・ティルト対策</a>
+      <a href="17-stats.html">17｜スタッツの読み方</a>
+      <a href="18-3bet-4bet.html">18｜3ベット・4ベットの基本</a>
+      <a href="19-house-rules-rake.html">19｜ハウスルール・レークの基礎</a>
+      <a href="50-dealer-role.html">50｜ディーラーの基礎</a>
+    </div>
+    <div class="footer-col">
+      <h4>ツールで学ぶ</h4>
+      <a href="../dictionary/">用語辞典</a>
+      <a href="../range/">レンジ表</a>
+      <a href="../equity/">勝率計算</a>
+    </div>
+    <div class="footer-col">
+      <h4>もっと見る</h4>
+      <a href="https://juku-cho.com/">JUKU-CHO ホーム</a>
+      <a href="#">note（ポーカー塾）</a>
+      <a href="#">YouTube（ポーカー塾）</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; JUKU-CHO / POKER BASE</div>
+</div></footer>
+</body></html>
