@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0B0D10" id="metaTheme">
-<meta name="app-version" content="6">
+<meta name="app-version" content="7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
 <meta property="og:type" content="website">
@@ -203,6 +203,10 @@
   .foot{flex:0 0 auto;text-align:center;font-size:9px;color:var(--ink-3);letter-spacing:.14em;
     font-weight:600;padding:8px 0 0}
   .foot b{color:var(--ink-2);font-weight:700}
+  .travel-footer{flex:0 0 auto;align-self:center;display:inline-flex;align-items:center;justify-content:center;min-height:34px;
+    margin:8px auto 0;padding:7px 12px;border:1px solid var(--hair);border-radius:999px;color:var(--ink-2);background:var(--raise);
+    font-size:11px;font-weight:700;letter-spacing:.02em;text-decoration:none;transition:border-color .16s,color .16s,background .16s}
+  .travel-footer:hover,.travel-footer:focus-visible{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);outline:none}
 
   /* ============ sheet ============ */
   .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:.2s;z-index:40}
@@ -673,7 +677,7 @@
 <div class="app">
 
   <header class="hdr">
-    <img class="hdr-img" src="header-wide.png?v=6" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png?v=6';">
+    <img class="hdr-img" src="header-wide.png?v=7" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png?v=7';">
     <div class="hdr-tagline" id="tagline"></div>
   </header>
 
@@ -732,6 +736,7 @@
   </div>
 
   <div class="ad" id="adSlot"><span>ADVERTISEMENT</span></div>
+  <a class="travel-footer" id="travelFooter" href="https://juku-cho.com/info/travel/" target="_blank" rel="noopener">海外旅行の準備ガイドを見る　→</a>
 </div>
 
 <div class="kp-scrim" id="kpScrim"></div>
@@ -778,7 +783,6 @@
       <span id="tManualLabel">使い方</span>
     </button>
     <div class="manual mcollapse" id="manualBox"></div>
-    <a class="travel-official" href="https://juku-cho.com/info/travel/" target="_blank" rel="noopener"><span>海外旅行準備室</span><small>公式サイト　→</small></a>
 
     <div class="lbl" id="tQuick">簡単入力の金額</div>
     <div class="qe">
@@ -879,6 +883,7 @@
     vi:['🇰🇷 Hướng dẫn tiền tệ Hàn Quốc','Chi phí · thanh toán · đổi tiền →','Chính sách bảo mật','Đã chọn: '],
     th:['🇰🇷 คู่มือการเงินเที่ยวเกาหลี','ค่าใช้จ่าย · ชำระเงิน · แลกเงิน →','นโยบายความเป็นส่วนตัว','เลือกแล้ว: ']
   };
+  var TRAVEL_LINK={ja:'海外旅行の準備ガイドを見る　→',en:'Travel preparation guide →',zh:'查看海外旅行准备指南 →',ko:'해외여행 준비 가이드 보기 →',vi:'Xem hướng dẫn chuẩn bị du lịch →',th:'ดูคู่มือเตรียมตัวไปต่างประเทศ →'};
 
   /* localized country names */
   var CN={
@@ -1020,6 +1025,7 @@
     var cl=lang==='ja'?'入力中':lang==='en'?'EDITING':lang==='zh'?'输入中':lang==='ko'?'입력 중':lang==='vi'?'ĐANG NHẬP':'กำลังป้อน';
     $('caretT').textContent=cl;$('caretB').textContent=cl;
     $('tManualLabel').textContent=t('manual');
+    if($('travelFooter'))$('travelFooter').textContent=TRAVEL_LINK[lang]||TRAVEL_LINK.ja;
     renderManual();
     var seg=$('langSeg');seg.innerHTML='';
     LANGS.forEach(function(L){var b=document.createElement('button');b.textContent=L.n;
@@ -1418,7 +1424,7 @@
   // オフライン対応: Service Worker を登録
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      // 共有URLの ?v=6 と同じ番号を使い、更新時はここを 7、8… と上げる。
+      // 共有URLの ?v=7 と同じ番号を使い、更新時はここを 8、9… と上げる。
       var appVersion=(document.querySelector('meta[name="app-version"]')||{}).content||'1';
       navigator.serviceWorker.register('./sw.js?v='+encodeURIComponent(appVersion),{updateViaCache:'none'}).catch(function (err) {
         console.warn('[sw] registration failed:', err);
