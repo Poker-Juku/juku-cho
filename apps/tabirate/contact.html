@@ -1,41 +1,126 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#080c10">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B0D10">
 <title>お問い合わせ — TABI-RATE</title>
+<meta name="description" content="TABI-RATE（為替換算アプリ）へのお問い合わせフォームです。不具合のご報告、ご要望、その他のご質問はこちらからお送りください。">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://juku-cho.com/apps/tabirate/contact.html">
+<link rel="icon" type="image/png" href="favicon.png">
 <style>
-  :root{--bg:#080c10;--raise:#111820;--ink:#f4f7fb;--ink2:#a6b1c0;--line:rgba(255,255,255,.12);--accent:#34d399}
-  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.6}
-  .wrap{width:min(100% - 32px,560px);margin:0 auto;padding:28px 0 calc(44px + env(safe-area-inset-bottom))}.back{display:inline-block;color:var(--accent);font-size:14px;text-decoration:none;margin-bottom:28px}.brand{font-weight:800;letter-spacing:.08em;font-size:14px;color:var(--accent)}h1{font-size:28px;letter-spacing:-.03em;margin:8px 0}.lead{color:var(--ink2);font-size:14px;margin:0 0 24px}
-  form{padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--raise)}label{display:block;font-size:13px;font-weight:750;margin:0 0 7px}input,textarea{width:100%;border:1px solid var(--line);border-radius:11px;background:#0a1016;color:var(--ink);font:inherit;font-size:16px;padding:12px;margin:0 0 18px}textarea{min-height:150px;resize:vertical}input:focus,textarea:focus{outline:2px solid rgba(52,211,153,.45);border-color:var(--accent)}button{width:100%;border:0;border-radius:11px;padding:14px;background:var(--accent);color:#062518;font:inherit;font-weight:800;font-size:16px;cursor:pointer}.note{font-size:12px;color:var(--ink2);margin:16px 2px 0}.error{display:none;margin:0 0 14px;padding:10px 12px;border-radius:10px;background:rgba(248,113,113,.12);color:#fecaca;font-size:13px}.error.show{display:block}
+  :root{
+    --bg:#0B0D10; --raise:#14171C; --raise-2:#1B1F26; --ink:#F2F4F7;
+    --ink-2:#9AA3AF; --ink-3:#5C6572; --hair:rgba(255,255,255,.08);
+    --accent:#34D399; --accent-dim:rgba(52,211,153,.12); --danger:#F87171;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#F7F8FA; --raise:#FFFFFF; --raise-2:#F0F2F5; --ink:#0E1116;
+      --ink-2:#5F6875; --ink-3:#98A0AC; --hair:rgba(14,17,22,.10);
+      --accent:#0E9F6E; --accent-dim:rgba(14,159,110,.10); --danger:#DC2626;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.8}
+  .wrap{max-width:680px;margin:0 auto;padding:48px 20px 80px}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-2);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:28px}
+  .back:hover{color:var(--accent)}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .glyph{width:32px;height:32px;border-radius:9px;background:var(--raise-2);border:1px solid var(--hair);display:grid;place-items:center;overflow:hidden;flex:0 0 auto}
+  .glyph img{width:100%;height:100%;object-fit:cover}
+  .brand b{font-size:15px;font-weight:800;letter-spacing:.08em}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.01em;margin:20px 0 8px}
+  .lead{font-size:14.5px;color:var(--ink-2);margin:0 0 28px}
+  form{display:grid;gap:18px}
+  label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+  label .req{color:var(--accent);font-size:11px;margin-left:6px;font-weight:700}
+  input,select,textarea{width:100%;background:var(--raise);color:var(--ink);border:1px solid var(--hair);border-radius:12px;
+    padding:13px 14px;font:inherit;font-size:16px;line-height:1.6;outline:none;transition:border-color .15s,box-shadow .15s}
+  textarea{min-height:170px;resize:vertical}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+  label .opt{color:var(--ink-3);font-size:11px;margin-left:6px;font-weight:600}
+  .hint{font-size:12px;color:var(--ink-3);margin:0 0 6px}
+  .hint.warn{color:var(--ink-2)}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  button{background:var(--accent);color:#04150E;border:0;border-radius:12px;height:52px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .15s,transform .1s}
+  button:active{transform:scale(.99)}
+  button[disabled]{opacity:.5;cursor:default}
+  .note{font-size:12px;color:var(--ink-3);margin:0}
+  .status{display:none;border-radius:12px;padding:14px 16px;font-size:14px;border:1px solid var(--hair);background:var(--raise)}
+  .status.ok{display:block;border-color:var(--accent);color:var(--ink)}
+  .status.ng{display:block;border-color:var(--danger);color:var(--ink)}
+  .foot{margin-top:56px;padding-top:20px;border-top:1px solid var(--hair);font-size:11px;color:var(--ink-3);letter-spacing:.08em;text-align:center}
+  .foot a{color:var(--ink-3)}
 </style>
 </head>
 <body>
-<main class="wrap">
+<div class="wrap">
   <a class="back" href="./index.html">← TABI-RATEに戻る</a>
-  <div class="brand">TABI-RATE</div>
-  <h1 id="title">お問い合わせ</h1>
-  <p class="lead" id="lead">ご意見・不具合のご報告・掲載に関するお問い合わせはこちらからお送りください。</p>
-  <form action="https://formspree.io/f/xjgnrdpy" method="POST">
-    <input type="hidden" name="_subject" value="TABI-RATE お問い合わせ">
-    <div class="error" id="error">入力内容をご確認ください。</div>
-    <label for="name" id="nameLabel">お名前（任意）</label>
-    <input id="name" type="text" name="name" autocomplete="name">
-    <label for="email" id="emailLabel">メールアドレス</label>
-    <input id="email" type="email" name="email" autocomplete="email" required>
-    <label for="message" id="messageLabel">お問い合わせ内容</label>
-    <textarea id="message" name="message" required></textarea>
-    <button type="submit" id="send">送信する</button>
+  <div class="brand"><div class="glyph"><img src="icon-512.png" alt=""></div><b>TABI-RATE</b></div>
+  <h1>お問い合わせ</h1>
+  <p class="lead">不具合のご報告・ご要望・ご質問などをお送りください。お名前の入力は不要で、メールアドレスも返信を希望する場合のみで構いません。</p>
+
+  <form id="contactForm" action="https://formspree.io/f/xjgnrdpy" method="POST">
+    <div>
+      <label for="name">ニックネーム<span class="opt">任意</span></label>
+      <input id="name" name="nickname" type="text" autocomplete="off" maxlength="40" placeholder="本名は入力しないでください">
+    </div>
+    <div>
+      <label for="email">メールアドレス<span class="opt">任意</span></label>
+      <input id="email" name="email" type="email" autocomplete="off" maxlength="120" placeholder="返信を希望する場合のみ入力してください">
+      <p class="hint">未入力でも送信できます（その場合、返信はできません）。</p>
+    </div>
+    <div>
+      <label for="topic">お問い合わせの種類</label>
+      <select id="topic" name="topic">
+        <option>不具合の報告</option>
+        <option>機能の要望</option>
+        <option>使い方の質問</option>
+        <option>その他</option>
+      </select>
+    </div>
+    <div>
+      <label for="message">お問い合わせ内容<span class="req">必須</span></label>
+      <p class="hint warn">電話番号・住所・クレジットカード番号などの個人情報は書かないでください。</p>
+      <textarea id="message" name="message" required maxlength="3000" placeholder="例：iPhoneで〇〇の操作をすると…（機種・OSのバージョンもあると助かります）"></textarea>
+    </div>
+    <div class="hp" aria-hidden="true"><label>空欄のままにしてください<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+    <input type="hidden" name="_subject" value="【TABI-RATE】お問い合わせ">
+    <button type="submit" id="sendBtn">送信する</button>
+    <p class="note">ご入力いただいた内容は、お問い合わせへの対応のみに利用します（フォームの受付には外部サービスFormspreeを利用しています）。詳しくは<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。</p>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
   </form>
-  <p class="note" id="note">送信後は Formspree の送信完了画面が表示されます。</p>
-</main>
+
+  <div class="foot">JUKU-CHO — TABI-RATE CONTACT</div>
+</div>
 <script>
 (function(){
-  var lang=new URLSearchParams(location.search).get('lang')||'ja';
-  var copy={en:['← Back to TABI-RATE','Contact','Send feedback, report an issue, or contact us about listings.','Name (optional)','Email address','Message','Send','Please check the required fields.','After sending, Formspree will show a confirmation page.'],zh:['← 返回 TABI-RATE','联系我们','欢迎发送意见、问题反馈或合作咨询。','姓名（选填）','电子邮箱','留言','发送','请检查必填内容。','发送后将显示 Formspree 的确认页面。'],ko:['← TABI-RATE로 돌아가기','문의','의견, 오류 신고 또는 게재 관련 문의를 보내주세요.','이름（선택）','이메일 주소','문의 내용','보내기','필수 항목을 확인해 주세요.','전송 후 Formspree의 완료 페이지가 표시됩니다.'],vi:['← Quay lại TABI-RATE','Liên hệ','Gửi góp ý, báo lỗi hoặc yêu cầu liên quan đến nội dung.','Tên (không bắt buộc)','Email','Nội dung','Gửi','Vui lòng kiểm tra các mục bắt buộc.','Sau khi gửi, Formspree sẽ hiển thị trang xác nhận.'],th:['← กลับไปที่ TABI-RATE','ติดต่อเรา','ส่งความคิดเห็น รายงานปัญหา หรือสอบถามเกี่ยวกับเนื้อหาได้ที่นี่','ชื่อ (ไม่บังคับ)','อีเมล','ข้อความ','ส่ง','โปรดตรวจสอบช่องที่ต้องกรอก','หลังส่งแล้ว Formspree จะแสดงหน้ายืนยัน']};
-  var c=copy[lang];if(!c)return;document.documentElement.lang=lang;document.querySelector('.back').textContent=c[0];document.title=c[1]+' — TABI-RATE';document.getElementById('title').textContent=c[1];document.getElementById('lead').textContent=c[2];document.getElementById('nameLabel').textContent=c[3];document.getElementById('emailLabel').textContent=c[4];document.getElementById('messageLabel').textContent=c[5];document.getElementById('send').textContent=c[6];document.getElementById('error').textContent=c[7];document.getElementById('note').textContent=c[8];
+  var form=document.getElementById('contactForm'),btn=document.getElementById('sendBtn'),box=document.getElementById('status');
+  form.addEventListener('submit',function(e){
+    if(!window.fetch||!window.FormData)return; /* 非対応環境は通常のPOST送信にフォールバック */
+    e.preventDefault();
+    btn.disabled=true;btn.textContent='送信中…';box.className='status';box.textContent='';
+    fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}})
+      .then(function(r){
+        if(r.ok){
+          form.reset();
+          box.className='status ok';
+          box.textContent='送信しました。お問い合わせありがとうございます。';
+          btn.textContent='送信済み';
+        }else{
+          return r.json().then(function(d){throw new Error((d&&d.errors&&d.errors.map(function(x){return x.message;}).join(' / '))||'error');});
+        }
+      })
+      .catch(function(){
+        box.className='status ng';
+        box.textContent='送信に失敗しました。通信状況を確認して、もう一度お試しください。';
+        btn.disabled=false;btn.textContent='送信する';
+      });
+  });
 })();
 </script>
 </body>
