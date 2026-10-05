@@ -19,16 +19,17 @@
 <style>
 /* 各GATEの深掘りリンク（小さく表示・タップしやすい余白つき） */
 .gate{display:block;padding:0;min-height:0}
-.gate-head{display:grid;grid-template-columns:38px 1fr auto;gap:13px;align-items:start;padding:21px 21px 12px}
+.gate-head{display:grid;grid-template-columns:62px 1fr auto;gap:13px;align-items:start;padding:21px 21px 12px}
 .gate-head:hover h3,.gate-head:focus-visible h3{color:var(--blue)}
 .gate .deep-title{margin:0;padding:0 21px 0 72px;color:var(--blue);font-size:11.5px;font-weight:800;letter-spacing:.04em}
 .deep{list-style:none;margin:4px 0 0;padding:0 21px 16px 72px;display:grid;gap:0}
 .gate-money .deep{grid-template-columns:1fr 1fr;column-gap:28px}
+.gate-no{font-size:11px;letter-spacing:.04em}.gate-summary{margin:0 21px 14px;padding:15px 17px;border:1px solid #d8e8fb;border-radius:10px;background:linear-gradient(100deg,#f1f8ff,#fbfdff);color:var(--ink)}.gate-summary p{margin:0 0 8px;font-size:13px;font-weight:800}.gate-summary ul{margin:0;padding:0;list-style:none;font-size:12px;line-height:1.7}.gate-summary li{position:relative;padding-left:13px}.gate-summary li::before{content:'•';position:absolute;left:0;color:var(--blue);font-weight:800}.deep-panel{margin:0 21px 16px;border-top:1px solid var(--line)}.deep-panel summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0 10px;color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.02em;cursor:pointer;list-style:none}.deep-panel summary::-webkit-details-marker{display:none}.deep-panel summary::after{content:'＋';font-size:19px;font-weight:400;line-height:1}.deep-panel[open] summary::after{content:'−'}.deep-panel .deep{padding:0 0 4px;margin:0}
 .deep a{display:block;padding:7px 0;border-bottom:1px dashed var(--line);line-height:1.45}
 .deep a:hover .q,.deep a:focus-visible .q{color:var(--blue);text-decoration:underline}
 .deep .q{display:block;font-size:12.5px;font-weight:700;color:var(--ink)}
 .deep .t{display:block;font-size:11.5px;color:var(--muted)}
-@media(max-width:720px){.gate-head{padding:18px 18px 10px}.gate .deep-title{padding-left:18px}.deep{padding:0 18px 14px}.gate-money .deep{grid-template-columns:1fr}}
+@media(max-width:720px){.gate-head{padding:18px 18px 10px}.gate-summary{margin:0 18px 14px}.deep-panel{margin:0 18px 14px}.gate .deep-title{padding-left:18px}.deep{padding:0 18px 14px}.gate-money .deep{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -83,63 +84,63 @@
 <div class="gate-grid">
 <div class="gate gate-money">
 <a class="gate-head" href="cash-vs-card.html">
-<span class="gate-no">01</span>
+<span class="gate-no">GATE01</span>
 <div>
 <h3>お金・両替</h3>
 <p>現金・カード・ATM・為替の基本</p>
 </div>
 <b>見る →</b>
 </a>
-<p class="deep-title">お金・両替をさらに深掘り！</p>
-<ul class="deep"><li><a href="exchange-timing.html"><span class="q">日本と現地、どこで替える？</span><span class="t">両替のベストタイミング</span></a></li><li><a href="atm-guide.html"><span class="q">海外ATMはどう使う？</span><span class="t">海外ATMで現金を引き出す手順</span></a></li><li><a href="dcc-guide.html"><span class="q">日本円払いは選ぶべき？</span><span class="t">DCC（自国通貨建て決済）の見分け方</span></a></li><li><a href="card-benefits.html"><span class="q">旅行用カードはどう選ぶ？</span><span class="t">海外旅行で使うカードの特典と選び方</span></a></li><li><a href="cash-budget.html"><span class="q">現金はいくら持つ？</span><span class="t">現金の目安と安全な分け方</span></a></li><li><a href="card-trouble.html"><span class="q">カードが使えない・なくした</span><span class="t">カードトラブル時の行動順</span></a></li></ul>
+<div class="gate-summary"><p>現金・カード・ATM・両替の基本を、出発前にまとめて確認。</p><ul><li>カードを主役に、到着直後の移動や小さな支払い用の現金を準備</li><li>日本円払い（DCC）や海外ATMで、損をしにくい選び方を知る</li><li>カードの利用通知・緊急連絡先・現金の分け方を出発前に確認</li></ul></div>
+<details class="deep-panel"><summary>お金・両替をさらに深掘り（6記事）</summary><ul class="deep"><li><a href="exchange-timing.html"><span class="q">日本と現地、どこで替える？</span><span class="t">両替のベストタイミング</span></a></li><li><a href="atm-guide.html"><span class="q">海外ATMはどう使う？</span><span class="t">海外ATMで現金を引き出す手順</span></a></li><li><a href="dcc-guide.html"><span class="q">日本円払いは選ぶべき？</span><span class="t">DCC（自国通貨建て決済）の見分け方</span></a></li><li><a href="card-benefits.html"><span class="q">旅行用カードはどう選ぶ？</span><span class="t">海外旅行で使うカードの特典と選び方</span></a></li><li><a href="cash-budget.html"><span class="q">現金はいくら持つ？</span><span class="t">現金の目安と安全な分け方</span></a></li><li><a href="card-trouble.html"><span class="q">カードをなくした！</span><span class="t">カードトラブル時の行動順</span></a></li></ul></details>
 </div>
 <div class="gate">
 <a class="gate-head" href="seat-guide.html">
-<span class="gate-no">02</span>
+<span class="gate-no">GATE02</span>
 <div>
 <h3>航空券・座席選び</h3>
 <p>窓側？通路側？快適な席の選び方</p>
 </div>
 <b>見る →</b>
 </a>
-<p class="deep-title">航空券・座席選びをさらに深掘り！</p>
-<ul class="deep"><li><a href="window-vs-aisle.html"><span class="q">窓側・通路側、どっち？</span><span class="t">フライト時間で選ぶ座席の決め方</span></a></li><li><a href="exit-row.html"><span class="q">非常口席は本当におすすめ？</span><span class="t">足元の広さと注意点</span></a></li><li><a href="best-seat-location.html"><span class="q">機内のどこが自分向き？</span><span class="t">前方・後方・主翼上の違い</span></a></li><li><a href="seats-to-avoid.html"><span class="q">避けたい席はどれ？</span><span class="t">後悔しやすい座席の見分け方</span></a></li><li><a href="paid-seat-selection.html"><span class="q">追加料金を払う価値は？</span><span class="t">有料座席指定の判断ポイント</span></a></li><li><a href="family-seating.html"><span class="q">家族・友人と並んで座るには？</span><span class="t">並び席を取りやすい指定術</span></a></li></ul>
+<div class="gate-summary"><p>フライト時間と旅の目的に合う座席を、予約前に見つける。</p><ul><li>窓側・通路側の向き不向きを、過ごし方から選ぶ</li><li>前方・後方・非常口席など、場所ごとの特徴を確認</li><li>有料指定や並び席が必要か、出発前に判断</li></ul></div>
+<details class="deep-panel"><summary>航空券・座席選びをさらに深掘り（6記事）</summary><ul class="deep"><li><a href="window-vs-aisle.html"><span class="q">窓側・通路側、どっち？</span><span class="t">フライト時間で選ぶ座席の決め方</span></a></li><li><a href="exit-row.html"><span class="q">非常口席は本当におすすめ？</span><span class="t">足元の広さと注意点</span></a></li><li><a href="best-seat-location.html"><span class="q">機内のどこが自分向き？</span><span class="t">前方・後方・主翼上の違い</span></a></li><li><a href="seats-to-avoid.html"><span class="q">避けたい席はどれ？</span><span class="t">後悔しやすい座席の見分け方</span></a></li><li><a href="paid-seat-selection.html"><span class="q">追加料金を払う価値は？</span><span class="t">有料座席指定の判断ポイント</span></a></li><li><a href="family-seating.html"><span class="q">家族・友人と並んで座るには？</span><span class="t">並び席を取りやすい指定術</span></a></li></ul></details>
 </div>
 <div class="gate">
 <a class="gate-head" href="plug-guide.html">
-<span class="gate-no">03</span>
+<span class="gate-no">GATE03</span>
 <div>
 <h3>持ち物・準備</h3>
 <p>プラグ・通信・機内持込・パッキング</p>
 </div>
 <b>見る →</b>
 </a>
-<p class="deep-title">持ち物・準備をさらに深掘り！</p>
-<ul class="deep"><li><a href="power-plug.html"><span class="q">コンセントは変換が必要？</span><span class="t">海外コンセントと変圧器の選び方</span></a></li><li><a href="mobile-data.html"><span class="q">通信はどれを選ぶ？</span><span class="t">eSIM・SIM・Wi-Fiの違い</span></a></li><li><a href="carry-on-rules.html"><span class="q">機内に持ち込めるものは？</span><span class="t">液体とモバイルバッテリーのルール</span></a></li><li><a href="packing-guide.html"><span class="q">荷物はどう詰める？</span><span class="t">スーツケースの詰め方</span></a></li><li><a href="travel-medicine.html"><span class="q">常備薬は持っていける？</span><span class="t">薬・処方箋・持ち込みの注意</span></a></li><li><a href="departure-checklist.html"><span class="q">前日に何を確認する？</span><span class="t">出発前日の最終チェック</span></a></li></ul>
+<div class="gate-summary"><p>持ち込み制限と、現地で困らない準備を先に整える。</p><ul><li>コンセント・通信・薬を、渡航先と自分の使い方に合わせる</li><li>液体・モバイルバッテリーなど、機内持込ルールを確認</li><li>前日チェックで、パスポート・荷物・予約情報を整える</li></ul></div>
+<details class="deep-panel"><summary>持ち物・準備をさらに深掘り（6記事）</summary><ul class="deep"><li><a href="power-plug.html"><span class="q">コンセントは変換が必要？</span><span class="t">海外コンセントと変圧器の選び方</span></a></li><li><a href="mobile-data.html"><span class="q">通信はどれを選ぶ？</span><span class="t">eSIM・SIM・Wi-Fiの違い</span></a></li><li><a href="carry-on-rules.html"><span class="q">機内に持ち込めるものは？</span><span class="t">液体とモバイルバッテリーのルール</span></a></li><li><a href="packing-guide.html"><span class="q">荷物はどう詰める？</span><span class="t">スーツケースの詰め方</span></a></li><li><a href="travel-medicine.html"><span class="q">常備薬は持っていける？</span><span class="t">薬・処方箋・持ち込みの注意</span></a></li><li><a href="departure-checklist.html"><span class="q">前日に何を確認する？</span><span class="t">出発前日の最終チェック</span></a></li></ul></details>
 </div>
 <div class="gate">
 <a class="gate-head" href="airport-timing.html">
-<span class="gate-no">04</span>
+<span class="gate-no">GATE04</span>
 <div>
 <h3>空港・搭乗</h3>
 <p>何分前？保安検査・ラウンジ・乗継</p>
 </div>
 <b>見る →</b>
 </a>
-<p class="deep-title">空港・搭乗をさらに深掘り！</p>
-<ul class="deep"><li><a href="when-to-arrive.html"><span class="q">空港へ何分前に行く？</span><span class="t">出発時刻から逆算する到着の目安</span></a></li><li><a href="checkin-guide.html"><span class="q">チェックインはどうする？</span><span class="t">オンラインチェックインの使い方</span></a></li><li><a href="security-guide.html"><span class="q">保安検査で慌てないには？</span><span class="t">スムーズに通る準備</span></a></li><li><a href="airport-lounge-guide.html"><span class="q">ラウンジは使える？</span><span class="t">利用前の確認ポイント</span></a></li><li><a href="priority-pass-guide.html"><span class="q">プライオリティ・パスとは？</span><span class="t">使い方と注意点</span></a></li><li><a href="transfer-guide.html"><span class="q">乗継で迷わないには？</span><span class="t">降機前からの行動順</span></a></li></ul>
+<div class="gate-summary"><p>空港到着から搭乗まで、迷いやすい順番を先に確認。</p><ul><li>国際線・国内線や荷物の有無から、空港に着く時刻を決める</li><li>チェックインと保安検査をスムーズに通る準備をする</li><li>ラウンジと乗継は、使える条件と移動時間を先に確認</li></ul></div>
+<details class="deep-panel"><summary>空港・搭乗をさらに深掘り（6記事）</summary><ul class="deep"><li><a href="when-to-arrive.html"><span class="q">空港へ何分前に行く？</span><span class="t">出発時刻から逆算する到着の目安</span></a></li><li><a href="checkin-guide.html"><span class="q">チェックインはどうする？</span><span class="t">オンラインチェックインの使い方</span></a></li><li><a href="security-guide.html"><span class="q">保安検査で慌てないには？</span><span class="t">スムーズに通る準備</span></a></li><li><a href="airport-lounge-guide.html"><span class="q">ラウンジは使える？</span><span class="t">利用前の確認ポイント</span></a></li><li><a href="priority-pass-guide.html"><span class="q">プライオリティ・パスとは？</span><span class="t">使い方と注意点</span></a></li><li><a href="transfer-guide.html"><span class="q">乗継で迷わないには？</span><span class="t">降機前からの行動順</span></a></li></ul></details>
 </div>
 <div class="gate">
 <a class="gate-head" href="passport-loss.html">
-<span class="gate-no">05</span>
+<span class="gate-no">GATE05</span>
 <div>
 <h3>トラブル対応</h3>
 <p>パスポート・カード・スマホをなくしたら</p>
 </div>
 <b>見る →</b>
 </a>
-<p class="deep-title">トラブル対応をさらに深掘り！</p>
-<ul class="deep"><li><a href="lost-passport-guide.html"><span class="q">パスポートをなくしたら？</span><span class="t">紛失・盗難の行動順</span></a></li><li><a href="lost-card-guide.html"><span class="q">カードの紛失・不正利用は？</span><span class="t">止め方と連絡の順番</span></a></li><li><a href="theft-guide.html"><span class="q">盗難・置き引きに遭ったら？</span><span class="t">追いかけず、まず止める</span></a></li><li><a href="lost-phone-guide.html"><span class="q">スマホをなくしたら？</span><span class="t">回線・決済・アカウントの初動</span></a></li><li><a href="medical-guide.html"><span class="q">病気・けがをしたら？</span><span class="t">保険会社への連絡から</span></a></li><li><a href="flight-disruption-guide.html"><span class="q">欠航・遅延になったら？</span><span class="t">予定が崩れた時の動き方</span></a></li></ul>
+<div class="gate-summary"><p>もしもの時に、まず何を止めて、誰へ連絡するかを知る。</p><ul><li>パスポート・カード・スマホの紛失は、初動の順番が大切</li><li>盗難では安全な場所へ移動し、回線・決済・カードを止める</li><li>病気・けが・遅延や欠航は、保険会社と航空会社へ早めに連絡</li></ul></div>
+<details class="deep-panel"><summary>トラブル対応をさらに深掘り（6記事）</summary><ul class="deep"><li><a href="lost-passport-guide.html"><span class="q">パスポートをなくしたら？</span><span class="t">紛失・盗難の行動順</span></a></li><li><a href="lost-card-guide.html"><span class="q">カードの紛失・不正利用は？</span><span class="t">止め方と連絡の順番</span></a></li><li><a href="theft-guide.html"><span class="q">盗難・置き引きに遭ったら？</span><span class="t">追いかけず、まず止める</span></a></li><li><a href="lost-phone-guide.html"><span class="q">スマホをなくしたら？</span><span class="t">回線・決済・アカウントの初動</span></a></li><li><a href="medical-guide.html"><span class="q">病気・けがをしたら？</span><span class="t">保険会社への連絡から</span></a></li><li><a href="flight-disruption-guide.html"><span class="q">欠航・遅延になったら？</span><span class="t">予定が崩れた時の動き方</span></a></li></ul></details>
 </div>
 </div>
 </section>
