@@ -1,26 +1,31 @@
-/* Shared return path for every guide article. */
-(function () {
+/* すべてのガイド記事に共通する戻り先パス。*/
+（関数 （） {
   if (document.body.dataset.siteNavReady) return;
   document.body.dataset.siteNavReady = 'true';
   var path = location.pathname.split('/').pop() || 'index.html';
   var brand = document.querySelector('nav .brand');
-  if (brand) {
+  もし（ブランド）ならば
     brand.innerHTML = '<a href="index.html" aria-label="塾シリーズ・海外旅行準備室のトップへ戻る">塾シリーズ・海外旅行準備室</a>';
   }
 
   var tabirate = document.querySelector('nav a[href*="tabirate"]');
   if (tabirate) {
     tabirate.textContent = 'TABI-RATE アプリを開く';
-  } else {
-    var navLinks = document.querySelector('nav span');
+    tabirate.href = 'https://juku-cho.com/apps/tabirate/';
+  } それ以外 {
+    var navLinks = document.querySelector('ナビゲーション スパン');
     if (navLinks) {
-      var separator = document.createTextNode('　');
+      var separator = document.createTextNode(' ');
       var appLink = document.createElement('a');
-      appLink.href = 'apps/tabirate/index.html';
-      appLink.textContent = 'TABI-RATE アプリを開く';
+      appLink.href = 'https://juku-cho.com/apps/tabirate/';
+      appLink.textContent = '旅レートアプリを開く';
       navLinks.append(separator, appLink);
     }
   }
+
+  document.querySelectorAll('a[href*="apps/tabirate"]').forEach(function (link) {
+    link.href = 'https://juku-cho.com/apps/tabirate/';
+  });
 
   if (path === 'index.html') return;
 
