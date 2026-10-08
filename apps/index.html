@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ツール一覧 | Juku-Cho</title>
+<meta name="description" content="Juku-Choのツール一覧。ブラウザですぐ使える無料ツールと、スマホアプリをまとめています。">
+<link rel="canonical" href="https://juku-cho.com/apps/">
+<meta name="theme-color" content="#0F1115">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* 一覧：ジャンルで絞り込める平らなカード。8pxの格子で余白をそろえる */
+:root{
+  --bg:#F7F7F5;--raise:#FFFFFF;--ink:#14171C;--ink2:#5D6470;--hair:rgba(20,23,28,.09);
+  --poker:#1F7A4D;--guitar:#9A5B22;--travel:#2563A6;--work:#13867A;--accent:#14171C;color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0F1115;--raise:#171A20;--ink:#ECEEF2;--ink2:#9AA2AE;--hair:rgba(236,238,242,.09);
+  --poker:#4CC38A;--guitar:#E0A060;--travel:#6AA6EA;--work:#3CC8B4;--accent:#ECEEF2;color-scheme:dark;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter","Noto Sans JP","Hiragino Sans",system-ui,sans-serif;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:32px 16px 72px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:40px}
+.logo{font-weight:900;font-size:18px;letter-spacing:.04em;color:var(--ink);text-decoration:none}
+nav{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}
+nav a{color:var(--ink2);text-decoration:none;font-weight:600}
+nav a[aria-current="page"],nav a:hover{color:var(--ink)}
+h1{font-size:32px;font-weight:900;margin:0 0 8px;letter-spacing:.01em}
+.lead{color:var(--ink2);margin:0 0 24px;max-width:36em}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 32px}
+.filters button{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--hair);background:var(--raise);color:var(--ink2);border-radius:999px;padding:6px 16px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+h2{font-size:14px;font-weight:700;color:var(--ink2);letter-spacing:.04em;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:48px}
+.card{display:flex;flex-direction:column;gap:8px;background:var(--raise);border:1px solid var(--hair);border-radius:16px;padding:24px;color:inherit;text-decoration:none;min-width:0;transition:border-color .15s}
+.card:hover{border-color:var(--ink2)}
+.card b{font-size:18px;font-weight:800}
+.card p{margin:0;color:var(--ink2);font-size:14px;flex:1}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:12px;font-weight:700;border-radius:6px;padding:2px 8px;background:color-mix(in srgb,var(--g) 14%,transparent);color:var(--g)}
+.tag.type{--g:var(--ink2)}
+.card[data-g="poker"]{--g:var(--poker)}.card[data-g="guitar"]{--g:var(--guitar)}.card[data-g="travel"]{--g:var(--travel)}.card[data-g="work"]{--g:var(--work)}
+.card .go{font-size:14px;font-weight:700;color:var(--g)}
+.empty{color:var(--ink2)}
+footer{border-top:1px solid var(--hair);padding-top:16px;font-size:12px;color:var(--ink2)}
+footer a{color:var(--ink2)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="logo" href="/">Juku-Cho</a>
+    <nav aria-label="ジャンル">
+      <a href="/poker/">ポーカー塾</a>
+      <a href="/info/guitar/">ギター塾</a>
+      <a href="/info/travel/">旅行</a>
+      <a href="/apps/" aria-current="page">ツール</a>
+    </nav>
+  </header>
+
+  <h1>ツール一覧</h1>
+  <p class="lead">ブラウザですぐ使える無料ツールと、スマホアプリをまとめています。登録は要りません。</p>
+
+  <div class="filters" role="group" aria-label="ジャンルで絞り込む">
+    <button type="button" data-f="all" aria-pressed="true">すべて</button>
+    <button type="button" data-f="poker" aria-pressed="false">ポーカー塾</button>
+    <button type="button" data-f="guitar" aria-pressed="false">ギター塾</button>
+    <button type="button" data-f="travel" aria-pressed="false">旅行</button>
+    <button type="button" data-f="work" aria-pressed="false">仕事・記録</button>
+  </div>
+
+  <section data-sec>
+    <h2>ブラウザで使える無料ツール</h2>
+    <div class="grid">
+      <a class="card" data-g="guitar" href="/apps/tuner/">
+        <b>ギターチューナー</b>
+        <p>いろいろなチューニングに対応。コードを鳴らして音を確かめられます。</p>
+        <span class="tags"><span class="tag">ギター塾</span><span class="tag type">無料</span></span>
+      </a>
+      <a class="card" data-g="poker" href="/apps/oddssniper/">
+        <b>オッズ計算</b>
+        <p>手札と場のカードから、勝つ確率をすばやく計算します。複数人の対戦にも対応。</p>
+        <span class="tags"><span class="tag">ポーカー塾</span><span class="tag type">無料</span></span>
+      </a>
+      <a class="card" data-g="travel" href="/apps/tabirate/">
+        <b>通貨換算</b>
+        <p>日本円と旅行先の通貨をすぐに換算。電波がない場所でも使えます。</p>
+        <span class="tags"><span class="tag">旅行</span><span class="tag type">無料</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section data-sec>
+    <h2>スマホアプリ</h2>
+    <div class="grid">
+      <a class="card" data-g="work" href="/apps/memorou/">
+        <b>MEMO郎</b>
+        <p>匿名で、すぐ書ける記録。現場の管理・介護・保育の出来事を、端末の中だけに安全に残すメモアプリ。</p>
+        <span class="tags"><span class="tag">仕事・記録</span><span class="tag type">iPhone・Android</span><span class="tag type">近日公開</span></span>
+      </a>
+    </div>
+  </section>
+  <p class="empty" id="empty" hidden>このジャンルのツールは準備中です。</p>
+
+  <footer>© Juku-Cho　<a href="/">トップへ</a></footer>
+</div>
+<script>
+(function(){
+  var btns=document.querySelectorAll('.filters button');
+  function apply(f){
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.f===f))});
+    var any=false;
+    document.querySelectorAll('[data-sec]').forEach(function(sec){
+      var n=0;
+      sec.querySelectorAll('.card').forEach(function(c){var on=f==='all'||c.dataset.g===f;c.hidden=!on;if(on)n++});
+      sec.hidden=!n; if(n) any=true;
+    });
+    document.getElementById('empty').hidden=any;
+    try{history.replaceState(null,'',f==='all'?location.pathname:'#'+f)}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){apply(b.dataset.f)})});
+  var h=location.hash.slice(1); if(['poker','guitar','travel','work'].indexOf(h)>=0) apply(h);
+})();
+</script>
+</body>
+</html>
