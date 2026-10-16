@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0B0D10" id="metaTheme">
-<meta name="app-version" content="7">
+<meta name="app-version" content="10">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="description" content="各国の通貨をタブで簡単に切り替えて確認できるアプリです。">
 <meta property="og:type" content="website">
@@ -275,6 +275,18 @@
   .travel-official:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent-dim) 60%,var(--raise))}
   .helpsheet{height:auto;max-height:70dvh}
   .helpsheet .sb{padding-bottom:calc(20px + env(safe-area-inset-bottom))}  .qer{display:flex;align-items:center;gap:8px;padding:12px 0}
+  /* ============ first-use tutorial ============ */
+  .tutorial{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,7,14,.8);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .22s,visibility .22s}
+  .tutorial.show{opacity:1;visibility:visible}
+  .tutorial-card{width:min(100%,420px);overflow:hidden;border:1px solid rgba(255,255,255,.16);border-radius:24px;background:var(--bg);box-shadow:0 26px 70px rgba(0,0,0,.45)}
+  .tutorial-top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0}.tutorial-count{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--accent)}
+  .tutorial-skip{border:0;background:transparent;color:var(--ink-3);font:600 12px inherit;padding:6px;cursor:pointer}.tutorial-skip:focus-visible,.tutorial-nav button:focus-visible,.tutorial-replay:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .tutorial-viewport{overflow:hidden;touch-action:pan-y}.tutorial-track{position:relative;min-height:300px}.tutorial-slide{position:absolute;inset:0;z-index:1;min-height:300px;padding:24px 28px 16px;opacity:0;pointer-events:none;transition:opacity .28s ease}.tutorial-slide.on{z-index:2;opacity:1;pointer-events:auto}.tutorial-slide:before{content:attr(data-bg);position:absolute;z-index:-1;top:-22px;left:8px;color:rgba(255,255,255,.045);font-size:86px;line-height:1;font-weight:900;letter-spacing:-.08em;white-space:nowrap}.tutorial-slide.last:before{white-space:pre-line;font-size:76px;line-height:.85}
+  .tutorial-number{margin:4px 0 34px;color:var(--ink);font-family:Georgia,serif;font-size:33px;font-weight:700;line-height:1}.tutorial-kicker{margin:0 0 7px;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.12em}.tutorial-slide h2{margin:0 0 12px;font-size:27px;line-height:1.32;color:var(--ink)}.tutorial-slide p{margin:0;color:var(--ink-2);font-size:14px;line-height:1.55;white-space:pre-line}.tutorial-slide.last h2{font-size:43px;line-height:1.18;letter-spacing:-.04em}.tutorial-slide.last p{display:none}
+  .tutorial-bottom{display:flex;align-items:center;gap:12px;padding:0 16px 16px}.tutorial-dots{display:flex;gap:6px;flex:1}.tutorial-dot{width:7px;height:7px;border-radius:99px;background:var(--hair);transition:.2s}.tutorial-dot.on{width:20px;background:var(--accent)}
+  .tutorial-nav{display:flex;gap:8px}.tutorial-nav button{min-width:70px;height:38px;border:1px solid var(--hair);border-radius:10px;background:var(--raise);color:var(--ink);font-size:13px;font-weight:800;cursor:pointer}.tutorial-nav .next{border-color:var(--accent);background:var(--accent);color:#04150E}.tutorial-nav .prev[disabled]{opacity:.35;cursor:default}
+  .tutorial-replay{display:flex;align-items:center;justify-content:space-between;width:100%;margin:10px 0 2px;padding:12px 2px;border:0;border-top:1px solid var(--hair);background:transparent;color:var(--accent);font-size:13px;font-weight:800;text-align:left;cursor:pointer}
+  @media (max-width:420px){.tutorial{padding:12px}.tutorial-track,.tutorial-slide{min-height:280px}.tutorial-slide{padding:20px 24px 12px}.tutorial-number{margin-bottom:30px}.tutorial-slide h2{font-size:25px}.tutorial-slide p{font-size:13px}.tutorial-slide.last h2{font-size:39px}}
   .qer+.qer{border-top:1px solid var(--hair)}
   .qer>span{font-size:12px;font-weight:600;color:var(--ink-2);min-width:72px}
   .qeb{display:flex;gap:8px;flex:1}
@@ -651,6 +663,10 @@
   .hdr-img{height:100%!important;object-fit:cover!important;object-position:center center!important}
   /* 低いブラウザ画面では内容を縮めて重ねず、ページをスクロールして続きが読めるようにする。 */
   @media (max-height:720px){html,body{height:auto!important;min-height:100dvh;overflow-y:auto!important;position:static!important}.app{height:auto!important;min-height:100dvh;max-height:none!important;overflow:visible!important}.conv{flex:none!important}}
+  /* 通貨表示の下に生じる余白を、上下2つの通貨行へ配分する。 */
+  .row{min-height:150px!important}
+  /* 簡単入力の通貨見出しを読みやすく拡大する。 */
+  .qg-h{font-size:18px!important;line-height:1.2;margin-bottom:7px!important}
 </style>
 </head>
 <body>
@@ -677,7 +693,7 @@
 <div class="app">
 
   <header class="hdr">
-    <img class="hdr-img" src="header-wide.png?v=7" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png?v=7';">
+    <img class="hdr-img" src="header-wide.png?v=10" alt="TABI - RATE — Currency Converter" onerror="this.onerror=null;this.src='header.png?v=10';">
     <div class="hdr-tagline" id="tagline"></div>
   </header>
 
@@ -802,6 +818,14 @@
   </div>
 </div>
 
+<div class="tutorial" id="tutorial" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle" aria-hidden="true">
+  <div class="tutorial-card">
+    <div class="tutorial-top"><span class="tutorial-count" id="tutorialCount">1 / 4</span><button class="tutorial-skip" id="tutorialSkip" type="button">スキップ</button></div>
+    <div class="tutorial-viewport" id="tutorialViewport"><div class="tutorial-track" id="tutorialTrack"></div></div>
+    <div class="tutorial-bottom"><div class="tutorial-dots" id="tutorialDots" aria-hidden="true"></div><div class="tutorial-nav"><button class="prev" id="tutorialPrev" type="button">戻る</button><button class="next" id="tutorialNext" type="button">次へ</button></div></div>
+  </div>
+</div>
+
 <div class="dscrim" id="drumScrim"></div>
 <div class="drum" id="drum">
   <div class="dh"><button id="drumCancel">キャンセル</button><span class="t" id="drumTitle">金額</span><button id="drumOk" class="ok">決定</button></div>
@@ -873,6 +897,52 @@
       note:'อัปเดตอัตโนมัติทุกเช้า อัตราเป็นเพียงค่าอ้างอิง',jpyName:'เยนญี่ปุ่น',manual:'วิธีใช้',m1:'แท็บซ้ายสุด (ที่ไฮไลต์) คือสกุลเงินหลัก แสดงอยู่แถวบนเสมอ ตั้งสกุลเงินที่ใช้บ่อยที่สุดไว้ตรงนี้',m2:'ทางขวาของสกุลเงินหลัก สามารถเพิ่มสกุลเงินอื่นได้สูงสุด 3 สกุล',m3:'กดแท็บค้างแล้วลากเพื่อจัดเรียงใหม่ สกุลเงินซ้ายสุดจะเป็นสกุลเงินหลักและแสดงอยู่แถวบนเสมอ',m4:'แตะช่องจำนวนเงินเพื่อเปิดแป้นตัวเลข ป้อนได้ทั้งแถวบนและแถวล่าง',m5:'ใช้ไอคอนบันทึกข้างอัตราเพื่อบันทึกอัตราปัจจุบันลงประวัติ',m6:'เพิ่มประเทศ เปลี่ยนภาษาและธีมได้ที่ตั้งค่า (เฟือง) อัตราอัปเดตอัตโนมัติวันละครั้ง',tapChange:'แตะเพื่อเปลี่ยน',defaultLabel:'ค่าเริ่มต้น',setDefault:'บันทึกแท็บปัจจุบันเป็นค่าเริ่มต้น',defaultHint:'บันทึกชุดสกุลเงินที่ใช้บ่อยและเรียกคืนได้ทุกเมื่อ',applyDefault:'เรียกคืนค่าเริ่มต้น',tagline:'สกุลเงินโลก\nง่าย รวดเร็ว',defaultSaved:'บันทึกเป็นค่าเริ่มต้นแล้ว',defaultApplied:'เรียกคืนค่าเริ่มต้นแล้ว',noDefault:'ยังไม่มีค่าเริ่มต้น',rotateMsg:'กรุณาหมุนอุปกรณ์เป็นแนวตั้ง'}
   };
   var lang='ja';
+  var KEY_TUTORIAL='tj_tutorial_seen_v1',tutorialIndex=0,tutorialTouchX=0;
+  var TUTORIAL={
+    ja:{skip:'スキップ',prev:'戻る',next:'次へ',start:'はじめる',replay:'チュートリアルを見る　→',slides:[
+      ['TABI-RATEへようこそ','このツールはよく使う通貨を、他国の通貨にタブで素早く切り替えられる為替コンバーターツールです。'],
+      ['基準通貨と決済通貨','左の赤いタブは基準通貨、右のタブは決済通貨となります。\nよく使う通貨を一番左の赤いタブに設定しておくことで、基準通貨から他国の通貨へ瞬時にタブで切り替えることが可能です。'],
+      ['換算','タップして金額を入力すると、選択した通貨が瞬時に表示されます。\n上段・下段どちらの金額でも入力可能です。また、矢印で上下の通貨を入れ替えることもできます。'],
+      ['設定でカスタマイズ','設定から使用したい通貨を選択します。通貨は最大37カ国！\n\nまた、基準通貨以外に決済通貨は最大3つまで追加が可能です。\n1. 基準通貨（赤タブ）\n2〜4. 決済通貨（緑・黄・青タブ）'],
+      ['タブを長押し','タブを長押しすることで使いやすい順番に入れ替えることが可能です。'],
+      ['Thank you\nHave a great trip!','']
+    ]},
+    en:{skip:'Skip',prev:'Back',next:'Next',start:'Start',replay:'View tutorial →',slides:[
+      ['Welcome to TABI-RATE','Quickly switch your most-used currencies with tabs and convert with ease.'],
+      ['Base & payment currencies','The red tab on the left is your base currency. The tabs on the right are payment currencies.'],
+      ['Convert','Tap an amount to convert it instantly. You can enter an amount in either row and swap the two currencies with the arrows.'],
+      ['Customize in Settings','Choose up to four currencies, including one red base tab and up to three payment tabs.'],
+      ['Long-press tabs','Long-press and drag tabs to arrange them in the order you use most.'],
+      ['Thank you\nHave a great trip!','']
+    ]}
+  };
+  function tutorialCopy(){return TUTORIAL[lang]||TUTORIAL.en;}
+  function renderTutorial(){
+    var c=tutorialCopy(),track=$('tutorialTrack'),dots=$('tutorialDots');if(!track||!dots)return;
+    $('tutorialSkip').textContent=c.skip;$('tutorialPrev').textContent=c.prev;$('tutorialNext').textContent=c.next;
+    track.innerHTML=c.slides.map(function(s,i){var last=i===c.slides.length-1;return '<section class="tutorial-slide'+(last?' last':'')+'" data-bg="'+(last?'Thank you':'No.'+(i+1))+'" aria-hidden="'+(i!==tutorialIndex)+'">'+(last?'':'<div class="tutorial-number">No.'+(i+1)+'</div>')+'<h2'+(i===0?' id="tutorialTitle"':'')+'>'+s[0].replace(/\n/g,'<br>')+'</h2><p>'+s[1]+'</p></section>';}).join('');
+    dots.innerHTML=c.slides.map(function(_,i){return '<span class="tutorial-dot'+(i===tutorialIndex?' on':'')+'"></span>';}).join('');
+    updateTutorial();
+  }
+  function updateTutorial(){
+    var c=tutorialCopy(),track=$('tutorialTrack');if(!track)return;
+    $('tutorialCount').textContent=(tutorialIndex+1)+' / '+c.slides.length;
+    $('tutorialPrev').disabled=tutorialIndex===0;
+    $('tutorialNext').textContent=tutorialIndex===c.slides.length-1?c.start:c.next;
+    Array.prototype.forEach.call(document.querySelectorAll('.tutorial-dot'),function(dot,i){dot.classList.toggle('on',i===tutorialIndex);});
+    Array.prototype.forEach.call(document.querySelectorAll('.tutorial-slide'),function(slide,i){slide.setAttribute('aria-hidden',i===tutorialIndex?'false':'true');slide.classList.toggle('on',i===tutorialIndex);});
+  }
+  function openTutorial(){
+    closeKp();closeSheet();tutorialIndex=0;renderTutorial();
+    var el=$('tutorial');el.classList.add('show');el.setAttribute('aria-hidden','false');
+    setTimeout(function(){$('tutorialNext').focus();},40);
+  }
+  function closeTutorial(){
+    var el=$('tutorial');el.classList.remove('show');el.setAttribute('aria-hidden','true');
+    try{localStorage.setItem(KEY_TUTORIAL,'1');}catch(e){}
+  }
+  function tutorialNext(){var c=tutorialCopy();if(tutorialIndex>=c.slides.length-1){closeTutorial();return;}tutorialIndex++;updateTutorial();}
+  function tutorialPrev(){if(tutorialIndex>0){tutorialIndex--;updateTutorial();}}
   function t(k){return (T[lang]&&T[lang][k])||T.ja[k]||k;}
   function cname(c){return (CN[lang]&&CN[lang][c.code])||c.country;}
   var GUIDE_COPY={
@@ -993,7 +1063,8 @@
     var steps=[t('m1'),t('m2'),t('m3'),t('m4'),t('m5'),t('m6')];
     box.innerHTML=steps.map(function(s,i){
       return '<div class="mstep"><span class="num">'+(i+1)+'</span><span class="txt">'+s+'</span></div>';
-    }).join('');
+    }).join('')+'<button class="tutorial-replay" id="tutorialReplay" type="button"><span>'+tutorialCopy().replay+'</span><span aria-hidden="true">›</span></button>';
+    $('tutorialReplay').onclick=openTutorial;
   }
   function applyLang(){
     document.documentElement.setAttribute('lang',lang);
@@ -1378,6 +1449,11 @@
     $('closeBtn').addEventListener('click',closeSheet);
     $('scrim').addEventListener('click',closeSheet);
     $('manualToggle').addEventListener('click',toggleManual);
+    $('tutorialSkip').addEventListener('click',closeTutorial);
+    $('tutorialNext').addEventListener('click',tutorialNext);
+    $('tutorialPrev').addEventListener('click',tutorialPrev);
+    $('tutorialViewport').addEventListener('touchstart',function(e){tutorialTouchX=e.changedTouches[0].clientX;},{passive:true});
+    $('tutorialViewport').addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tutorialTouchX;if(Math.abs(dx)<36)return;if(dx<0)tutorialNext();else tutorialPrev();},{passive:true});
     $('historyToggle').addEventListener('click',toggleHistory);
     document.querySelectorAll('#themeSeg button').forEach(function(b){b.addEventListener('click',function(){theme=b.getAttribute('data-th');saveCfg();applyTheme();renderSpark();});});
     $('wipeBtn').addEventListener('click',function(){if(!confirm(t('wipeQ')))return;saveHist({});renderHist();renderSpark();toast(t('wiped'));});
@@ -1388,7 +1464,9 @@
     $('drumCancel').addEventListener('click',closeDrum);
     $('drumScrim').addEventListener('click',closeDrum);
     document.addEventListener('touchmove',function(e){
-      if(e.target.closest('.sb')||e.target.closest('.dl'))return;e.preventDefault();},{passive:false});
+      if(e.target.closest('.sb')||e.target.closest('.dl')||e.target.closest('.tutorial-viewport'))return;e.preventDefault();},{passive:false});
+    document.addEventListener('keydown',function(e){if(!$('tutorial').classList.contains('show'))return;if(e.key==='ArrowRight')tutorialNext();if(e.key==='ArrowLeft')tutorialPrev();if(e.key==='Escape')closeTutorial();});
+    setTimeout(function(){var seen=false;try{seen=localStorage.getItem(KEY_TUTORIAL)==='1';}catch(e){}if(!seen)openTutorial();},2800);
   }
   init();
 })();
@@ -1424,7 +1502,7 @@
   // オフライン対応: Service Worker を登録
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      // 共有URLの ?v=7 と同じ番号を使い、更新時はここを 8、9… と上げる。
+      // 共有URLの ?v=10 と同じ番号を使い、更新時はここを 11、12… と上げる。
       var appVersion=(document.querySelector('meta[name="app-version"]')||{}).content||'1';
       navigator.serviceWorker.register('./sw.js?v='+encodeURIComponent(appVersion),{updateViaCache:'none'}).catch(function (err) {
         console.warn('[sw] registration failed:', err);
