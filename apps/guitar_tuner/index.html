@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Guitar Tuner – Juku-Cho</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -38,7 +38,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 html, body {
-  height:100%; width:100%; margin:0;
+  height:100%; width:100%; max-width:100vw; margin:0;
   font-family:"Exo 2", sans-serif;
   color:var(--text);
   background:var(--bg);
@@ -46,29 +46,42 @@ html, body {
     radial-gradient(ellipse at 20% 0%, rgba(0,80,140,0.25) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 100%, rgba(0,40,80,0.2) 0%, transparent 60%);
   overscroll-behavior:none;
+  overflow-x:hidden;
 }
 body {
   display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  min-height:100%; padding:16px 12px;
+  align-items:center; justify-content:flex-start;
+  min-height:100%; padding:0;
   touch-action:none;
+  overflow-x:hidden;
+}
+@media (min-height: 700px) {
+  body { justify-content:center; padding:8px; }
 }
 
 /* ═══ APP CARD ═══ */
 .app {
   width:100%; max-width:420px;
-  height:min(760px, 96svh);
+  height:100svh;
   display:flex; flex-direction:column;
   overflow:hidden; position:relative;
   background:linear-gradient(175deg,#0d1828 0%,#070d14 50%,#0a1220 100%);
-  border-radius:16px;
-  border:1px solid var(--border-lt);
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,0.8),
-    0 20px 60px rgba(0,0,0,0.8),
-    0 0 40px rgba(0,150,200,0.1),
-    inset 0 1px 0 rgba(0,200,240,0.1);
+  border-radius:0;
+  border:none;
+  box-shadow:none;
   flex-shrink:0;
+}
+@media (min-height: 700px) {
+  .app {
+    height:min(760px, calc(100svh - 16px));
+    border-radius:16px;
+    border:1px solid var(--border-lt);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.8),
+      0 20px 60px rgba(0,0,0,0.8),
+      0 0 40px rgba(0,150,200,0.1),
+      inset 0 1px 0 rgba(0,200,240,0.1);
+  }
 }
 
 /* ═══ SCREENS ═══ */
@@ -181,13 +194,7 @@ body {
 }
 .string-wire.vibrating::before { animation:stringVibrate 0.08s ease-in-out infinite; transform-origin:center; filter:drop-shadow(0 0 3px rgba(200,180,80,0.9)); }
 
-/* ═══ AD BANNER ═══ */
-.ad-banner {
-  width:100%; height:50px; background:#050a10;
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:center; flex-shrink:0;
-}
-.ad-banner-inner { font-family:"Exo 2",sans-serif; font-size:9px; letter-spacing:4px; color:var(--text-dim); }
+
 
 /* ═══ BOTTOM BUTTONS (Tuner) ═══ */
 .bottom-row { display:flex; gap:5px; padding:6px 10px 7px; flex-shrink:0; align-items:stretch; }
@@ -213,14 +220,18 @@ body {
 .all-sub   { font-size:7px; font-family:"Exo 2",sans-serif; color:var(--cyan); letter-spacing:1px; margin-top:1px; }
 .stop-btn {
   width:110px; flex-shrink:0;
-  background:linear-gradient(180deg,#1a0a0a,#0e0505);
-  border:2px solid #703030; border-radius:6px; cursor:pointer;
+  background:linear-gradient(180deg,#0a1a0a,#050e05);
+  border:2px solid #307030; border-radius:6px; cursor:pointer;
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
-  transition:all 0.15s;
+  transition:all 0.2s;
 }
-.stop-btn:hover { border-color:var(--red); box-shadow:0 0 14px rgba(224,80,64,0.4); }
-.stop-icon  { width:34px; height:34px; background:var(--red); border-radius:4px; box-shadow:0 0 8px rgba(224,80,64,0.5); }
-.stop-label { font-family:"Orbitron",sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; color:var(--red); }
+.stop-btn:hover { border-color:#4a9a4a; box-shadow:0 0 14px rgba(64,180,64,0.4); }
+.stop-btn.is-playing { background:linear-gradient(180deg,#1a0a0a,#0e0505); border-color:#703030; }
+.stop-btn.is-playing:hover { border-color:var(--red); box-shadow:0 0 14px rgba(224,80,64,0.4); }
+.stop-icon  { width:34px; height:34px; background:#4a9a4a; border-radius:50%; box-shadow:0 0 8px rgba(64,180,64,0.5); transition:all 0.2s; }
+.stop-btn.is-playing .stop-icon { background:var(--red); border-radius:4px; box-shadow:0 0 8px rgba(224,80,64,0.5); }
+.stop-label { font-family:"Orbitron",sans-serif; font-size:12px; font-weight:700; letter-spacing:2px; color:#4a9a4a; transition:color 0.2s; }
+.stop-btn.is-playing .stop-label { color:var(--red); }
 
 
 
@@ -232,13 +243,16 @@ body {
   border-top:1px solid var(--border);
   border-radius:0 0 16px 16px;
   overflow:hidden;
+  /* Safe area for iPhone home indicator */
+  padding-bottom:env(safe-area-inset-bottom, 0px);
 }
 .tab-btn {
   flex:1; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:3px;
+  align-items:center; justify-content:center; gap:2px;
   background:transparent; border:none; cursor:pointer;
   transition:all 0.2s; position:relative;
-  padding:6px 4px;
+  padding:4px 2px;
+  min-width:0;
 }
 .tab-btn::before {
   content:""; position:absolute;
@@ -249,25 +263,27 @@ body {
 }
 .tab-btn.active::before { opacity:1; }
 .tab-btn .tab-icon {
-  font-size:20px; line-height:1;
+  font-size:18px; line-height:1;
   display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
 }
 .tab-img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-  filter: brightness(0.4) saturate(0.3);
-  transition: filter 0.25s;
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  filter:brightness(0.4) saturate(0.3);
+  transition:filter 0.25s;
+  flex-shrink:0;
 }
 .tab-btn.active .tab-img {
-  filter: brightness(1.15) saturate(1.2) drop-shadow(0 0 6px rgba(0,220,255,0.9));
+  filter:brightness(1.15) saturate(1.2) drop-shadow(0 0 6px rgba(0,220,255,0.9));
 }
-
 .tab-btn .tab-label {
   font-family:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","BIZ UDPGothic",sans-serif;
-  font-size:10px; font-weight:700;
-  letter-spacing:0.5px; color:var(--text-dim); transition:color 0.2s;
-  white-space:nowrap;
+  font-size:9px; font-weight:700;
+  letter-spacing:0.3px; color:var(--text-dim); transition:color 0.2s;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  max-width:100%;
 }
 .tab-btn.active .tab-label { color:var(--cyan); }
 
@@ -784,8 +800,7 @@ body {
 .app.theme-light .btn-num  { color: #0078a8; }
 
 /* 広告 */
-.app.theme-light .ad-banner { background: #b8ccdc; border-color: #90b8d8; }
-.app.theme-light .ad-banner-inner { color: #5080a0; }
+
 
 /* 下段ボタン */
 .app.theme-light .chord-btn {
@@ -807,12 +822,16 @@ body {
 .app.theme-light .all-sub  { color: #0060a0; }
 
 .app.theme-light .stop-btn {
-  background: linear-gradient(180deg, #f0d8d8, #e8c8c8);
-  border-color: #c06060;
+  background: linear-gradient(180deg, #d8f0d8, #c8e8c8);
+  border-color: #609060;
 }
-.app.theme-light .stop-btn:hover { border-color: #c03020; box-shadow: 0 0 12px rgba(192,48,32,0.3); }
-.app.theme-light .stop-label { color: #c03020; }
-.app.theme-light .stop-icon { background: #c03020; box-shadow: 0 0 8px rgba(192,48,32,0.4); }
+.app.theme-light .stop-btn:hover { border-color: #308030; box-shadow: 0 0 12px rgba(32,128,32,0.3); }
+.app.theme-light .stop-btn.is-playing { background: linear-gradient(180deg, #f0d8d8, #e8c8c8); border-color: #c06060; }
+.app.theme-light .stop-btn.is-playing:hover { border-color: #c03020; box-shadow: 0 0 12px rgba(192,48,32,0.3); }
+.app.theme-light .stop-label { color: #308030; }
+.app.theme-light .stop-btn.is-playing .stop-label { color: #c03020; }
+.app.theme-light .stop-icon { background: #409840; border-radius:50%; box-shadow: 0 0 8px rgba(32,160,32,0.4); }
+.app.theme-light .stop-btn.is-playing .stop-icon { background: #c03020; border-radius:4px; box-shadow: 0 0 8px rgba(192,48,32,0.4); }
 
 /* フッター */
 
@@ -1114,11 +1133,7 @@ body {
       <div class="zero-line"></div>
       <div id="stringsArea"></div>
     </div>
-
-    <div class="ad-banner">
-      <!-- Google AdSense コードをここに挿入 -->
-      <div class="ad-banner-inner">ADVERTISEMENT</div>
-    </div>
+</div>
 
     <div class="bottom-row">
       <div class="chord-group">
@@ -1135,9 +1150,9 @@ body {
           <div class="all-sub">STRUM ALL</div>
         </button>
       </div>
-      <button class="stop-btn" onclick="stopAll()">
-        <div class="stop-icon"></div>
-        <div class="stop-label">STOP</div>
+      <button class="stop-btn" id="mainStopBtn" onclick="handleStartStop()">
+        <div class="stop-icon" id="stopIconEl"></div>
+        <div class="stop-label" id="stopLabelEl">START</div>
       </button>
     </div>
 </div><!-- /screen-tuner -->
@@ -1197,10 +1212,7 @@ body {
       <button class="tap-btn" onclick="tapTempo()">🎵 TAP TEMPO</button>
 
       <!-- 広告バナー -->
-      <div class="ad-banner" style="margin:4px 0 0; border-radius:4px; flex-shrink:0;">
-        <!-- Google AdSense コードをここに挿入 -->
-        <div class="ad-banner-inner">ADVERTISEMENT</div>
-      </div>
+</div>
     </div>
 </div><!-- /screen-metro -->
 
@@ -1270,10 +1282,7 @@ body {
       </div>
 
       <!-- 広告バナー -->
-      <div class="ad-banner" style="flex-shrink:0;">
-        <!-- Google AdSense コードをここに挿入 -->
-        <div class="ad-banner-inner">ADVERTISEMENT</div>
-      </div>
+</div>
     </div>
 </div><!-- /screen-chord -->
 
@@ -1594,6 +1603,37 @@ function playFreq(freq, startTime, dur) {
   allOscs.push(osc); allGains.push(gain);
 }
 
+// ── START/STOP button state ──
+let _isPlaying = false;
+let _lastStringIdx = 0;  // 最後に選択した弦インデックス (0=6th E, 5=1st E)
+
+function updateStopBtn(playing) {
+  _isPlaying = playing;
+  const btn   = document.getElementById('mainStopBtn');
+  const label = document.getElementById('stopLabelEl');
+  if (!btn) return;
+  if (playing) {
+    btn.classList.add('is-playing');
+    if (label) label.textContent = 'STOP';
+  } else {
+    btn.classList.remove('is-playing');
+    if (label) label.textContent = 'START';
+  }
+}
+
+function handleStartStop() {
+  if (_isPlaying) {
+    stopAll();
+  } else {
+    // play last selected string
+    const strBtns = document.querySelectorAll('.string-btn');
+    if (strBtns.length > 0) {
+      const btn = strBtns[_lastStringIdx];
+      playString(_lastStringIdx, btn);
+    }
+  }
+}
+
 function stopAll() {
   allOscs.forEach(o => { try { o.stop(); } catch(e){} });
   allGains.forEach(g => { try { g.gain.cancelScheduledValues(0); g.gain.setValueAtTime(0,0); } catch(e){} });
@@ -1602,10 +1642,12 @@ function stopAll() {
   document.querySelectorAll('.chord-btn,.all-strings-btn').forEach(b=>b.classList.remove('playing'));
   document.querySelectorAll('.string-wire').forEach(w=>w.classList.remove('vibrating'));
   stopVis();
+  updateStopBtn(false);
 }
 
 function playString(idx, btn) {
   stopAll();
+  _lastStringIdx = idx;
   const t   = TUNINGS[curKey];
   const dur = waveMode === 'sustain' ? 14 : 8;
   const wire = btn.closest('.string-row')?.querySelector('.string-wire');
@@ -1615,8 +1657,10 @@ function playString(idx, btn) {
   }
   playFreq(t.freqs[idx] * 4, AC().currentTime, dur);
   btn.classList.add('playing');
-  setTimeout(() => btn.classList.remove('playing'), (dur + 0.5) * 1000);
+  const endMs = (dur + 0.5) * 1000;
+  setTimeout(() => { btn.classList.remove('playing'); updateStopBtn(false); }, endMs);
   startVis();
+  updateStopBtn(true);
 }
 
 function playAllStrings(btn) {
@@ -1633,8 +1677,10 @@ function playAllStrings(btn) {
   });
   t.freqs.forEach((f, i) => playFreq(f * 4, ac.currentTime + i * 0.12, dur));
   btn.classList.add('playing');
-  setTimeout(() => btn.classList.remove('playing'), (dur + t.freqs.length * 0.12 + 0.5) * 1000);
+  const endMs = (dur + t.freqs.length * 0.12 + 0.5) * 1000;
+  setTimeout(() => { btn.classList.remove('playing'); updateStopBtn(false); }, endMs);
   startVis();
+  updateStopBtn(true);
 }
 
 function playChord(type, btn) {
@@ -1646,8 +1692,10 @@ function playChord(type, btn) {
   const freqs  = chord.freqs;
   freqs.forEach((f, i) => playFreq(f, ac.currentTime + i * 0.08, dur));
   btn.classList.add('playing');
-  setTimeout(() => btn.classList.remove('playing'), (dur + freqs.length * 0.08 + 0.5) * 1000);
+  const endMs = (dur + freqs.length * 0.08 + 0.5) * 1000;
+  setTimeout(() => { btn.classList.remove('playing'); updateStopBtn(false); }, endMs);
   startVis();
+  updateStopBtn(true);
 }
 
 function startVis() {
@@ -2329,10 +2377,10 @@ function closeSub(name) {
 
 // 言語切り替え
 const LANG_STRINGS = {
-  ja: { tuner:'チューナー', metronome:'メトロノーム', chord:'コード', start:'▶ START', stop:'■ STOP', tapTempo:'🎵 タップテンポ', advertisement:'広告' },
-  en: { tuner:'Tuner', metronome:'Metronome', chord:'Chord', start:'▶ START', stop:'■ STOP', tapTempo:'🎵 TAP TEMPO', advertisement:'ADVERTISEMENT' },
-  zh: { tuner:'调音器', metronome:'节拍器', chord:'和弦', start:'▶ 开始', stop:'■ 停止', tapTempo:'🎵 点击速度', advertisement:'广告' },
-  ko: { tuner:'튜너', metronome:'메트로놈', chord:'코드', start:'▶ 시작', stop:'■ 정지', tapTempo:'🎵 탭 템포', advertisement:'광고' },
+  ja: { tuner:'チューナー', metronome:'メトロノーム', chord:'コード', start:'▶ START', stop:'■ STOP', tapTempo:'🎵 タップテンポ' },
+  en: { tuner:'Tuner', metronome:'Metronome', chord:'Chord', start:'▶ START', stop:'■ STOP', tapTempo:'🎵 TAP TEMPO' },
+  zh: { tuner:'调音器', metronome:'节拍器', chord:'和弦', start:'▶ 开始', stop:'■ 停止', tapTempo:'🎵 点击速度' },
+  ko: { tuner:'튜너', metronome:'메트로놈', chord:'코드', start:'▶ 시작', stop:'■ 정지', tapTempo:'🎵 탭 템포' },
 };
 
 function changeLang(lang) {
@@ -2367,10 +2415,6 @@ function changeLang(lang) {
   const tapBtn = document.querySelector('.tap-btn');
   if (tapBtn) tapBtn.textContent = s.tapTempo;
 
-  // 広告
-  const adEl = document.querySelector('.ad-banner-inner');
-  if (adEl) adEl.textContent = s.advertisement;
-
   localStorage && localStorage.setItem('juku_lang', lang);
 }
 
@@ -2403,6 +2447,95 @@ function toggleGlow(on) {
     if (glow === '0') { document.getElementById('glowToggle').checked = false; toggleGlow(false); }
   } catch(e) {}
 })();
+
+
+// ═══════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════
+const TAB_ORDER = ['tuner', 'metro', 'chord'];
+let _currentTab = 'tuner';
+
+// Override switchTab to track current tab
+const _origSwitchTab = switchTab;
+function switchTab(name) {
+  _origSwitchTab(name);
+  _currentTab = name;
+}
+
+document.addEventListener('keydown', function(e) {
+  // Ignore if typing in an input/select
+  const tag = document.activeElement ? document.activeElement.tagName : '';
+  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+
+  switch (e.code) {
+    case 'Space':
+      e.preventDefault();
+      if (_currentTab === 'tuner') {
+        handleStartStop();
+      } else if (_currentTab === 'metro') {
+        const mb = document.querySelector('.metro-start-btn');
+        if (mb) mb.click();
+      }
+      break;
+
+    case 'ArrowUp': {
+      e.preventDefault();
+      if (_currentTab !== 'tuner') break;
+      const strBtns = document.querySelectorAll('.string-btn');
+      _lastStringIdx = Math.max(0, _lastStringIdx - 1);
+      if (strBtns[_lastStringIdx]) {
+        // Highlight selection
+        strBtns.forEach(b => b.style.outline = '');
+        strBtns[_lastStringIdx].style.outline = '2px solid var(--cyan-glow)';
+        playString(_lastStringIdx, strBtns[_lastStringIdx]);
+      }
+      break;
+    }
+
+    case 'ArrowDown': {
+      e.preventDefault();
+      if (_currentTab !== 'tuner') break;
+      const strBtns = document.querySelectorAll('.string-btn');
+      _lastStringIdx = Math.min(strBtns.length - 1, _lastStringIdx + 1);
+      if (strBtns[_lastStringIdx]) {
+        strBtns.forEach(b => b.style.outline = '');
+        strBtns[_lastStringIdx].style.outline = '2px solid var(--cyan-glow)';
+        playString(_lastStringIdx, strBtns[_lastStringIdx]);
+      }
+      break;
+    }
+
+    case 'ArrowLeft':
+      e.preventDefault();
+      if (_currentTab === 'tuner') {
+        // Switch to FADE
+        const fadeBtn = document.querySelector('.wave-btn[onclick*="fade"]');
+        if (fadeBtn && !fadeBtn.classList.contains('active')) fadeBtn.click();
+      }
+      break;
+
+    case 'ArrowRight':
+      e.preventDefault();
+      if (_currentTab === 'tuner') {
+        // Switch to SUSTAIN
+        const sustBtn = document.querySelector('.wave-btn[onclick*="sustain"]');
+        if (sustBtn && !sustBtn.classList.contains('active')) sustBtn.click();
+      }
+      break;
+
+    case 'Tab': {
+      e.preventDefault();
+      const idx = TAB_ORDER.indexOf(_currentTab);
+      const next = TAB_ORDER[(idx + 1) % TAB_ORDER.length];
+      switchTab(next);
+      // Update tab button active state
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const tabBtn = document.getElementById('tab-' + (next === 'tuner' ? 'tuner' : next === 'metro' ? 'metro' : 'chord'));
+      if (tabBtn) tabBtn.classList.add('active');
+      break;
+    }
+  }
+});
 
 document.addEventListener('touchmove', e => e.preventDefault(), {passive:false});
 document.addEventListener('gesturestart', e => e.preventDefault());
