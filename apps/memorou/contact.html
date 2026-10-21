@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>お問い合わせ | MEMO郎</title>
-<meta name="description" content="匿名で、すぐ書ける記録。現場の管理・ハラスメント・介護・保育の記録を、端末の中だけに安全に残すメモアプリ。">
+<title>お問い合わせ | 伏せ帳</title>
+<meta name="description" content="名前を伏せて記録するメモ。現場の管理・ハラスメント・介護・保育の記録を、端末の中だけに安全に残すメモアプリ。">
 <meta name="theme-color" content="#0A1520">
-<link rel="canonical" href="https://juku-cho.com/apps/memorou/contact.html"><style>
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://fusecho.juku-cho.com/contact.html"><style>
 :root{--bg:#F6F8FA;--raise:#FFFFFF;--sunk:#EEF2F5;--ink:#122030;--ink2:#53606E;--hair:rgba(18,32,48,.10);--accent:#13867A;--accent-soft:rgba(19,134,122,.10);--seal:#C2502F;color-scheme:light}
 @media (prefers-color-scheme: dark){:root{--bg:#0A1520;--raise:#122030;--sunk:#0E1A27;--ink:#E4ECF3;--ink2:#93A3B6;--hair:rgba(228,236,243,.10);--accent:#3CC8B4;--accent-soft:rgba(60,200,180,.12);--seal:#E26A4E;color-scheme:dark}}
 *{box-sizing:border-box}
@@ -49,16 +50,56 @@ details p{margin:0 0 14px}
 .caution{background:var(--accent-soft);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--ink)}
 footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--hair);font-size:12px;color:var(--ink2);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 footer a{color:var(--ink2)}
+.form p{margin:0 0 16px}
+.form label b{color:var(--ink)}
+.form input,.form textarea{width:100%;border:2px solid var(--hair);border-radius:10px;padding:10px 12px;font-size:16px;background:var(--raise);color:var(--ink);font-family:inherit;margin-top:6px}
+.form input:focus,.form textarea:focus{border-color:var(--accent);outline:none}
+.form .small{font-size:13px}
+.form button[disabled]{opacity:.6}
+#cmsg{font-weight:700;margin-top:12px;min-height:1em}
+#cmsg.ok{color:var(--accent)} #cmsg.ng{color:var(--seal)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-</style></head>
+</style>
+<script>if(location.hostname==="memorou.juku-cho.com")location.replace("https://fusecho.juku-cho.com"+location.pathname+location.search);</script></head>
 <body><div class="wrap">
-<a class="crumb" href="../">← ツール一覧</a>
-<nav class="top"><a class="brand" href="./index.html">MEMO郎</a><div class="links"><a href="./index.html">サポート</a><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a><a href="./contact.html" aria-current="page">お問い合わせ</a></div></nav>
+<nav class="top"><a class="brand" href="./" title="試作版アプリを開く">伏せ帳</a><div class="links"><a href="./support.html">サポート</a><a href="./privacy.html">プライバシーポリシー</a><a href="./terms.html">利用規約</a><a href="./contact.html" aria-current="page">お問い合わせ</a></div></nav>
 <h1>お問い合わせ</h1>
-<p>不具合のご報告、ご意見・ご要望は、メールでお寄せください。内容を確認のうえ、順次ご返信します。</p>
-<div class="mail"><code>jukucho.2026@gmail.com</code><a class="btn" href="mailto:jukucho.2026@gmail.com?subject=%E3%80%90MEMO%E9%83%8E%E3%80%91%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B&amp;body=%E7%AB%AF%E6%9C%AB%EF%BC%9A%0AOS%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%EF%BC%9A%0AMEMO%E9%83%8E%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%EF%BC%9A%0A%E8%B5%B7%E3%81%8D%E3%81%9F%E3%81%93%E3%81%A8%E3%83%BB%E6%93%8D%E4%BD%9C%E3%81%AE%E6%89%8B%E9%A0%86%EF%BC%9A%0A%0A%EF%BC%88%E3%83%A1%E3%83%A2%E3%81%AE%E5%86%85%E5%AE%B9%E3%82%84%E5%AE%9F%E5%90%8D%E3%81%AF%E6%9B%B8%E3%81%8B%E3%81%AA%E3%81%84%E3%81%A7%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%EF%BC%89%0A">メールで問い合わせる</a></div>
-<h2>書いていただきたいこと</h2><ul><li>お使いの端末（例：iPhone 15、Pixel 8）</li><li>OSのバージョン（例：iOS 19.1、Android 16）</li><li>MEMO郎のバージョン（設定の最下部に表示）</li><li>起きたこと・操作の手順</li></ul>
+<p>不具合のご報告、ご意見・ご要望は、お問い合わせフォームからお送りください。内容を確認のうえ、順次ご返信します。</p>
+<form id="cf" class="form box" novalidate>
+<div style="position:absolute;left:-9999px" aria-hidden="true"><label>空欄のままにしてください<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+<p><label for="cn"><b>お名前</b>（任意・ニックネーム可）<input type="text" id="cn" name="name" maxlength="80" autocomplete="nickname"></label></p>
+<p><label for="ce"><b>メールアドレス</b>（必須）<input type="email" id="ce" name="email" maxlength="200" autocomplete="email" required></label></p>
+<p><label for="cm"><b>お問い合わせ内容</b>（必須）<textarea id="cm" name="message" rows="8" maxlength="3000" required placeholder="例）お使いの端末（例：iPhone 15、Pixel 8）／OSのバージョン（例：iOS 19.1、Android 16）／伏せ帳のバージョン（設定の最下部に表示）／起きたこと・操作の手順"></textarea></label></p>
 <p class="caution">メモの内容や、記録した方の実名は送らないでください。当方はメモを見ることができず、調査にも必要ありません。</p>
-<p>お問い合わせの前に、「使い方」のよくある質問もご確認ください。<a href="./index.html">よくある質問を見る</a></p>
-<footer><span>© Juku-Cho（アプリ塾）</span><span><a href="../">ツール一覧</a>　<a href="/">juku-cho.com</a></span></footer>
+<p class="small">送信いただいた内容は、お問い合わせへの対応のためにのみ使用します。詳しくは<a href="./privacy.html">プライバシーポリシー</a>をご覧ください。ファイルの添付はできません。</p>
+<button type="submit" class="btn" id="sendBtn">送信する</button>
+<p id="cmsg" role="status"></p>
+</form>
+<noscript><p>フォームの利用にはJavaScriptを有効にしてください。</p></noscript>
+<h2>書いていただきたいこと</h2><ul><li>お使いの端末（例：iPhone 15、Pixel 8）</li><li>OSのバージョン（例：iOS 19.1、Android 16）</li><li>伏せ帳のバージョン（設定の最下部に表示）</li><li>起きたこと・操作の手順</li></ul>
+<p>お問い合わせの前に、「使い方」のよくある質問もご確認ください。<a href="./support.html">よくある質問を見る</a></p>
+<script>
+(function(){
+  var ENDPOINT="https://formspree.io/f/xjgnrdpy";
+  var f=document.getElementById('cf'),m=document.getElementById('cmsg'),b=document.getElementById('sendBtn');
+  // アプリから開いた時は ?app=バージョン&os=OS が付く（メモの内容は付かない）
+  var q=new URLSearchParams(location.search),app=q.get('app')||'',os=q.get('os')||'';
+  function say(t,ok){m.textContent=t;m.className=ok?'ok':'ng';}
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(f._gotcha.value)return;
+    var n=f.name.value.trim(),em=f.email.value.trim(),ms=f.message.value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){say('メールアドレスを正しく入力してください。',false);f.email.focus();return;}
+    if(!ms){say('お問い合わせ内容を入力してください。',false);f.message.focus();return;}
+    b.disabled=true;say('送信しています…',true);
+    fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({name:n,email:em,message:ms,_subject:'【伏せ帳】お問い合わせ',app_version:app,os:os,page:location.origin+location.pathname,ua:navigator.userAgent})})
+    .then(function(r){return r.json();}).then(function(j){
+      if(j&&j.ok){say('お問い合わせを受け付けました。ありがとうございます。',true);f.reset();}
+      else{say('送信できませんでした。時間をおいて、もう一度お試しください。',false);}
+    }).catch(function(){say('送信できませんでした。通信状況をご確認のうえ、もう一度お試しください。',false);})
+    .then(function(){b.disabled=false;});
+  });
+})();
+</script>
 </div></body></html>

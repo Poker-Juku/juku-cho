@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>プライバシーポリシー | MEMO郎</title>
-<meta name="description" content="匿名で、すぐ書ける記録。現場の管理・ハラスメント・介護・保育の記録を、端末の中だけに安全に残すメモアプリ。">
+<title>プライバシーポリシー | 伏せ帳</title>
+<meta name="description" content="名前を伏せて記録するメモ。現場の管理・ハラスメント・介護・保育の記録を、端末の中だけに安全に残すメモアプリ。">
 <meta name="theme-color" content="#0A1520">
-<link rel="canonical" href="https://juku-cho.com/apps/memorou/privacy.html"><style>
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="canonical" href="https://fusecho.juku-cho.com/privacy.html"><style>
 :root{--bg:#F6F8FA;--raise:#FFFFFF;--sunk:#EEF2F5;--ink:#122030;--ink2:#53606E;--hair:rgba(18,32,48,.10);--accent:#13867A;--accent-soft:rgba(19,134,122,.10);--seal:#C2502F;color-scheme:light}
 @media (prefers-color-scheme: dark){:root{--bg:#0A1520;--raise:#122030;--sunk:#0E1A27;--ink:#E4ECF3;--ink2:#93A3B6;--hair:rgba(228,236,243,.10);--accent:#3CC8B4;--accent-soft:rgba(60,200,180,.12);--seal:#E26A4E;color-scheme:dark}}
 *{box-sizing:border-box}
@@ -49,16 +50,23 @@ details p{margin:0 0 14px}
 .caution{background:var(--accent-soft);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--ink)}
 footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--hair);font-size:12px;color:var(--ink2);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 footer a{color:var(--ink2)}
+.form p{margin:0 0 16px}
+.form label b{color:var(--ink)}
+.form input,.form textarea{width:100%;border:2px solid var(--hair);border-radius:10px;padding:10px 12px;font-size:16px;background:var(--raise);color:var(--ink);font-family:inherit;margin-top:6px}
+.form input:focus,.form textarea:focus{border-color:var(--accent);outline:none}
+.form .small{font-size:13px}
+.form button[disabled]{opacity:.6}
+#cmsg{font-weight:700;margin-top:12px;min-height:1em}
+#cmsg.ok{color:var(--accent)} #cmsg.ng{color:var(--seal)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-</style></head>
+</style>
+<script>if(location.hostname==="memorou.juku-cho.com")location.replace("https://fusecho.juku-cho.com"+location.pathname+location.search);</script></head>
 <body><div class="wrap">
-<a class="crumb" href="../">← ツール一覧</a>
-<nav class="top"><a class="brand" href="./index.html">MEMO郎</a><div class="links"><a href="./index.html">サポート</a><a href="./privacy.html" aria-current="page">プライバシーポリシー</a><a href="./terms.html">利用規約</a><a href="./contact.html">お問い合わせ</a></div></nav>
-<h1>プライバシーポリシー</h1><div class="updated">最終更新日：2026年10月9日</div>
-<p>本ポリシーは、Juku-Cho（アプリ塾）（以下「当方」）が提供するアプリ「MEMO郎」（以下「本アプリ」）における、利用者の情報の取り扱いを定めるものです。</p>
+<nav class="top"><a class="brand" href="./" title="試作版アプリを開く">伏せ帳</a><div class="links"><a href="./support.html">サポート</a><a href="./privacy.html" aria-current="page">プライバシーポリシー</a><a href="./terms.html">利用規約</a><a href="./contact.html">お問い合わせ</a></div></nav>
+<h1>プライバシーポリシー</h1><div class="updated">最終更新日：2026年10月17日</div>
+<p>本ポリシーは、Juku-Cho（アプリ塾）（以下「当方」）が提供するアプリ「伏せ帳」（以下「本アプリ」）における、利用者の情報の取り扱いを定めるものです。</p>
 <div class="box"><ul><li>メモ・画像・匿名化リストは、すべてお使いの端末の中だけに保存されます。</li><li>当方のサーバーへは何も送信しません。当方があなたのメモを見ることはできません。</li><li>広告・アクセス解析・会員登録はありません。</li></ul></div>
-<h2>1. 収集する情報</h2><p>本アプリは、氏名・メールアドレス・電話番号など、個人を特定できる情報を収集しません。会員登録やログインの機能もありません。広告の配信やアクセス解析も行っていません。</p><h2>2. 端末に保存する情報</h2><p>本アプリは、次の情報をお使いの端末の中だけに保存します。これらは端末の安全な保管場所（iPhoneのキーチェーン、AndroidのKeystore）にある鍵で暗号化され、当方を含む外部へ送信されることはありません。</p><ul><li>メモの本文、編集履歴、添付した画像</li><li>匿名化リスト（実名・別名・置き換え後の名前）</li><li>定型句と各種の設定</li><li>書き換えがないことを確かめるための控えと確認記録</li><li>メモを消去した日時の記録（本文は残しません）</li></ul><h2>3. 端末の機能の利用</h2><p>本アプリは、次の目的に限って端末の機能を利用します。</p><ul><li>Face ID・指紋・パスコード：アプリを開く時の本人確認のため。照合は端末のOSが行い、顔や指紋の情報が本アプリに渡ることはありません。</li><li>カメラ・写真：利用者がメモに添付する画像を撮影・選択するため。選ばれた画像以外にはアクセスしません。</li><li>モーションセンサー：「端末を伏せたらロック」機能のため。向きの判定にだけ使い、記録しません。</li></ul><h2>4. 外部への送信</h2><p>本アプリが外部へ情報を送るのは、利用者が自分で書き出し・共有・バックアップを行った時だけです。送信先は利用者が選んだアプリやサービスとなります。書き出しやコピーの内容は、匿名化リストに登録された名前が置き換えられた状態で渡されます。</p><p>将来、AIによる要約など外部への送信を伴う機能を追加する場合は、事前に本ポリシーを改定し、アプリの中で利用者の同意を得た場合にだけ動作するようにします。</p><h2>5. アプリストアから提供される情報</h2><p>App Store・Google Playから、ダウンロード数や、利用者が共有を許可した場合のクラッシュ情報などの統計が当方に提供されることがあります。これらに個人を特定できる情報やメモの内容は含まれません。</p><h2>6. お問い合わせで受け取る情報</h2><p>お問い合わせのメールで受け取ったメールアドレスや内容は、回答のためだけに使い、第三者に提供しません。お問い合わせの際は、メモの内容や実名を送らないようお願いします。</p><h2>7. データの削除</h2><p>本アプリの「設定 → すべてのデータを消す」を行うか、本アプリを端末から削除すると、保存した情報はすべて消去されます。当方の側に残る情報はありません。</p><h2>8. 未成年の利用</h2><p>本アプリは個人情報を収集しないため、年齢確認は行っていません。未成年の方は、保護者の方と相談のうえご利用ください。</p><h2>9. 本ポリシーの変更</h2><p>法令の変更や機能の追加に応じて、本ポリシーを変更することがあります。重要な変更がある場合は、アプリ内またはこのページでお知らせし、最終更新日を更新します。</p><h2>10. お問い合わせ先</h2><p>本ポリシーに関するお問い合わせは、下記のメールアドレスまでご連絡ください。</p>
-<div class="mail"><code>jukucho.2026@gmail.com</code><a class="btn ghost" href="./contact.html">お問い合わせページへ</a></div>
+<h2>1. 収集する情報</h2><p>本アプリは、氏名・メールアドレス・電話番号など、個人を特定できる情報を収集しません。会員登録やログインの機能もありません。広告の配信やアクセス解析も行っていません。</p><h2>2. 端末に保存する情報</h2><p>本アプリは、次の情報をお使いの端末の中だけに保存します。これらは端末の安全な保管場所（iPhoneのキーチェーン、AndroidのKeystore）にある鍵で暗号化され、当方を含む外部へ送信されることはありません。</p><ul><li>メモの本文、編集履歴、添付した画像</li><li>匿名化リスト（実名・置き換え後の名前など）</li><li>定型句と各種の設定</li><li>書き換えがないことを確かめるための控えと確認記録</li><li>メモを消去した日時の記録（本文は残しません）</li></ul><h2>3. 端末の機能の利用</h2><p>本アプリは、次の目的に限って端末の機能を利用します。</p><ul><li>Face ID・指紋・パスコード：アプリを開く時の本人確認のため。照合は端末のOSが行い、顔や指紋の情報が本アプリに渡ることはありません。</li><li>カメラ・写真：利用者がメモに添付する画像を撮影・選択するため。選ばれた画像以外にはアクセスしません。</li><li>モーションセンサー：「端末を伏せたらロック」機能のため。向きの判定にだけ使い、記録しません。</li></ul><h2>4. 外部への送信</h2><p>本アプリは、通常の記録・閲覧・匿名化・証明の確認を、インターネットにつながずに行います。通信が発生するのは、次の場面だけです。</p><p>本アプリが外部へ情報を送るのは、利用者が自分で書き出し・共有・バックアップを行った時だけです。送信先は利用者が選んだアプリやサービスとなります。書き出しやコピーの内容は、匿名化リストに登録された名前が置き換えられた状態で渡されます。</p><p>ブラウザで使える試作版には、利用者が自分でAIサービスのAPIキーを入力し、送信内容を確認して同意した場合にだけ、匿名化した記録をAnthropic社のAIへ送って要約する機能があります。スマートフォン版には、この機能はありません。</p><p>将来、AIによる要約など外部への送信を伴う機能を追加する場合は、事前に本ポリシーを改定し、アプリの中で利用者の同意を得た場合にだけ動作するようにします。</p><ul><li>プロ版の購入・購入の復元・購入状態の確認：端末とアプリストア（Apple・Google）の間だけで行います。当方のサーバーや、ほかの外部サービスは使いません。</li><li>書き出し・共有・バックアップ：利用者が自分で選んだアプリやサービスに渡す時だけです。</li><li>お問い合わせ・規約などのWebページを開く時：利用者が自分で開いた時だけです。</li></ul><h2>5. アプリストアから提供される情報と購入</h2><p>App Store・Google Playから、ダウンロード数や、利用者が共有を許可した場合のクラッシュ情報などの統計が当方に提供されることがあります。これらに個人を特定できる情報やメモの内容は含まれません。</p><p>プロ版の購入の手続きと支払いは、Apple・Googleが行います。当方がクレジットカードなどの支払い情報を受け取ることはありません。購入済みかどうかの確認は、端末とアプリストアの間で行い、当方のサーバーは使いません。</p><h2>6. お問い合わせで受け取る情報</h2><p>お問い合わせフォームで受け取ったお名前・メールアドレス・内容は、回答のためだけに使い、第三者に提供しません。フォームの送信には、送信サービス「Formspree」を利用しています。お問い合わせの際は、メモの内容や実名を送らないようお願いします。</p><h2>7. データの削除</h2><p>本アプリの「設定 → すべてのデータを消す」を行うか、本アプリを端末から削除すると、保存した情報はすべて消去されます。当方の側に残る情報はありません。</p><h2>8. 未成年の利用</h2><p>本アプリは個人情報を収集しないため、年齢確認は行っていません。未成年の方は、保護者の方と相談のうえご利用ください。</p><h2>9. 本ポリシーの変更</h2><p>法令の変更や機能の追加に応じて、本ポリシーを変更することがあります。重要な変更がある場合は、アプリ内またはこのページでお知らせし、最終更新日を更新します。</p><h2>10. お問い合わせ先</h2><p>本ポリシーに関するお問い合わせは、お問い合わせページのフォームからご連絡ください。</p>
+<p><a class="btn ghost" href="./contact.html">お問い合わせフォームへ</a></p>
 <p>運営者：Juku-Cho（アプリ塾）</p>
-<footer><span>© Juku-Cho（アプリ塾）</span><span><a href="../">ツール一覧</a>　<a href="/">juku-cho.com</a></span></footer>
 </div></body></html>
