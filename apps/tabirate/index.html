@@ -900,19 +900,21 @@
   var KEY_TUTORIAL='tj_tutorial_seen_v1',tutorialIndex=0,tutorialTouchX=0;
   var TUTORIAL={
     ja:{skip:'スキップ',prev:'戻る',next:'次へ',start:'はじめる',replay:'チュートリアルを見る　→',slides:[
-      ['TABI-RATEへようこそ','このツールはよく使う通貨を、他国の通貨にタブで素早く切り替えられる為替コンバーターツールです。'],
-      ['基準通貨と決済通貨','左の赤いタブは基準通貨、右のタブは決済通貨となります。\nよく使う通貨を一番左の赤いタブに設定しておくことで、基準通貨から他国の通貨へ瞬時にタブで切り替えることが可能です。'],
+      ['TABI-RATEへようこそ','よく使う通貨を、最大4カ国まで登録できる為替コンバーターです。タブを切り替えるだけで、すぐに換算できます。'],
+      ['通貨を切り替える','上部のタブから、使いたい通貨を選べます。\n通貨は最大4カ国まで登録・切り替えができます。'],
       ['換算','タップして金額を入力すると、選択した通貨が瞬時に表示されます。\n上段・下段どちらの金額でも入力可能です。また、矢印で上下の通貨を入れ替えることもできます。'],
-      ['設定でカスタマイズ','設定から使用したい通貨を選択します。通貨は最大37カ国！\n\nまた、基準通貨以外に決済通貨は最大3つまで追加が可能です。\n1. 基準通貨（赤タブ）\n2〜4. 決済通貨（緑・黄・青タブ）'],
-      ['タブを長押し','タブを長押しすることで使いやすい順番に入れ替えることが可能です。'],
+      ['タブを並べ替える','タブを長押しして左右へ動かすと、使いやすい順番に並べ替えられます。\n一番左に置いた通貨が、基準通貨になります。'],
+      ['レート情報と保存','レート欄の左にある丸いボタンを押すと、取得済みの為替レートの日付を確認できます。\nフロッピーの保存ボタンを押すと、現在の為替レートを記録できます。'],
+      ['設定でカスタマイズ','設定から、使いたい通貨の追加・変更や表示内容の調整ができます。'],
       ['Thank you\nHave a great trip!','']
     ]},
     en:{skip:'Skip',prev:'Back',next:'Next',start:'Start',replay:'View tutorial →',slides:[
-      ['Welcome to TABI-RATE','Quickly switch your most-used currencies with tabs and convert with ease.'],
-      ['Base & payment currencies','The red tab on the left is your base currency. The tabs on the right are payment currencies.'],
+      ['Welcome to TABI-RATE','Save up to four currencies and switch between them to convert with ease.'],
+      ['Switch currencies','Use the tabs at the top to select a currency. You can save and switch between up to four currencies.'],
       ['Convert','Tap an amount to convert it instantly. You can enter an amount in either row and swap the two currencies with the arrows.'],
-      ['Customize in Settings','Choose up to four currencies, including one red base tab and up to three payment tabs.'],
-      ['Long-press tabs','Long-press and drag tabs to arrange them in the order you use most.'],
+      ['Reorder tabs','Long-press and drag tabs left or right to arrange them. The currency on the far left becomes the base currency.'],
+      ['Rate information & saving','Use the round button on the left of the rate row to check when rates were obtained. Use the save icon to record the current rate.'],
+      ['Customize in Settings','Add or change currencies and adjust display settings from Settings.'],
       ['Thank you\nHave a great trip!','']
     ]}
   };
@@ -1466,7 +1468,7 @@
     document.addEventListener('touchmove',function(e){
       if(e.target.closest('.sb')||e.target.closest('.dl')||e.target.closest('.tutorial-viewport'))return;e.preventDefault();},{passive:false});
     document.addEventListener('keydown',function(e){if(!$('tutorial').classList.contains('show'))return;if(e.key==='ArrowRight')tutorialNext();if(e.key==='ArrowLeft')tutorialPrev();if(e.key==='Escape')closeTutorial();});
-    setTimeout(function(){var seen=false;try{seen=localStorage.getItem(KEY_TUTORIAL)==='1';}catch(e){}if(!seen)openTutorial();},2800);
+    setTimeout(function(){var seen=false,preview=false;try{seen=localStorage.getItem(KEY_TUTORIAL)==='1';preview=new URLSearchParams(location.search).get('tutorial')==='1';}catch(e){}if(preview||!seen)openTutorial();},2800);
   }
   init();
 })();
