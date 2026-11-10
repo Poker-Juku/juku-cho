@@ -37,8 +37,11 @@
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 
-html, body {
+html {
   height:100%; width:100%; max-width:100vw; margin:0;
+  overflow:hidden;
+}
+body {
   font-family:"Exo 2", sans-serif;
   color:var(--text);
   background:var(--bg);
@@ -46,22 +49,20 @@ html, body {
     radial-gradient(ellipse at 20% 0%, rgba(0,80,140,0.25) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 100%, rgba(0,40,80,0.2) 0%, transparent 60%);
   overscroll-behavior:none;
-  overflow-x:hidden;
-}
-body {
+  overflow:hidden;
   display:flex; flex-direction:column;
   align-items:center; justify-content:flex-start;
-  min-height:100%; padding:0;
+  height:100%; min-height:100%; padding:0;
   touch-action:none;
-  overflow-x:hidden;
 }
-@media (min-height: 700px) {
-  body { justify-content:center; padding:8px; }
+@media (min-width: 500px) and (min-height: 700px) {
+  body { justify-content:center; padding:8px; overflow:auto; }
 }
 
 /* ═══ APP CARD ═══ */
 .app {
   width:100%; max-width:420px;
+  /* Fill the full screen height on mobile phones */
   height:100svh;
   display:flex; flex-direction:column;
   overflow:hidden; position:relative;
@@ -70,8 +71,11 @@ body {
   border:none;
   box-shadow:none;
   flex-shrink:0;
+  /* Push header below iPhone notch / Dynamic Island */
+  padding-top: env(safe-area-inset-top, 0px);
+  /* Extra bottom space for iPhone home indicator (already in tab-bar calc) */
 }
-@media (min-height: 700px) {
+@media (min-width: 500px) and (min-height: 700px) {
   .app {
     height:min(760px, calc(100svh - 16px));
     border-radius:16px;
@@ -81,6 +85,8 @@ body {
       0 20px 60px rgba(0,0,0,0.8),
       0 0 40px rgba(0,150,200,0.1),
       inset 0 1px 0 rgba(0,200,240,0.1);
+    /* Remove safe area padding for tablet / desktop layout */
+    padding-top: 0;
   }
 }
 
@@ -238,20 +244,22 @@ body {
 /* ═══ TAB BAR ═══ */
 .tab-bar {
   display:flex; align-items:stretch;
-  height:var(--tab-h); flex-shrink:0;
+  /* Height = fixed 58px + iPhone home indicator safe area */
+  height:calc(var(--tab-h) + env(safe-area-inset-bottom, 0px));
+  flex-shrink:0;
   background:#050a10;
   border-top:1px solid var(--border);
   border-radius:0 0 16px 16px;
-  overflow:hidden;
-  /* Safe area for iPhone home indicator */
+  overflow:visible;
+  /* Pad bottom for iPhone home indicator */
   padding-bottom:env(safe-area-inset-bottom, 0px);
 }
 .tab-btn {
   flex:1; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:2px;
+  align-items:center; justify-content:center; gap:3px;
   background:transparent; border:none; cursor:pointer;
   transition:all 0.2s; position:relative;
-  padding:4px 2px;
+  padding:6px 4px 4px;
   min-width:0;
 }
 .tab-btn::before {
@@ -263,27 +271,28 @@ body {
 }
 .tab-btn.active::before { opacity:1; }
 .tab-btn .tab-icon {
-  font-size:18px; line-height:1;
+  font-size:20px; line-height:1;
   display:flex; align-items:center; justify-content:center;
   flex-shrink:0;
+  width:32px; height:32px;
 }
 .tab-img {
-  width:26px;
-  height:26px;
+  width:32px;
+  height:32px;
   object-fit:contain;
   filter:brightness(0.4) saturate(0.3);
   transition:filter 0.25s;
   flex-shrink:0;
+  display:block;
 }
 .tab-btn.active .tab-img {
   filter:brightness(1.15) saturate(1.2) drop-shadow(0 0 6px rgba(0,220,255,0.9));
 }
 .tab-btn .tab-label {
   font-family:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","BIZ UDPGothic",sans-serif;
-  font-size:9px; font-weight:700;
-  letter-spacing:0.3px; color:var(--text-dim); transition:color 0.2s;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  max-width:100%;
+  font-size:10px; font-weight:700;
+  letter-spacing:0.5px; color:var(--text-dim); transition:color 0.2s;
+  white-space:nowrap;
 }
 .tab-btn.active .tab-label { color:var(--cyan); }
 
@@ -1133,7 +1142,6 @@ body {
       <div class="zero-line"></div>
       <div id="stringsArea"></div>
     </div>
-</div>
 
     <div class="bottom-row">
       <div class="chord-group">
@@ -1211,8 +1219,6 @@ body {
       <button class="metro-start-btn" id="metroStartBtn" onclick="toggleMetro()">▶ START</button>
       <button class="tap-btn" onclick="tapTempo()">🎵 TAP TEMPO</button>
 
-      <!-- 広告バナー -->
-</div>
     </div>
 </div><!-- /screen-metro -->
 
@@ -1281,8 +1287,6 @@ body {
         </div>
       </div>
 
-      <!-- 広告バナー -->
-</div>
     </div>
 </div><!-- /screen-chord -->
 
@@ -1775,6 +1779,7 @@ document.addEventListener('gesturestart', e => e.preventDefault());
 // TAB NAVIGATION
 // ═══════════════════════════════════════
 function switchTab(name) {
+  _currentTab = name;
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('screen-' + name).classList.add('active');
@@ -2453,14 +2458,8 @@ function toggleGlow(on) {
 // KEYBOARD SHORTCUTS
 // ═══════════════════════════════════════
 const TAB_ORDER = ['tuner', 'metro', 'chord'];
-let _currentTab = 'tuner';
+var _currentTab = 'tuner';
 
-// Override switchTab to track current tab
-const _origSwitchTab = switchTab;
-function switchTab(name) {
-  _origSwitchTab(name);
-  _currentTab = name;
-}
 
 document.addEventListener('keydown', function(e) {
   // Ignore if typing in an input/select
