@@ -1,218 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プライバシーポリシー | Juku-Cho</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:      #070d14;
-  --card:    #0d1828;
-  --border:  #1a3050;
-  --cyan:    #00c8f0;
-  --cyan-dk: #0080a8;
-  --text:    #c8dff0;
-  --text-dim:#4a6888;
-  --gold:    #c8922a;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background:var(--bg);
-  background-image:radial-gradient(ellipse at 20% 0%, rgba(0,80,140,0.2) 0%, transparent 60%);
-  font-family:'Noto Sans JP', sans-serif;
-  color:var(--text);
-  line-height:1.8;
-  min-height:100vh;
-}
-
-/* HEADER */
-.site-header {
-  background:linear-gradient(180deg,#0d1828,#070d14);
-  border-bottom:1px solid var(--border);
-  padding:16px 24px;
-  position:relative;
-}
-.site-header::after {
-  content:'';
-  position:absolute; bottom:0; left:0; right:0; height:1px;
-  background:linear-gradient(90deg,transparent,var(--cyan-dk) 30%,var(--cyan) 50%,var(--cyan-dk) 70%,transparent);
-}
-.header-inner {
-  max-width:800px; margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between;
-}
-.site-logo {
-  font-family:'Noto Sans JP',sans-serif;
-  font-size:20px; font-weight:700;
-  color:var(--cyan);
-  text-decoration:none;
-  letter-spacing:2px;
-  text-shadow:0 0 12px rgba(0,200,240,0.4);
-}
-.nav-links { display:flex; gap:20px; }
-.nav-links a {
-  color:var(--text-dim); text-decoration:none;
-  font-size:13px; letter-spacing:1px;
-  transition:color 0.2s;
-}
-.nav-links a:hover { color:var(--cyan); }
-
-/* MAIN */
-.container {
-  max-width:800px; margin:0 auto;
-  padding:48px 24px 80px;
-}
-.page-title {
-  font-size:28px; font-weight:700;
-  color:#ffffff; margin-bottom:8px;
-  letter-spacing:1px;
-}
-.page-title span {
-  color:var(--cyan);
-  text-shadow:0 0 12px rgba(0,200,240,0.5);
-}
-.update-date {
-  font-size:12px; color:var(--text-dim);
-  margin-bottom:40px; letter-spacing:1px;
-}
-.divider {
-  height:1px; margin-bottom:40px;
-  background:linear-gradient(90deg,var(--cyan-dk),transparent);
-}
-
-.section { margin-bottom:40px; }
-.section h2 {
-  font-size:16px; font-weight:700;
-  color:var(--cyan); margin-bottom:12px;
-  padding-left:12px;
-  border-left:3px solid var(--cyan);
-  letter-spacing:1px;
-}
-.section p {
-  font-size:14px; color:var(--text);
-  margin-bottom:12px; padding-left:12px;
-}
-.section ul {
-  padding-left:24px; margin-bottom:12px;
-}
-.section ul li {
-  font-size:14px; color:var(--text);
-  margin-bottom:6px;
-}
-
-.card {
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:8px; padding:20px 24px;
-  margin-top:12px;
-}
-.card p { font-size:14px; color:var(--text); }
-
-/* FOOTER */
-.site-footer {
-  background:#050a10;
-  border-top:1px solid var(--border);
-  padding:20px 24px; text-align:center;
-}
-.site-footer p {
-  font-size:12px; color:var(--text-dim); letter-spacing:2px;
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JUKU-CHOのプライバシーポリシー。端末内処理、アクセス解析、広告配信などの情報の取り扱いについて。">
+  <meta name="theme-color" content="#09070d">
+  <title>プライバシーポリシー｜JUKU-CHO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  <script>
+    (() => {
+      const theme = new URLSearchParams(location.search).get('theme');
+      document.documentElement.dataset.theme = ['neon', 'navy', 'graphite'].includes(theme) ? theme : 'neon';
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=layout-3">
 </head>
 <body>
-
-<header class="site-header">
-  <div class="header-inner">
-    <a href="/" class="site-logo">JUKU-CHO</a>
-    <nav class="nav-links">
-      <a href="/">ホーム</a>
-      <a href="/contact.html">お問い合わせ</a>
+  <header class="site-header" id="top">
+    <a class="brand" href="index.html" aria-label="JUKU-CHO ホーム">
+      <span class="brand-main">JUKU-CHO</span>
+      <span class="brand-sub">MADE IN JAPAN</span>
+    </a>
+    <nav class="nav" aria-label="メインナビゲーション">
+      <a href="index.html#apps">アプリ・ツール</a>
+      <a href="index.html#about">私たちの考え</a>
+      <a href="index.html#faq">FAQ</a>
     </nav>
-  </div>
-</header>
+    <a class="header-cta" href="index.html">トップへ <span aria-hidden="true">↖</span></a>
+  </header>
 
-<main class="container">
-  <h1 class="page-title">プライバシー<span>ポリシー</span></h1>
-  <p class="update-date">最終更新日：2025年1月1日</p>
-  <div class="divider"></div>
+  <main>
+    <section class="page-hero">
+      <p class="breadcrumb"><a href="index.html">HOME</a> / PRIVACY POLICY</p>
+      <p class="section-kicker">PRIVACY POLICY</p>
+      <h1>プライバシー<em>ポリシー</em></h1>
+      <p class="page-lead">JUKU-CHO（以下「当サイト」）は、ご利用いただく皆さまの情報を大切に扱います。当サイトにおける情報の取り扱いについて、以下のとおり定めます。</p>
+    </section>
+    <section class="page-body">
+      <div class="legal">
+        <h2>1. 対象範囲</h2>
+        <p>本ポリシーは、当サイト（juku-cho.com）および当サイトから案内する各ツールの紹介ページに適用されます。各ツール・アプリに個別のプライバシーポリシーがある場合は、そちらが優先されます。</p>
 
-  <div class="section">
-    <h2>1. はじめに</h2>
-    <p>Juku-Cho（以下「当サイト」）は、ユーザーのプライバシーを尊重し、個人情報の保護に努めます。本プライバシーポリシーは、当サイトが提供するサービス（アプリ塾、ポーカー塾、アニメ塾など）における個人情報の取り扱いについて説明します。</p>
-  </div>
+        <h2>2. 取得する情報</h2>
+        <p>当サイトでは、会員登録などによる氏名・住所などの個人情報の入力は求めていません。お問い合わせフォームをご利用の際には、メールアドレスとお問い合わせ内容をお預かりします（お名前の入力は不要です）。</p>
 
-  <div class="section">
-    <h2>2. 収集する情報</h2>
-    <p>当サイトでは、以下の情報を収集する場合があります。</p>
-    <ul>
-      <li>お問い合わせフォームにご入力いただいたお名前・メールアドレス・メッセージ</li>
-      <li>アクセスログ（IPアドレス、ブラウザの種類、アクセス日時など）</li>
-      <li>Cookieによる閲覧情報（広告配信・アクセス解析目的）</li>
-    </ul>
-  </div>
+        <h2>3. 端末内処理のツールについて</h2>
+        <p>「端末内処理」と表示しているツールでは、入力された文章・画像・動画などのデータはお使いの端末（ブラウザ）の中だけで処理され、当サイトや外部のサーバーへ送信・保存されることはありません。</p>
 
-  <div class="section">
-    <h2>3. 情報の利用目的</h2>
-    <p>収集した情報は以下の目的で利用します。</p>
-    <ul>
-      <li>お問い合わせへの回答・対応</li>
-      <li>サービスの改善・品質向上</li>
-      <li>アクセス状況の分析</li>
-      <li>広告の配信（Google AdSenseを利用）</li>
-    </ul>
-  </div>
+        <h2>4. 利用目的</h2>
+        <ul>
+          <li>お問い合わせへの回答・ご連絡のため</li>
+          <li>サイトやツールの改善、不具合の調査のため</li>
+          <li>利用状況の分析によるサービス向上のため</li>
+        </ul>
 
-  <div class="section">
-    <h2>4. Google AdSense（広告）について</h2>
-    <p>当サイトでは、Google LLC が提供する広告配信サービス「Google AdSense」を使用しています。</p>
-    <ul>
-      <li>Google AdSenseは、ユーザーの興味に基づいた広告を表示するためにCookieを使用します。</li>
-      <li>Cookieの使用により、ユーザーの当サイトや他サイトへのアクセス情報が収集される場合があります。</li>
-      <li>収集される情報は、ユーザーを個人的に特定するものではありません。</li>
-    </ul>
-    <div class="card">
-      <p>Cookieを無効にする場合は、<a href="https://www.google.com/settings/ads" target="_blank" style="color:var(--cyan);">Googleの広告設定ページ</a>からオプトアウトできます。また、<a href="https://www.aboutads.info/choices/" target="_blank" style="color:var(--cyan);">aboutads.info</a> からも設定可能です。</p>
-    </div>
-  </div>
+        <h2>5. アクセス解析ツールについて</h2>
+        <p>当サイトでは、利用状況を把握するためにGoogle LLCが提供する「Googleアナリティクス」を利用する場合があります。Googleアナリティクスはデータ収集のためにCookieを使用しますが、このデータは匿名で収集されており、個人を特定するものではありません。Cookieはブラウザの設定で無効にできます。詳しくは<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleのポリシーと規約</a>をご確認ください。</p>
 
-  <div class="section">
-    <h2>5. Google Analytics について</h2>
-    <p>当サイトでは、Googleが提供するアクセス解析ツール「Google Analytics」を使用する場合があります。Google Analyticsはトラフィックデータの収集のためにCookieを使用します。このデータは匿名で収集されており、個人を特定するものではありません。</p>
-  </div>
+        <h2>6. 広告の配信について</h2>
+        <p>当サイトおよび各ツールでは、第三者配信の広告サービス「Google AdSense」を利用する場合があります。広告配信事業者は、ユーザーの興味に応じた広告を表示するためにCookieを使用することがあります。パーソナライズ広告は<a href="https://adssettings.google.com/" target="_blank" rel="noopener">Googleの広告設定</a>で無効にできます。</p>
 
-  <div class="section">
-    <h2>6. 第三者への情報提供</h2>
-    <p>当サイトは、以下の場合を除き、収集した個人情報を第三者に提供しません。</p>
-    <ul>
-      <li>ユーザーの同意がある場合</li>
-      <li>法令に基づく開示要請があった場合</li>
-      <li>人の生命・身体・財産の保護のために必要な場合</li>
-    </ul>
-  </div>
+        <h2>7. 外部サービスの利用</h2>
+        <p>当サイトでは、表示用のフォントとしてGoogle Fontsを利用しています。フォントの読み込みの際、お使いのブラウザからGoogleのサーバーへ通信が発生します。</p>
+        <p>お問い合わせフォームの送信には、Formspree, Inc.が提供するフォームサービス「Formspree」を利用しています。入力された内容はFormspreeを経由して当サイトの運営者へ届けられます。詳しくは<a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">Formspreeのプライバシーポリシー</a>をご確認ください。</p>
 
-  <div class="section">
-    <h2>7. 外部リンクについて</h2>
-    <p>当サイトには外部サイトへのリンクが含まれる場合があります。リンク先のプライバシーポリシーについては、各サイトのポリシーをご確認ください。当サイトは外部サイトの内容について責任を負いません。</p>
-  </div>
+        <h2>8. 第三者への提供</h2>
+        <p>お預かりした個人情報は、法令に基づく場合を除き、ご本人の同意なく第三者へ提供することはありません。</p>
 
-  <div class="section">
-    <h2>8. プライバシーポリシーの変更</h2>
-    <p>当サイトは、必要に応じて本プライバシーポリシーを変更することがあります。変更後のポリシーは本ページに掲載した時点で効力を生じます。重要な変更がある場合は、サイト上でお知らせします。</p>
-  </div>
+        <h2>9. 免責事項</h2>
+        <p>当サイトのツールは正確な結果を提供するよう努めていますが、計算結果や情報の正確性・完全性を保証するものではありません。ご利用により生じた損害について、当サイトは責任を負いかねます。重要な判断を行う際は、専門家へご確認ください。</p>
 
-  <div class="section">
-    <h2>9. お問い合わせ</h2>
-    <p>本プライバシーポリシーに関するご質問・ご意見は、以下のお問い合わせページよりご連絡ください。</p>
-    <div class="card">
-      <p>📧 <a href="/contact.html" style="color:var(--cyan);">お問い合わせフォームはこちら</a></p>
-    </div>
-  </div>
-</main>
+        <h2>10. ポリシーの変更</h2>
+        <p>本ポリシーは、必要に応じて予告なく変更することがあります。変更後の内容は、本ページに掲載した時点から効力を持つものとします。</p>
 
-<footer class="site-footer">
-  <p>© 2025 JUKU-CHO &nbsp;·&nbsp; Made In Japan</p>
-</footer>
+        <h2>11. お問い合わせ窓口</h2>
+        <p>本ポリシーに関するお問い合わせは、<a href="contact.html">お問い合わせページ</a>よりご連絡ください。</p>
 
+        <p class="legal-date">制定日：2026年11月23日<br>運営：JUKU-CHO（アプリ塾）</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand"><span>JUKU-CHO</span><small>APPS &amp; TOOLS FOR EVERYDAY</small></div>
+    <div class="footer-links"><a href="index.html#apps">APPS</a><a href="index.html#about">ABOUT</a><a href="index.html#faq">FAQ</a><a href="privacy.html">PRIVACY</a><a href="contact.html">CONTACT</a><a href="#top">BACK TO TOP ↑</a></div>
+    <p class="footer-legal"><a href="privacy.html">プライバシーポリシー</a><a href="contact.html">お問い合わせ</a></p>
+    <p>© 2026 JUKU-CHO. MADE IN JAPAN.</p>
+  </footer>
 </body>
 </html>
